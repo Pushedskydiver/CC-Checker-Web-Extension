@@ -1,9 +1,4 @@
 import chroma from 'chroma-js';
-import createBrowserHistory from 'history/createBrowserHistory';
-import throttle from 'lodash.throttle';
-
-const isClient = typeof document !== 'undefined';
-const history = isClient ? createBrowserHistory() : {};
 
 export const isHex = hex => {
   try {
@@ -43,13 +38,6 @@ export const getLevel = contrast => {
 
   return { AALarge: 'Fail', AA: 'Fail', AAALarge: 'Fail', AAA: 'Fail' };
 };
-
-export const updatePath = throttle((background, foreground) => {
-  const backgroundHex = hslToHex(background).replace(/^#/, '');
-  const foregroundHex = hslToHex(foreground).replace(/^#/, '');
-
-  history.push(`/${backgroundHex}/${foregroundHex}`);
-}, 250);
 
 export const isDark = hsl => chroma.hsl(hsl).get('lab.l') < 60;
 

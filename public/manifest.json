@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "CC Checker",
+  "description": "Check the contrast between different colour combinations against WCAG standards",
+  "version": "0.0.1",
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "Open CC Checker"
+  },
+  "icons": {
+    "48": "./favicons/favicon-48x48.png",
+    "72": "./favicons/favicon-72x72.png",
+    "144": "./favicons/favicon-144x144.png"
+  },
+  "content_security_policy": "script-src 'self' 'sha256-GgRxr...'; object-src 'self'"
+}

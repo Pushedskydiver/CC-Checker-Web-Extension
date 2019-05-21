@@ -27,6 +27,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    min-width: 300px;
     margin: 0;
     background-color: var(--background);
     color: var(--foreground);
