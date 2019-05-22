@@ -27,23 +27,20 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    min-width: 300px;
+    min-width: 375px;
     margin: 0;
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font);
-    font-variation-settings: "wght" ${typography.weight.regular};
+    font-variation-settings: 'wght' ${typography.weight.regular};
     line-height: ${typography.lineHeight.body};
     transition: background-color 0.3s ease-in-out;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 
-    ${maxWidth(
-      '768',
-      () => css`
-        padding-bottom: 80px;
-      `
-    )}
+    ${maxWidth('768', () => css`
+      padding-bottom: 80px;
+    `)}
   }
 
   body ::-moz-selection {
@@ -61,6 +58,16 @@ const GlobalStyles = createGlobalStyle`
   p {
     margin-top: 0;
     margin-bottom: ${spacing.margin}px;
+  }
+
+  button {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
   }
 
   input,

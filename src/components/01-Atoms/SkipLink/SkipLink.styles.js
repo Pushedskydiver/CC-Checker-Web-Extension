@@ -21,29 +21,23 @@ const SkipLink = styled.a`
     z-index: 100;
   }
 
-  ${maxWidth(
-    '768',
-    () => css`
-      width: 100%;
-      margin-right: -5vw;
-      margin-left: -5vw;
-      padding-top: ${spacing.padding}px;
-      padding-bottom: ${spacing.padding}px;
-      background-color: var(--background);
-      color: var(--foreground);
-      text-align: center;
-    `
-  )}
+  ${maxWidth('768', () => css`
+    width: 100%;
+    margin-right: -5vw;
+    margin-left: -5vw;
+    padding-top: ${spacing.padding}px;
+    padding-bottom: ${spacing.padding}px;
+    background-color: var(--background);
+    color: var(--foreground);
+    text-align: center;
+  `)}
 
-  ${minWidth(
-    '768',
-    () => css`
-      top: 50%;
-      right: 0;
-      width: auto;
-      transform: translateY(-50%);
-    `
-  )}
+  ${minWidth('768', () => css`
+    top: 50%;
+    right: 0;
+    width: auto;
+    transform: translateY(-50%);
+  `)}
 `;
 
 export default SkipLink;

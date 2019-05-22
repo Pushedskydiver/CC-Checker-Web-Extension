@@ -12,5 +12,6 @@
     "72": "./favicons/favicon-72x72.png",
     "144": "./favicons/favicon-144x144.png"
   },
+  "permissions": ["storage"],
   "content_security_policy": "script-src 'self' 'sha256-GgRxr...'; object-src 'self'"
 }

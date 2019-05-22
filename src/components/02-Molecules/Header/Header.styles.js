@@ -7,13 +7,10 @@ const Header = styled.header`
   padding-top: ${spacing.padding * 2.5}px;
   padding-bottom: ${spacing.padding * 2.5}px;
 
-  ${minWidth(
-    '768',
-    () => css`
-      padding-top: ${spacing.padding * 4}px;
-      padding-bottom: ${spacing.padding * 4}px;
-    `
-  )}
+  ${minWidth('768', () => css`
+    padding-top: ${spacing.padding * 4}px;
+    padding-bottom: ${spacing.padding * 4}px;
+  `)}
 `;
 
 export default Header;

@@ -22,9 +22,7 @@ export function maxWidth(width, callback) {
 
 export function minMaxWidth(minWidth, maxWidth, callback) {
   return css`
-    @media screen and (min-width: ${pxToEm(minWidth)}) and (max-width: ${pxToEm(
-        maxWidth - 0.0625
-      )}) {
+    @media screen and (min-width: ${pxToEm(minWidth)}) and (max-width: ${pxToEm(maxWidth - 0.0625)}) {
       ${callback()}
     }
   `;
@@ -40,9 +38,7 @@ export function minHeight(width, callback) {
 
 export function minWidthMinHeight(minWidth, minHeight, callback) {
   return css`
-    @media screen and (min-width: ${pxToEm(
-        minWidth
-      )}) and (min-height: ${pxToEm(minHeight)}) {
+    @media screen and (min-width: ${pxToEm(minWidth)}) and (min-height: ${pxToEm(minHeight)}) {
       ${callback()}
     }
   `;

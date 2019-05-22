@@ -13,6 +13,7 @@
     "lodash.round": "^4.0.4",
     "lodash.throttle": "^4.1.1",
     "react": "^16.8.6",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "styled-components": "^4.2.0"

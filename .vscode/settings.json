@@ -1,7 +1,0 @@
-{
-  "prettier.ignorePath": "./_config/prettier.config.js",
-  "prettier.jsxSingleQuote": true,
-  "prettier.singleQuote": true,
-  "prettier.tabWidth": 2,
-  "prettier.trailingComma": "es5"
-}
