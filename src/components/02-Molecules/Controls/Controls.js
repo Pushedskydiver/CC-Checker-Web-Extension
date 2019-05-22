@@ -9,7 +9,7 @@ const nanH = h => (isNaN(h) ? 0 : h);
 
 class Controls extends Component {
   state = {
-    hex: hslToHex(this.props.value),
+    hex: hslToHex(this.props.value)
   };
 
   handleChange = i => ({ target }) => {
@@ -43,8 +43,8 @@ class Controls extends Component {
         </Label>
 
         <Range
-          type='range'
-          max='360'
+          type="range"
+          max="360"
           value={nanH(h)}
           id={`${this.props.id}Hue`}
           color={this.props.color}
@@ -56,8 +56,8 @@ class Controls extends Component {
         </Label>
 
         <Range
-          type='range'
-          max='1'
+          type="range"
+          max="1"
           step={1 / 256}
           value={s}
           id={`${this.props.id}Saturation`}
@@ -68,10 +68,10 @@ class Controls extends Component {
         <Label medium htmlFor={`${this.props.id}Lightness`}>
           Lightness {round(l, 2)}
         </Label>
-        
+
         <Range
-          type='range'
-          max='1'
+          type="range"
+          max="1"
           step={1 / 256}
           value={l}
           id={`${this.props.id}Lightness`}

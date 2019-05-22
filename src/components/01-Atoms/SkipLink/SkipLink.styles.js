@@ -1,9 +1,6 @@
 import styled, { css } from 'styled-components';
 import { typography } from '../../../styles/settings.typography.styles';
-import {
-  minWidth,
-  maxWidth,
-} from '../../../styles/settings.breakpoints.styles';
+import { minWidth, maxWidth } from '../../../styles/settings.breakpoints.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
 const SkipLink = styled.a`

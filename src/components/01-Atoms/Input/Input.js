@@ -9,11 +9,11 @@ import { isHex, hexToHsl, hslToHex } from '../../Utils';
 
 const InputMemo = React.memo(props => (
   <InputStyles
-    type='text'
-    minLength='7'
+    type="text"
+    minLength="7"
     value={props.hex}
     id={props.id}
-    spellCheck='false'
+    spellCheck="false"
     onChange={props.onChange}
   />
 ));
@@ -21,7 +21,7 @@ const InputMemo = React.memo(props => (
 class Input extends Component {
   state = {
     hex: hslToHex(this.props.value),
-    copied: false,
+    copied: false
   };
 
   handleHexChange = async ({ target }) => {
@@ -89,7 +89,7 @@ class Input extends Component {
 
         <CopyToClipboard text={this.state.hex} onCopy={this.setCopiedState}>
           <CopyButton
-            type='button'
+            type="button"
             aria-labelledby={`${this.props.id}CopiedSate`}
           >
             <Clipboard fill={this.props.color} />
@@ -97,8 +97,8 @@ class Input extends Component {
             <Tooltip
               id={`${this.props.id}CopiedSate`}
               aria-hidden={this.state.copied}
-              aria-live='polite'
-              role='tooltip'
+              aria-live="polite"
+              role="tooltip"
               color={this.props.color}
               visible={this.state.copied}
             >

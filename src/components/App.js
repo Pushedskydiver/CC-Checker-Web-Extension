@@ -102,15 +102,6 @@ class App extends Component {
     await this.updateView(background, foreground);
   };
 
-  renderSwatch = ({ background, foreground }, index) => (
-    <Swatch
-      key={index}
-      background={background}
-      foreground={foreground}
-      onClick={this.appendColors}
-    />
-  );
-
   componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
@@ -126,6 +117,15 @@ class App extends Component {
       document.body.style.setProperty('--foreground', foregroundHex);
     }
   }
+
+  renderSwatch = ({ background, foreground }, index) => (
+    <Swatch
+      key={index}
+      background={background}
+      foreground={foreground}
+      onClick={this.appendColors}
+    />
+  );
 
   render() {
     const { colors, background, foreground, contrast } = this.state;
@@ -145,52 +145,52 @@ class App extends Component {
           <Span grade noMargin>Aa</Span>
           <Ratio contrast={contrast} />
 
-          <Wcag id='grades' colorState={colorState} level={this.state.level} />
+          <Wcag id="grades" colorState={colorState} level={this.state.level} />
         </BlockSection>
 
-        <Flex justify='between' align='center'>
+        <Flex justify="between" align="center">
           <BlockDiv inputs color={colorState}>
-            <Label medium htmlFor='background'>Background Colour</Label>
+            <Label medium htmlFor="background">Background Colour</Label>
             <Input
               value={background}
-              id='background'
-              name='background'
+              id="background"
+              name="background"
               color={colorState}
               onChange={this.handleContrastCheck}
             />
 
             <Controls
               value={background}
-              id='background'
-              name='background'
+              id="background"
+              name="background"
               color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
 
           <BlockDiv inputs color={colorState}>
-            <Label medium htmlFor='foreground'>Foreground Colour</Label>
+            <Label medium htmlFor="foreground">Foreground Colour</Label>
             <Input
               value={foreground}
-              id='foreground'
-              name='foreground'
+              id="foreground"
+              name="foreground"
               color={colorState}
               onChange={this.handleContrastCheck}
             />
 
             <Controls
               value={foreground}
-              id='foreground'
-              name='foreground'
+              id="foreground"
+              name="foreground"
               color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
         </Flex>
 
-        <Flex noMargin align='center'>
-          <Button type='button' color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
-          <Button type='button' color={colorState} onClick={this.saveColors}>Save Colours</Button>
+        <Flex noMargin align="center">
+          <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
+          <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
 
           {colors.map((color, index) => this.renderSwatch(color, index))}
         </Flex>

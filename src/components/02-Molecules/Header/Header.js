@@ -7,16 +7,16 @@ const Header = props => (
   <HeaderStyles>
     <Heading1 medium noMargin>Colour Contrast Checker</Heading1>
 
-    <SkipLink href='#ratio' color={props.colorState}>
+    <SkipLink href="#ratio" color={props.colorState}>
       Skip to colour contrast ratio
     </SkipLink>
-    <SkipLink href='#grades' color={props.colorState}>
+    <SkipLink href="#grades" color={props.colorState}>
       Skip to colour contrast grades
     </SkipLink>
-    <SkipLink href='#background' color={props.colorState}>
+    <SkipLink href="#background" color={props.colorState}>
       Skip to background colour input
     </SkipLink>
-    <SkipLink href='#foreground' color={props.colorState}>
+    <SkipLink href="#foreground" color={props.colorState}>
       Skip to foreground colour input
     </SkipLink>
   </HeaderStyles>
