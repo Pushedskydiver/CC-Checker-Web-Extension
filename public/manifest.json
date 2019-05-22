@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "CC Checker",
+  "name": "Colour Contrast Checker",
   "description": "Check the contrast between different colour combinations against WCAG standards",
   "version": "0.0.1",
   "browser_action": {
@@ -12,6 +12,8 @@
     "72": "./favicons/favicon-72x72.png",
     "144": "./favicons/favicon-144x144.png"
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "content_security_policy": "script-src 'self' 'sha256-GgRxr...'; object-src 'self'"
 }
