@@ -1,9 +1,22 @@
 import styled, { css } from 'styled-components';
-import { minWidth } from '../../../styles/settings.breakpoints.styles';
+import { minWidth, maxWidth } from '../../../styles/settings.breakpoints.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
 export const BlockSection = styled.section`
-  position: relative;
+  ${props => !props.sticky && css`
+    position: relative;
+  `}
+
+  ${props => props.sticky && css`
+    ${maxWidth('640', () => css`
+      position: sticky;
+      top: 0;
+      background-color: var(--background);
+      padding-top: ${spacing.padding}px;
+      padding-bottom: ${spacing.padding}px;
+      z-index: 10;
+    `)}
+  `}
 
   ${props => !props.noMargin && css`
     margin-bottom: ${spacing.margin * 3.5}px;

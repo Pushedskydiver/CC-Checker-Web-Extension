@@ -15,7 +15,7 @@ const SkipLink = styled.a`
   &:focus {
     clip: auto;
     overflow: visible;
-    z-index: 100;
+    z-index: 20;
   }
 
   ${maxWidth('768', () => css`

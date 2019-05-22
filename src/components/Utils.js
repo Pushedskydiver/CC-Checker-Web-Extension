@@ -50,5 +50,3 @@ export const hexToRgb = hex => (isHex(hex) ? chroma(hex).rgb() : null);
 export const rgbToHex = rgb => (isRgb(rgb) ? chroma.rgb(rgb).hex() : '#808080');
 
 export const getContrast = (a, b) => chroma.contrast(rgbToHex(a), rgbToHex(b));
-
-export const getRandomColor = () => chroma.random().hsl();

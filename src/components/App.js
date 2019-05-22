@@ -141,7 +141,7 @@ class App extends Component {
 
         <Header colorState={colorState} />
 
-        <BlockSection flex color={colorState}>
+        <BlockSection flex sticky color={colorState}>
           <Span grade noMargin>Aa</Span>
           <Ratio contrast={contrast} />
 
