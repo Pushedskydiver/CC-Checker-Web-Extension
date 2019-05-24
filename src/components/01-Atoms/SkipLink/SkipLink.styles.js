@@ -20,8 +20,6 @@ const SkipLink = styled.a`
 
   ${maxWidth('768', () => css`
     width: 100%;
-    margin-right: -5vw;
-    margin-left: -5vw;
     padding-top: ${spacing.padding}px;
     padding-bottom: ${spacing.padding}px;
     background-color: var(--background);
