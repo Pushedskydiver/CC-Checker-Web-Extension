@@ -1,86 +1,71 @@
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 import round from 'lodash.round';
 import Label from '../../01-Atoms/Label/Label.styles';
 import Range from '../../01-Atoms/Range/Range.styles';
 import ControlStyles from './Controls.styles';
-import { hslToHex } from '../../Utils';
 
-const nanH = h => (isNaN(h) ? 0 : h);
 
-class Controls extends Component {
-  state = {
-    hex: hslToHex(this.props.value)
-  };
+const Controls = (props) => {
+  const nanH = h => (isNaN(h) || h === null ? 0 : h);
+  const { id, color, value } = props;
+  const [h, s, l] = value;
 
-  handleChange = i => ({ target }) => {
-    const { value, name } = this.props;
+  function handleChange({ target }) {
+    const { value, name } = props;
     const hsl = [...value];
+    const i = parseFloat(target.getAttribute('property'));
 
     hsl[i] = parseFloat(target.value);
-
-    this.props.onChange(hsl, name);
-  };
-
-  updateState = value => {
-    this.setState({ hex: hslToHex(value) });
-  };
-
-  componentDidUpdate(prevProps) {
-    const { value } = this.props;
-
-    if (value !== prevProps.value) {
-      this.updateState(value);
-    }
+    props.onChange(hsl, name);
   }
 
-  render() {
-    const [h, s, l] = this.props.value;
+  return (
+    <ControlStyles>
+      <Label medium htmlFor={`${props.id}Hue`}>
+        Hue {Math.round(nanH(h))}°
+      </Label>
 
-    return (
-      <ControlStyles>
-        <Label medium htmlFor={`${this.props.id}Hue`}>
-          Hue {Math.round(nanH(h))}°
-        </Label>
+      <Range
+        type="range"
+        max="360"
+        value={nanH(h)}
+        id={`${id}Hue`}
+        color={color}
+        onChange={handleChange}
+        property={0}
+      />
 
-        <Range
-          type="range"
-          max="360"
-          value={nanH(h)}
-          id={`${this.props.id}Hue`}
-          color={this.props.color}
-          onChange={this.handleChange(0)}
-        />
+      <Label medium htmlFor={`${id}Saturation`}>
+        Saturation {round(s, 2)}
+      </Label>
 
-        <Label medium htmlFor={`${this.props.id}Saturation`}>
-          Saturation {round(s, 2)}
-        </Label>
+      <Range
+        type="range"
+        max="1"
+        step={1 / 256}
+        value={s}
+        id={`${id}Saturation`}
+        color={color}
+        onChange={handleChange}
+        property={1}
+      />
 
-        <Range
-          type="range"
-          max="1"
-          step={1 / 256}
-          value={s}
-          id={`${this.props.id}Saturation`}
-          color={this.props.color}
-          onChange={this.handleChange(1)}
-        />
+      <Label medium htmlFor={`${id}Lightness`}>
+        Lightness {round(l, 2)}
+      </Label>
 
-        <Label medium htmlFor={`${this.props.id}Lightness`}>
-          Lightness {round(l, 2)}
-        </Label>
+      <Range
+        type="range"
+        max="1"
+        step={1 / 256}
+        value={l}
+        id={`${id}Lightness`}
+        color={color}
+        onChange={handleChange}
+        property={2}
+      />
+    </ControlStyles>
+  );
+};
 
-        <Range
-          type="range"
-          max="1"
-          step={1 / 256}
-          value={l}
-          id={`${this.props.id}Lightness`}
-          color={this.props.color}
-          onChange={this.handleChange(2)}
-        />
-      </ControlStyles>
-    );
-  }
-}
-
-export default Controls;
+export default memo(Controls);
