@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { typography } from '../../../styles/settings.typography.styles';
-import { minWidth } from '../../../styles/settings.breakpoints.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
 export const Heading1 = styled.h1`
@@ -48,14 +47,9 @@ export const Heading1 = styled.h1`
   `}
 
   ${props => props.grade && css`
-    color: var(--foreground);
-    font-size: ${typography.heading.size.large};
+    font-size: ${typography.heading.size.big};
     font-variation-settings: 'wght' ${typography.weight.thick};
     line-height: 0.85;
-
-    ${minWidth('992', () => css`
-      font-size: ${typography.heading.size.xl};
-    `)}
   `}
 `;
 

@@ -18,7 +18,7 @@ const SwatchStyles = styled.button`
   cursor: pointer;
   appearance: none;
 
-  &:last-child {
+  &:last-of-type {
     margin-right: 0;
   }
 

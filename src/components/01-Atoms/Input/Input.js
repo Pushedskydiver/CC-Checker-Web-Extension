@@ -1,9 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
-import { Clipboard } from '../Icon/Icon';
-import { CopyButton } from '../Button/Button.styles';
-import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
 
@@ -20,11 +16,9 @@ const InputMemo = (props) => (
 
 const Input = (props) => {
   const [hex, setHexState] = useState(hslToHex(props.value));
-  const [copied, setCopiedState] = useState(false);
 
   const updateState = value => {
     setHexState(hslToHex(value));
-    setCopiedState(false);
   };
 
   function handleHexChange({ target }) {
@@ -36,7 +30,6 @@ const Input = (props) => {
     const isRed = target.value.toLowerCase() === 'red';
 
     setHexState(target.value);
-    setCopiedState(false);
 
     if (target.value.length === 6 && !valueHasHash && isHexCode && isNum) {
       target.value = `#${target.value}`;
@@ -61,15 +54,6 @@ const Input = (props) => {
     props.onChange(hexToHsl(target.value), name);
   }
 
-  function setCopyState() {
-    setCopiedState(true);
-
-    const delaySetState = setTimeout(() => {
-      setCopiedState(false);
-      clearTimeout(delaySetState);
-    }, 2000);
-  }
-
   useEffect(() => {
     updateState(props.value);
   }, [props.value]);
@@ -81,27 +65,6 @@ const Input = (props) => {
         id={props.id}
         onChange={handleHexChange}
       />
-
-      <CopyToClipboard text={hex} onCopy={setCopyState}>
-        <CopyButton
-          type="button"
-          aria-labelledby={`${props.id}CopiedSate`}
-        >
-          <Clipboard fill={props.color} />
-
-          <Tooltip
-            id={`${props.id}CopiedSate`}
-            aria-hidden={copied}
-            aria-live="polite"
-            role="tooltip"
-            color={props.color}
-            visible={copied}
-          >
-
-            {copied ? 'Copied' : `Copy ${hex} to clipboard`}
-          </Tooltip>
-        </CopyButton>
-      </CopyToClipboard>
     </BlockDiv>
   );
 };

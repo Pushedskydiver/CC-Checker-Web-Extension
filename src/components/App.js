@@ -4,15 +4,18 @@ import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
 import { Button } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
+import Square from '../components/01-Atoms/Square/Square.styles';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
-import Header from '../components/02-Molecules/Header/Header';
-import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
+import { Clipboard, Eyedropper } from '../components/01-Atoms/Icon/Icon';
+// import Header from '../components/02-Molecules/Header/Header';
+import { BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
 import Flex from '../components/03-Organisms/Flex/Flex.styles';
+import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
-import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
+import { hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
 
 class App extends Component {
   colors = localStorage.getItem('colors');
@@ -128,8 +131,7 @@ class App extends Component {
   );
 
   render() {
-    const { colors, background, foreground, contrast } = this.state;
-    const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
+    const { background, foreground, contrast } = this.state;
 
     if (foreground[0] === null) {
       foreground[0] = NaN;
@@ -139,61 +141,64 @@ class App extends Component {
       <Container>
         <GlobalStyles />
 
-        <Header colorState={colorState} />
+        <Grid columns="3fr 5fr 4fr 5fr" gap={50} noMargin>
+          <BlockDiv noMargin>
+            <Flex justify="between" align="end">
+              <Span grade noMargin>Aa</Span>
+              <Ratio contrast={contrast} />
+            </Flex>
 
-        <BlockSection flex sticky color={colorState}>
-          <Span grade noMargin>Aa</Span>
-          <Ratio contrast={contrast} />
+            <Wcag id="grades" level={this.state.level} />
+          </BlockDiv>
 
-          <Wcag id="grades" colorState={colorState} level={this.state.level} />
-        </BlockSection>
-
-        <Flex justify="between" align="center">
-          <BlockDiv inputs color={colorState}>
-            <Label medium htmlFor="background">Background Colour</Label>
-            <Input
-              value={background}
-              id="background"
-              name="background"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-            />
+          <BlockDiv noMargin>
+            <Flex justify="between" align="center" noMargin>
+              <Square background />
+              <Label medium htmlFor="background">Background</Label>
+              <Input
+                value={background}
+                id="background"
+                name="background"
+                onChange={this.handleContrastCheck}
+              />
+            </Flex>
 
             <Controls
               value={background}
               id="background"
               name="background"
-              color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
 
-          <BlockDiv inputs color={colorState}>
-            <Label medium htmlFor="foreground">Foreground Colour</Label>
-            <Input
-              value={foreground}
-              id="foreground"
-              name="foreground"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-            />
+          <Grid columns="1fr 1fr" rows="1fr 1fr 1fr 1fr" align="start" columnGap={10} noMargin>
+            <Button type="button">Copy <Clipboard fill="#fff" /></Button>
+            <Button type="button">Copy <Clipboard fill="#fff" /></Button>
+
+            <Button type="button">Pick <Eyedropper fill="#fff" /></Button>
+            <Button type="button">Pick <Eyedropper fill="#fff" /></Button>
+          </Grid>
+
+          <BlockDiv noMargin>
+            <Flex justify="between" align="center" noMargin>
+              <Square foreground />
+              <Label medium htmlFor="foreground">Foreground</Label>
+              <Input
+                value={foreground}
+                id="foreground"
+                name="foreground"
+                onChange={this.handleContrastCheck}
+              />
+            </Flex>
 
             <Controls
               value={foreground}
               id="foreground"
               name="foreground"
-              color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
-        </Flex>
-
-        <Flex noMargin align="center">
-          <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
-          <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
-
-          {colors.map((color, index) => this.renderSwatch(color, index))}
-        </Flex>
+        </Grid>
       </Container>
     );
   }

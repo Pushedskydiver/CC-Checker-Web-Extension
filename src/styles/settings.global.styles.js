@@ -21,26 +21,23 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     font-size: 16px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    min-width: 375px;
     margin: 0;
-    background-color: var(--background);
-    color: var(--foreground);
     font-family: var(--font);
     font-variation-settings: 'wght' ${typography.weight.regular};
     line-height: ${typography.lineHeight.body};
     transition: background-color 0.3s ease-in-out;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-
-    ${maxWidth('768', () => css`
-      padding-bottom: 80px;
-    `)}
   }
 
   body ::-moz-selection {
@@ -51,6 +48,17 @@ const GlobalStyles = createGlobalStyle`
   body ::selection {
     background: var(--foreground);
     color: var(--background);
+  }
+
+  main {
+    padding-top: ${spacing.padding * 2.25}px;
+    padding-bottom: ${spacing.padding * 2.25}px;
+    background-color: ${colors.dark};
+    color: ${colors.light};
+
+    ${maxWidth('992', () => css`
+      display: none;
+    `)}
   }
 
   h1,

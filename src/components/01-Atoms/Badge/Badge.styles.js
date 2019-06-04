@@ -6,7 +6,6 @@ import spacing from '../../../styles/settings.spacing.styles';
 
 const Badge = styled.span`
   display: inline-block;
-  margin-bottom: ${spacing.margin}px;
   padding: ${spacing.padding / 3}px ${spacing.padding}px;
   border-radius: 4px;
   font-variation-settings: 'wght' ${typography.weight.medium};
