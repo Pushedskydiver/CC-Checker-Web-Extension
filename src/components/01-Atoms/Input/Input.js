@@ -14,7 +14,7 @@ const InputMemo = (props) => (
   />
 );
 
-const Input = (props) => {
+const Input = props => {
   const [hex, setHexState] = useState(hslToHex(props.value));
 
   const updateState = value => {

@@ -13,11 +13,6 @@ export const BlockSection = styled.section`
     align-items: flex-end;
   `}
 
-  ${props => props.inputs && css`
-    width: 25%;
-    margin-bottom: 0;
-  `}
-
   ${props => props.color && css`
     color: ${props.color};
   `}

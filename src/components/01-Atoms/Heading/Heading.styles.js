@@ -47,7 +47,8 @@ export const Heading1 = styled.h1`
   `}
 
   ${props => props.grade && css`
-    font-size: ${typography.heading.size.big};
+    color: var(--foreground);
+    font-size: ${typography.heading.size.xl};
     font-variation-settings: 'wght' ${typography.weight.thick};
     line-height: 0.85;
   `}

@@ -5,15 +5,6 @@ const IconStyles = styled.svg`
   display: inline-block;
   vertical-align: middle;
 
-  ${props => !props.select && !props.grade && !props.copy && css`
-    width: 100%;
-    height: 100%;
-  `}
-
-  ${props => props.copy && css`
-    margin-left: ${spacing.margin / 2}px;
-  `}
-
   ${props => props.select && css`
     position: absolute;
     top: 50%;

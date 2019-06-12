@@ -21,7 +21,7 @@ const Controls = (props) => {
 
   return (
     <ControlStyles>
-      <Label medium htmlFor={`${props.id}Hue`}>
+      <Label htmlFor={`${props.id}Hue`} bold >
         Hue {Math.round(nanH(h))}°
       </Label>
 
@@ -35,7 +35,7 @@ const Controls = (props) => {
         property={0}
       />
 
-      <Label medium htmlFor={`${id}Saturation`}>
+      <Label htmlFor={`${id}Saturation`} bold >
         Saturation {round(s, 2)}
       </Label>
 
@@ -50,7 +50,7 @@ const Controls = (props) => {
         property={1}
       />
 
-      <Label medium htmlFor={`${id}Lightness`}>
+      <Label htmlFor={`${id}Lightness`} bold >
         Lightness {round(l, 2)}
       </Label>
 

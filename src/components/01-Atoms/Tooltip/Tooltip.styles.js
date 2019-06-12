@@ -17,9 +17,11 @@ const Tooltip = styled.span`
   position: absolute;
   top: -40px;
   left: 50%;
+  width: 0;
+  height: 0;
   padding: ${spacing.padding / 2}px ${spacing.padding}px;
   font-size: ${typography.body.size.regular};
-  font-variation-settings: 'wght' ${typography.weight.medium};
+  font-variation-settings: 'wght' ${typography.weight.bold};
   opacity: 0;
   transform: translateX(-50%);
 
@@ -63,6 +65,8 @@ const Tooltip = styled.span`
   `}
 
   ${props => props.visible && css`
+    width: auto;
+    height: auto;
     animation: ${FadeInOut} 2s ease-in-out;
   `}
 `;

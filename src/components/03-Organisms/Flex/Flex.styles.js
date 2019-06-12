@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import spacing from '../../../styles/settings.spacing.styles';
 
-const Flex = styled.div`
+const Flex = styled.section`
   display: flex;
   flex-wrap: wrap;
 

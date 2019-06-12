@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { rgba } from '../../../styles/settings.colors.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
 const Range = styled.input`
@@ -15,13 +16,20 @@ const Range = styled.input`
   }
 
   &::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
-    background-color: #141d26;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     cursor: pointer;
     appearance: none;
   }
+
+  ${props => props.color && css`
+    background-color: ${rgba(props.color, 0.3)};
+
+    &::-webkit-slider-thumb {
+      background-color: ${props.color};
+    }
+  `}
 `;
 
 export default Range;

@@ -17,15 +17,15 @@ export const Clipboard = props => (
   </IconStyles>
 );
 
-export const Badge = props => (
+export const Mark = props => (
   <IconStyles
     xmlns="http://www.w3.org/2000/svg"
     width="20"
     height="20"
-    viewBox="0 0 32 32"
+    viewBox="0 0 24 24"
     grade
   >
-    {props.grade === 'Pass' ? <path fill="#38c172" d="M27 4L12 19l-7-7-5 5 12 12L32 9z" /> : <path fill="#e3342f" d="M31.708 25.708L22 16l9.708-9.708a1 1 0 0 0 0-1.414L27.122.292a1 1 0 0 0-1.414-.001L16 9.999 6.292.291a.998.998 0 0 0-1.414.001L.292 4.878a1 1 0 0 0 0 1.414L10 16 .292 25.708a.999.999 0 0 0 0 1.414l4.586 4.586a1 1 0 0 0 1.414 0L16 22l9.708 9.708a1 1 0 0 0 1.414 0l4.586-4.586a.999.999 0 0 0 0-1.414z" />}
+    {props.mark === 'Pass' ? <path fill="currentColor" d="M9 16.172L19.594 5.578 21 6.984l-12 12-5.578-5.578L4.828 12z" /> : <path fill="currentColor" d="M18.984 6.422L13.406 12l5.578 5.578-1.406 1.406L12 13.406l-5.578 5.578-1.406-1.406L10.594 12 5.016 6.422l1.406-1.406L12 10.594l5.578-5.578z" />}
   </IconStyles>
 );
 
