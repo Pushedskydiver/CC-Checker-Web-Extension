@@ -1,24 +1,19 @@
-import React, { Component } from 'react';
+import React, { PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
-// import { Button } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
-import Square from '../components/01-Atoms/Square/Square.styles';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
-import { Clipboard, Eyedropper } from '../components/01-Atoms/Icon/Icon';
-// import Header from '../components/02-Molecules/Header/Header';
-import { BlockDiv } from '../components/02-Molecules/Block/Block.styles';
+import Header from '../components/02-Molecules/Header/Header';
+import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
-import EyeDropper from '../components/02-Molecules/EyeDropper/EyeDropper';
 import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
 import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
-import { hidden } from 'ansi-colors';
 
-class App extends Component {
+class App extends PureComponent {
   colors = localStorage.getItem('colors');
   background = localStorage.getItem('background');
   foreground = localStorage.getItem('foreground');
@@ -26,12 +21,10 @@ class App extends Component {
   level = localStorage.getItem('level');
 
   state = {
-    canvas: hidden,
     colors: JSON.parse(this.colors) || [],
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
     foreground: JSON.parse(this.foreground) || [NaN, 0, 0.133],
     contrast: parseFloat(this.contrast) || 12.72,
-    eyeDropper: { display: 'none', top: 0, left: 0 },
     level: JSON.parse(this.level) || { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' }
   };
 
@@ -88,14 +81,14 @@ class App extends Component {
     this.setState({ colors });
   };
 
-  reverseColors = () => {
+  reverseColors = async () => {
     const background = this.state.foreground;
     const foreground = this.state.background;
 
     localStorage.setItem('background', JSON.stringify(background));
     localStorage.setItem('foreground', JSON.stringify(foreground));
 
-    this.updateView(background, foreground);
+    await this.updateView(background, foreground);
   };
 
   appendColors = async ({ target }) => {
@@ -135,6 +128,7 @@ class App extends Component {
 
   render() {
     const { background, foreground, contrast } = this.state;
+    const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
 
     if (foreground[0] === null) {
       foreground[0] = NaN;
@@ -170,6 +164,7 @@ class App extends Component {
               value={background}
               id="background"
               name="background"
+              color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
@@ -184,32 +179,16 @@ class App extends Component {
               onChange={this.handleContrastCheck}
             />
 
-            <Button type="button">Pick <Eyedropper fill="#fff" /></Button>
-            <Button type="button">Pick <Eyedropper fill="#fff" /></Button>
-          </Grid>
-
-          <BlockDiv noMargin>
-            <Flex justify="between" align="center" noMargin>
-              <Square foreground />
-              <Label medium htmlFor="foreground">Foreground</Label>
-              <Input
-                value={foreground}
-                id="foreground"
-                name="foreground"
-                onChange={this.handleContrastCheck}
-              />
-            </Flex>
-
             <Controls
               value={foreground}
               id="foreground"
               name="foreground"
+              color={colorState}
               onChange={this.handleContrastCheck}
             />
           </BlockDiv>
         </Grid>
 
-        <EyeDropper styles={this.state.eyeDropper} />
 
         {/* <Flex noMargin align="center">
           <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
@@ -222,4 +201,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default memo(App);

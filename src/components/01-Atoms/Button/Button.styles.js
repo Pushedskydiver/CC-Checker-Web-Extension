@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { colors, rgba } from '../../../styles/settings.colors.styles';
+import { colors } from '../../../styles/settings.colors.styles';
 import { typography } from '../../../styles/settings.typography.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
@@ -49,9 +49,18 @@ export const CopyButton = styled.button`
 `;
 
 export const ColourPickerButton = styled.button`
-  width: 45px;
-  width: 45px;
-  padding: ${spacing.padding / 2}px;
-  border-radius: 4px;
-  background-color: ${rgba(colors.dark, 0.7)}
+  position: absolute;
+  top: 50%;
+  right: 35px;
+  width: 25px;
+  height: 25px;
+  border: none;
+  outline: none;
+  transform : translateY(-50%);
+
+  &:active svg,
+  &:focus svg {
+    outline: -webkit-focus-ring-color auto 5px;
+    outline-offset: -2px;
+  }
 `;

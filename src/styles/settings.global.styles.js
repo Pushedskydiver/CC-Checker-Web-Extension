@@ -20,20 +20,18 @@ const GlobalStyles = createGlobalStyle`
     font-weight: normal;
   }
 
+  html,
+  body {
+    position: relative;
+  }
+
   html {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     font-size: 16px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    position: fixed;
-    bottom: 0;
-    left: 0;
     margin: 0;
     font-family: var(--font);
     font-variation-settings: 'wght' ${typography.weight.regular};
@@ -58,14 +56,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   main {
-    padding-top: ${spacing.padding * 2.25}px;
-    padding-bottom: ${spacing.padding * 2.25}px;
-    background-color: ${colors.dark};
-    color: ${colors.light};
-
-    ${maxWidth('992', () => css`
-      display: none;
-    `)}
+    background-color: var(--background);
+    color: var(--foreground);
+    box-shadow: 0 2px 12px 15px rgba(0, 0, 0, 0.075);
   }
 
   h1,
@@ -94,12 +87,6 @@ const GlobalStyles = createGlobalStyle`
     border-radius: 0;
     font-family: inherit;
     appearance: none;
-  }
-
-  .main {
-    background-color: var(--background);
-    color: var(--foreground);
-    box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.2);
   }
 `;
 

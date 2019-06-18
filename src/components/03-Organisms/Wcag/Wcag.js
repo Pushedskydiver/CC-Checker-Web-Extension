@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Grade from '../../01-Atoms/Grade/Grade.styles';
+import Badge from '../../01-Atoms/Badge/Badge.styles';
 import { Mark } from '../../01-Atoms/Icon/Icon';
 import Result from '../../02-Molecules/Result/Result.styles';
 import WcagStyles from './Wcag.styles';

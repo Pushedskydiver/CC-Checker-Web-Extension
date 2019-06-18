@@ -10,6 +10,4 @@ export const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   padding: ${spacing.padding * 3}px  ${spacing.padding * 2}px;
-  background-color: var(--background);
-  color: var(--foreground);
 `;
