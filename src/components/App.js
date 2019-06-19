@@ -9,6 +9,7 @@ import Input from '../components/01-Atoms/Input/Input';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
+import EyeDropper from '../components/02-Molecules/EyeDropper/EyeDropper';
 import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
 import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
@@ -188,6 +189,8 @@ class App extends PureComponent {
             />
           </BlockDiv>
         </Grid>
+
+        <EyeDropper />
 
 
         {/* <Flex noMargin align="center">

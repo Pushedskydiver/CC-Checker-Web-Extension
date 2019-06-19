@@ -5,7 +5,7 @@ import Range from '../../01-Atoms/Range/Range.styles';
 import ControlStyles from './Controls.styles';
 
 
-const Controls = (props) => {
+const Controls = props => {
   const nanH = h => (isNaN(h) || h === null ? 0 : h);
   const { id, color, value } = props;
   const [h, s, l] = value;

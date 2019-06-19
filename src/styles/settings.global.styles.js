@@ -32,6 +32,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     margin: 0;
     font-family: var(--font);
     font-variation-settings: 'wght' ${typography.weight.regular};
