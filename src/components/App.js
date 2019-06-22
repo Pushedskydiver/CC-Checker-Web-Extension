@@ -22,6 +22,7 @@ class App extends PureComponent {
   level = localStorage.getItem('level');
 
   state = {
+    showEyeDropper: false,
     colors: JSON.parse(this.colors) || [],
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
     foreground: JSON.parse(this.foreground) || [NaN, 0, 0.133],
@@ -102,6 +103,10 @@ class App extends PureComponent {
     await this.updateView(background, foreground);
   };
 
+  showEyeDropper = () => {
+    this.setState({ showEyeDropper: true });
+  }
+
   componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
@@ -128,7 +133,7 @@ class App extends PureComponent {
   );
 
   render() {
-    const { background, foreground, contrast } = this.state;
+    const { background, foreground, contrast, showEyeDropper } = this.state;
     const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
 
     if (foreground[0] === null) {
@@ -159,6 +164,7 @@ class App extends PureComponent {
               name="background"
               color={colorState}
               onChange={this.handleContrastCheck}
+              eyeDropper={this.showEyeDropper}
             />
 
             <Controls
@@ -178,6 +184,7 @@ class App extends PureComponent {
               name="foreground"
               color={colorState}
               onChange={this.handleContrastCheck}
+              eyeDropper={this.showEyeDropper}
             />
 
             <Controls
@@ -190,8 +197,7 @@ class App extends PureComponent {
           </BlockDiv>
         </Grid>
 
-        <EyeDropper />
-
+        <EyeDropper showEyeDropper={showEyeDropper} />
 
         {/* <Flex noMargin align="center">
           <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>

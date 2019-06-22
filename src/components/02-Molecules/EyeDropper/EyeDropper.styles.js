@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const EyeDropper = styled.div`
+  display: none;
   position: fixed;
   top: 0;
   left: 0;

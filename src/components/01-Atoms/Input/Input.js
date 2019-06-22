@@ -82,7 +82,7 @@ const Input = props => {
         onChange={handleHexChange}
       />
 
-      <ColourPickerButton type="button" aria-label={`Pick ${props.id} colour`}>
+      <ColourPickerButton type="button" aria-label={`Pick ${props.id} colour`} onClick={props.eyeDropper}>
         <Eyedropper />
       </ColourPickerButton>
 
