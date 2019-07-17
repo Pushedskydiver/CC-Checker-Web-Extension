@@ -1,4 +1,5 @@
-import React, { PureComponent, memo } from 'react';
+import React, { Fragment, PureComponent, memo } from 'react';
+import html2canvas from 'html2canvas';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
@@ -22,6 +23,7 @@ class App extends PureComponent {
   level = localStorage.getItem('level');
 
   state = {
+    canvas: null,
     showEyeDropper: false,
     colors: JSON.parse(this.colors) || [],
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
@@ -107,7 +109,7 @@ class App extends PureComponent {
     this.setState({ showEyeDropper: true });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
 
@@ -121,6 +123,10 @@ class App extends PureComponent {
       document.body.style.setProperty('--background', backgroundHex);
       document.body.style.setProperty('--foreground', foregroundHex);
     }
+
+    await html2canvas(document.body).then(data => {
+      this.setState({ canvas: data });
+    });
   }
 
   renderSwatch = ({ background, foreground }, index) => (
@@ -141,71 +147,73 @@ class App extends PureComponent {
     }
 
     return (
-      <Container>
-        <GlobalStyles />
+      <Fragment>
+        <EyeDropper showEyeDropper={showEyeDropper} canvas={this.state.canvas} />
 
-        <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
-          <BlockDiv noMargin>
-            <Header colorState={colorState} />
+        <Container>
+          <GlobalStyles />
 
-            <BlockSection color={colorState} noMargin>
-              <Span grade noMargin>Aa</Span>
-              <Ratio contrast={contrast} />
+          <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
+            <BlockDiv noMargin>
+              <Header colorState={colorState} />
 
-              <Wcag id="grades" colorState={colorState} level={this.state.level} />
-            </BlockSection>
-          </BlockDiv>
+              <BlockSection color={colorState} noMargin>
+                <Span grade noMargin>Aa</Span>
+                <Ratio contrast={contrast} />
 
-          <BlockDiv color={colorState} noMargin>
-            <Label medium htmlFor="background">Background Colour</Label>
-            <Input
-              value={background}
-              id="background"
-              name="background"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-              eyeDropper={this.showEyeDropper}
-            />
+                <Wcag id="grades" colorState={colorState} level={this.state.level} />
+              </BlockSection>
+            </BlockDiv>
 
-            <Controls
-              value={background}
-              id="background"
-              name="background"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-            />
-          </BlockDiv>
+            <BlockDiv color={colorState} noMargin>
+              <Label medium htmlFor="background">Background Colour</Label>
+              <Input
+                value={background}
+                id="background"
+                name="background"
+                color={colorState}
+                onChange={this.handleContrastCheck}
+                eyeDropper={this.showEyeDropper}
+              />
 
-          <BlockDiv color={colorState} noMargin>
-            <Label medium htmlFor="foreground">Foreground Colour</Label>
-            <Input
-              value={foreground}
-              id="foreground"
-              name="foreground"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-              eyeDropper={this.showEyeDropper}
-            />
+              <Controls
+                value={background}
+                id="background"
+                name="background"
+                color={colorState}
+                onChange={this.handleContrastCheck}
+              />
+            </BlockDiv>
 
-            <Controls
-              value={foreground}
-              id="foreground"
-              name="foreground"
-              color={colorState}
-              onChange={this.handleContrastCheck}
-            />
-          </BlockDiv>
-        </Grid>
+            <BlockDiv color={colorState} noMargin>
+              <Label medium htmlFor="foreground">Foreground Colour</Label>
+              <Input
+                value={foreground}
+                id="foreground"
+                name="foreground"
+                color={colorState}
+                onChange={this.handleContrastCheck}
+                eyeDropper={this.showEyeDropper}
+              />
 
-        <EyeDropper showEyeDropper={showEyeDropper} />
+              <Controls
+                value={foreground}
+                id="foreground"
+                name="foreground"
+                color={colorState}
+                onChange={this.handleContrastCheck}
+              />
+            </BlockDiv>
+          </Grid>
 
-        {/* <Flex noMargin align="center">
+          {/* <Flex noMargin align="center">
           <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
           <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
 
           {colors.map((color, index) => this.renderSwatch(color, index))}
         </Flex> */}
-      </Container>
+        </Container>
+      </Fragment>
     );
   }
 }
