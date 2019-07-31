@@ -61,6 +61,14 @@ const Input = props => {
     props.onChange(hexToHsl(target.value), name);
   }
 
+  function foo({ target }) {
+    const name = target.getAttribute('id');
+    const hslValue = hexToHsl(target.value);
+
+    setHexState(target.value);
+    props.onChange(hslValue, name);
+  }
+
   function setCopyState() {
     setCopiedState(true);
 
@@ -82,9 +90,16 @@ const Input = props => {
         onChange={handleHexChange}
       />
 
-      <ColourPickerButton type="button" aria-label={`Pick ${props.id} colour`} onClick={props.eyeDropper}>
+      <InputStyles
+        type="color"
+        id={props.id}
+        onChange={foo}
+        value={hslToHex(props.value)}
+      />
+
+      {/* <ColourPickerButton type="button" aria-label={`Pick ${props.id} colour`}>
         <Eyedropper />
-      </ColourPickerButton>
+      </ColourPickerButton> */}
 
       <CopyToClipboard text={hex} onCopy={setCopyState}>
         <CopyButton

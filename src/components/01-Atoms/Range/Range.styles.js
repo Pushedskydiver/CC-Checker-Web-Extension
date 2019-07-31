@@ -8,7 +8,6 @@ const Range = styled.input`
   height: 6px;
   margin-top: ${spacing.margin}px;
   margin-bottom: ${spacing.margin}px;
-  background-color: #141d26;
   border-radius: 20px;
 
   &:last-of-type {

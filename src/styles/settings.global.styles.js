@@ -23,7 +23,6 @@ const GlobalStyles = createGlobalStyle`
   html,
   body {
     position: relative;
-    width: 100%;
     height: 100%;
   }
 
@@ -37,17 +36,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
   }
 
-  body ::-moz-selection {
-    background: var(--foreground);
-    color: var(--background);
-  }
-
-  body ::selection {
-    background: var(--foreground);
-    color: var(--background);
-  }
-
-  main {
+  .cc-checker {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -67,14 +56,14 @@ const GlobalStyles = createGlobalStyle`
     `)}
   }
 
-  h1,
-  h2,
-  p {
+  .cc-checker h1,
+  .cc-checker h2,
+  .cc-checker p {
     margin-top: 0;
     margin-bottom: ${spacing.margin}px;
   }
 
-  button {
+  .cc-checker button {
     padding: 0;
     background-color: transparent;
     border: none;
@@ -84,13 +73,8 @@ const GlobalStyles = createGlobalStyle`
     appearance: none;
   }
 
-  input,
-  select {
-    margin: 0;
-    padding: 0;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
+  .cc-checker input,
+  .cc-checker select {
     font-family: inherit;
     appearance: none;
   }

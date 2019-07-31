@@ -1,5 +1,4 @@
 import React, { Fragment, PureComponent, memo } from 'react';
-import html2canvas from 'html2canvas';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
@@ -10,7 +9,6 @@ import Input from '../components/01-Atoms/Input/Input';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
-import EyeDropper from '../components/02-Molecules/EyeDropper/EyeDropper';
 import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
 import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
@@ -23,8 +21,6 @@ class App extends PureComponent {
   level = localStorage.getItem('level');
 
   state = {
-    canvas: null,
-    showEyeDropper: false,
     colors: JSON.parse(this.colors) || [],
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
     foreground: JSON.parse(this.foreground) || [NaN, 0, 0.133],
@@ -105,10 +101,6 @@ class App extends PureComponent {
     await this.updateView(background, foreground);
   };
 
-  showEyeDropper = () => {
-    this.setState({ showEyeDropper: true });
-  }
-
   async componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
@@ -123,10 +115,6 @@ class App extends PureComponent {
       document.body.style.setProperty('--background', backgroundHex);
       document.body.style.setProperty('--foreground', foregroundHex);
     }
-
-    await html2canvas(document.body).then(data => {
-      this.setState({ canvas: data });
-    });
   }
 
   renderSwatch = ({ background, foreground }, index) => (
@@ -139,7 +127,7 @@ class App extends PureComponent {
   );
 
   render() {
-    const { background, foreground, contrast, showEyeDropper } = this.state;
+    const { background, foreground, contrast } = this.state;
     const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
 
     if (foreground[0] === null) {
@@ -148,8 +136,6 @@ class App extends PureComponent {
 
     return (
       <Fragment>
-        <EyeDropper showEyeDropper={showEyeDropper} canvas={this.state.canvas} />
-
         <Container>
           <GlobalStyles />
 
@@ -173,7 +159,6 @@ class App extends PureComponent {
                 name="background"
                 color={colorState}
                 onChange={this.handleContrastCheck}
-                eyeDropper={this.showEyeDropper}
               />
 
               <Controls
@@ -193,7 +178,6 @@ class App extends PureComponent {
                 name="foreground"
                 color={colorState}
                 onChange={this.handleContrastCheck}
-                eyeDropper={this.showEyeDropper}
               />
 
               <Controls
