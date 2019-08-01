@@ -2,9 +2,10 @@ import React, { useEffect, useState, memo } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
-import { CopyButton, ColourPickerButton } from '../Button/Button.styles';
+import { CopyButton } from '../Button/Button.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
+import ColorPicker from '../../02-Molecules/ColorPicker/ColorPicker.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
 
 const InputMemo = (props) => (
@@ -90,16 +91,15 @@ const Input = props => {
         onChange={handleHexChange}
       />
 
-      <InputStyles
-        type="color"
-        id={props.id}
-        onChange={foo}
-        value={hslToHex(props.value)}
-      />
-
-      {/* <ColourPickerButton type="button" aria-label={`Pick ${props.id} colour`}>
+      <ColorPicker>
         <Eyedropper />
-      </ColourPickerButton> */}
+        <InputStyles
+          type="color"
+          id={props.id}
+          onChange={foo}
+          value={hslToHex(props.value)}
+        />
+      </ColorPicker>
 
       <CopyToClipboard text={hex} onCopy={setCopyState}>
         <CopyButton

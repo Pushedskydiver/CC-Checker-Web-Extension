@@ -28,8 +28,6 @@ const SkipLink = styled.a`
   `)}
 
   ${minWidth('768', () => css`
-    top: 50%;
-    right: 0;
     width: auto;
     transform: translateY(-50%);
   `)}

@@ -6,6 +6,13 @@ const Label = styled.label`
   color: inherit;
   cursor: pointer;
 
+  ${props => props.ColorPicker && css`
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  `}
+
   ${props => props.medium && css`
     font-variation-settings: 'wght' ${typography.weight.medium};
   `}

@@ -8,7 +8,6 @@ import * as serviceWorker from './serviceWorker';
 const app = document.createElement('main');
 const body = document.body;
 
-app.className = 'cc-checker';
 body.appendChild(app);
 
 // function toggle() {

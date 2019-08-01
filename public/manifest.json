@@ -3,7 +3,7 @@
   "name": "Colour Contrast Checker",
   "short_name": "CC Checker",
   "description": "Check the contrast between different colour combinations against WCAG standards",
-  "version": "0.0.94164",
+  "version": "0.0.94174",
   "browser_action": {
     "default_title": "Open CC Checker"
   },
@@ -15,6 +15,9 @@
   "permissions": [
     "activeTab",
     "storage"
+  ],
+  "web_accessible_resources": [
+    "*.html"
   ],
   "background": {
     "scripts": [
@@ -28,9 +31,10 @@
         "<all_urls>"
       ],
       "js": [
+        "./app/content.js",
         "./static/js/runtime.a8a9905a.js",
-        "./static/js/2.796de5a6.chunk.js",
-        "./static/js/main.ac53f21b.chunk.js"
+        "./static/js/2.71e2fb7a.chunk.js",
+        "./static/js/main.9fafba4d.chunk.js"
       ]
     }
   ]

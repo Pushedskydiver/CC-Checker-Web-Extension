@@ -36,7 +36,26 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
   }
 
-  .cc-checker {
+  body ::-moz-selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  body ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+    opacity: 0;
+  }
+
+  main {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -56,14 +75,14 @@ const GlobalStyles = createGlobalStyle`
     `)}
   }
 
-  .cc-checker h1,
-  .cc-checker h2,
-  .cc-checker p {
+  h1,
+  h2,
+  p {
     margin-top: 0;
     margin-bottom: ${spacing.margin}px;
   }
 
-  .cc-checker button {
+  button {
     padding: 0;
     background-color: transparent;
     border: none;
@@ -73,8 +92,8 @@ const GlobalStyles = createGlobalStyle`
     appearance: none;
   }
 
-  .cc-checker input,
-  .cc-checker select {
+  input,
+  select {
     font-family: inherit;
     appearance: none;
   }

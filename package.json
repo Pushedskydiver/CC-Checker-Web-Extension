@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "chroma-js": "^2.0.3",
-    "html2canvas": "^1.0.0-rc.3",
     "lodash.round": "^4.0.4",
     "lodash.throttle": "^4.1.1",
     "react": "^16.8.6",

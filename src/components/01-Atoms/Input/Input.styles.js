@@ -19,13 +19,13 @@ const InputStyles = styled.input`
 
   ${props => props.type === 'color' && css`
     position: absolute;
-    top: 50%;
-    right: 35px;
-    width: 25px;
-    height: 25px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     padding: 0;
     border: none;
-    transform : translateY(-50%);
+    cursor: pointer;
   `}
 `;
 
