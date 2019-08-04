@@ -1,3 +1,5 @@
+/*global chrome*/
+
 import React, { Fragment, PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
@@ -103,6 +105,12 @@ class App extends PureComponent {
     await this.updateView(background, foreground);
   };
 
+  closeChecker = () => {
+    chrome.runtime.sendMessage({
+      type: 'closeChecker'
+    });
+  }
+
   async componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
@@ -141,7 +149,7 @@ class App extends PureComponent {
         <Container>
           <GlobalStyles />
 
-          <CloseButton color={colorState} aria-label="Close Colour Contrast checker">
+          <CloseButton color={colorState} aria-label="Close Colour Contrast checker" onClick={this.closeChecker}>
             <Close />
           </CloseButton>
 

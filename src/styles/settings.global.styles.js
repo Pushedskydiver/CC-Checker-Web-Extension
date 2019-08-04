@@ -34,8 +34,6 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     margin: 0;
-    background-color: var(--background);
-    color: var(--foreground);
     font-family: var(--font);
     font-variation-settings: 'wght' ${typography.weight.regular};
     line-height: ${typography.lineHeight.body};
@@ -72,6 +70,16 @@ const GlobalStyles = createGlobalStyle`
   p {
     margin-top: 0;
     margin-bottom: ${spacing.margin}px;
+  }
+
+  main {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--background);
+    color: var(--foreground);
+    box-shadow: 0 2px 12px 15px rgba(0, 0, 0, 0.075);
   }
 
   button {

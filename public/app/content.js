@@ -1,9 +1,12 @@
 /*global chrome*/
 
 chrome.runtime.onMessage.addListener(request => {
-  if (request.type === 'ccChecker') {
+  if (request.type === 'initChecker') {
+    const checker = document.querySelector('[data-cc-checker]');
     const iframe = document.createElement('iframe');
-    const styles = 'position: fixed; bottom: 0; left: 0; width: 100%; height: 320px; box-shadow: 0 2px 12px 15px rgba(0, 0, 0, 0.075); z-index: 999999';
+    const styles = 'position: fixed; bottom: 0; left: 0; width: 100%; height: 335px; z-index: 999999';
+
+    if (checker !== null) return;
 
     iframe.setAttribute('data-cc-checker', '');
     iframe.setAttribute('style', styles);
@@ -11,5 +14,11 @@ chrome.runtime.onMessage.addListener(request => {
     iframe.frameBorder = 0;
 
     document.body.appendChild(iframe);
+  }
+
+  if (request.type === 'closeChecker') {
+    const checker = document.querySelector('[data-cc-checker]');
+
+    checker.remove();
   }
 });
