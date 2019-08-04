@@ -2,10 +2,12 @@ import React, { Fragment, PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
+import { CloseButton } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
+import { Close } from '../components/01-Atoms/Icon/Icon';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
@@ -138,6 +140,10 @@ class App extends PureComponent {
       <Fragment>
         <Container>
           <GlobalStyles />
+
+          <CloseButton color={colorState} aria-label="Close Colour Contrast checker">
+            <Close />
+          </CloseButton>
 
           <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
             <BlockDiv noMargin>

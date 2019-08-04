@@ -64,3 +64,27 @@ export const ColourPickerButton = styled.button`
     outline-offset: -2px;
   }
 `;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: -20px;
+  right: ${spacing.core * 2}px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+
+  ${props => props.color === '#222222' && css`
+    background-color: ${props.color};
+    color: ${colors.light}
+  `}
+
+  ${props => props.color === '#ffffff' && css`
+    background-color: ${props.color};
+    color: ${colors.dark}
+  `}
+
+  ${props => props.color !== '#222222' && props.color !== '#ffffff' && css`
+    background-color: ${props.color};
+    color: var(--background);
+  `}
+`;
