@@ -14,7 +14,21 @@ chrome.browserAction.onClicked.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((r, t) => {
-  chrome.tabs.sendMessage(t.tab.id, {
-    type: 'closeChecker'
-  });
+  if (r.type === 'closeChecker') {
+    chrome.tabs.sendMessage(t.tab.id, {
+      type: 'closeChecker'
+    });
+  }
+
+  if (r.type === 'expandChecker') {
+    chrome.tabs.sendMessage(t.tab.id, {
+      type: 'expandChecker'
+    });
+  }
+
+  if (r.type === 'retractChecker') {
+    chrome.tabs.sendMessage(t.tab.id, {
+      type: 'retractChecker'
+    });
+  }
 });

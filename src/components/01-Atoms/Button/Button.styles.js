@@ -3,17 +3,37 @@ import { colors } from '../../../styles/settings.colors.styles';
 import { typography } from '../../../styles/settings.typography.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
+const OptionButton = styled.button`
+  position: absolute;
+  top: -56px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  ${props => props.color === '#222222' && css`
+    background-color: ${props.color};
+    color: ${colors.light}
+  `}
+
+  ${props => props.color === '#ffffff' && css`
+    background-color: ${props.color};
+    color: ${colors.dark}
+  `}
+
+  ${props => props.color !== '#222222' && props.color !== '#ffffff' && css`
+    background-color: ${props.color};
+    color: var(--background);
+  `}
+`;
+
 export const Button = styled.button`
   display: inline-block;
   padding: ${(spacing.padding * 1.3).toFixed(0)}px ${spacing.padding * 1.5}px;
   border-radius: 4px;
-  font-size: ${typography.body.size.regular};
+  font-size: ${typography.body.size.medium};
   font-variation-settings: 'wght' ${typography.weight.medium};
   vertical-align: middle;
-
-  &:first-child {
-    margin-right: ${spacing.margin * 2}px;
-  }
 
   ${props => props.color === '#222222' && css`
     background-color: ${props.color};
@@ -65,26 +85,10 @@ export const ColourPickerButton = styled.button`
   }
 `;
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: -20px;
+export const CloseButton = styled(OptionButton)`
   right: ${spacing.core * 2}px;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
+`;
 
-  ${props => props.color === '#222222' && css`
-    background-color: ${props.color};
-    color: ${colors.light}
-  `}
-
-  ${props => props.color === '#ffffff' && css`
-    background-color: ${props.color};
-    color: ${colors.dark}
-  `}
-
-  ${props => props.color !== '#222222' && props.color !== '#ffffff' && css`
-    background-color: ${props.color};
-    color: var(--background);
-  `}
+export const ExpandButton = styled(OptionButton)`
+  right: ${40 + (spacing.core * 3)}px;
 `;

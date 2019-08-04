@@ -77,9 +77,12 @@ const GlobalStyles = createGlobalStyle`
     bottom: 0;
     left: 0;
     width: 100%;
+    padding-top: ${spacing.padding * 3}px;
+    padding-bottom: ${spacing.padding * 3}px;
     background-color: var(--background);
     color: var(--foreground);
     box-shadow: 0 2px 12px 15px rgba(0, 0, 0, 0.075);
+    transition: background-color 0.3s ease-in-out 0s;
   }
 
   button {

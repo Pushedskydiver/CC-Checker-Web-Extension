@@ -4,6 +4,7 @@ import { typography } from '../../../styles/settings.typography.styles';
 const Label = styled.label`
   display: inline-block;
   color: inherit;
+  font-size: ${typography.body.size.medium};
   cursor: pointer;
 
   ${props => props.ColorPicker && css`
@@ -19,14 +20,6 @@ const Label = styled.label`
 
   ${props => props.bold && css`
     font-variation-settings: 'wght' ${typography.weight.bold};
-  `}
-
-  ${props => props.heading && css`
-    font-size: ${typography.heading.size.regular};
-  `}
-
-  ${props => props.select && css`
-    font-size: ${typography.heading.size.small};
   `}
 `;
 

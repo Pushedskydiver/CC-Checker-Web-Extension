@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import spacing from './settings.spacing.styles';
 
-export const Wrapper = styled.div`
-  position: relative;
-`;
-
-export const Container = styled.div`
+export const Wrapper = styled.section`
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
-  padding: ${spacing.padding * 3}px  ${spacing.padding * 2}px;
+`;
+
+export const Container = styled(Wrapper)`
+  padding-right:  ${spacing.padding * 2}px;
+  padding-left: ${spacing.padding * 2}px;
 `;

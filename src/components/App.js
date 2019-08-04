@@ -4,12 +4,13 @@ import React, { Fragment, PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
-import { CloseButton } from '../components/01-Atoms/Button/Button.styles';
+import { Button, CloseButton, ExpandButton } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
-import { Close } from '../components/01-Atoms/Icon/Icon';
+import Link from '../components/01-Atoms/Link/Link.styles';
+import { GitHub, Twitter, Close, Move } from '../components/01-Atoms/Icon/Icon';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
@@ -29,6 +30,7 @@ class App extends PureComponent {
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
     foreground: JSON.parse(this.foreground) || [NaN, 0, 0.133],
     contrast: parseFloat(this.contrast) || 12.72,
+    move: 'Up',
     level: JSON.parse(this.level) || { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' }
   };
 
@@ -111,6 +113,19 @@ class App extends PureComponent {
     });
   }
 
+  toggleExpansion = () => {
+    const { move } = this.state;
+    const message = move === 'Up' ? 'expandChecker' : 'retractChecker';
+
+    chrome.runtime.sendMessage({
+      type: message
+    });
+
+    this.state.move === 'Up' ?
+      this.setState({ move: 'Down' }) :
+      this.setState({ move: 'Up' });
+  }
+
   async componentDidMount() {
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
@@ -137,7 +152,7 @@ class App extends PureComponent {
   );
 
   render() {
-    const { background, foreground, contrast } = this.state;
+    const { background, foreground, colors, contrast, move } = this.state;
     const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
 
     if (foreground[0] === null) {
@@ -146,12 +161,16 @@ class App extends PureComponent {
 
     return (
       <Fragment>
-        <Container>
-          <GlobalStyles />
+        <GlobalStyles />
 
+        <Container>
           <CloseButton color={colorState} aria-label="Close Colour Contrast checker" onClick={this.closeChecker}>
             <Close />
           </CloseButton>
+
+          <ExpandButton color={colorState} aria-label="Expand Colour Contrast checker" onClick={this.toggleExpansion}>
+            <Move move={move} />
+          </ExpandButton>
 
           <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
             <BlockDiv noMargin>
@@ -204,12 +223,28 @@ class App extends PureComponent {
             </BlockDiv>
           </Grid>
 
-          {/* <Flex noMargin align="center">
-          <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
-          <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
+          <Grid columns="auto auto 50px 50px 50px 50px 50px 50px 1fr" gap={15} noMargin move={move}>
+            <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
+            <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
 
-          {colors.map((color, index) => this.renderSwatch(color, index))}
-        </Flex> */}
+            {colors.map((color, index) => this.renderSwatch(color, index))}
+
+            <Link
+              href="https://github.com/Pushedskydiver/Colour-Contrast-Checker"
+              title="Go to GitHub project"
+              iconLink
+            >
+              <GitHub fill={colorState} />
+            </Link>
+
+            <Link
+              href="https://twitter.com/alexmclapperton"
+              title="Go to Alex's Twitter profile"
+              iconLink
+            >
+              <Twitter fill={colorState} />
+            </Link>
+          </Grid>
         </Container>
       </Fragment>
     );

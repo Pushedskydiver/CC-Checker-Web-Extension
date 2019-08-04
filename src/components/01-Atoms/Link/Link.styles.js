@@ -7,8 +7,16 @@ const Link = styled.a`
   ${props => props.iconLink && css`
     width: 30px;
     height: 30px;
-    margin-right: ${spacing.margin * 1.5}px;
+    margin-right: ${30 + (spacing.margin * 1.5)}px;
     text-decoration: none;
+    grid-column: 9;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
   `}
 `;
 

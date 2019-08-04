@@ -5,7 +5,7 @@ const Flex = styled.div`
   display: grid;
 
   ${props => !props.noMargin && css`
-    margin-bottom: ${spacing.margin * 3}px;
+    margin-bottom: ${spacing.margin * 2}px;
   `}
 
   ${props => props.columns && css`
@@ -30,6 +30,14 @@ const Flex = styled.div`
 
   ${props => props.align && css`
     align-items: ${props.align};
+  `}
+
+  ${props => props.move === 'Up' && css`
+    display: none;
+  `}
+
+  ${props => props.move === 'Down' && css`
+    margin-top: ${spacing.margin * 2}px;
   `}
 `;
 

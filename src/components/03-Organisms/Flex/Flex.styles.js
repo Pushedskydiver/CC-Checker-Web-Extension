@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import spacing from '../../../styles/settings.spacing.styles';
 
-const Flex = styled.section`
+const Flex = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  ${props => !props.noMargin && css`
-    margin-bottom: ${spacing.margin * 3}px;
+  ${props => !props.noMargin && !props.move && css`
+    margin-bottom: ${spacing.margin * 2}px;
   `}
 
   ${props => props.justify === 'between' && css`

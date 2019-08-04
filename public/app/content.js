@@ -21,4 +21,16 @@ chrome.runtime.onMessage.addListener(request => {
 
     checker.remove();
   }
+
+  if (request.type === 'expandChecker') {
+    const checker = document.querySelector('[data-cc-checker]');
+
+    checker.style.height = '410px';
+  }
+
+  if (request.type === 'retractChecker') {
+    const checker = document.querySelector('[data-cc-checker]');
+
+    checker.style.height = '335px';
+  }
 });
