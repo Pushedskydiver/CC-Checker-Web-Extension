@@ -18,7 +18,7 @@ const Input = props => {
   };
 
   function handleHexChange({ target }) {
-    const name = target.getAttribute('id');
+    const name = target.getAttribute('data-color');
     const valueHasHash = target.value.indexOf('#') !== -1;
     const isHexCode = isHex(target.value);
     const isNum = /^\d+$/.test(target.value);
@@ -51,8 +51,8 @@ const Input = props => {
     props.onChange(hexToHsl(target.value), name);
   }
 
-  function foo({ target }) {
-    const name = target.getAttribute('id');
+  function handlePickedColor({ target }) {
+    const name = target.getAttribute('data-color');
     const hslValue = hexToHsl(target.value);
 
     setHexState(target.value);
@@ -81,6 +81,7 @@ const Input = props => {
         id={props.id}
         spellCheck="false"
         onChange={handleHexChange}
+        data-color={props.id}
       />
 
       <ColorPicker>
@@ -89,7 +90,8 @@ const Input = props => {
           type="color"
           value={hslToHex(props.value)}
           id={`${props.id}ColorPicker`}
-          onChange={foo}
+          data-color={props.id}
+          onChange={handlePickedColor}
         />
       </ColorPicker>
 
