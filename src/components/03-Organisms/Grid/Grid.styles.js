@@ -32,11 +32,11 @@ const Flex = styled.div`
     align-items: ${props.align};
   `}
 
-  ${props => props.move === 'Up' && css`
+  ${props => props.expand === false && css`
     display: none;
   `}
 
-  ${props => props.move === 'Down' && css`
+  ${props => props.expand === true && css`
     margin-top: ${spacing.margin * 2}px;
   `}
 `;

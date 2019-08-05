@@ -92,3 +92,7 @@ export const CloseButton = styled(OptionButton)`
 export const ExpandButton = styled(OptionButton)`
   right: ${40 + (spacing.core * 3)}px;
 `;
+
+export const SwapButton = styled(OptionButton)`
+  right: ${80 + (spacing.core * 4)}px;
+`;

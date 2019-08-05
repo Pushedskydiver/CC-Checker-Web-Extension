@@ -8,17 +8,6 @@ import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import ColorPicker from '../../02-Molecules/ColorPicker/ColorPicker.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
 
-const InputMemo = (props) => (
-  <InputStyles
-    type="text"
-    minLength="7"
-    value={props.hex}
-    id={props.id}
-    spellCheck="false"
-    onChange={props.onChange}
-  />
-);
-
 const Input = props => {
   const [hex, setHexState] = useState(hslToHex(props.value));
   const [copied, setCopiedState] = useState(false);
@@ -85,9 +74,12 @@ const Input = props => {
 
   return (
     <BlockDiv noMargin>
-      <InputMemo
-        hex={hex}
+      <InputStyles
+        type="text"
+        minLength="7"
+        value={hex}
         id={props.id}
+        spellCheck="false"
         onChange={handleHexChange}
       />
 
@@ -95,9 +87,9 @@ const Input = props => {
         <Eyedropper />
         <InputStyles
           type="color"
-          id={props.id}
-          onChange={foo}
           value={hslToHex(props.value)}
+          id={`${props.id}ColorPicker`}
+          onChange={foo}
         />
       </ColorPicker>
 

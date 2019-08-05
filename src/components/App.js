@@ -4,13 +4,13 @@ import React, { Fragment, PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
-import { Button, CloseButton, ExpandButton } from '../components/01-Atoms/Button/Button.styles';
+import { Button, CloseButton, ExpandButton, SwapButton } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
 import Link from '../components/01-Atoms/Link/Link.styles';
-import { GitHub, Twitter, Close, Move } from '../components/01-Atoms/Icon/Icon';
+import { GitHub, Twitter, Close, Move, Swap } from '../components/01-Atoms/Icon/Icon';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
@@ -30,7 +30,7 @@ class App extends PureComponent {
     background: JSON.parse(this.background) || [49.73, 1, 0.71],
     foreground: JSON.parse(this.foreground) || [NaN, 0, 0.133],
     contrast: parseFloat(this.contrast) || 12.72,
-    move: 'Up',
+    expand: false,
     level: JSON.parse(this.level) || { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' }
   };
 
@@ -114,16 +114,14 @@ class App extends PureComponent {
   }
 
   toggleExpansion = () => {
-    const { move } = this.state;
-    const message = move === 'Up' ? 'expandChecker' : 'retractChecker';
+    const { expand } = this.state;
+    const message = expand ? 'retractChecker' : 'expandChecker';
 
     chrome.runtime.sendMessage({
       type: message
     });
 
-    this.state.move === 'Up' ?
-      this.setState({ move: 'Down' }) :
-      this.setState({ move: 'Up' });
+    expand ? this.setState({ expand: false }) : this.setState({ expand: true });
   }
 
   async componentDidMount() {
@@ -152,8 +150,9 @@ class App extends PureComponent {
   );
 
   render() {
-    const { background, foreground, colors, contrast, move } = this.state;
+    const { background, foreground, colors, contrast, expand } = this.state;
     const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
+    const expandMessage = expand ? 'Retract' : 'Expand';
 
     if (foreground[0] === null) {
       foreground[0] = NaN;
@@ -164,20 +163,12 @@ class App extends PureComponent {
         <GlobalStyles />
 
         <Container>
-          <CloseButton color={colorState} aria-label="Close Colour Contrast checker" onClick={this.closeChecker}>
-            <Close />
-          </CloseButton>
-
-          <ExpandButton color={colorState} aria-label="Expand Colour Contrast checker" onClick={this.toggleExpansion}>
-            <Move move={move} />
-          </ExpandButton>
-
           <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
             <BlockDiv noMargin>
               <Header colorState={colorState} />
 
               <BlockSection color={colorState} noMargin>
-                <Span grade noMargin>Aa</Span>
+                <Span aria-hidden="true" grade noMargin>Aa</Span>
                 <Ratio contrast={contrast} />
 
                 <Wcag id="grades" colorState={colorState} level={this.state.level} />
@@ -223,8 +214,7 @@ class App extends PureComponent {
             </BlockDiv>
           </Grid>
 
-          <Grid columns="auto auto 50px 50px 50px 50px 50px 50px 1fr" gap={15} noMargin move={move}>
-            <Button type="button" color={colorState} onClick={this.reverseColors}>Reverse Colours</Button>
+          <Grid columns="auto 50px 50px 50px 50px 50px 50px 1fr" gap={15} noMargin expand={expand}>
             <Button type="button" color={colorState} onClick={this.saveColors}>Save Colours</Button>
 
             {colors.map((color, index) => this.renderSwatch(color, index))}
@@ -245,6 +235,33 @@ class App extends PureComponent {
               <Twitter fill={colorState} />
             </Link>
           </Grid>
+
+          <SwapButton
+            type="button"
+            color={colorState}
+            aria-label="Reverse Colours"
+            onClick={this.reverseColors}
+          >
+            <Swap />
+          </SwapButton>
+
+          <ExpandButton
+            type="button"
+            color={colorState}
+            aria-label={`${expandMessage} Colour Contrast Checker`}
+            onClick={this.toggleExpansion}
+          >
+            <Move expand={expand} />
+          </ExpandButton>
+
+          <CloseButton
+            type="button"
+            color={colorState}
+            aria-label="Close Colour Contrast Checker"
+            onClick={this.closeChecker}
+          >
+            <Close />
+          </CloseButton>
         </Container>
       </Fragment>
     );

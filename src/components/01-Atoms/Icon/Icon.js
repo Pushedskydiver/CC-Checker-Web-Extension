@@ -67,6 +67,17 @@ export const Move = props => (
     height="24"
     viewBox="0 0 32 32"
   >
-    {props.move === 'Up' ? <path fill="currentColor" d="M22 16v12h2V16h5l-6-6-6 6zM2 6h3v2H2V6zM6 6h3v2H6V6zM10 6h2v3h-2V6zM2 13h2v3H2v-3zM5 14h3v2H5v-2zM9 14h3v2H9v-2zM2 9h2v3H2V9zM10 10h2v3h-2v-3zM10 22v6H4v-6h6zm2-2H2v10h10V20z" /> : <path fill="currentColor" d="M24 22V10h-2v12h-5l6 6 6-6zM10 8v6H4V8h6zm2-2H2v10h10V6zM2 20h3v2H2v-2zM6 20h3v2H6v-2zM10 20h2v3h-2v-3zM2 27h2v3H2v-3zM5 28h3v2H5v-2zM9 28h3v2H9v-2zM2 23h2v3H2v-3zM10 24h2v3h-2v-3z" />}
+    {props.expand ? <path fill="currentColor" d="M24 22V10h-2v12h-5l6 6 6-6zM10 8v6H4V8h6zm2-2H2v10h10V6zM2 20h3v2H2v-2zM6 20h3v2H6v-2zM10 20h2v3h-2v-3zM2 27h2v3H2v-3zM5 28h3v2H5v-2zM9 28h3v2H9v-2zM2 23h2v3H2v-3zM10 24h2v3h-2v-3z" /> : <path fill="currentColor" d="M22 16v12h2V16h5l-6-6-6 6zM2 6h3v2H2V6zM6 6h3v2H6V6zM10 6h2v3h-2V6zM2 13h2v3H2v-3zM5 14h3v2H5v-2zM9 14h3v2H9v-2zM2 9h2v3H2V9zM10 10h2v3h-2v-3zM10 22v6H4v-6h6zm2-2H2v10h10V20z" />}
+  </IconStyles>
+);
+
+export const Swap = () => (
+  <IconStyles
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path fill="currentColor" d="M9 3l3.984 3.984h-3v7.031H8.015V6.984h-3zm6.984 14.016h3L15 21l-3.984-3.984h3V9.985h1.969v7.031z" />
   </IconStyles>
 );

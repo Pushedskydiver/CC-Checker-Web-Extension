@@ -5,8 +5,6 @@ import HeaderStyles from './Header.styles';
 
 const Header = props => (
   <HeaderStyles>
-    <Heading1 medium noMargin>Colour Contrast Checker</Heading1>
-
     <SkipLink href="#ratio" color={props.colorState}>
       Skip to colour contrast ratio
     </SkipLink>
@@ -19,6 +17,8 @@ const Header = props => (
     <SkipLink href="#foreground" color={props.colorState}>
       Skip to foreground colour input
     </SkipLink>
+
+    <Heading1 medium noMargin>Colour Contrast Checker</Heading1>
   </HeaderStyles>
 );
 

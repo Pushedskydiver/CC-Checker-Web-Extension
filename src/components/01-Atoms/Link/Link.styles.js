@@ -9,7 +9,7 @@ const Link = styled.a`
     height: 30px;
     margin-right: ${30 + (spacing.margin * 1.5)}px;
     text-decoration: none;
-    grid-column: 9;
+    grid-column: 8;
     grid-row: 1;
     justify-self: end;
     align-self: center;
