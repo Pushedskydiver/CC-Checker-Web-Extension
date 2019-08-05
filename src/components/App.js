@@ -1,19 +1,18 @@
-/*global chrome*/
-
 import React, { Fragment, PureComponent, memo } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
-import { Button, CloseButton, ExpandButton, SwapButton } from '../components/01-Atoms/Button/Button.styles';
+import { Button } from '../components/01-Atoms/Button/Button.styles';
 import Ratio from '../components/01-Atoms/Ratio/Ratio';
 import Label from '../components/01-Atoms/Label/Label.styles';
 import Swatch from '../components/01-Atoms/Swatch/Swatch';
 import Input from '../components/01-Atoms/Input/Input';
 import Link from '../components/01-Atoms/Link/Link.styles';
-import { GitHub, Twitter, Close, Move, Swap } from '../components/01-Atoms/Icon/Icon';
+import { GitHub, Twitter } from '../components/01-Atoms/Icon/Icon';
 import Header from '../components/02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from '../components/02-Molecules/Block/Block.styles';
 import Controls from '../components/02-Molecules/Controls/Controls';
+import Options from '../components/02-Molecules/Options/Options';
 import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
 import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
@@ -107,19 +106,8 @@ class App extends PureComponent {
     await this.updateView(background, foreground);
   };
 
-  closeChecker = () => {
-    chrome.runtime.sendMessage({
-      type: 'closeChecker'
-    });
-  }
-
   toggleExpansion = () => {
     const { expand } = this.state;
-    const message = expand ? 'retractChecker' : 'expandChecker';
-
-    chrome.runtime.sendMessage({
-      type: message
-    });
 
     expand ? this.setState({ expand: false }) : this.setState({ expand: true });
   }
@@ -152,7 +140,6 @@ class App extends PureComponent {
   render() {
     const { background, foreground, colors, contrast, expand } = this.state;
     const colorState = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
-    const expandMessage = expand ? 'Retract' : 'Expand';
 
     if (foreground[0] === null) {
       foreground[0] = NaN;
@@ -236,32 +223,14 @@ class App extends PureComponent {
             </Link>
           </Grid>
 
-          <SwapButton
-            type="button"
+          <Options
+            background={background}
+            foreground={foreground}
             color={colorState}
-            aria-label="Reverse Colours"
-            onClick={this.reverseColors}
-          >
-            <Swap />
-          </SwapButton>
-
-          <ExpandButton
-            type="button"
-            color={colorState}
-            aria-label={`${expandMessage} Colour Contrast Checker`}
-            onClick={this.toggleExpansion}
-          >
-            <Move expand={expand} />
-          </ExpandButton>
-
-          <CloseButton
-            type="button"
-            color={colorState}
-            aria-label="Close Colour Contrast Checker"
-            onClick={this.closeChecker}
-          >
-            <Close />
-          </CloseButton>
+            expand={expand}
+            reverseColors={this.reverseColors}
+            toggleExpansion={this.toggleExpansion}
+          />
         </Container>
       </Fragment>
     );
