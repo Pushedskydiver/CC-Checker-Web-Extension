@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import spacing from '../../../styles/settings.spacing.styles';
 
-const Flex = styled.div`
+const Grid = styled.div`
   display: grid;
 
   ${props => !props.noMargin && css`
@@ -31,14 +31,6 @@ const Flex = styled.div`
   ${props => props.align && css`
     align-items: ${props.align};
   `}
-
-  ${props => props.expand === false && css`
-    display: none;
-  `}
-
-  ${props => props.expand === true && css`
-    margin-top: ${spacing.margin * 2}px;
-  `}
 `;
 
-export default Flex;
+export default Grid;

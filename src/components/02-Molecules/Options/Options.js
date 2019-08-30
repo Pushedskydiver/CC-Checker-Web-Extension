@@ -1,12 +1,13 @@
 /*global chrome*/
 
-import React, { Fragment, useState, memo } from 'react';
+import React, { Fragment, memo, useContext } from 'react';
 import { CloseButton, ExpandButton, SwapButton } from '../../01-Atoms/Button/Button.styles';
 import { Close, Move, Swap } from '../../01-Atoms/Icon/Icon';
+import Context from '../../Context';
 
-const Options = props => {
-  const [expand, setExpand] = useState(false);
-  const expandMessage = props.expand ? 'Retract' : 'Expand';
+function Options() {
+  const { expand, colorState, reverseColors, setExpand, toggleExpansion } = useContext(Context);
+  const expandMessage = expand ? 'Retract' : 'Expand';
 
   function setExpandState() {
     const message = expand ? 'retractChecker' : 'expandChecker';
@@ -16,7 +17,7 @@ const Options = props => {
     });
 
     expand ? setExpand(false) : setExpand(true);
-    props.toggleExpansion();
+    toggleExpansion();
   }
 
   function closeChecker() {
@@ -29,16 +30,16 @@ const Options = props => {
     <Fragment>
       <SwapButton
         type="button"
-        color={props.color}
+        color={colorState}
         aria-label="Reverse Colours"
-        onClick={props.reverseColors}
+        onClick={reverseColors}
       >
         <Swap />
       </SwapButton>
 
       <ExpandButton
         type="button"
-        color={props.color}
+        color={colorState}
         aria-label={`${expandMessage} Colour Contrast Checker`}
         onClick={setExpandState}
       >
@@ -47,7 +48,7 @@ const Options = props => {
 
       <CloseButton
         type="button"
-        color={props.color}
+        color={colorState}
         aria-label="Close Colour Contrast Checker"
         onClick={closeChecker}
       >
@@ -55,6 +56,6 @@ const Options = props => {
       </CloseButton>
     </Fragment>
   );
-};
+}
 
 export default memo(Options);

@@ -1,6 +1,5 @@
 /*global chrome*/
-
-import React, { useEffect, useState, memo } from 'react';
+import React, { useContext, useEffect, useState, memo } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
@@ -8,15 +7,20 @@ import { CopyButton, ColorPickerButton } from '../Button/Button.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
+import Context from '../../Context';
 
-const Input = props => {
-  const [hex, setHexState] = useState(hslToHex(props.value));
+function Input(props) {
+  const { id } = props;
+  const { background, foreground, colorState, handleContrastCheck } = useContext(Context);
+  const value = id === 'background' ? background : foreground;
+
+  const [hex, setHexState] = useState(hslToHex(value));
   const [copied, setCopiedState] = useState(false);
 
-  const updateState = value => {
-    setHexState(hslToHex(value));
+  function updateState(mans) {
+    setHexState(hslToHex(mans));
     setCopiedState(false);
-  };
+  }
 
   function handleHexChange({ target }) {
     const name = target.getAttribute('data-color');
@@ -49,7 +53,7 @@ const Input = props => {
       return;
     }
 
-    props.onChange(hexToHsl(target.value), name);
+    handleContrastCheck(hexToHsl(target.value), name);
   }
 
   function setCopyState() {
@@ -88,19 +92,19 @@ const Input = props => {
   }
 
   useEffect(() => {
-    updateState(props.value);
-  }, [props.value]);
+    updateState(value);
+  }, [value]);
 
   return (
-    <BlockDiv noMargin>
+    <BlockDiv color={colorState} noMargin>
       <InputStyles
         type="text"
         minLength="7"
         value={hex}
-        id={props.id}
+        id={id}
         spellCheck="false"
         onChange={handleHexChange}
-        data-color={props.id}
+        data-color={id}
       />
 
       <ColorPickerButton
@@ -114,17 +118,17 @@ const Input = props => {
       <CopyToClipboard text={hex} onCopy={setCopyState}>
         <CopyButton
           type="button"
-          aria-labelledby={`${props.id}CopiedSate`}
+          aria-labelledby={`${id}CopiedSate`}
         >
-          <Clipboard fill={props.color} />
+          <Clipboard />
 
           <Tooltip
-            id={`${props.id}CopiedSate`}
+            id={`${id}CopiedSate`}
             aria-hidden={copied}
             aria-live="polite"
             role="tooltip"
-            color={props.color}
             visible={copied}
+            color={colorState}
           >
 
             {copied ? 'Copied' : `Copy ${hex} to clipboard`}
@@ -133,6 +137,6 @@ const Input = props => {
       </CopyToClipboard>
     </BlockDiv>
   );
-};
+}
 
 export default memo(Input);
