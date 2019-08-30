@@ -3,6 +3,22 @@ import { colors } from '../../../styles/settings.colors.styles';
 import { typography } from '../../../styles/settings.typography.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
+const InputButton = styled.button`
+  position: absolute;
+  top: 50%;
+  width: 25px;
+  height: 25px;
+  border: none;
+  outline: none;
+  transform : translateY(-50%);
+
+  &:active svg,
+  &:focus svg {
+    outline: -webkit-focus-ring-color auto 5px;
+    outline-offset: -2px;
+  }
+`;
+
 const OptionButton = styled.button`
   position: absolute;
   top: -56px;
@@ -51,38 +67,12 @@ export const Button = styled.button`
   `}
 `;
 
-export const CopyButton = styled.button`
-  position: absolute;
-  top: 50%;
+export const CopyButton = styled(InputButton)`
   right: 0;
-  width: 25px;
-  height: 25px;
-  border: none;
-  outline: none;
-  transform : translateY(-50%);
-
-  &:active svg,
-  &:focus svg {
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px;
-  }
 `;
 
-export const ColourPickerButton = styled.button`
-  position: absolute;
-  top: 50%;
+export const ColorPickerButton = styled(InputButton)`
   right: 35px;
-  width: 25px;
-  height: 25px;
-  border: none;
-  outline: none;
-  transform : translateY(-50%);
-
-  &:active svg,
-  &:focus svg {
-    outline: -webkit-focus-ring-color auto 5px;
-    outline-offset: -2px;
-  }
 `;
 
 export const CloseButton = styled(OptionButton)`
@@ -95,8 +85,4 @@ export const ExpandButton = styled(OptionButton)`
 
 export const SwapButton = styled(OptionButton)`
   right: ${80 + (spacing.core * 4)}px;
-`;
-
-export const ShareButton = styled(OptionButton)`
-  right: ${120 + (spacing.core * 5)}px;
 `;

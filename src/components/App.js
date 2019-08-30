@@ -1,4 +1,6 @@
-import React, { Fragment, PureComponent, memo } from 'react';
+/*global chrome*/
+
+import React, { Fragment, PureComponent } from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from '../components/01-Atoms/Heading/Heading.styles';
@@ -15,7 +17,7 @@ import Controls from '../components/02-Molecules/Controls/Controls';
 import Options from '../components/02-Molecules/Options/Options';
 import Grid from '../components/03-Organisms/Grid/Grid.styles';
 import Wcag from '../components/03-Organisms/Wcag/Wcag';
-import { isDark, hslToHex, hexToRgb, hexToHsl, getContrast, getLevel } from '../components/Utils';
+import { isDark, hslToHex, hexToRgb, hexToHsl, rgbToHsl, getContrast, getLevel } from '../components/Utils';
 
 class App extends PureComponent {
   colors = localStorage.getItem('colors');
@@ -112,7 +114,31 @@ class App extends PureComponent {
     expand ? this.setState({ expand: false }) : this.setState({ expand: true });
   }
 
-  async componentDidMount() {
+  handlePickedColor = ({ key, rgb }) => {
+    const value = rgbToHsl(rgb);
+
+    if (key === 'background') {
+      this.handleContrastCheck(value, 'background');
+    }
+
+    if (key === 'foreground') {
+      this.handleContrastCheck(value, 'foreground');
+    }
+
+    chrome.runtime.sendMessage({
+      type: 'closeColorPicker'
+    });
+  };
+
+  componentDidMount() {
+    chrome.runtime.onMessage.addListener(request => {
+      switch (request.type) {
+      case 'colorPicked':
+        this.handlePickedColor(request);
+        break;
+      }
+    });
+
     if (localStorage.getItem('contrast') !== null) {
       const { background, foreground } = this.state;
 
@@ -170,6 +196,7 @@ class App extends PureComponent {
                 name="background"
                 color={colorState}
                 onChange={this.handleContrastCheck}
+                handleContrastCheck={this.handleContrastCheck}
               />
 
               <Controls
@@ -189,6 +216,7 @@ class App extends PureComponent {
                 name="foreground"
                 color={colorState}
                 onChange={this.handleContrastCheck}
+                handleContrastCheck={this.handleContrastCheck}
               />
 
               <Controls
@@ -237,4 +265,4 @@ class App extends PureComponent {
   }
 }
 
-export default memo(App);
+export default App;

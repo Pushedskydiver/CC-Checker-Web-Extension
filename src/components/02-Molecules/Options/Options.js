@@ -1,34 +1,12 @@
 /*global chrome*/
 
-import React, { useState, memo } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { CloseButton, ExpandButton, SwapButton, ShareButton } from '../../01-Atoms/Button/Button.styles';
-import { Close, Move, Swap, ShareLink } from '../../01-Atoms/Icon/Icon';
-import { hslToHex } from '../../Utils';
+import React, { Fragment, useState, memo } from 'react';
+import { CloseButton, ExpandButton, SwapButton } from '../../01-Atoms/Button/Button.styles';
+import { Close, Move, Swap } from '../../01-Atoms/Icon/Icon';
 
 const Options = props => {
   const [expand, setExpand] = useState(false);
-  const { background, foreground } = props;
   const expandMessage = props.expand ? 'Retract' : 'Expand';
-
-  function generateShareLink() {
-    console.log('generateShareLink');
-
-    const backgroundHex = hslToHex(background).substring(1);
-    const foregroundHex = hslToHex(foreground).substring(1);
-
-    return `https://colourcontrast.cc/${backgroundHex}/${foregroundHex}`;
-  }
-
-  function renderShareMessage() {
-    console.log('renderShareMessage');
-
-    return (
-      <div>
-        Copied to clipboard
-      </div>
-    );
-  }
 
   function setExpandState() {
     const message = expand ? 'retractChecker' : 'expandChecker';
@@ -48,20 +26,7 @@ const Options = props => {
   }
 
   return (
-    <div>
-      <CopyToClipboard
-        text={generateShareLink()}
-        onCopy={renderShareMessage}
-      >
-        <ShareButton
-          type="button"
-          color={props.color}
-          aria-label="Generate Share Link"
-        >
-          <ShareLink />
-        </ShareButton>
-      </CopyToClipboard>
-
+    <Fragment>
       <SwapButton
         type="button"
         color={props.color}
@@ -88,7 +53,7 @@ const Options = props => {
       >
         <Close />
       </CloseButton>
-    </div>
+    </Fragment>
   );
 };
 

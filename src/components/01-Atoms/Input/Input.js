@@ -1,11 +1,12 @@
+/*global chrome*/
+
 import React, { useEffect, useState, memo } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
-import { CopyButton } from '../Button/Button.styles';
+import { CopyButton, ColorPickerButton } from '../Button/Button.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
-import ColorPicker from '../../02-Molecules/ColorPicker/ColorPicker.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
 
 const Input = props => {
@@ -51,14 +52,6 @@ const Input = props => {
     props.onChange(hexToHsl(target.value), name);
   }
 
-  function handlePickedColor({ target }) {
-    const name = target.getAttribute('data-color');
-    const hslValue = hexToHsl(target.value);
-
-    setHexState(target.value);
-    props.onChange(hslValue, name);
-  }
-
   function setCopyState() {
     setCopiedState(true);
 
@@ -66,6 +59,32 @@ const Input = props => {
       setCopiedState(false);
       clearTimeout(delaySetState);
     }, 2000);
+  }
+
+  function checkPressedKey(e) {
+    if (e.keyCode === 27) {
+      chrome.runtime.sendMessage({
+        type: 'closeColorPicker'
+      });
+    }
+  }
+
+  function capturePage() {
+    document.addEventListener('keyup', checkPressedKey);
+
+    if (props.id === 'background') {
+      chrome.runtime.sendMessage({
+        type: 'getScreenshot',
+        key: 'background'
+      });
+    }
+
+    if (props.id === 'foreground') {
+      chrome.runtime.sendMessage({
+        type: 'getScreenshot',
+        key: 'foreground'
+      });
+    }
   }
 
   useEffect(() => {
@@ -84,16 +103,13 @@ const Input = props => {
         data-color={props.id}
       />
 
-      <ColorPicker>
+      <ColorPickerButton
+        type="button"
+        aria-label={`Pick ${props.id} colour`}
+        onClick={capturePage}
+      >
         <Eyedropper />
-        <InputStyles
-          type="color"
-          value={hslToHex(props.value)}
-          id={`${props.id}ColorPicker`}
-          data-color={props.id}
-          onChange={handlePickedColor}
-        />
-      </ColorPicker>
+      </ColorPickerButton>
 
       <CopyToClipboard text={hex} onCopy={setCopyState}>
         <CopyButton
