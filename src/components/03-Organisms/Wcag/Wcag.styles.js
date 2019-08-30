@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import spacing from '../../../styles/settings.spacing.styles';
 
 const Wcag = styled.div`
@@ -6,6 +6,10 @@ const Wcag = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 15px;
   margin-top: ${spacing.margin * 2}px;
+
+  ${props => props.color && css`
+    color: ${props.color};
+  `}
 `;
 
 export default Wcag;
