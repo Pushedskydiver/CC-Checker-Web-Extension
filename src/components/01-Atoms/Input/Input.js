@@ -1,9 +1,10 @@
 /*global chrome*/
-import React, { useContext, useEffect, useState, memo } from 'react';
+import React, { Fragment, useContext, useEffect, useState, memo } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
 import { CopyButton, ColorPickerButton } from '../Button/Button.styles';
+import Label from '../Label/Label.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
@@ -96,46 +97,50 @@ function Input(props) {
   }, [value]);
 
   return (
-    <BlockDiv color={colorState} noMargin>
-      <InputStyles
-        type="text"
-        minLength="7"
-        value={hex}
-        id={id}
-        spellCheck="false"
-        onChange={handleHexChange}
-        data-color={id}
-      />
+    <Fragment>
+      <Label medium htmlFor={id} color={colorState}>{`${id} colour`}</Label>
 
-      <ColorPickerButton
-        type="button"
-        aria-label={`Pick ${props.id} colour`}
-        onClick={capturePage}
-      >
-        <Eyedropper />
-      </ColorPickerButton>
+      <BlockDiv color={colorState} noMargin>
+        <InputStyles
+          type="text"
+          minLength="7"
+          value={hex}
+          id={id}
+          spellCheck="false"
+          onChange={handleHexChange}
+          data-color={id}
+        />
 
-      <CopyToClipboard text={hex} onCopy={setCopyState}>
-        <CopyButton
+        <ColorPickerButton
           type="button"
-          aria-labelledby={`${id}CopiedSate`}
+          aria-label={`Pick ${props.id} colour`}
+          onClick={capturePage}
         >
-          <Clipboard />
+          <Eyedropper />
+        </ColorPickerButton>
 
-          <Tooltip
-            id={`${id}CopiedSate`}
-            aria-hidden={copied}
-            aria-live="polite"
-            role="tooltip"
-            visible={copied}
-            color={colorState}
+        <CopyToClipboard text={hex} onCopy={setCopyState}>
+          <CopyButton
+            type="button"
+            aria-labelledby={`${id}CopiedSate`}
           >
+            <Clipboard />
 
-            {copied ? 'Copied' : `Copy ${hex} to clipboard`}
-          </Tooltip>
-        </CopyButton>
-      </CopyToClipboard>
-    </BlockDiv>
+            <Tooltip
+              id={`${id}CopiedSate`}
+              aria-hidden={copied}
+              aria-live="polite"
+              role="tooltip"
+              visible={copied}
+              color={colorState}
+            >
+
+              {copied ? 'Copied' : `Copy ${hex} to clipboard`}
+            </Tooltip>
+          </CopyButton>
+        </CopyToClipboard>
+      </BlockDiv>
+    </Fragment>
   );
 }
 

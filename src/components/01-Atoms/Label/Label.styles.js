@@ -5,7 +5,12 @@ const Label = styled.label`
   display: inline-block;
   color: inherit;
   font-size: ${typography.body.size.medium};
+  text-transform: capitalize;
   cursor: pointer;
+
+  ${props => props.color && css`
+    color: ${props.color};
+  `}
 
   ${props => props.ColorPicker && css`
     position: absolute;
