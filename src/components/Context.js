@@ -1,6 +1,6 @@
 /*global chrome*/
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isDark, hslToHex, hexToRgb, rgbToHsl, getContrast, getLevel } from '../components/Utils';
 
 const Context = React.createContext({});
@@ -12,7 +12,7 @@ export function ContextProvider(props) {
   const localContrast = JSON.parse(localStorage.getItem('contrast'));
   const localLevel = JSON.parse(localStorage.getItem('level'));
   const levels = { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' };
-  const handlePickedColorRef = useRef(handlePickedColor);
+  // const handlePickedColorRef = useRef(handlePickedColor);
 
   const [colors, setColors] = useState(localColors || []);
   const [background, setBackground] = useState(localBg || [49.73, 1, 0.71]);
@@ -36,12 +36,13 @@ export function ContextProvider(props) {
   }
 
   function handleContrastCheck(value, name) {
-    const bg = name === 'background' ? hslToHex(value) : hslToHex(background);
-    const fg = name === 'foreground' ? hslToHex(value) : hslToHex(foreground);
-
-    name === 'background' ? setBackground(value) : setForeground(value);
+    const localBg = JSON.parse(localStorage.getItem('background'));
+    const localFg = JSON.parse(localStorage.getItem('foreground'));
+    const bg = name === 'background' ? hslToHex(value) : hslToHex(localBg);
+    const fg = name === 'foreground' ? hslToHex(value) : hslToHex(localFg);
 
     localStorage.setItem(name, JSON.stringify(value));
+    name === 'background' ? setBackground(value) : setForeground(value);
 
     document.body.style.setProperty(`--${name}`, hslToHex(value));
     checkContrast(bg, fg);
@@ -90,27 +91,27 @@ export function ContextProvider(props) {
     expand ? setExpand(false) : setExpand(true);
   }
 
-  function handlePickedColor({ key, rgb }) {
-    const value = rgbToHsl(rgb);
-
-    if (key === 'background') {
-      handleContrastCheck(value, 'background');
-    }
-
-    if (key === 'foreground') {
-      handleContrastCheck(value, 'foreground');
-    }
-
-    chrome.runtime.sendMessage({
-      type: 'closeColorPicker'
-    });
-  }
-
   useEffect(() => {
+    function handlePickedColor({ key, rgb }) {
+      const value = rgbToHsl(rgb);
+
+      if (key === 'background') {
+        handleContrastCheck(value, 'background');
+      }
+
+      if (key === 'foreground') {
+        handleContrastCheck(value, 'foreground');
+      }
+
+      chrome.runtime.sendMessage({
+        type: 'closeColorPicker'
+      });
+    }
+
     chrome.runtime.onMessage.addListener(request => {
       switch (request.type) {
       case 'colorPicked':
-        handlePickedColorRef.current(request);
+        handlePickedColor(request);
         break;
       default:
       }
@@ -127,7 +128,7 @@ export function ContextProvider(props) {
       document.body.style.setProperty('--background', backgroundHex);
       document.body.style.setProperty('--foreground', foregroundHex);
     }
-  }, [background, foreground]);
+  }, []);
 
   const data = {
     colors,

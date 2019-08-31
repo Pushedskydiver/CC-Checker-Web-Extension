@@ -2,7 +2,10 @@
 
 let scrollStopDelay = null;
 let keyValue = null;
+
+const dpr = window.devicePixelRatio || 1;
 const image = new Image();
+
 const css = `
   .cc-canvas__wrapper {
     display: none;
@@ -59,8 +62,8 @@ function setCanvasData(e) {
   const canvas = canvasWrapper.querySelector('[data-cc-canvas]');
   const ctx = canvas.getContext('2d');
 
-  const r = e.clientX - 8;
-  const o = e.clientY - 8;
+  const r = (e.clientX * dpr) - 8;
+  const o = (e.clientY * dpr) - 8;
   const f = e.pageY - 40;
   const c = e.pageX - 40;
 
@@ -117,6 +120,7 @@ function closeColorPicker() {
   canvasWrapper.style.display = 'none';
   document.body.style.cursor = 'auto';
 
+  window.removeEventListener('resize', scrollStop);
   window.removeEventListener('scroll', scrollStop);
   document.body.removeEventListener('mousemove', setCanvasData);
   canvasWrapper.removeEventListener('click', getColorData);
@@ -130,6 +134,7 @@ function getScreenshot({ key, data }) {
   canvasWrapper.style.display = 'block';
   document.body.style.cursor = 'none';
 
+  window.addEventListener('resize', scrollStop);
   window.addEventListener('scroll', scrollStop);
   document.body.addEventListener('mousemove', setCanvasData);
   canvasWrapper.addEventListener('click', getColorData);
