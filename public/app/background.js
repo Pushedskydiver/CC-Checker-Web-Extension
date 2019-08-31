@@ -1,11 +1,7 @@
 /*global chrome*/
 
 function sendCaptureData(r, data, t) {
-  chrome.tabs.sendMessage(t.tab.id, {
-    type: r.type,
-    key: r.key,
-    data
-  });
+  chrome.tabs.sendMessage(t.tab.id, { type: r.type, key: r.key, data });
 }
 
 // Called when the user clicks on the browser action
@@ -22,39 +18,31 @@ chrome.browserAction.onClicked.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((r, t) => {
-  if (r.type === 'closeColorPicker') {
-    chrome.tabs.sendMessage(t.tab.id, {
-      type: 'closeColorPicker'
-    });
-  }
+  switch (r.type) {
+  case 'closeColorPicker':
+    chrome.tabs.sendMessage(t.tab.id, { type: 'closeColorPicker' });
+    break;
 
-  if (r.type === 'getScreenshot') {
-    chrome.tabs.captureVisibleTab(null, {
-      format: 'png'
-    }, data => sendCaptureData(r, data, t));
-  }
+  case 'getScreenshot':
+    chrome.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
+    break;
 
-  if (r.type === 'updateScreenShot') {
-    chrome.tabs.captureVisibleTab(null, {
-      format: 'png'
-    }, data => sendCaptureData(r, data, t));
-  }
+  case 'updateScreenShot':
+    chrome.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
+    break;
 
-  if (r.type === 'closeChecker') {
-    chrome.tabs.sendMessage(t.tab.id, {
-      type: 'closeChecker'
-    });
-  }
+  case 'closeChecker':
+    chrome.tabs.sendMessage(t.tab.id, { type: 'closeChecker' });
+    break;
 
-  if (r.type === 'expandChecker') {
-    chrome.tabs.sendMessage(t.tab.id, {
-      type: 'expandChecker'
-    });
-  }
+  case 'expandChecker':
+    chrome.tabs.sendMessage(t.tab.id, { type: 'expandChecker' });
+    break;
 
-  if (r.type === 'retractChecker') {
-    chrome.tabs.sendMessage(t.tab.id, {
-      type: 'retractChecker'
-    });
+  case 'retractChecker':
+    chrome.tabs.sendMessage(t.tab.id, { type: 'retractChecker' });
+    break;
+
+  default:
   }
 });

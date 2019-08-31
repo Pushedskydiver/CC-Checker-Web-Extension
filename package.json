@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "chroma-js": "^2.0.3",
+    "fsevents": "1.2.9",
     "lodash.round": "^4.0.4",
     "lodash.throttle": "^4.1.1",
     "react": "^16.8.6",

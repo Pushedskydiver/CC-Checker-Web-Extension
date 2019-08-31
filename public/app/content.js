@@ -48,7 +48,7 @@ function getColorData(e) {
   const data = ctx.getImageData(3, 3, 1, 1).data;
   const rgb = [data[0], data[1], data[2]];
 
-  e.target.removeEventListener(e.type, f => getColorData(f. key));
+  e.target.removeEventListener(e.type, f => getColorData(f.key));
 
   chrome.runtime.sendMessage({
     type: 'colorPicked',
@@ -93,28 +93,6 @@ function scrollStop() {
   }, 66);
 }
 
-function addCanvas() {
-  const style = document.createElement('style');
-  const canvasWrapper = document.createElement('div');
-  const canvas = document.createElement('canvas');
-
-  style.type = 'text/css';
-  style.appendChild(document.createTextNode(css));
-
-  canvasWrapper.className = 'cc-canvas__wrapper';
-  canvasWrapper.setAttribute('data-cc-canvas-wrapper', '');
-
-  canvas.className = 'cc-canvas';
-  canvas.setAttribute('data-cc-canvas', '');
-  canvas.width = 8;
-  canvas.height = 8;
-
-  canvasWrapper.appendChild(canvas);
-
-  document.body.appendChild(style);
-  document.body.appendChild(canvasWrapper);
-}
-
 function closeColorPicker() {
   const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
   canvasWrapper.style.display = 'none';
@@ -147,15 +125,11 @@ function updateImage({ data }) {
   image.src = data;
 }
 
-function initChecker() {
-  const checker = document.querySelector('[data-cc-checker]');
+function addIframe() {
   const wrapper = document.createElement('div');
   const iframe = document.createElement('iframe');
-
   const wrapperStyles = 'position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2147483647; transform: translateY(0);';
   const iframeStyles = 'position: absolute; bottom: 0; left: 0; width: 100%; height: 335px;';
-
-  if (checker !== null) return;
 
   wrapper.setAttribute('style', wrapperStyles);
   iframe.setAttribute('style', iframeStyles);
@@ -166,12 +140,45 @@ function initChecker() {
 
   wrapper.appendChild(iframe);
   document.body.appendChild(wrapper);
+}
 
+function addCanvas() {
+  const style = document.createElement('style');
+  const canvasWrapper = document.createElement('div');
+  const canvas = document.createElement('canvas');
+
+  style.type = 'text/css';
+  style.appendChild(document.createTextNode(css));
+
+  canvasWrapper.className = 'cc-canvas__wrapper';
+  canvasWrapper.setAttribute('data-cc-canvas-wrapper', '');
+
+  canvas.className = 'cc-canvas';
+  canvas.setAttribute('data-cc-canvas', '');
+  canvas.width = 8;
+  canvas.height = 8;
+
+  canvasWrapper.appendChild(canvas);
+
+  document.body.appendChild(style);
+  document.body.appendChild(canvasWrapper);
+}
+
+function initChecker() {
+  const checker = document.querySelector('[data-cc-checker]');
+
+  if (checker !== null) return;
+
+  addIframe();
   addCanvas();
 }
 
 function closeChecker() {
   const checker = document.querySelector('[data-cc-checker]');
+  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+
+  canvasWrapper.style.display = 'none';
+  document.body.style.cursor = 'auto';
   checker.remove();
 }
 
@@ -185,17 +192,18 @@ function retractChecker() {
   checker.style.height = '335px';
 }
 
-chrome.runtime.onMessage.addListener(request => {
-  switch (request.type) {
+chrome.runtime.onMessage.addListener(r => {
+  switch (r.type) {
   case 'closeColorPicker':
     closeColorPicker();
     break;
+
   case 'getScreenshot':
-    getScreenshot(request);
+    getScreenshot(r);
     break;
 
   case 'updateScreenShot':
-    updateImage(request);
+    updateImage(r);
     break;
 
   case 'initChecker':
@@ -213,5 +221,7 @@ chrome.runtime.onMessage.addListener(request => {
   case 'retractChecker':
     retractChecker();
     break;
+
+  default:
   }
 });

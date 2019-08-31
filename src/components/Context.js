@@ -1,6 +1,6 @@
 /*global chrome*/
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { isDark, hslToHex, hexToRgb, rgbToHsl, getContrast, getLevel } from '../components/Utils';
 
 const Context = React.createContext({});
@@ -12,7 +12,7 @@ export function ContextProvider(props) {
   const localContrast = JSON.parse(localStorage.getItem('contrast'));
   const localLevel = JSON.parse(localStorage.getItem('level'));
   const levels = { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' };
-  // const handlePickedColorRef = useRef(handlePickedColor);
+  const handlePickedColorRef = useRef(handlePickedColor);
 
   const [colors, setColors] = useState(localColors || []);
   const [background, setBackground] = useState(localBg || [49.73, 1, 0.71]);
@@ -91,27 +91,27 @@ export function ContextProvider(props) {
     expand ? setExpand(false) : setExpand(true);
   }
 
-  useEffect(() => {
-    function handlePickedColor({ key, rgb }) {
-      const value = rgbToHsl(rgb);
+  function handlePickedColor({ key, rgb }) {
+    const value = rgbToHsl(rgb);
 
-      if (key === 'background') {
-        handleContrastCheck(value, 'background');
-      }
-
-      if (key === 'foreground') {
-        handleContrastCheck(value, 'foreground');
-      }
-
-      chrome.runtime.sendMessage({
-        type: 'closeColorPicker'
-      });
+    if (key === 'background') {
+      handleContrastCheck(value, 'background');
     }
 
+    if (key === 'foreground') {
+      handleContrastCheck(value, 'foreground');
+    }
+
+    chrome.runtime.sendMessage({
+      type: 'closeColorPicker'
+    });
+  }
+
+  useEffect(() => {
     chrome.runtime.onMessage.addListener(request => {
       switch (request.type) {
       case 'colorPicked':
-        handlePickedColor(request);
+        handlePickedColorRef.current(request);
         break;
       default:
       }
@@ -128,7 +128,7 @@ export function ContextProvider(props) {
       document.body.style.setProperty('--background', backgroundHex);
       document.body.style.setProperty('--foreground', foregroundHex);
     }
-  }, []);
+  }, [background, foreground]);
 
   const data = {
     colors,
