@@ -40,7 +40,7 @@ export interface PickedColorProps {
 }
 
 export interface ContextProps {
-  fonts: FontsProps[],
+  fonts?: FontsProps[],
   colors: ColorsProps[],
   background: number[],
   foreground: number[],
@@ -57,7 +57,7 @@ export interface ContextProps {
   updateView: (bg: number[], fg: number[]) => void
 }
 
-const Context = createContext<Partial<ContextProps>>({});
+const Context = createContext({} as ContextProps);
 
 export function ContextProvider(props: ProviderProps) {
   const localColors = JSON.parse(localStorage.getItem('colors') as string);
@@ -162,14 +162,18 @@ export function ContextProvider(props: ProviderProps) {
   }
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(request => {
-      switch (request.type) {
-      case 'colorPicked':
-        handlePickedColorRef.current(request);
-        break;
-      default:
-      }
-    });
+    const isOnMessage = chrome.runtime.onMessage;
+
+    if (isOnMessage) {
+      chrome.runtime.onMessage.addListener(request => {
+        switch (request.type) {
+        case 'colorPicked':
+          handlePickedColorRef.current(request);
+          break;
+        default:
+        }
+      });
+    }
 
     if (localStorage.getItem('contrast') !== null) {
       if (foreground[0] === null) {

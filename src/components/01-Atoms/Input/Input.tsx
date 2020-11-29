@@ -8,7 +8,7 @@ import Label from '../Label/Label.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
-import Context from '../../Context';
+import Context, { ContextProps } from '../../Context';
 
 export interface InputProps {
   id: string
@@ -17,7 +17,7 @@ export interface InputProps {
 
 function Input(props: InputProps) {
   const { id } = props;
-  const { background, foreground, colorState, handleContrastCheck } = useContext(Context);
+  const { background, foreground, colorState, handleContrastCheck } = useContext<ContextProps>(Context);
   const value = id === 'background' ? background : foreground;
 
   const [hex, setHexState] = useState(hslToHex(value as number[]));
@@ -75,28 +75,28 @@ function Input(props: InputProps) {
 
   function checkPressedKey(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      // chrome.runtime.sendMessage({
-      //   type: 'closeColorPicker'
-      // });
+      chrome.runtime.sendMessage({
+        type: 'closeColorPicker'
+      });
     }
   }
 
   function capturePage() {
     document.addEventListener('keyup', checkPressedKey);
 
-    // if (props.id === 'background') {
-    //   chrome.runtime.sendMessage({
-    //     type: 'getScreenshot',
-    //     key: 'background'
-    //   });
-    // }
+    if (props.id === 'background') {
+      chrome.runtime.sendMessage({
+        type: 'getScreenshot',
+        key: 'background'
+      });
+    }
 
-    // if (props.id === 'foreground') {
-    //   chrome.runtime.sendMessage({
-    //     type: 'getScreenshot',
-    //     key: 'foreground'
-    //   });
-    // }
+    if (props.id === 'foreground') {
+      chrome.runtime.sendMessage({
+        type: 'getScreenshot',
+        key: 'foreground'
+      });
+    }
   }
 
   useEffect(() => {

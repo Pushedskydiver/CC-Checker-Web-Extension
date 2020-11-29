@@ -140,6 +140,7 @@ function addIframe() {
 
   wrapper.appendChild(iframe);
   document.body.appendChild(wrapper);
+  document.body.style.paddingBottom = '335px';
 }
 
 function addCanvas() {
@@ -147,7 +148,7 @@ function addCanvas() {
   const canvasWrapper = document.createElement('div');
   const canvas = document.createElement('canvas');
 
-  style.type = 'text/css';
+  style.ty = 'text/css';
   style.appendChild(document.createTextNode(css));
 
   canvasWrapper.className = 'cc-canvas__wrapper';

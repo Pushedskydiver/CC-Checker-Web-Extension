@@ -2,10 +2,10 @@ import React, { memo, useContext } from 'react';
 import { Heading1 } from '../../01-Atoms/Heading/Heading.styles';
 import SkipLink from '../../01-Atoms/SkipLink/SkipLink.styles';
 import HeaderStyles from './Header.styles';
-import Context from '../../Context';
+import Context, { ContextProps } from '../../Context';
 
 function Header() {
-  const { colorState } = useContext(Context);
+  const { colorState } = useContext<ContextProps>(Context);
 
   return (
     <HeaderStyles>

@@ -4,10 +4,10 @@ import Link from '../../01-Atoms/Link/Link.styles';
 import Swatch from '../../01-Atoms/Swatch/Swatch';
 import { GitHub, Twitter } from '../../01-Atoms/Icon/Icon';
 import FooterStyles from './Footer.styles';
-import Context from '../../Context';
+import Context, { ContextProps } from '../../Context';
 
 function Footer() {
-  const { expand, colorState, saveColors } = useContext(Context);
+  const { expand, colorState, saveColors } = useContext<ContextProps>(Context);
 
   return (
     <FooterStyles expand={expand as boolean}>

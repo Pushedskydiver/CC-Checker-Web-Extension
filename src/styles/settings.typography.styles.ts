@@ -1,4 +1,4 @@
-function calcFontSize(number) {
+function calcFontSize(number: number) {
   return `${number / 16}em`;
 }
 

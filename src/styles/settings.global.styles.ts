@@ -41,7 +41,7 @@ const GlobalStyles = createGlobalStyle`
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 
-    ${maxWidth('992', () => css`
+    ${maxWidth(992, () => css`
       display: none;
     `)}
   }

@@ -1,5 +1,3 @@
-/*global chrome*/
-
 import React, { Fragment, memo, useContext } from 'react';
 import { CloseButton, ExpandButton, SwapButton } from '../../01-Atoms/Button/Button.styles';
 import { Close, Move, Swap } from '../../01-Atoms/Icon/Icon';
@@ -10,11 +8,14 @@ function Options() {
   const expandMessage = expand ? 'Retract' : 'Expand';
 
   function setExpandState() {
+    const isOnMessage = chrome.runtime.onMessage;
     const message = expand ? 'retractChecker' : 'expandChecker';
 
-    chrome.runtime.sendMessage({
-      type: message
-    });
+    if (isOnMessage) {
+      chrome.runtime.sendMessage({
+        type: message
+      });
+    }
 
     expand ? setExpand(false) : setExpand(true);
     toggleExpansion();
