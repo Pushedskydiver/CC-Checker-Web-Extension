@@ -130,7 +130,7 @@ function addIframe() {
   const wrapper = document.createElement('div');
   const iframe = document.createElement('iframe');
   const wrapperStyles = 'position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2147483647; transform: translateY(0);';
-  const iframeStyles = 'position: absolute; bottom: 0; left: 0; width: 100%; height: 335px;';
+  const iframeStyles = 'position: absolute; bottom: 0; left: 0; width: 100%; height: 360px;';
 
   wrapper.setAttribute('style', wrapperStyles);
   iframe.setAttribute('style', iframeStyles);
@@ -141,7 +141,7 @@ function addIframe() {
 
   wrapper.appendChild(iframe);
   document.body.appendChild(wrapper);
-  document.body.style.paddingBottom = '335px';
+  document.body.style.paddingBottom = '360px';
 }
 
 function addCanvas() {
@@ -186,12 +186,12 @@ function closeChecker() {
 
 function expandChecker() {
   const checker = document.querySelector('[data-cc-checker]');
-  checker.style.height = '410px';
+  checker.style.height = '435px';
 }
 
 function retractChecker() {
   const checker = document.querySelector('[data-cc-checker]');
-  checker.style.height = '335px';
+  checker.style.height = '360px';
 }
 
 window.browser.runtime.onMessage.addListener(r => {
