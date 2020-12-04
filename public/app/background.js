@@ -1,48 +1,48 @@
-/*global chrome*/
+window.browser = (() => window.browser || window.chrome)();
 
 function sendCaptureData(r, data, t) {
-  chrome.tabs.sendMessage(t.tab.id, { type: r.type, key: r.key, data });
+  window.browser.tabs.sendMessage(t.tab.id, { type: r.type, key: r.key, data });
 }
 
 // Called when the user clicks on the browser action
-chrome.browserAction.onClicked.addListener(() => {
+window.browser.browserAction.onClicked.addListener(() => {
   // Send a message to the active tab
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  window.browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0];
 
-    chrome.tabs.sendMessage(activeTab.id, {
+    window.browser.tabs.sendMessage(activeTab.id, {
       message: 'clicked_browser_action',
       type: 'initChecker'
     });
   });
 });
 
-chrome.runtime.onMessage.addListener((r, t) => {
+window.browser.runtime.onMessage.addListener((r, t) => {
   switch (r.type) {
-  case 'closeColorPicker':
-    chrome.tabs.sendMessage(t.tab.id, { type: 'closeColorPicker' });
-    break;
+    case 'closeColorPicker':
+      window.browser.tabs.sendMessage(t.tab.id, { type: 'closeColorPicker' });
+      break;
 
-  case 'getScreenshot':
-    chrome.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
-    break;
+    case 'getScreenshot':
+      window.browser.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
+      break;
 
-  case 'updateScreenShot':
-    chrome.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
-    break;
+    case 'updateScreenShot':
+      window.browser.tabs.captureVisibleTab(null, { format: 'png' }, data => sendCaptureData(r, data, t));
+      break;
 
-  case 'closeChecker':
-    chrome.tabs.sendMessage(t.tab.id, { type: 'closeChecker' });
-    break;
+    case 'closeChecker':
+      window.browser.tabs.sendMessage(t.tab.id, { type: 'closeChecker' });
+      break;
 
-  case 'expandChecker':
-    chrome.tabs.sendMessage(t.tab.id, { type: 'expandChecker' });
-    break;
+    case 'expandChecker':
+      window.browser.tabs.sendMessage(t.tab.id, { type: 'expandChecker' });
+      break;
 
-  case 'retractChecker':
-    chrome.tabs.sendMessage(t.tab.id, { type: 'retractChecker' });
-    break;
+    case 'retractChecker':
+      window.browser.tabs.sendMessage(t.tab.id, { type: 'retractChecker' });
+      break;
 
-  default:
+    default:
   }
 });

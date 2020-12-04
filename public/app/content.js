@@ -1,4 +1,4 @@
-/*global chrome*/
+window.browser = (() => window.browser || window.chrome)();
 
 let scrollStopDelay = null;
 let keyValue = null;
@@ -50,7 +50,7 @@ function getColorData(e) {
 
   e.target.removeEventListener(e.type, f => getColorData(f.key));
 
-  chrome.runtime.sendMessage({
+  window.browser.runtime.sendMessage({
     type: 'colorPicked',
     key,
     rgb
@@ -79,7 +79,7 @@ function updateScreenShot() {
   canvasWrapper.style.display = 'none';
 
   const delayScreenshot = setTimeout(() => {
-    chrome.runtime.sendMessage({ type: 'updateScreenShot' });
+    window.browser.runtime.sendMessage({ type: 'updateScreenShot' });
 
     clearTimeout(delayScreenshot);
   }, 66);
@@ -101,6 +101,7 @@ function closeColorPicker() {
   window.removeEventListener('resize', scrollStop);
   window.removeEventListener('scroll', scrollStop);
   document.body.removeEventListener('mousemove', setCanvasData);
+  document.body.style.paddingBottom = '0px';
   canvasWrapper.removeEventListener('click', getColorData);
 }
 
@@ -135,7 +136,7 @@ function addIframe() {
   iframe.setAttribute('style', iframeStyles);
   iframe.setAttribute('data-cc-checker', '');
 
-  iframe.src = chrome.extension.getURL('index.html');
+  iframe.src = window.browser.extension.getURL('index.html');
   iframe.frameBorder = 0;
 
   wrapper.appendChild(iframe);
@@ -193,7 +194,7 @@ function retractChecker() {
   checker.style.height = '335px';
 }
 
-chrome.runtime.onMessage.addListener(r => {
+window.browser.runtime.onMessage.addListener(r => {
   switch (r.type) {
   case 'closeColorPicker':
     closeColorPicker();

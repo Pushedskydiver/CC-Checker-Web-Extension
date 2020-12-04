@@ -1,5 +1,3 @@
-/*global chrome*/
-
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { isDark, hslToHex, hexToRgb, rgbToHsl, getContrast, getLevel } from './Utils';
 
@@ -75,6 +73,9 @@ export function ContextProvider(props: ProviderProps) {
   const [level, setLevel] = useState<LevelsProps>(localLevel || levels);
   const [expand, setExpand] = useState<boolean>(false);
   const colorState: string = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
+
+  // @ts-ignore
+  window.browser = (() => window.browser || window.chrome)();
 
   function checkContrast(bg: string, fg: string) {
     const backgroundRgb = hexToRgb(bg);
@@ -156,24 +157,22 @@ export function ContextProvider(props: ProviderProps) {
       handleContrastCheck(value, ColorKeys.foreground);
     }
 
-    chrome.runtime.sendMessage({
+    // @ts-ignore
+    window.browser.runtime.sendMessage({
       type: 'closeColorPicker'
     });
   }
 
   useEffect(() => {
-    const isOnMessage = chrome.runtime.onMessage;
-
-    if (isOnMessage) {
-      chrome.runtime.onMessage.addListener(request => {
-        switch (request.type) {
-        case 'colorPicked':
-          handlePickedColorRef.current(request);
-          break;
-        default:
-        }
-      });
-    }
+    // @ts-ignore
+    window.browser.runtime.onMessage.addListener(request => {
+      switch (request.type) {
+      case 'colorPicked':
+        handlePickedColorRef.current(request);
+        break;
+      default:
+      }
+    });
 
     if (localStorage.getItem('contrast') !== null) {
       if (foreground[0] === null) {

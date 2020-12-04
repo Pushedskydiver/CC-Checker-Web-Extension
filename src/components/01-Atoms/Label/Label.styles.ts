@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { typography } from '../../../styles/settings.typography.styles';
 
 export interface LabelProps {
+  sr?: boolean,
   medium?: boolean,
   bold?: boolean,
   color?: string,
@@ -14,6 +15,18 @@ const Label = styled.label<LabelProps>`
   font-size: ${typography.body.size.medium};
   text-transform: capitalize;
   cursor: pointer;
+
+  ${props => props.sr && css`
+    position: absolute,
+    width: 1px,
+    height: 1px,
+    padding: 0,
+    margin: -1px,
+    overflow: hidden,
+    clip: rect(0, 0, 0, 0),
+    white-space: nowrap,
+    border-width: 0
+  `}
 
   ${props => props.color && css`
     color: ${props.color};

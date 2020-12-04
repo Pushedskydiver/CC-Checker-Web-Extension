@@ -89,3 +89,14 @@ export const Swap = () => (
     <path fill="currentColor" d="M9 3l3.984 3.984h-3v7.031H8.015V6.984h-3zm6.984 14.016h3L15 21l-3.984-3.984h3V9.985h1.969v7.031z" />
   </IconStyles>
 );
+
+export const Share = () => (
+  <IconStyles
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path fill="currentColor" d="M15.984 5.016l-1.406 1.406-1.594-1.594v11.156h-1.969v-11.156l-1.594 1.594-1.406-1.406 3.984-4.031zM20.016 9.984v11.016q0 0.844-0.586 1.43t-1.43 0.586h-12q-0.844 0-1.43-0.586t-0.586-1.43v-11.016q0-0.797 0.586-1.383t1.43-0.586h3v1.969h-3v11.016h12v-11.016h-3v-1.969h3q0.844 0 1.43 0.586t0.586 1.383z"></path>
+  </IconStyles>
+);

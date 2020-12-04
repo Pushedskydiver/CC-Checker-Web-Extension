@@ -90,3 +90,7 @@ export const ExpandButton = styled(OptionButton)`
 export const SwapButton = styled(OptionButton)`
   right: ${80 + (spacing.core * 4)}px;
 `;
+
+export const ShareButton = styled(OptionButton)`
+  right: ${120 + (spacing.core * 5)}px;
+`;

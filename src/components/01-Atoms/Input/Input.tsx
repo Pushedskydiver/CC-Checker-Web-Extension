@@ -1,4 +1,3 @@
-/*global chrome*/
 import React, { Fragment, useContext, useEffect, useState, memo } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
@@ -22,6 +21,9 @@ function Input(props: InputProps) {
 
   const [hex, setHexState] = useState(hslToHex(value as number[]));
   const [copied, setCopiedState] = useState(false);
+
+  // @ts-ignore
+  browser = browser ? browser : chrome;
 
   function updateState(value: number[]) {
     setHexState(hslToHex(value));
@@ -75,7 +77,8 @@ function Input(props: InputProps) {
 
   function checkPressedKey(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      chrome.runtime.sendMessage({
+      // @ts-ignore
+      browser.runtime.sendMessage({
         type: 'closeColorPicker'
       });
     }
@@ -85,14 +88,16 @@ function Input(props: InputProps) {
     document.addEventListener('keyup', checkPressedKey);
 
     if (props.id === 'background') {
-      chrome.runtime.sendMessage({
+      // @ts-ignore
+      browser.runtime.sendMessage({
         type: 'getScreenshot',
         key: 'background'
       });
     }
 
     if (props.id === 'foreground') {
-      chrome.runtime.sendMessage({
+      // @ts-ignore
+      browser.runtime.sendMessage({
         type: 'getScreenshot',
         key: 'foreground'
       });

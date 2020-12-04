@@ -3,7 +3,6 @@ import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from './01-Atoms/Heading/Heading.styles';
 import Ratio from './01-Atoms/Ratio/Ratio';
-// import Label from '../components/01-Atoms/Label/Label.styles';
 import Input from './01-Atoms/Input/Input';
 import Header from './02-Molecules/Header/Header';
 import { BlockSection, BlockDiv } from './02-Molecules/Block/Block.styles';
@@ -33,14 +32,12 @@ function App() {
           </BlockDiv>
 
           <BlockDiv noMargin>
-            {/* <Label medium htmlFor="background">Background Colour</Label> */}
             <Input id="background" name="background" />
 
             <Controls id="background" name="background" />
           </BlockDiv>
 
           <BlockDiv noMargin>
-            {/* <Label medium htmlFor="foreground">Foreground Colour</Label> */}
             <Input id="foreground" name="foreground" />
 
             <Controls id="foreground" name="foreground" />
