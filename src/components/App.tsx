@@ -1,4 +1,3 @@
-import React from 'react';
 import GlobalStyles from '../styles/settings.global.styles';
 import { Container } from '../styles/generic.container.styles';
 import { Span } from './01-Atoms/Heading/Heading.styles';
@@ -11,11 +10,11 @@ import Footer from './02-Molecules/Footer/Footer';
 import Options from './02-Molecules/Options/Options';
 import Grid from './03-Organisms/Grid/Grid.styles';
 import Wcag from './03-Organisms/Wcag/Wcag';
-import { ContextProvider } from './Context';
+import ColourContrastProvider from './Context';
 
 function App() {
   return (
-    <ContextProvider>
+    <ColourContrastProvider>
       <GlobalStyles />
 
       <Container>
@@ -48,7 +47,7 @@ function App() {
 
         <Options />
       </Container>
-    </ContextProvider>
+    </ColourContrastProvider>
   );
 }
 

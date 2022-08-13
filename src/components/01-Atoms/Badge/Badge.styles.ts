@@ -3,11 +3,7 @@ import { colors } from '../../../styles/settings.colors.styles';
 import { typography } from '../../../styles/settings.typography.styles';
 import spacing from '../../../styles/settings.spacing.styles';
 
-export interface BadgeProps {
-  color: string
-}
-
-const Badge = styled.span<BadgeProps>`
+const Badge = styled.span<CC.BadgeProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,27 +1,23 @@
-import React, { Fragment, memo, useContext, useState } from 'react';
+import { Fragment, memo, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { CloseButton, ExpandButton, SwapButton, ShareButton } from '../../01-Atoms/Button/Button.styles';
 import { Close, Move, Swap, Share } from '../../01-Atoms/Icon/Icon';
 import Tooltip from '../../01-Atoms/Tooltip/Tooltip.styles';
-import Context from '../../Context';
+import { useColourContrast } from '../../Context';
 import { hslToHex } from '../../Utils';
 
 function Options() {
-  const { expand, background, foreground, colorState, reverseColors, setExpand, toggleExpansion } = useContext(Context);
+  const { expand, background, foreground, colorState, reverseColors, setExpand, toggleExpansion } = useColourContrast();
   const [copied, setCopiedState] = useState(false);
   const expandMessage = expand ? 'Retract' : 'Expand';
   const bg = hslToHex(background).split('#');
   const fg = hslToHex(foreground).split('#');
   const shareColorsBody = `https://colourcontrast.cc/${bg[1]}/${fg[1]}`;
 
-  // @ts-ignore
-  window.browser = (() => window.browser || window.chrome)();
-
   function setExpandState() {
     const message = expand ? 'retractChecker' : 'expandChecker';
 
-    // @ts-ignore
-    window.browser.runtime.sendMessage({
+    chrome.runtime.sendMessage({
       type: message
     });
 
@@ -30,8 +26,7 @@ function Options() {
   }
 
   function closeChecker() {
-    // @ts-ignore
-    window.browser.runtime.sendMessage({
+    chrome.runtime.sendMessage({
       type: 'closeChecker'
     });
   }

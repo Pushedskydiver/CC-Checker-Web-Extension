@@ -1,63 +1,30 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { isDark, hslToHex, hexToRgb, rgbToHsl, getContrast, getLevel } from './Utils';
 
 export interface ProviderProps {
   children: React.ReactNode
 }
 
-export interface GoogleFontsProps {
-  family: string,
-  variants: number[]
-}
-
-export interface FontsProps {
-  family: string,
-  variant: number
-}
-
-export interface ColorsProps {
-  background: string,
-  foreground: string
-}
-
-export interface LevelsProps {
-  AALarge: string,
-  AA: string,
-  AAALarge: string,
-  AAA: string
-}
-
-export enum ColorKeys {
-  background = 'background',
-  foreground = 'foreground'
-}
-
-export interface PickedColorProps {
-  key: ColorKeys,
-  rgb: [number, number, number]
-}
-
-export interface ContextProps {
-  fonts?: FontsProps[],
-  colors: ColorsProps[],
+export interface ColourContrastContextTypes {
+  colors: CC.ColorsProps[],
   background: number[],
   foreground: number[],
   contrast: number,
-  level: LevelsProps,
+  level: CC.LevelsProps,
   colorState: string,
   expand: boolean,
   handleContrastCheck: (value: number[], name: string) => void,
   reverseColors: () => void,
   saveColors: () => void,
-  setColors: React.Dispatch<React.SetStateAction<ColorsProps[]>>,
+  setColors: React.Dispatch<React.SetStateAction<CC.ColorsProps[]>>,
   setExpand: React.Dispatch <React.SetStateAction<boolean>>,
   toggleExpansion: () => void,
   updateView: (bg: number[], fg: number[]) => void
 }
 
-const Context = createContext({} as ContextProps);
+const ColourContrastContext = createContext<ColourContrastContextTypes | undefined>(undefined);
 
-export function ContextProvider(props: ProviderProps) {
+const ColourContrastProvider = (props: ProviderProps) => {
   const localColors = JSON.parse(localStorage.getItem('colors') as string);
   const localBg = JSON.parse(localStorage.getItem('background') as string);
   const localFg = JSON.parse(localStorage.getItem('foreground') as string);
@@ -66,16 +33,13 @@ export function ContextProvider(props: ProviderProps) {
   const levels = { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' };
   const handlePickedColorRef = useRef(handlePickedColor);
 
-  const [colors, setColors] = useState<ColorsProps[]>(localColors || []);
+  const [colors, setColors] = useState<CC.ColorsProps[]>(localColors || []);
   const [background, setBackground] = useState<number[]>(localBg || [49.73, 1, 0.71]);
   const [foreground, setForeground] = useState<number[]>(localFg || [NaN, 0, 0.133]);
   const [contrast, setContrast] = useState<number>(localContrast || 12.72);
-  const [level, setLevel] = useState<LevelsProps>(localLevel || levels);
+  const [level, setLevel] = useState<CC.LevelsProps>(localLevel || levels);
   const [expand, setExpand] = useState<boolean>(false);
   const colorState: string = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
-
-  // @ts-ignore
-  window.browser = (() => window.browser || window.chrome)();
 
   function checkContrast(bg: string, fg: string) {
     const backgroundRgb = hexToRgb(bg);
@@ -107,7 +71,7 @@ export function ContextProvider(props: ProviderProps) {
     const colors = JSON.parse(localStorage.getItem('colors') as string) || [];
     const bg = hslToHex(background);
     const fg = hslToHex(foreground);
-    const sameColors = colors.filter((color: ColorsProps) => color.background === bg && color.foreground === fg).length > 0;
+    const sameColors = colors.filter((color: CC.ColorsProps) => color.background === bg && color.foreground === fg).length > 0;
 
     if (colors.length > 0 && sameColors) {
       return;
@@ -146,28 +110,20 @@ export function ContextProvider(props: ProviderProps) {
     expand ? setExpand(false) : setExpand(true);
   }
 
-  function handlePickedColor({ key, rgb }: PickedColorProps) {
+  function handlePickedColor({ key, rgb }: CC.PickedColorProps) {
     const value = rgbToHsl(rgb) as number[];
 
-    if (key === ColorKeys.background) {
-      handleContrastCheck(value, ColorKeys.background);
-    }
+    handleContrastCheck(value, key);
 
-    if (key === ColorKeys.foreground) {
-      handleContrastCheck(value, ColorKeys.foreground);
-    }
-
-    // @ts-ignore
-    window.browser.runtime.sendMessage({
+    chrome.runtime.sendMessage({
       type: 'closeColorPicker'
     });
   }
 
   useEffect(() => {
-    // @ts-ignore
-    window.browser.runtime.onMessage.addListener(request => {
+    chrome.runtime.onMessage.addListener(request => {
       switch (request.type) {
-      case 'colorPicked':
+        case 'colorPicked':
         handlePickedColorRef.current(request);
         break;
       default:
@@ -187,28 +143,40 @@ export function ContextProvider(props: ProviderProps) {
     }
   }, [background, foreground]);
 
-  const data = {
-    colors,
-    background,
-    foreground,
-    contrast,
-    level,
-    expand,
-    colorState,
-    handleContrastCheck,
-    reverseColors,
-    saveColors,
-    setColors,
-    setExpand,
-    toggleExpansion,
-    updateView
-  };
-
   return (
-    <Context.Provider value={data}>
+    <ColourContrastContext.Provider
+      value={{
+        colors,
+        background,
+        foreground,
+        contrast,
+        level,
+        expand,
+        colorState,
+        handleContrastCheck,
+        reverseColors,
+        saveColors,
+        setColors,
+        setExpand,
+        toggleExpansion,
+        updateView
+      }}
+    >
       {props.children}
-    </Context.Provider>
+    </ColourContrastContext.Provider>
   );
 }
 
-export default Context;
+const useColourContrast = () => {
+  const context = useContext(ColourContrastContext)
+
+  if (context === undefined) {
+    throw new Error('useColourContrast must be used within a ColourContrastProvider')
+  }
+
+  return context
+}
+
+export { ColourContrastContext, useColourContrast }
+
+export default ColourContrastProvider;

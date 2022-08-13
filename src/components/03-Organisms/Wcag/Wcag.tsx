@@ -1,17 +1,17 @@
-import React, { memo, useContext } from 'react';
+import { memo } from 'react';
 import Grade from '../../01-Atoms/Grade/Grade.styles';
 import Badge from '../../01-Atoms/Badge/Badge.styles';
 // import { Mark } from '../../01-Atoms/Icon/Icon';
 import Result from '../../02-Molecules/Result/Result.styles';
 import WcagStyles from './Wcag.styles';
-import Context, { ContextProps } from '../../Context';
+import { useColourContrast } from '../../Context';
 
 export interface WcagProps {
   id: string
 }
 
 function Wcag(props: WcagProps) {
-  const { level, colorState } = useContext<ContextProps>(Context);
+  const { level, colorState } = useColourContrast();
 
   return (
     <WcagStyles {...props} color={colorState}>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState, memo } from 'react';
+import { Fragment, useEffect, useState, memo } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import InputStyles from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
@@ -7,7 +7,7 @@ import Label from '../Label/Label.styles';
 import Tooltip from '../Tooltip/Tooltip.styles';
 import { BlockDiv } from '../../02-Molecules/Block/Block.styles';
 import { isHex, hexToHsl, hslToHex } from '../../Utils';
-import Context, { ContextProps } from '../../Context';
+import { useColourContrast } from '../../Context';
 
 export interface InputProps {
   id: string
@@ -16,14 +16,11 @@ export interface InputProps {
 
 function Input(props: InputProps) {
   const { id } = props;
-  const { background, foreground, colorState, handleContrastCheck } = useContext<ContextProps>(Context);
+  const { background, foreground, colorState, handleContrastCheck } = useColourContrast();
   const value = id === 'background' ? background : foreground;
 
   const [hex, setHexState] = useState(hslToHex(value as number[]));
   const [copied, setCopiedState] = useState(false);
-
-  // @ts-ignore
-  browser = browser ? browser : chrome;
 
   function updateState(value: number[]) {
     setHexState(hslToHex(value));
@@ -35,13 +32,13 @@ function Input(props: InputProps) {
     const valueHasHash = target.value.indexOf('#') !== -1;
     const isHexCode = isHex(target.value);
     const isNum = /^\d+$/.test(target.value);
-    const isShortHand = /(^#[0-9a-f]{3}|[0-9a-f]{3])$/gim.test(target.value);
+    const isShortHand = /(^#?[0-9a-f]{3,5}|[0-9a-f]{3])$/gim.test(target.value);
     const isRed = target.value.toLowerCase() === 'red';
 
     setHexState(target.value);
     setCopiedState(false);
 
-    if (target.value.length === 6 && !valueHasHash && isHexCode && isNum) {
+    if (target.value.length >= 6 && !valueHasHash && isHexCode && isNum) {
       target.value = `#${target.value}`;
     }
 
@@ -61,7 +58,7 @@ function Input(props: InputProps) {
       return;
     }
 
-    if (handleContrastCheck) {
+    if (!isShortHand) {
       handleContrastCheck(hexToHsl(target.value) as number[], name as string);
     }
   }
@@ -77,8 +74,7 @@ function Input(props: InputProps) {
 
   function checkPressedKey(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      // @ts-ignore
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         type: 'closeColorPicker'
       });
     }
@@ -88,16 +84,14 @@ function Input(props: InputProps) {
     document.addEventListener('keyup', checkPressedKey);
 
     if (props.id === 'background') {
-      // @ts-ignore
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         type: 'getScreenshot',
         key: 'background'
       });
     }
 
     if (props.id === 'foreground') {
-      // @ts-ignore
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         type: 'getScreenshot',
         key: 'foreground'
       });

@@ -1,13 +1,13 @@
-import React, { memo, useContext } from 'react';
+import { memo } from 'react';
 import { Button } from '../../01-Atoms/Button/Button.styles';
 import Link from '../../01-Atoms/Link/Link.styles';
 import Swatch from '../../01-Atoms/Swatch/Swatch';
 import { GitHub, Twitter } from '../../01-Atoms/Icon/Icon';
 import FooterStyles from './Footer.styles';
-import Context, { ContextProps } from '../../Context';
+import { useColourContrast } from '../../Context';
 
 function Footer() {
-  const { expand, colorState, saveColors } = useContext<ContextProps>(Context);
+  const { expand, colorState, saveColors } = useColourContrast();
 
   return (
     <FooterStyles expand={expand as boolean}>

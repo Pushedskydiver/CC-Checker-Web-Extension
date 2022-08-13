@@ -1,11 +1,11 @@
-import React, { memo, useContext } from 'react';
+import { memo } from 'react';
 import { Heading1 } from '../../01-Atoms/Heading/Heading.styles';
 import SkipLink from '../../01-Atoms/SkipLink/SkipLink.styles';
 import HeaderStyles from './Header.styles';
-import Context, { ContextProps } from '../../Context';
+import { useColourContrast } from '../../Context';
 
 function Header() {
-  const { colorState } = useContext<ContextProps>(Context);
+  const { colorState } = useColourContrast();
 
   return (
     <HeaderStyles>

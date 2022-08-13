@@ -1,9 +1,9 @@
-import React, { memo, useContext } from 'react';
+import { memo } from 'react';
 import RatioStyles from './Ratio.styles';
-import Context, { ContextProps } from '../../Context';
+import { useColourContrast } from '../../Context';
 
 function Ratio() {
-  const { contrast, colorState } = useContext<ContextProps>(Context);
+  const { contrast, colorState } = useColourContrast();
 
   return (
     <RatioStyles
