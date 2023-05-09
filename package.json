@@ -1,6 +1,6 @@
 {
   "name": "cc-checker-chrome-extension",
-  "version": "1.1.0",
+  "version": "1.4.1",
   "description": "WCAG accessibility colour contrast checker chrome extension",
   "license": "ISC",
   "author": {
@@ -20,14 +20,14 @@
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@types/chroma-js": "^2.1.4",
-    "@types/chrome": "0.0.204",
+    "@types/chroma-js": "^2.4.0",
+    "@types/chrome": "0.0.235",
     "@types/lodash.round": "^4.0.7",
     "@types/lodash.throttle": "^4.1.7",
-    "@types/node": "^18.11.5",
-    "@types/react": "^18.0.26",
+    "@types/node": "^20.1.1",
+    "@types/react": "^18.2.6",
     "@types/react-copy-to-clipboard": "^5.0.4",
-    "@types/react-dom": "^18.0.9",
+    "@types/react-dom": "^18.2.4",
     "@types/styled-components": "^5.1.26"
   },
   "scripts": {
