@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState, memo } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import InputStyles from './Input.styles';
+import InputStyles, { InputOptionStyles } from './Input.styles';
 import { Clipboard, Eyedropper } from '../Icon/Icon';
 import { CopyButton, ColorPickerButton } from '../Button/Button.styles';
 import Label from '../Label/Label.styles';
@@ -117,34 +117,41 @@ function Input(props: InputProps) {
           data-color={id}
         />
 
-        <ColorPickerButton
-          type="button"
-          aria-label={`Pick ${props.id} colour`}
-          onClick={capturePage}
-        >
-          <Eyedropper />
-        </ColorPickerButton>
-
-        <CopyToClipboard text={hex} onCopy={setCopyState}>
-          <CopyButton
-            type="button"
-            aria-labelledby={`${id}CopiedSate`}
-          >
-            <Clipboard />
-
-            <Tooltip
-              id={`${id}CopiedSate`}
-              aria-hidden={copied}
-              aria-live="polite"
-              role="tooltip"
-              visible={copied}
-              color={colorState}
+        <InputOptionStyles>
+          <li>
+            <ColorPickerButton
+              type="button"
+              aria-label={`Pick ${props.id} colour`}
+              onClick={capturePage}
             >
+              <Eyedropper />
+            </ColorPickerButton>
+          </li>
 
-              {copied ? 'Copied' : `Copy ${hex} to clipboard`}
-            </Tooltip>
-          </CopyButton>
-        </CopyToClipboard>
+          <li>
+            <CopyToClipboard text={hex} onCopy={setCopyState}>
+              <CopyButton
+                type="button"
+                aria-labelledby={`${id}CopiedSate`}
+              >
+                <Clipboard />
+
+                <Tooltip
+                  id={`${id}CopiedSate`}
+                  aria-hidden={copied}
+                  aria-live="polite"
+                  role="tooltip"
+                  visible={copied}
+                  color={colorState}
+                >
+
+                  {copied ? 'Copied' : `Copy ${hex} to clipboard`}
+                </Tooltip>
+              </CopyButton>
+            </CopyToClipboard>
+          </li>
+        </InputOptionStyles>
+
       </BlockDiv>
     </Fragment>
   );

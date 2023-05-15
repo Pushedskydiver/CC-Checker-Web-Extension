@@ -20,26 +20,25 @@ const FadeInOut = keyframes`
 
 const Tooltip = styled.span<TooltipProps>`
   position: absolute;
-  top: -40px;
+  top: calc(100% + ${spacing.core}px);
   left: 50%;
-  width: 0;
-  height: 0;
   padding: ${spacing.padding / 2}px ${spacing.padding}px;
   font-size: ${typography.body.size.regular};
   font-variation-settings: 'wght' ${typography.weight.bold};
   opacity: 0;
+  pointer-events: none;
   transform: translateX(-50%);
 
   &:after {
     content: '';
     position: absolute;
-    top: 100%;
-    left: 50%;
+    top: -10px;
+    left: calc(50% - 5px);
     width: 0;
     height: 0;
-    margin-left: -5px;
     border: 5px solid transparent;
     pointer-events: none;
+    transform: rotate(180deg);
   }
 
   ${props => props.color === '#222222' && css`

@@ -33,14 +33,6 @@ chrome.runtime.onMessage.addListener((r, t) => {
       chrome.tabs.sendMessage(t.tab.id, { type: 'closeChecker' });
       break;
 
-    case 'expandChecker':
-      chrome.tabs.sendMessage(t.tab.id, { type: 'expandChecker' });
-      break;
-
-    case 'retractChecker':
-      chrome.tabs.sendMessage(t.tab.id, { type: 'retractChecker' });
-      break;
-
     default:
   }
 });

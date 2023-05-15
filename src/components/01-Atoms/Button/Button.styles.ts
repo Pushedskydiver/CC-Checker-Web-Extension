@@ -8,13 +8,10 @@ export interface ButtonProps {
 }
 
 const InputButton = styled.button`
-  position: absolute;
-  top: 50%;
   width: 25px;
   height: 25px;
   border: none;
   outline: none;
-  transform : translateY(-50%);
 
   &:active svg,
   &:focus svg {
@@ -24,8 +21,6 @@ const InputButton = styled.button`
 `;
 
 const OptionButton = styled.button<ButtonProps>`
-  position: absolute;
-  top: -56px;
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -72,25 +67,15 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const CopyButton = styled(InputButton)`
-  right: 0;
-`;
-
-export const ColorPickerButton = styled(InputButton)`
-  right: 35px;
-`;
-
-export const CloseButton = styled(OptionButton)`
-  right: ${spacing.core * 2}px;
-`;
-
-export const ExpandButton = styled(OptionButton)`
-  right: ${40 + (spacing.core * 3)}px;
-`;
-
-export const SwapButton = styled(OptionButton)`
-  right: ${80 + (spacing.core * 4)}px;
+  position: relative;
 `;
 
 export const ShareButton = styled(OptionButton)`
-  right: ${120 + (spacing.core * 5)}px;
+  position: relative;
 `;
+
+export const ColorPickerButton = styled(InputButton)``;
+
+export const CloseButton = styled(OptionButton)``;
+
+export const SwapButton = styled(OptionButton)``;

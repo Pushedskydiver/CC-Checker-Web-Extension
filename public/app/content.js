@@ -5,6 +5,29 @@ const dpr = window.devicePixelRatio || 1;
 const image = new Image();
 
 const css = `
+  body {
+    padding-bottom: 420px !important;
+    height: auto !important;
+  }
+
+  .cc__wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2147483647;
+    transform: translateY(0);
+  }
+
+  .cc__iframe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 420px;
+    border: none;
+  }
+
   .cc-canvas__wrapper {
     display: none;
     position: absolute;
@@ -93,13 +116,15 @@ function scrollStop() {
 
 function closeColorPicker() {
   const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+
   canvasWrapper.style.display = 'none';
-  document.body.style.cursor = 'auto';
 
   window.removeEventListener('resize', scrollStop);
   window.removeEventListener('scroll', scrollStop);
+
   document.body.removeEventListener('mousemove', setCanvasData);
-  document.body.style.paddingBottom = '0px';
+  document.body.style.cursor = 'auto';
+
   canvasWrapper.removeEventListener('click', getColorData);
 }
 
@@ -127,19 +152,16 @@ function updateImage({ data }) {
 function addIframe() {
   const wrapper = document.createElement('div');
   const iframe = document.createElement('iframe');
-  const wrapperStyles = 'position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2147483647; transform: translateY(0);';
-  const iframeStyles = 'position: absolute; bottom: 0; left: 0; width: 100%; height: 360px;';
 
-  wrapper.setAttribute('style', wrapperStyles);
-  iframe.setAttribute('style', iframeStyles);
   iframe.setAttribute('data-cc-checker', '');
-
+  iframe.className = 'cc__iframe';
+  iframe.title = 'Colour contrast checker browser extension';
   iframe.src = chrome.runtime.getURL('index.html');
-  iframe.frameBorder = 0;
 
+  wrapper.className = 'cc__wrapper';
   wrapper.appendChild(iframe);
+
   document.body.appendChild(wrapper);
-  document.body.style.paddingBottom = '360px';
 }
 
 function addCanvas() {
@@ -148,13 +170,14 @@ function addCanvas() {
   const canvas = document.createElement('canvas');
 
   style.ty = 'text/css';
+  style.setAttribute('data-cc-styles', '');
   style.appendChild(document.createTextNode(css));
 
   canvasWrapper.className = 'cc-canvas__wrapper';
   canvasWrapper.setAttribute('data-cc-canvas-wrapper', '');
 
-  canvas.className = 'cc-canvas';
   canvas.setAttribute('data-cc-canvas', '');
+  canvas.className = 'cc-canvas';
   canvas.width = 8;
   canvas.height = 8;
 
@@ -176,52 +199,38 @@ function initChecker() {
 function closeChecker() {
   const checker = document.querySelector('[data-cc-checker]');
   const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+  const styles = document.querySelector('[data-cc-styles]')
+
+  document.body.setAttribute('style', 'cursor: auto;');
 
   canvasWrapper.style.display = 'none';
-  document.body.style.cursor = 'auto';
+
   checker.remove();
+  styles.remove();
 }
 
-function expandChecker() {
-  const checker = document.querySelector('[data-cc-checker]');
-  checker.style.height = '435px';
-}
-
-function retractChecker() {
-  const checker = document.querySelector('[data-cc-checker]');
-  checker.style.height = '360px';
-}
-
-chrome.runtime.onMessage.addListener(r => {
+chrome.runtime.onMessage.addListener((r) => {
   switch (r.type) {
-  case 'closeColorPicker':
-    closeColorPicker();
-    break;
+    case 'closeColorPicker':
+      closeColorPicker();
+      break;
 
-  case 'getScreenshot':
-    getScreenshot(r);
-    break;
+    case 'getScreenshot':
+      getScreenshot(r);
+      break;
 
-  case 'updateScreenShot':
-    updateImage(r);
-    break;
+    case 'updateScreenShot':
+      updateImage(r);
+      break;
 
-  case 'initChecker':
-    initChecker();
-    break;
+    case 'initChecker':
+      initChecker();
+      break;
 
-  case 'closeChecker':
-    closeChecker();
-    break;
+    case 'closeChecker':
+      closeChecker();
+      break;
 
-  case 'expandChecker':
-    expandChecker();
-    break;
-
-  case 'retractChecker':
-    retractChecker();
-    break;
-
-  default:
+    default:
   }
 });

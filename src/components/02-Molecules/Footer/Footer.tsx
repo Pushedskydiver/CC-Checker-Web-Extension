@@ -7,10 +7,10 @@ import FooterStyles from './Footer.styles';
 import { useColourContrast } from '../../Context';
 
 function Footer() {
-  const { expand, colorState, saveColors } = useColourContrast();
+  const { colorState, saveColors } = useColourContrast();
 
   return (
-    <FooterStyles expand={expand as boolean}>
+    <FooterStyles>
       <Button
         type="button"
         color={colorState as string}

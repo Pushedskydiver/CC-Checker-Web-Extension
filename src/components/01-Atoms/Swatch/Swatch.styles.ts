@@ -6,7 +6,13 @@ export interface SwatchProps {
   foreground: string
 }
 
-const SwatchStyles = styled.button<SwatchProps>`
+export const SwatchListStyles = styled.ul`
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(6, 50px);
+`
+
+export const SwatchStyles = styled.button<SwatchProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -29,5 +35,3 @@ const SwatchStyles = styled.button<SwatchProps>`
     color: ${props.foreground};
   `}
 `;
-
-export default SwatchStyles;

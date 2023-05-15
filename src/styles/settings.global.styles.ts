@@ -72,13 +72,18 @@ const GlobalStyles = createGlobalStyle`
     margin-bottom: ${spacing.margin}px;
   }
 
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
   main {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding-top: ${spacing.padding * 3}px;
-    padding-bottom: ${spacing.padding * 3}px;
+    height: 100%;
     background-color: var(--background);
     color: var(--foreground);
     box-shadow: 0 2px 12px 15px rgba(0, 0, 0, 0.075);

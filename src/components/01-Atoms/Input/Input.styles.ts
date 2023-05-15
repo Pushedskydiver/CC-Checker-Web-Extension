@@ -33,4 +33,14 @@ const InputStyles = styled.input<InputProps>`
   `}
 `;
 
+export const InputOptionStyles = styled.ul`
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  transform : translateY(-50%);
+`
+
 export default InputStyles;

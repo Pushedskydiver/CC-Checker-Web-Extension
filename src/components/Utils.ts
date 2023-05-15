@@ -51,4 +51,4 @@ export const rgbToHex = (rgb: number[]) => isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1
 
 export const rgbToHsl = (rgb: number[]) => (isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1], rgb[2]).hsl() : null);
 
-export const getContrast = (a: number[], b: number[]) => chroma.contrast(rgbToHex(a), rgbToHex(b));
+export const getContrast = (a: string, b: string) => chroma.contrast(a, b);

@@ -4,12 +4,14 @@ import spacing from '../../../styles/settings.spacing.styles';
 
 const SkipLink = styled.a`
   position: absolute;
-  top: -${spacing.core * 1.5}px;
+  top: -${spacing.core * 3}px;
   left: 0;
-  font-variation-settings: 'wght' ${typography.weight.medium};
+  font-size: 1rem;
+  font-variation-settings: 'wght' ${typography.weight.bold};
   line-height: normal;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  outline-offset: 4px;
 
   &:active,
   &:focus {

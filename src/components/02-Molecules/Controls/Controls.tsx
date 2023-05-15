@@ -23,14 +23,13 @@ function Controls(props: ControlsProps) {
     const i = parseFloat(target.getAttribute('property') as string);
 
     hsl[i] = parseFloat(target.value);
-    if (handleContrastCheck) {
-      handleContrastCheck(hsl, name);
-    }
+
+    handleContrastCheck(hsl, name);
   }
 
   return (
     <ControlStyles color={colorState as string}>
-      <Label htmlFor={`${props.id}Hue`} bold >
+      <Label htmlFor={`${props.id}Hue`} bold>
         Hue {Math.round(nanH(h))}°
       </Label>
 
@@ -44,7 +43,7 @@ function Controls(props: ControlsProps) {
         property="0"
       />
 
-      <Label htmlFor={`${id}Saturation`} bold >
+      <Label htmlFor={`${id}Saturation`} bold>
         Saturation {round(s, 2)}
       </Label>
 
@@ -59,7 +58,7 @@ function Controls(props: ControlsProps) {
         property="1"
       />
 
-      <Label htmlFor={`${id}Lightness`} bold >
+      <Label htmlFor={`${id}Lightness`} bold>
         Lightness {round(l, 2)}
       </Label>
 

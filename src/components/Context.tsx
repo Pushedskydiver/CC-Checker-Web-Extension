@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { isDark, hslToHex, hexToRgb, rgbToHsl, getContrast, getLevel } from './Utils';
+import { isDark, hslToHex, rgbToHsl, getContrast, getLevel } from './Utils';
 
 export interface ProviderProps {
   children: React.ReactNode
@@ -12,13 +12,10 @@ export interface ColourContrastContextTypes {
   contrast: number,
   level: CC.LevelsProps,
   colorState: string,
-  expand: boolean,
   handleContrastCheck: (value: number[], name: string) => void,
   reverseColors: () => void,
   saveColors: () => void,
   setColors: React.Dispatch<React.SetStateAction<CC.ColorsProps[]>>,
-  setExpand: React.Dispatch <React.SetStateAction<boolean>>,
-  toggleExpansion: () => void,
   updateView: (bg: number[], fg: number[]) => void
 }
 
@@ -34,17 +31,14 @@ const ColourContrastProvider = (props: ProviderProps) => {
   const handlePickedColorRef = useRef(handlePickedColor);
 
   const [colors, setColors] = useState<CC.ColorsProps[]>(localColors || []);
-  const [background, setBackground] = useState<number[]>(localBg || [49.73, 1, 0.71]);
-  const [foreground, setForeground] = useState<number[]>(localFg || [NaN, 0, 0.133]);
+  const [background, setBackground] = useState<number[]>(localBg || [49.73, 1, 0.71, 1]);
+  const [foreground, setForeground] = useState<number[]>(localFg || [NaN, 0, 0.133, 1]);
   const [contrast, setContrast] = useState<number>(localContrast || 12.72);
   const [level, setLevel] = useState<CC.LevelsProps>(localLevel || levels);
-  const [expand, setExpand] = useState<boolean>(false);
   const colorState: string = contrast < 3 ? isDark(background) ? '#ffffff' : '#222222' : hslToHex(foreground);
 
   function checkContrast(bg: string, fg: string) {
-    const backgroundRgb = hexToRgb(bg);
-    const foregroundRgb = hexToRgb(fg);
-    const newContrast = getContrast(backgroundRgb as number[], foregroundRgb as number[]);
+    const newContrast = getContrast(bg, fg);
     const newLevel = getLevel(newContrast);
 
     localStorage.setItem('contrast', `${newContrast}`);
@@ -106,10 +100,6 @@ const ColourContrastProvider = (props: ProviderProps) => {
     updateView(foreground, background);
   }
 
-  function toggleExpansion() {
-    expand ? setExpand(false) : setExpand(true);
-  }
-
   function handlePickedColor({ key, rgb }: CC.PickedColorProps) {
     const value = rgbToHsl(rgb) as number[];
 
@@ -151,14 +141,11 @@ const ColourContrastProvider = (props: ProviderProps) => {
         foreground,
         contrast,
         level,
-        expand,
         colorState,
         handleContrastCheck,
         reverseColors,
         saveColors,
         setColors,
-        setExpand,
-        toggleExpansion,
         updateView
       }}
     >
