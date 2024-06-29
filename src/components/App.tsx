@@ -1,54 +1,24 @@
-import GlobalStyles from '../styles/settings.global.styles';
-import { Container } from '../styles/generic.container.styles';
-import { Span } from './01-Atoms/Heading/Heading.styles';
-import Ratio from './01-Atoms/Ratio/Ratio';
-import Input from './01-Atoms/Input/Input';
-import Header from './02-Molecules/Header/Header';
-import { BlockSection, BlockDiv } from './02-Molecules/Block/Block.styles';
-import Controls from './02-Molecules/Controls/Controls';
-import Footer from './02-Molecules/Footer/Footer';
-import Options from './02-Molecules/Options/Options';
-import Grid from './03-Organisms/Grid/Grid.styles';
-import Wcag from './03-Organisms/Wcag/Wcag';
-import ColourContrastProvider from './Context';
+import ColourContrastProvider from './context';
+import { Header } from './02-molecules/header/header';
+import { ColorControls } from './03-organisms/color-controls/color-controls';
+import { Footer } from './03-organisms/footer/footer';
+import { Score } from './03-organisms/score/score';
+import { MainLayout } from './04-layouts/main-layout/main-layout';
 
-function App() {
-  return (
-    <ColourContrastProvider>
-      <GlobalStyles />
+import '../styles/globals.css';
 
-      <Container>
-        <Grid columns="3fr 2fr 2fr" gap={50} noMargin>
-          <BlockDiv noMargin>
-            <Header />
+const App = (): JSX.Element => (
+  <ColourContrastProvider>
+    <Header />
 
-            <BlockSection noMargin>
-              <Span aria-hidden="true" grade noMargin>Aa</Span>
-              <Ratio />
+    <MainLayout>
+      <Score />
 
-              <Wcag id="grades" />
-            </BlockSection>
-          </BlockDiv>
+      <ColorControls />
+    </MainLayout>
 
-          <BlockDiv noMargin>
-            <Input id="background" name="background" />
-
-            <Controls id="background" name="background" />
-          </BlockDiv>
-
-          <BlockDiv noMargin>
-            <Input id="foreground" name="foreground" />
-
-            <Controls id="foreground" name="foreground" />
-          </BlockDiv>
-        </Grid>
-
-        <Footer />
-
-        <Options />
-      </Container>
-    </ColourContrastProvider>
-  );
-}
+    <Footer />
+  </ColourContrastProvider>
+);
 
 export default App;

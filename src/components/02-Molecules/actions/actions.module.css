@@ -1,0 +1,10 @@
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-small from --breakpoints;
+
+.list {
+  display: flex;
+  gap: calc(var(--base-spacing) * 1.5);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}

@@ -1,30 +1,37 @@
-import { memo } from 'react';
-import { Heading1 } from '../../01-Atoms/Heading/Heading.styles';
-import SkipLink from '../../01-Atoms/SkipLink/SkipLink.styles';
-import HeaderStyles from './Header.styles';
-import { useColourContrast } from '../../Context';
+import clsx from 'clsx';
+import { useColourContrast } from '~/components/context';
+import { Text } from '~/components/01-atoms/text/text';
+import { SkipLink } from '~/components/01-atoms/skip-link/skip-link';
+import { Actions } from '../actions/actions';
 
-function Header() {
-  const { colorState } = useColourContrast();
+import styles from './header.module.css';
+
+export const Header: React.FC = () => {
+  const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
   return (
-    <HeaderStyles>
-      <SkipLink href="#ratio" color={colorState}>
-        Skip to colour contrast ratio
-      </SkipLink>
-      <SkipLink href="#grades" color={colorState}>
-        Skip to colour contrast grades
-      </SkipLink>
-      <SkipLink href="#background" color={colorState}>
-        Skip to background colour input
-      </SkipLink>
-      <SkipLink href="#foreground" color={colorState}>
-        Skip to foreground colour input
-      </SkipLink>
+    <header className={styles.header}>
+      <div className={styles.container}>
+        <SkipLink href="#ratio" bodyText="Skip to colour contrast ratio" />
+        <SkipLink href="#grades" bodyText="Skip to colour contrast grades" />
+        <SkipLink href="#background" bodyText="Skip to background colour input" />
+        <SkipLink href="#foreground" bodyText="Skip to foreground colour input" />
 
-      <Heading1 medium noMargin>Colour Contrast Checker</Heading1>
-    </HeaderStyles>
+        <Text
+          tag="h1"
+          size="pinnacle"
+          weight="semiBold"
+          className={clsx(
+            styles.title,
+            isPoorContrast && !isBackgroundDark ? styles.titleDark : undefined,
+            isPoorContrast && isBackgroundDark ? styles.titleLight : undefined,
+          )}
+        >
+          Colour contrast checker
+        </Text>
+
+        <Actions />
+      </div>
+    </header>
   );
 }
-
-export default memo(Header);

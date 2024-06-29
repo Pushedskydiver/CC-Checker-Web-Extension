@@ -6,26 +6,19 @@ const image = new Image();
 
 const css = `
   body {
-    padding-bottom: 420px !important;
+    padding-bottom: 500px !important;
     height: auto !important;
   }
 
-  .cc__wrapper {
+  .cc__iframe {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 2147483647;
-    transform: translateY(0);
-  }
-
-  .cc__iframe {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 420px;
+    height: 500px;
     border: none;
+    transform: translateY(0);
+    z-index: 2147483647;
   }
 
   .cc-canvas__wrapper {
@@ -65,7 +58,7 @@ const css = `
 function getColorData(e) {
   const key = keyValue;
   const canvas = e.target.querySelector('[data-cc-canvas]');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   const data = ctx.getImageData(3, 3, 1, 1).data;
   const rgb = [data[0], data[1], data[2]];
 
@@ -81,7 +74,7 @@ function getColorData(e) {
 function setCanvasData(e) {
   const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
   const canvas = canvasWrapper.querySelector('[data-cc-canvas]');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
   const r = (e.clientX * dpr) - 8;
   const o = (e.clientY * dpr) - 8;
@@ -150,18 +143,15 @@ function updateImage({ data }) {
 }
 
 function addIframe() {
-  const wrapper = document.createElement('div');
   const iframe = document.createElement('iframe');
 
   iframe.setAttribute('data-cc-checker', '');
+  iframe.setAttribute('referrerpolicy', 'no-referrer');
   iframe.className = 'cc__iframe';
   iframe.title = 'Colour contrast checker browser extension';
   iframe.src = chrome.runtime.getURL('index.html');
 
-  wrapper.className = 'cc__wrapper';
-  wrapper.appendChild(iframe);
-
-  document.body.appendChild(wrapper);
+  document.body.appendChild(iframe);
 }
 
 function addCanvas() {

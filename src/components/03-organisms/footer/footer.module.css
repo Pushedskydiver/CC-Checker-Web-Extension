@@ -1,0 +1,16 @@
+@value containers: '../../../styles/modules/container.module.css';
+
+.footer {
+  padding-block: calc(var(--base-spacing) * 4) calc(var(--base-spacing) * 1.5);
+}
+
+.container {
+  --container: var(--container-max-width);
+
+	composes: container from containers;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--base-spacing) * 2.5);
+  justify-content: space-between;
+  align-items: center;
+}

@@ -1,0 +1,9 @@
+.container {
+  display: grid;
+  gap: calc(var(--base-spacing) * 3);
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+}

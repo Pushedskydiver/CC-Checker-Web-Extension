@@ -1,6 +1,8 @@
 import chroma from 'chroma-js';
 
-export const isHex = (hex: string) => {
+import type { TLevels } from '../global-types';
+
+export const isHex = (hex: string): boolean => {
   try {
     const color = chroma(hex);
     return !!color;
@@ -9,7 +11,7 @@ export const isHex = (hex: string) => {
   }
 };
 
-export const isRgb = (rgb: number[]) => {
+export const isRgb = (rgb: number[]): boolean => {
   try {
     const color = chroma.rgb(rgb[0], rgb[1], rgb[2]);
     return !!color;
@@ -18,7 +20,7 @@ export const isRgb = (rgb: number[]) => {
   }
 };
 
-export const isHsl = (hsl: number[]) => {
+export const isHsl = (hsl: number[]): boolean => {
   try {
     const color = chroma.hsl(hsl[0], hsl[1], hsl[2]);
     return !!color;
@@ -27,7 +29,7 @@ export const isHsl = (hsl: number[]) => {
   }
 };
 
-export const getLevel = (contrast: number) => {
+export const getLevel = (contrast: number): TLevels => {
   if (contrast > 7) {
     return { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' };
   } else if (contrast > 4.5) {
@@ -39,16 +41,30 @@ export const getLevel = (contrast: number) => {
   return { AALarge: 'Fail', AA: 'Fail', AAALarge: 'Fail', AAA: 'Fail' };
 };
 
-export const isDark = (hsl: number[]) => chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') < 60;
+export const isDark = (hsl: number[]): boolean => {
+  return chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') < 60
+};
 
-export const hexToHsl = (hex: string) => isHex(hex) ? chroma(hex).hsl() : null;
+export const hexToHsl = (hex: string): [number, number, number] | null => {
+  return isHex(hex) ? chroma(hex).hsl() : null
+};
 
-export const hslToHex = (hsl: number[]) => isHsl(hsl) ? chroma.hsl(hsl[0], hsl[1], hsl[2]).hex() : '#808080';
+export const hslToHex = (hsl: number[]): string => {
+  return isHsl(hsl) ? chroma.hsl(hsl[0], hsl[1], hsl[2]).hex() : '#808080'
+};
 
-export const hexToRgb = (hex: string) => isHex(hex) ? chroma(hex).rgb() : null;
+export const hexToRgb = (hex: string): [number, number, number] | null => {
+  return isHex(hex) ? chroma(hex).rgb() : null
+};
 
-export const rgbToHex = (rgb: number[]) => isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1], rgb[2]).hex() : '#808080';
+export const rgbToHex = (rgb: number[]): string => {
+  return isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1], rgb[2]).hex() : '#808080';
+}
 
-export const rgbToHsl = (rgb: number[]) => (isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1], rgb[2]).hsl() : null);
+export const rgbToHsl = (rgb: number[]): [number, number, number] | null => {
+  return isRgb(rgb) ? chroma.rgb(rgb[0], rgb[1], rgb[2]).hsl() : null
+};
 
-export const getContrast = (a: string, b: string) => chroma.contrast(a, b);
+export const getContrast = (a: number[], b: number[]): number => {
+  return chroma.contrast(rgbToHex(a), rgbToHex(b))
+};

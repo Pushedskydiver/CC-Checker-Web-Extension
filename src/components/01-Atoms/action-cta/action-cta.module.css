@@ -1,0 +1,55 @@
+.cta {
+  --cta-outline-color: var(--foreground-color);
+  --cta-bg-color: transparent;
+  --cta-fg-color: var(--foreground-color);
+
+  position: relative;
+  inline-size: 4rem;
+  block-size: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border-radius: calc(var(--base-spacing) / 2);
+  border: none;
+  background-color: var(--cta-bg-color);
+  color: var(--cta-fg-color);
+  appearance: none;
+
+  &:focus-visible {
+    outline: 3px solid var(--cta-outline-color);
+    outline-offset: 3px;
+  }
+}
+
+.ctaWithBackground {
+  --cta-bg-color: var(--foreground-color);
+  --cta-fg-color: var(--background-color);
+}
+
+.ctaDark {
+  --cta-outline-color: #000;
+
+  &:not(.ctaWithBackground) {
+    --cta-fg-color: #000;
+  }
+
+  &:is(.ctaWithBackground) {
+    --cta-bg-color: #000;
+    --cta-fg-color: #fff;
+  }
+}
+
+.ctaLight {
+  --cta-outline-color: #fff;
+
+  &:not(.ctaWithBackground) {
+    --cta-fg-color: #fff;
+  }
+
+  &:is(.ctaWithBackground) {
+    --cta-bg-color: #fff;
+    --cta-fg-color: #000;
+  }
+}
