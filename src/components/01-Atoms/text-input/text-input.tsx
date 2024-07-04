@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useColourContrast } from '~/components/context';
+import { useColourContrast } from '~/context';
 import { ColorPickerCta } from '../color-picker-cta/color-picker-cta';
 import { CopyCta } from '../copy-cta/copy-cta';
 import { Text } from '../text/text';

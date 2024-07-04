@@ -1,4 +1,4 @@
-import ColourContrastProvider from './context';
+import ColourContrastProvider from '../context';
 import { Header } from './02-molecules/header/header';
 import { ColorControls } from './03-organisms/color-controls/color-controls';
 import { Footer } from './03-organisms/footer/footer';

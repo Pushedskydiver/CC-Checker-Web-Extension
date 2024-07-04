@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useColourContrast } from '~/components/context';
+import { useColourContrast } from '~/context';
 
 import styles from './skip-link.module.css';
 

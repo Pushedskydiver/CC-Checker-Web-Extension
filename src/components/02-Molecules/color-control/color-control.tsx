@@ -1,63 +1,78 @@
 import round from 'lodash.round';
-import { useColourContrast } from '~/components/context';
+import { useColourContrast } from '~/context';
+import { hslToRgb, rgbToHsl } from '~/utils/color-utils';
 import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
 import styles from './color-control.module.css';
 
+const nanH = (h: number): number => (Number.isNaN(h) || h === null ? 0 : h);
+
 export type TColourControl = {
-  id: string;
+	id: string;
+	type?: 'hsl' | 'rgb';
 }
 
-export const ColourControl: React.FC<TColourControl> = ({ id }) => {
-  const { background, foreground, handleContrastCheck } = useColourContrast();
-  const value = id === 'background' ? background : foreground;
-  const [h, s, l] = value;
+export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
+	const { background, foreground, handleContrastCheck } = useColourContrast();
 
-  const nanH = (h: number): number => (Number.isNaN(h) || h === null ? 0 : h);
+	const isRgb = type === 'rgb';
+	const bg = isRgb ? hslToRgb(background) : background;
+	const fg = isRgb ? hslToRgb(foreground) : foreground;
 
-  const handleChange = ({ target }: { target: HTMLInputElement }): void => {
-    const hsl = [...value];
-    const property = target.getAttribute('property');
+	const value = id === 'background' ? bg : fg;
+	const valueA = isRgb ? value[0] : round(nanH(value[0]));
+	const valueB = isRgb ? value[1] : round(value[1], 2.5);
+	const valueC = isRgb ? value[2] : round(value[2], 2);
+	const labelTextA = isRgb ? `Red ${valueA}` : `Hue ${valueA}°`;
+	const labelTextB = isRgb ? `Blue ${valueB}` : `Saturation ${valueB}`;
+	const labelTextC = isRgb ? `Green ${valueC}` : `Lightness ${valueC}`;
 
-    if (!property) return;
+	const handleChange = ({ target }: { target: HTMLInputElement }): void => {
+		const abc = [...value];
+		const property = target.getAttribute('property');
 
-    hsl[parseFloat(property)] = parseFloat(target.value);
+		if (!property) return;
 
-    if (handleContrastCheck) {
-      handleContrastCheck(hsl, id);
-    }
-  }
+		abc[parseFloat(property)] = parseFloat(target.value);
 
-  return (
-    <div className={styles.control}>
-      <RangeInput
-        id={`${id}Hue`}
-        labelText={`Hue ${Math.round(nanH(h))}°`}
-        max="360"
-        property="0"
-        value={Math.round(nanH(h))}
-        onChange={handleChange}
-      />
+		const colorValue = isRgb ? rgbToHsl(abc) : abc;
+		
+		console.log({ colorValue });
+		
+		handleContrastCheck(colorValue, id);
+	}
 
-      <RangeInput
-        id={`${id}Saturation`}
-        labelText={`Saturation ${round(s, 2.5)}`}
-        max="1"
-        step={1 / 256}
-        value={round(s, 2.5)}
-        onChange={handleChange}
-        property="1"
-      />
+	return (
+		<div className={styles.control}>
+			<RangeInput
+				id={`${id}${isRgb ? 'Red' : 'Hue'}`}
+				labelText={labelTextA}
+				max={isRgb ? '255' : '360'}
+				property="0"
+				step={isRgb ? 1 : undefined}
+				value={valueA}
+				onChange={handleChange}
+			/>
 
-      <RangeInput
-        id={`${id}Lightness`}
-        labelText={`Lightness ${round(l, 2)}`}
-        max="1"
-        property="2"
-        step={1 / 256}
-        value={round(l, 2)}
-        onChange={handleChange}
-      />
-    </div>
-  )
+			<RangeInput
+				id={`${id}${isRgb ? 'Blue' : 'Saturation'}`}
+				labelText={labelTextB}
+				max={isRgb ? '255' : '1'}
+				step={isRgb ? 1 : 1 / 256}
+				value={valueB}
+				onChange={handleChange}
+				property="1"
+			/>
+
+			<RangeInput
+				id={`${id}${isRgb ? 'Green' : 'Lightness'}`}
+				labelText={labelTextC}
+				max={isRgb ? '255' : '1'}
+				property="2"
+				step={isRgb ? 1 : 1 / 256}
+				value={valueC}
+				onChange={handleChange}
+			/>
+		</div>
+	)
 }

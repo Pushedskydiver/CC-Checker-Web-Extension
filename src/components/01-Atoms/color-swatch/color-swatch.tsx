@@ -1,5 +1,5 @@
-import { useColourContrast } from '~/components/context';
-import { hexToHsl } from '~/components/utils';
+import { useColourContrast } from '~/context';
+import { colorToHsl } from '~/utils/color-utils';
 import { Text } from "../text/text";
 
 import styles from './color-swatch.module.css';
@@ -17,16 +17,14 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
   const { isPoorContrast, isBackgroundDark, updateView } = useColourContrast();
 
   const applyColors = (): void => {
-    const bg = hexToHsl(background);
-    const fg = hexToHsl(foreground);
+    const bg = colorToHsl(background);
+    const fg = colorToHsl(foreground);
 
 
-    if (bg && fg) {
-      localStorage.setItem('background', JSON.stringify(bg));
-      localStorage.setItem('foreground', JSON.stringify(fg));
+    localStorage.setItem('background', JSON.stringify(bg));
+    localStorage.setItem('foreground', JSON.stringify(fg));
 
-      updateView(bg, fg);
-    }
+    updateView(bg, fg);
   }
 
   return (

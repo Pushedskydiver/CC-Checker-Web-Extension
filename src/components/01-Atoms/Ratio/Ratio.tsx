@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useColourContrast } from '~/components/context';
+import { useColourContrast } from '~/context';
 import { Text } from '../text/text';
 
 import styles from './ratio.module.css';

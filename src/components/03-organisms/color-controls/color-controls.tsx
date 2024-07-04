@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ColourControl } from '~/components/02-molecules/color-control/color-control';
-import { useColourContrast } from '~/components/context';
-import { hexToHsl, hslToHex, isHex } from '~/components/utils';
+import { useColourContrast } from '~/context';
+import { colorToHsl, hslToHex, isHex } from '~/utils/color-utils';
 import { TextInput } from '~/components/01-atoms/text-input/text-input';
+import { ColourControl } from '~/components/02-molecules/color-control/color-control';
+import { Tabbed } from '../tabbed/tabbed';
 
 import styles from './color-controls.module.css';
 
@@ -15,7 +16,7 @@ export const ColorControls: React.FC = () => {
     let value = e.target.value;
 
     const name = e.target.id;
-    const hslValue = hexToHsl(value);
+    const hslValue = isHex(value) ? colorToHsl(value) : null;
     const valueHasHash = value.indexOf('#') !== -1;
     const isHexCode = isHex(value);
     const isNum = /^\d+$/.test(value);
@@ -77,7 +78,24 @@ export const ColorControls: React.FC = () => {
           onChange={handleBgChange}
         />
 
-        <ColourControl id="background" />
+        <Tabbed
+          id="background-tabs"
+          ariaLabel="Background colour controls"
+          items={[
+            {
+              id: 'rgb-background',
+              name: 'RGB',
+              children: (
+                <ColourControl id="background" type="rgb" />
+              ),
+            },
+            {
+              id: 'hsl-background',
+              name: 'HSL',
+              children: <ColourControl id="background" />,
+            },
+          ]}
+        />
       </section>
 
       <section className={styles.control} aria-label="Foreground colour controls">
@@ -89,7 +107,24 @@ export const ColorControls: React.FC = () => {
           onChange={handleFgChange}
         />
 
-        <ColourControl id="foreground" />
+        <Tabbed
+          id="foreground-tabs"
+          ariaLabel="Foreground colour controls"
+          items={[
+            {
+              id: 'rgb-foreground',
+              name: 'RGB',
+              children: (
+                <ColourControl id="foreground" type="rgb" />
+              ),
+            },
+            {
+              id: 'hsl-foreground',
+              name: 'HSL',
+              children: <ColourControl id="foreground" />,
+            },
+          ]}
+        />
       </section>
     </>
   )

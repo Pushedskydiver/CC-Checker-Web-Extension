@@ -1,5 +1,5 @@
-import { useColourContrast } from "~/components/context";
-import { hslToHex } from "~/components/utils";
+import { useColourContrast } from "~/context";
+import { hslToHex } from "~/utils/color-utils";
 import { ActionCta } from "~/components/01-atoms/action-cta/action-cta"
 import { CopyCta } from "~/components/01-atoms/copy-cta/copy-cta";
 import { Cross, Swap } from "~/components/01-atoms/icon/icon";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { useColourContrast } from "~/components/context";
+import { useColourContrast } from "~/context";
 import { ActionCta } from "../action-cta/action-cta";
 import { Clipboard, Share } from "../icon/icon";
 import { Text } from "../text/text";

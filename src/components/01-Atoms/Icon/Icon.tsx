@@ -15,11 +15,11 @@ export type TIcon = {
   className?: string;
 }
 
-export const Clipboard: React.FC<TIcon> = ({ className, size }) => (
+export const Clipboard: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={ size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     aria-hidden="true"
     focusable="false"
@@ -30,11 +30,11 @@ export const Clipboard: React.FC<TIcon> = ({ className, size }) => (
   </svg>
 )
 
-export const Tick: React.FC<TIcon> = ({ className, size }) => (
+export const Tick: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     aria-hidden="true"
     focusable="false"
@@ -45,11 +45,11 @@ export const Tick: React.FC<TIcon> = ({ className, size }) => (
   </svg>
 );
 
-export const Cross: React.FC<TIcon> = ({ className, size }) => (
+export const Cross: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     aria-hidden="true"
     focusable="false"
@@ -60,11 +60,11 @@ export const Cross: React.FC<TIcon> = ({ className, size }) => (
   </svg>
 );
 
-export const Eyedropper: React.FC<TIcon> = ({ className, size }) => (
+export const Eyedropper: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 32 32"
     aria-hidden="true"
     focusable="false"
@@ -75,11 +75,11 @@ export const Eyedropper: React.FC<TIcon> = ({ className, size }) => (
   </svg>
 );
 
-export const Swap: React.FC<TIcon> = ({ className, size }) => (
+export const Swap: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     aria-hidden="true"
     focusable="false"
@@ -90,11 +90,11 @@ export const Swap: React.FC<TIcon> = ({ className, size }) => (
   </svg>
 );
 
-export const Share: React.FC<TIcon> = ({ className, size }) => (
+export const Share: React.FC<TIcon> = ({ className, size = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={size ? size : '24'}
-    height={size ? size : '24'}
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     aria-hidden="true"
     focusable="false"

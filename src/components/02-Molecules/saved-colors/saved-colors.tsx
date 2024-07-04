@@ -1,5 +1,5 @@
-import { useColourContrast } from '~/components/context';
-import { hslToHex } from '~/components/utils';
+import { useColourContrast } from '~/context';
+import { hslToHex } from '~/utils/color-utils';
 import { Button, CtaContent } from "~/components/01-atoms/cta/cta";
 import { ColorSwatch } from "~/components/01-atoms/color-swatch/color-swatch";
 
