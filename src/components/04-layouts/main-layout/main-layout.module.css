@@ -3,26 +3,25 @@
 @value --bp-medium, --bp-large, --bp-large_max from --breakpoints;
 
 .container {
-  --container: var(--container-max-width);
+	--container: var(--container-max-width);
 
 	composes: container from containers;
-  display: grid;
-  gap: calc(var(--base-spacing) * 6);
-  align-items: center;
+	display: grid;
+	gap: calc(var(--base-spacing) * 6);
+	align-items: center;
 
-  @media (--bp-medium <= width <= --bp-large_max) {
-    & > *:first-child {
-      grid-column: 1 / -1;
-    }
-  }
+	@media (--bp-medium <= width <= --bp-large_max) {
+		& > *:first-child {
+			grid-column: 1 / -1;
+		}
+	}
 
-  @media (width >= --bp-medium) {
-    grid-template-columns: 1fr 1fr;
+	@media (width >= --bp-medium) {
+		grid-template-columns: 1fr 1fr;
+		gap: calc(var(--base-spacing) * 3);
+	}
 
-  }
-
-  @media (width >= --bp-large) {
-    grid-template-columns: 3fr 2fr 2fr;
-    gap: calc(var(--base-spacing) * 6);
-  }
+	@media (width >= --bp-large) {
+		grid-template-columns: 2.75fr 2fr 2fr;
+	}
 }

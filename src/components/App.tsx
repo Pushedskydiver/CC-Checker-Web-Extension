@@ -1,4 +1,4 @@
-import ColourContrastProvider from './context';
+import ColourContrastProvider from '../context';
 import { Header } from './02-molecules/header/header';
 import { ColorControls } from './03-organisms/color-controls/color-controls';
 import { Footer } from './03-organisms/footer/footer';
@@ -8,17 +8,17 @@ import { MainLayout } from './04-layouts/main-layout/main-layout';
 import '../styles/globals.css';
 
 const App = (): JSX.Element => (
-  <ColourContrastProvider>
-    <Header />
+	<ColourContrastProvider>
+		<Header />
 
-    <MainLayout>
-      <Score />
+		<MainLayout>
+			<Score />
 
-      <ColorControls />
-    </MainLayout>
+			<ColorControls />
+		</MainLayout>
 
-    <Footer />
-  </ColourContrastProvider>
+		<Footer />
+	</ColourContrastProvider>
 );
 
 export default App;

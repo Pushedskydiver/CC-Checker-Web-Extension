@@ -46,7 +46,7 @@
 
 .pinnacleText {
 	--min: 18;
-	--max: 32;
+	--max: 30;
 
 	font-family: var(--font-family-primary);
 	line-height: 150%;
@@ -61,7 +61,7 @@
 }
 
 .whisperText {
-	--min: 14;
+	--min: 16;
 	--max: 20;
 
 	font-family: var(--font-family-primary);
@@ -70,8 +70,8 @@
 
 .pulseText {
 	--min: 16;
-	--max: 18;
+	--max: 16;
 
 	font-family: var(--font-family-primary);
-	line-height: 160%;
+	line-height: 140%;
 }
