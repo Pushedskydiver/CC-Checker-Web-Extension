@@ -36,9 +36,7 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 		abc[parseFloat(property)] = parseFloat(target.value);
 
 		const colorValue = isRgb ? rgbToHsl(abc) : abc;
-		
-		console.log({ colorValue });
-		
+
 		handleContrastCheck(colorValue, id);
 	}
 

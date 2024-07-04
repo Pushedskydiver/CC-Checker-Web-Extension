@@ -1,7 +1,7 @@
 @value containers: '../../../styles/modules/container.module.css';
 
 .footer {
-	padding-block: calc(var(--base-spacing) * 4) calc(var(--base-spacing) * 1.5);
+	padding-block: calc(var(--base-spacing) * 2) calc(var(--base-spacing) * 1.5);
 }
 
 .container {

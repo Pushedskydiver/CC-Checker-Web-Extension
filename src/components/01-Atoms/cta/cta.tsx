@@ -9,88 +9,88 @@ export type TButton = React.ButtonHTMLAttributes<HTMLButtonElement> & CtaShared;
 export type TLinkButton = React.AnchorHTMLAttributes<HTMLAnchorElement> & CtaShared;
 
 type CtaShared = React.PropsWithChildren<{
-  className?: string;
+	className?: string;
 }>;
 
 export const Button: React.FC<TButton> = ({
-  children,
-  type = 'button',
-  className,
-  onClick,
-  ...buttonAttributes
+	children,
+	type = 'button',
+	className,
+	onClick,
+	...buttonAttributes
 }) => {
-  const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    if (onClick) {
-      onClick(e);
-    }
-  };
+	const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+		if (onClick) {
+			onClick(e);
+		}
+	};
 
-  return (
-    <button
-      type={type}
-      onClick={handleClick}
-      className={clsx(
-        styles.cta,
-        isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
-        isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
-        className,
-      )}
-      {...buttonAttributes}
-    >
-      {children}
-    </button>
-  );
+	return (
+		<button
+			type={type}
+			onClick={handleClick}
+			className={clsx(
+				styles.cta,
+				isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
+				isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
+				className,
+			)}
+			{...buttonAttributes}
+		>
+			{children}
+		</button>
+	);
 };
 
 export const LinkButton: React.FC<TLinkButton> = ({
-  href,
-  children,
-  className,
-  onClick,
-  ...linkAttributes
+	href,
+	children,
+	className,
+	onClick,
+	...linkAttributes
 }) => {
-  const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-    if (onClick) {
-      onClick(e);
-    }
-  };
+	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+		if (onClick) {
+			onClick(e);
+		}
+	};
 
-  return (
-    <a
-      href={href}
-      onClick={handleClick}
-      className={clsx(
-        styles.cta,
-        isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
-        isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
-        className,
-      )}
-      {...linkAttributes}
-    >
-      {children}
-    </a>
-  );
+	return (
+		<a
+			href={href}
+			onClick={handleClick}
+			className={clsx(
+				styles.cta,
+				isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
+				isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
+				className,
+			)}
+			{...linkAttributes}
+		>
+			{children}
+		</a>
+	);
 };
 
 type TCtaText = {
-  children: React.ReactNode;
-  className?: string;
+	children: React.ReactNode;
+	className?: string;
 };
 
 const CtaText: React.FC<TCtaText> = ({ children, className }) => (
-  <Text
-    role="presentation"
-    weight="medium"
-    className={clsx(styles.content, className)}
-  >
-    {children}
-  </Text>
+	<Text
+		role="presentation"
+		weight="medium"
+		className={clsx(styles.content, className)}
+	>
+		{children}
+	</Text>
 );
 
 export const CtaContent = {
-  Text: CtaText,
+	Text: CtaText,
 };

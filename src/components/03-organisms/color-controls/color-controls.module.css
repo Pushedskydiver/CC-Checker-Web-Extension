@@ -2,13 +2,7 @@
 	margin-block-end: calc(var(--base-spacing) * 3);
 }
 
-.container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 35rem), 1fr));
-	gap: calc(var(--base-spacing) * 4.5);
-}
-
 .control {
 	display: grid;
-	gap: calc(var(--base-spacing) * 3);
+	gap: calc(var(--base-spacing) * 2);
 }

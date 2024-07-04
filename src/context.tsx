@@ -40,7 +40,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	const localLevel = storedLevel ? JSON.parse(storedLevel) : levels;
 
 	const handlePickedColorRef = useRef(handlePickedColor);
-
+	
 	const [colors, setColors] = useState<TColors[]>(localColors);
 	const [background, setBackground] = useState<number[]>(localBackground);
 	const [foreground, setForeground] = useState<number[]>(localForeground);
@@ -69,8 +69,11 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		const isBackground = name === 'background';
 		const isForeground = name === 'foreground';
 
-		const localBg = JSON.parse(localStorage.getItem('background') as string);
-		const localFg = JSON.parse(localStorage.getItem('foreground') as string);
+		const storedBg = localStorage.getItem('background');
+		const storedFg = localStorage.getItem('foreground');
+
+		const localBg = storedBg ? JSON.parse(storedBg) : background;
+		const localFg = storedFg ? JSON.parse(storedFg) : foreground;
 
 		const bg = isBackground ? hslToHex(value) : hslToHex(localBg);
 		const fg = isForeground ? hslToHex(value) : hslToHex(localFg);
@@ -126,22 +129,22 @@ const ColourContrastProvider = (props: ProviderProps) => {
 
 		handleContrastCheck(value, key);
 
-		// chrome.runtime.sendMessage({
-		// 	type: 'closeColorPicker'
-		// });
+		chrome.runtime.sendMessage({
+			type: 'closeColorPicker'
+		});
 	}
 
 	useEffect(() => {
-		// if (chrome.runtime.onMessage) {
-		// 	chrome.runtime.onMessage.addListener(request => {
-		// 		switch (request.type) {
-		// 			case 'colorPicked':
-		// 				handlePickedColorRef.current(request);
-		// 				break;
-		// 			default:
-		// 		}
-		// 	});
-		// }
+		if (chrome.runtime.onMessage) {
+			chrome.runtime.onMessage.addListener(request => {
+				switch (request.type) {
+					case 'colorPicked':
+						handlePickedColorRef.current(request);
+						break;
+					default:
+				}
+			});
+		}
 
 		if (localStorage.getItem('contrast') !== null) {
 			if (foreground[0] === null) {

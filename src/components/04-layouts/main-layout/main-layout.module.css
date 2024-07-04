@@ -18,10 +18,10 @@
 
 	@media (width >= --bp-medium) {
 		grid-template-columns: 1fr 1fr;
+		gap: calc(var(--base-spacing) * 3);
 	}
 
 	@media (width >= --bp-large) {
-		grid-template-columns: 3fr 2fr 2fr;
-		gap: calc(var(--base-spacing) * 6);
+		grid-template-columns: 2.75fr 2fr 2fr;
 	}
 }

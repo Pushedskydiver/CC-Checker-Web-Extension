@@ -30,8 +30,8 @@
 .tab {
 	position: relative;
 	display: block;
-	padding-block: calc(var(--base-spacing) * 1.5);
-	padding-inline: calc(var(--base-spacing) * 3);
+	padding-block: var(--base-spacing);
+	padding-inline: calc(var(--base-spacing) * 2);
 	border-block-start: 3px solid transparent;
 	border-inline: 3px solid transparent;
 	border-start-end-radius: calc(var(--base-spacing) / 2);
@@ -67,7 +67,7 @@
 }
 
 .panel {
-	padding: calc(var(--base-spacing) * 3) calc(var(--base-spacing) * 1.5);
+	padding: calc(var(--base-spacing) * 2) calc(var(--base-spacing) * 1.5);
 	border: 3px solid var(--tabs-foreground-color);
 	border-start-end-radius: calc(var(--base-spacing) / 2);
 	border-end-start-radius: calc(var(--base-spacing) / 2);

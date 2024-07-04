@@ -8,17 +8,17 @@ import { MainLayout } from './04-layouts/main-layout/main-layout';
 import '../styles/globals.css';
 
 const App = (): JSX.Element => (
-  <ColourContrastProvider>
-    <Header />
+	<ColourContrastProvider>
+		<Header />
 
-    <MainLayout>
-      <Score />
+		<MainLayout>
+			<Score />
 
-      <ColorControls />
-    </MainLayout>
+			<ColorControls />
+		</MainLayout>
 
-    <Footer />
-  </ColourContrastProvider>
+		<Footer />
+	</ColourContrastProvider>
 );
 
 export default App;
