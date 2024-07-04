@@ -11,14 +11,14 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "ES2019",
+    "target": "ES2022",
     "jsx": "react-jsx",
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2019"
+      "ES2022"
     ],
-    "types": ["react/canary", "chrome"],
+    "types": ["chrome"],
     "allowSyntheticDefaultImports": true,
     "declarationMap": true,
     "strict": true,

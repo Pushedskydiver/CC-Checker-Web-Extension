@@ -42,6 +42,7 @@
     "build": "INLINE_RUNTIME_CHUNK=false craco build",
     "test": "craco test",
     "lint:css": "stylelint \"./**/*.{css,scss}\" --fix",
+    "lint:ts": "tsc -p tsconfig.json --noEmit",
     "eject": "react-scripts eject"
   },
   "engines": {
