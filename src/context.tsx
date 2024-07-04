@@ -126,22 +126,22 @@ const ColourContrastProvider = (props: ProviderProps) => {
 
 		handleContrastCheck(value, key);
 
-		chrome.runtime.sendMessage({
-			type: 'closeColorPicker'
-		});
+		// chrome.runtime.sendMessage({
+		// 	type: 'closeColorPicker'
+		// });
 	}
 
 	useEffect(() => {
-		if (chrome.runtime.onMessage) {
-			chrome.runtime.onMessage.addListener(request => {
-				switch (request.type) {
-					case 'colorPicked':
-						handlePickedColorRef.current(request);
-						break;
-					default:
-				}
-			});
-		}
+		// if (chrome.runtime.onMessage) {
+		// 	chrome.runtime.onMessage.addListener(request => {
+		// 		switch (request.type) {
+		// 			case 'colorPicked':
+		// 				handlePickedColorRef.current(request);
+		// 				break;
+		// 			default:
+		// 		}
+		// 	});
+		// }
 
 		if (localStorage.getItem('contrast') !== null) {
 			if (foreground[0] === null) {

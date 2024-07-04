@@ -13,9 +13,9 @@ export const Actions: React.FC = () => {
   const shareUrl = `https://colourcontrast.cc/${bg[1]}/${fg[1]}`;
 
   const closeChecker = () => {
-    chrome.runtime.sendMessage({
-      type: 'closeChecker'
-    });
+    // chrome.runtime.sendMessage({
+    //   type: 'closeChecker'
+    // });
   }
 
   return (
