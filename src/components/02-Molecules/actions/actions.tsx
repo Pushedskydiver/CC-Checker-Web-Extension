@@ -10,7 +10,7 @@ export const Actions: React.FC = () => {
 	const { background, foreground, reverseColors } = useColourContrast();
 	const bg = hslToHex(background).split('#');
 	const fg = hslToHex(foreground).split('#');
-	const shareUrl = `https://colourcontrast.cc/${bg[1]}/${fg[1]}`;
+	const shareUrl = `https://colourcontrast.cc/?background=${bg[1]}&foreground=${fg[1]}`;
 
 	const closeChecker = () => {
 		chrome.runtime.sendMessage({
