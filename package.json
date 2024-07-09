@@ -30,7 +30,7 @@
     "@types/react": "^18.2.20",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.7",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.39",
     "postcss-preset-env": "^9.5.14",
     "postcss-sort-media-queries": "^5.2.0",
     "prettier": "^3.3.2",
