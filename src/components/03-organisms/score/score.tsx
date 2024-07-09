@@ -1,6 +1,6 @@
-import { Ratio } from "~/components/01-atoms/ratio/ratio";
-import { TextSwatch } from "~/components/01-atoms/text-swatch/text-swatch";
-import { Wcag } from "~/components/02-molecules/wcag/wcag";
+import { Ratio } from '~/components/01-atoms/ratio/ratio';
+import { TextSwatch } from '~/components/01-atoms/text-swatch/text-swatch';
+import { Wcag } from '~/components/02-molecules/wcag/wcag';
 
 import styles from './score.module.css';
 
@@ -15,4 +15,4 @@ export const Score: React.FC = () => (
 			<Wcag id="grades" />
 		</div>
 	</section>
-)
+);

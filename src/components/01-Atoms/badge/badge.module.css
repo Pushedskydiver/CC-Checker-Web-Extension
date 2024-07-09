@@ -37,7 +37,7 @@
 .badgeText {
 	--badge-text-color: var(--foreground-color);
 
-	color: var(--badge-text-color)
+	color: var(--badge-text-color);
 }
 
 .badgeTextDark {

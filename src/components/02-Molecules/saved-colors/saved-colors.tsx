@@ -1,7 +1,7 @@
 import { useColourContrast } from '~/context';
 import { hslToHex } from '~/utils/color-utils';
-import { Button, CtaContent } from "~/components/01-atoms/cta/cta";
-import { ColorSwatch } from "~/components/01-atoms/color-swatch/color-swatch";
+import { Button, CtaContent } from '~/components/01-atoms/cta/cta';
+import { ColorSwatch } from '~/components/01-atoms/color-swatch/color-swatch';
 
 import styles from './saved-colors.module.css';
 
@@ -16,7 +16,7 @@ export const SavedColors: React.FC = () => {
 			background={swatch.background}
 			foreground={swatch.foreground}
 		/>
-	)
+	);
 
 	const saveColors = (): void => {
 		const storedColors = localStorage.getItem('colors');
@@ -24,7 +24,9 @@ export const SavedColors: React.FC = () => {
 		const bg = hslToHex(background);
 		const fg = hslToHex(foreground);
 
-		const sameColors = colors.some((color) => color.background === bg && color.foreground === fg);
+		const sameColors = colors.some(
+			(color) => color.background === bg && color.foreground === fg,
+		);
 
 		if (colors.length > 0 && sameColors) {
 			return;
@@ -37,7 +39,7 @@ export const SavedColors: React.FC = () => {
 		colors.unshift({ background: bg, foreground: fg });
 		localStorage.setItem('colors', JSON.stringify(colors));
 		setColors(colors);
-	}
+	};
 
 	return (
 		<div className={styles.actions}>
@@ -51,5 +53,5 @@ export const SavedColors: React.FC = () => {
 				</ul>
 			) : null}
 		</div>
-	)
-}
+	);
+};

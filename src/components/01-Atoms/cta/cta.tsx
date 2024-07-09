@@ -1,12 +1,13 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 import { useColourContrast } from '~/context';
-import { Text } from "../text/text";
+import { Text } from '../text/text';
 
 import styles from './cta.module.css';
 
 export type TButton = React.ButtonHTMLAttributes<HTMLButtonElement> & CtaShared;
 
-export type TLinkButton = React.AnchorHTMLAttributes<HTMLAnchorElement> & CtaShared;
+export type TLinkButton = React.AnchorHTMLAttributes<HTMLAnchorElement> &
+	CtaShared;
 
 type CtaShared = React.PropsWithChildren<{
 	className?: string;
@@ -33,8 +34,12 @@ export const Button: React.FC<TButton> = ({
 			onClick={handleClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.ctaDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.ctaLight
+					: undefined,
 				className,
 			)}
 			{...buttonAttributes}
@@ -65,8 +70,12 @@ export const LinkButton: React.FC<TLinkButton> = ({
 			onClick={handleClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.ctaDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.ctaLight
+					: undefined,
 				className,
 			)}
 			{...linkAttributes}

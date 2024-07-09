@@ -33,6 +33,7 @@
     "postcss": "^8.4.38",
     "postcss-preset-env": "^9.5.14",
     "postcss-sort-media-queries": "^5.2.0",
+    "prettier": "^3.3.2",
     "stylelint": "^16.6.1",
     "stylelint-order": "^6.0.4",
     "stylelint-use-logical": "^2.1.2"
@@ -40,9 +41,10 @@
   "scripts": {
     "start": "craco start",
     "build": "INLINE_RUNTIME_CHUNK=false craco build",
-    "test": "craco test",
+    "format": "prettier \"*/**/*.{js,jsx,ts,tsx,json,md,css,scss}\" --write",
     "lint:css": "stylelint \"./**/*.{css,scss}\" --fix",
     "lint:ts": "tsc -p tsconfig.json --noEmit",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "engines": {

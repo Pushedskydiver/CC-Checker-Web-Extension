@@ -12,10 +12,22 @@ export const Header: React.FC = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
-				<SkipLink href="#ratio" bodyText="Skip to colour contrast ratio" />
-				<SkipLink href="#grades" bodyText="Skip to colour contrast grades" />
-				<SkipLink href="#background" bodyText="Skip to background colour input" />
-				<SkipLink href="#foreground" bodyText="Skip to foreground colour input" />
+				<SkipLink
+					href="#ratio"
+					bodyText="Skip to colour contrast ratio"
+				/>
+				<SkipLink
+					href="#grades"
+					bodyText="Skip to colour contrast grades"
+				/>
+				<SkipLink
+					href="#background"
+					bodyText="Skip to background colour input"
+				/>
+				<SkipLink
+					href="#foreground"
+					bodyText="Skip to foreground colour input"
+				/>
 
 				<Text
 					tag="h1"
@@ -23,8 +35,12 @@ export const Header: React.FC = () => {
 					weight="semiBold"
 					className={clsx(
 						styles.title,
-						isPoorContrast && !isBackgroundDark ? styles.titleDark : undefined,
-						isPoorContrast && isBackgroundDark ? styles.titleLight : undefined,
+						isPoorContrast && !isBackgroundDark
+							? styles.titleDark
+							: undefined,
+						isPoorContrast && isBackgroundDark
+							? styles.titleLight
+							: undefined,
 					)}
 				>
 					Colour contrast checker
@@ -34,4 +50,4 @@ export const Header: React.FC = () => {
 			</div>
 		</header>
 	);
-}
+};

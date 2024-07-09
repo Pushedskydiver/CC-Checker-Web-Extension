@@ -1,6 +1,6 @@
 import { useColourContrast } from '~/context';
 import { colorToHsl } from '~/utils/color-utils';
-import { Text } from "../text/text";
+import { Text } from '../text/text';
 
 import styles from './color-swatch.module.css';
 import clsx from 'clsx';
@@ -8,24 +8,24 @@ import clsx from 'clsx';
 export type TColorSwatch = {
 	background: string;
 	foreground: string;
-}
+};
 
 export const ColorSwatch: React.FC<TColorSwatch> = ({
 	background,
 	foreground,
 }) => {
-	const { isPoorContrast, isBackgroundDark, updateView } = useColourContrast();
+	const { isPoorContrast, isBackgroundDark, updateView } =
+		useColourContrast();
 
 	const applyColors = (): void => {
 		const bg = colorToHsl(background);
 		const fg = colorToHsl(foreground);
 
-
 		localStorage.setItem('background', JSON.stringify(bg));
 		localStorage.setItem('foreground', JSON.stringify(fg));
 
 		updateView(bg, fg);
-	}
+	};
 
 	return (
 		<button
@@ -39,11 +39,17 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 			}}
 			className={clsx(
 				styles.swatch,
-				isPoorContrast && !isBackgroundDark ? styles.swatchDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.swatchLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.swatchDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.swatchLight
+					: undefined,
 			)}
 		>
-			<Text size="script" weight="semiBold" role="presentation">Aa</Text>
+			<Text size="script" weight="semiBold" role="presentation">
+				Aa
+			</Text>
 		</button>
-	)
-}
+	);
+};

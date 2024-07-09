@@ -28,15 +28,15 @@ export const TextInput: React.FC<TTextInput> = ({
 				htmlFor={id}
 				className={clsx(
 					styles.label,
-					isPoorContrast && !isBackgroundDark ? styles.labelDark : undefined,
-					isPoorContrast && isBackgroundDark ? styles.labelLight : undefined,
+					isPoorContrast && !isBackgroundDark
+						? styles.labelDark
+						: undefined,
+					isPoorContrast && isBackgroundDark
+						? styles.labelLight
+						: undefined,
 				)}
 			>
-				<Text
-					size="pulse"
-					weight="medium"
-					role="presentation"
-				>
+				<Text size="pulse" weight="medium" role="presentation">
 					{labelText}
 				</Text>
 			</label>
@@ -57,8 +57,12 @@ export const TextInput: React.FC<TTextInput> = ({
 					onChange={onChange}
 					className={clsx(
 						styles.input,
-						isPoorContrast && !isBackgroundDark ? styles.inputDark : undefined,
-						isPoorContrast && isBackgroundDark ? styles.inputLight : undefined,
+						isPoorContrast && !isBackgroundDark
+							? styles.inputDark
+							: undefined,
+						isPoorContrast && isBackgroundDark
+							? styles.inputLight
+							: undefined,
 					)}
 				/>
 
@@ -73,5 +77,5 @@ export const TextInput: React.FC<TTextInput> = ({
 				</ul>
 			</Text>
 		</div>
-	)
-}
+	);
+};

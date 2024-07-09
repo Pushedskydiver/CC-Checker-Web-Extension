@@ -10,7 +10,7 @@ const nanH = (h: number): number => (Number.isNaN(h) || h === null ? 0 : h);
 export type TColourControl = {
 	id: string;
 	type?: 'hsl' | 'rgb';
-}
+};
 
 export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
@@ -24,8 +24,8 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	const valueB = isRgb ? value[1] : round(value[1], 2.5);
 	const valueC = isRgb ? value[2] : round(value[2], 2);
 	const labelTextA = isRgb ? `Red ${valueA}` : `Hue ${valueA}°`;
-	const labelTextB = isRgb ? `Blue ${valueB}` : `Saturation ${valueB}`;
-	const labelTextC = isRgb ? `Green ${valueC}` : `Lightness ${valueC}`;
+	const labelTextB = isRgb ? `Green ${valueB}` : `Saturation ${valueB}`;
+	const labelTextC = isRgb ? `Blue ${valueC}` : `Lightness ${valueC}`;
 
 	const handleChange = ({ target }: { target: HTMLInputElement }): void => {
 		const abc = [...value];
@@ -38,7 +38,7 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 		const colorValue = isRgb ? rgbToHsl(abc) : abc;
 
 		handleContrastCheck(colorValue, id);
-	}
+	};
 
 	return (
 		<div className={styles.control}>
@@ -53,7 +53,7 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 			/>
 
 			<RangeInput
-				id={`${id}${isRgb ? 'Blue' : 'Saturation'}`}
+				id={`${id}${isRgb ? 'Green' : 'Saturation'}`}
 				labelText={labelTextB}
 				max={isRgb ? '255' : '1'}
 				step={isRgb ? 1 : 1 / 256}
@@ -63,7 +63,7 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 			/>
 
 			<RangeInput
-				id={`${id}${isRgb ? 'Green' : 'Lightness'}`}
+				id={`${id}${isRgb ? 'Blue' : 'Lightness'}`}
 				labelText={labelTextC}
 				max={isRgb ? '255' : '1'}
 				property="2"
@@ -72,5 +72,5 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 				onChange={handleChange}
 			/>
 		</div>
-	)
-}
+	);
+};

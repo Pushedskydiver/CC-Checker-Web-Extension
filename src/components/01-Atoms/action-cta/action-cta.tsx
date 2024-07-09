@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { useColourContrast } from "~/context";
+import clsx from 'clsx';
+import { useColourContrast } from '~/context';
 
 import styles from './action-cta.module.css';
 
@@ -10,7 +10,7 @@ export type TActionCta = {
 	className?: string;
 	children?: React.ReactNode;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+};
 
 export const ActionCta: React.FC<TActionCta> = ({
 	label,
@@ -29,8 +29,12 @@ export const ActionCta: React.FC<TActionCta> = ({
 			onClick={onClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark ? styles.ctaDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.ctaLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.ctaDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.ctaLight
+					: undefined,
 				withBackground ? styles.ctaWithBackground : undefined,
 				className,
 			)}
@@ -38,5 +42,5 @@ export const ActionCta: React.FC<TActionCta> = ({
 			{icon}
 			{children}
 		</button>
-	)
-}
+	);
+};

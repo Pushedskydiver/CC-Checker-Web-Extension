@@ -1,8 +1,8 @@
-import { useColourContrast } from "~/context";
-import { hslToHex } from "~/utils/color-utils";
-import { ActionCta } from "~/components/01-atoms/action-cta/action-cta"
-import { CopyCta } from "~/components/01-atoms/copy-cta/copy-cta";
-import { Cross, Swap } from "~/components/01-atoms/icon/icon";
+import { useColourContrast } from '~/context';
+import { hslToHex } from '~/utils/color-utils';
+import { ActionCta } from '~/components/01-atoms/action-cta/action-cta';
+import { CopyCta } from '~/components/01-atoms/copy-cta/copy-cta';
+import { Cross, Swap } from '~/components/01-atoms/icon/icon';
 
 import styles from './actions.module.css';
 
@@ -14,9 +14,9 @@ export const Actions: React.FC = () => {
 
 	const closeChecker = () => {
 		chrome.runtime.sendMessage({
-			type: 'closeChecker'
+			type: 'closeChecker',
 		});
-	}
+	};
 
 	return (
 		<ul className={styles.list} aria-label="Actions">
@@ -47,5 +47,5 @@ export const Actions: React.FC = () => {
 				/>
 			</li>
 		</ul>
-	)
-}
+	);
+};

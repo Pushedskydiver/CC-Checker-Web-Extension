@@ -4,25 +4,23 @@ import { Badge } from '~/components/01-atoms/badge/badge';
 import styles from './wcag.module.css';
 
 export interface WcagProps {
-	id: string
+	id: string;
 }
 
 export const Wcag: React.FC<WcagProps> = ({ id }) => {
 	const { level } = useColourContrast();
 	const { AALarge, AAALarge, AA, AAA } = level;
-	``
+	``;
 	return (
-		<ul
-			className={styles.list}
-			aria-label="Colour contrast grades"
-			id={id}
-		>
+		<ul className={styles.list} aria-label="Colour contrast grades" id={id}>
 			<li
 				className={styles.item}
 				aria-live="polite"
 				aria-label={`AA Large. ${AALarge === 'Pass' ? 'Pass' : 'Fail'}`}
 			>
-				<Badge grade={AALarge} type="AA Large">{AALarge}</Badge>
+				<Badge grade={AALarge} type="AA Large">
+					{AALarge}
+				</Badge>
 			</li>
 
 			<li
@@ -30,7 +28,9 @@ export const Wcag: React.FC<WcagProps> = ({ id }) => {
 				aria-live="polite"
 				aria-label={`AAA Large. ${AAALarge}`}
 			>
-				<Badge grade={AAALarge} type="AAA Large">{AAALarge}</Badge>
+				<Badge grade={AAALarge} type="AAA Large">
+					{AAALarge}
+				</Badge>
 			</li>
 
 			<li
@@ -38,7 +38,9 @@ export const Wcag: React.FC<WcagProps> = ({ id }) => {
 				aria-live="polite"
 				aria-label={`AA. ${AA}`}
 			>
-				<Badge grade={AA} type="AA Normal">{AA}</Badge>
+				<Badge grade={AA} type="AA Normal">
+					{AA}
+				</Badge>
 			</li>
 
 			<li
@@ -46,8 +48,10 @@ export const Wcag: React.FC<WcagProps> = ({ id }) => {
 				aria-live="polite"
 				aria-label={`AAA. ${AAA}`}
 			>
-				<Badge grade={AAA} type="AAA Normal">{AAA}</Badge>
+				<Badge grade={AAA} type="AAA Normal">
+					{AAA}
+				</Badge>
 			</li>
 		</ul>
 	);
-}
+};

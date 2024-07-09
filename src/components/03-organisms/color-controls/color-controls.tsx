@@ -47,26 +47,26 @@ export const ColorControls: React.FC = () => {
 		if (!isShortHand && hslValue) {
 			handleContrastCheck(hslValue, name);
 		}
-	}
+	};
 
 	const handleBgChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const value = e.target.value;
 
 		setBgValue(value);
 		handleOnChange(e);
-	}
+	};
 
 	const handleFgChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const value = e.target.value;
 
 		setFgValue(value);
 		handleOnChange(e);
-	}
+	};
 
 	useEffect(() => {
 		setBgValue(hslToHex(background));
 		setFgValue(hslToHex(foreground));
-	}, [background, foreground])
+	}, [background, foreground]);
 
 	return (
 		<>
@@ -102,7 +102,10 @@ export const ColorControls: React.FC = () => {
 				/>
 			</section>
 
-			<section className={styles.control} aria-label="Foreground colour controls">
+			<section
+				className={styles.control}
+				aria-label="Foreground colour controls"
+			>
 				<TextInput
 					id="foreground"
 					labelText="Foreground colour"
@@ -131,5 +134,5 @@ export const ColorControls: React.FC = () => {
 				/>
 			</section>
 		</>
-	)
-}
+	);
+};

@@ -6,7 +6,7 @@ import styles from './skip-link.module.css';
 export type TSkipLink = {
 	href: string;
 	bodyText: string;
-}
+};
 
 export const SkipLink: React.FC<TSkipLink> = ({ href, bodyText }) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
@@ -16,11 +16,15 @@ export const SkipLink: React.FC<TSkipLink> = ({ href, bodyText }) => {
 			href={href}
 			className={clsx(
 				styles.link,
-				isPoorContrast && !isBackgroundDark ? styles.linkDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.linkLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.linkDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.linkLight
+					: undefined,
 			)}
 		>
 			{bodyText}
 		</a>
-	)
-}
+	);
+};

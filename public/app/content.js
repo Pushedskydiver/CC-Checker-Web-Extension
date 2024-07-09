@@ -56,171 +56,171 @@ const css = `
 `;
 
 function getColorData(e) {
-  const key = keyValue;
-  const canvas = e.target.querySelector('[data-cc-canvas]');
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  const data = ctx.getImageData(3, 3, 1, 1).data;
-  const rgb = [data[0], data[1], data[2]];
+	const key = keyValue;
+	const canvas = e.target.querySelector('[data-cc-canvas]');
+	const ctx = canvas.getContext('2d', { willReadFrequently: true });
+	const data = ctx.getImageData(3, 3, 1, 1).data;
+	const rgb = [data[0], data[1], data[2]];
 
-  e.target.removeEventListener(e.type, f => getColorData(f.key));
+	e.target.removeEventListener(e.type, (f) => getColorData(f.key));
 
-  chrome.runtime.sendMessage({
-    type: 'colorPicked',
-    key,
-    rgb
-  });
+	chrome.runtime.sendMessage({
+		type: 'colorPicked',
+		key,
+		rgb,
+	});
 }
 
 function setCanvasData(e) {
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
-  const canvas = canvasWrapper.querySelector('[data-cc-canvas]');
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvas = canvasWrapper.querySelector('[data-cc-canvas]');
+	const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-  const r = (e.clientX * dpr) - 8;
-  const o = (e.clientY * dpr) - 8;
-  const f = e.pageY - 40;
-  const c = e.pageX - 40;
+	const r = e.clientX * dpr - 8;
+	const o = e.clientY * dpr - 8;
+	const f = e.pageY - 40;
+	const c = e.pageX - 40;
 
-  ctx.drawImage(image, r, o, 8, 8, 0, 0, 8, 8);
+	ctx.drawImage(image, r, o, 8, 8, 0, 0, 8, 8);
 
-  canvasWrapper.style.top = `${f}px`;
-  canvasWrapper.style.left = `${c}px`;
+	canvasWrapper.style.top = `${f}px`;
+	canvasWrapper.style.left = `${c}px`;
 }
 
 function updateScreenShot() {
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
 
-  canvasWrapper.style.display = 'none';
+	canvasWrapper.style.display = 'none';
 
-  const delayScreenshot = setTimeout(() => {
-    chrome.runtime.sendMessage({ type: 'updateScreenShot' });
+	const delayScreenshot = setTimeout(() => {
+		chrome.runtime.sendMessage({ type: 'updateScreenShot' });
 
-    clearTimeout(delayScreenshot);
-  }, 66);
+		clearTimeout(delayScreenshot);
+	}, 66);
 }
 
 function scrollStop() {
-  clearTimeout(scrollStopDelay);
+	clearTimeout(scrollStopDelay);
 
-  scrollStopDelay = setTimeout(() => {
-    updateScreenShot();
-  }, 66);
+	scrollStopDelay = setTimeout(() => {
+		updateScreenShot();
+	}, 66);
 }
 
 function closeColorPicker() {
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
 
-  canvasWrapper.style.display = 'none';
+	canvasWrapper.style.display = 'none';
 
-  window.removeEventListener('resize', scrollStop);
-  window.removeEventListener('scroll', scrollStop);
+	window.removeEventListener('resize', scrollStop);
+	window.removeEventListener('scroll', scrollStop);
 
-  document.body.removeEventListener('mousemove', setCanvasData);
-  document.body.style.cursor = 'auto';
+	document.body.removeEventListener('mousemove', setCanvasData);
+	document.body.style.cursor = 'auto';
 
-  canvasWrapper.removeEventListener('click', getColorData);
+	canvasWrapper.removeEventListener('click', getColorData);
 }
 
 function getScreenshot({ key, data }) {
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
 
-  keyValue = key;
-  image.src = data;
-  canvasWrapper.style.display = 'block';
-  document.body.style.cursor = 'none';
+	keyValue = key;
+	image.src = data;
+	canvasWrapper.style.display = 'block';
+	document.body.style.cursor = 'none';
 
-  window.addEventListener('resize', scrollStop);
-  window.addEventListener('scroll', scrollStop);
-  document.body.addEventListener('mousemove', setCanvasData);
-  canvasWrapper.addEventListener('click', getColorData);
+	window.addEventListener('resize', scrollStop);
+	window.addEventListener('scroll', scrollStop);
+	document.body.addEventListener('mousemove', setCanvasData);
+	canvasWrapper.addEventListener('click', getColorData);
 }
 
 function updateImage({ data }) {
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
 
-  canvasWrapper.style.display = 'block';
-  image.src = data;
+	canvasWrapper.style.display = 'block';
+	image.src = data;
 }
 
 function addIframe() {
-  const iframe = document.createElement('iframe');
+	const iframe = document.createElement('iframe');
 
-  iframe.setAttribute('data-cc-checker', '');
-  iframe.setAttribute('referrerpolicy', 'no-referrer');
-  iframe.className = 'cc__iframe';
-  iframe.title = 'Colour contrast checker browser extension';
-  iframe.src = chrome.runtime.getURL('index.html');
+	iframe.setAttribute('data-cc-checker', '');
+	iframe.setAttribute('referrerpolicy', 'no-referrer');
+	iframe.className = 'cc__iframe';
+	iframe.title = 'Colour contrast checker browser extension';
+	iframe.src = chrome.runtime.getURL('index.html');
 
-  document.body.appendChild(iframe);
+	document.body.appendChild(iframe);
 }
 
 function addCanvas() {
-  const style = document.createElement('style');
-  const canvasWrapper = document.createElement('div');
-  const canvas = document.createElement('canvas');
+	const style = document.createElement('style');
+	const canvasWrapper = document.createElement('div');
+	const canvas = document.createElement('canvas');
 
-  style.ty = 'text/css';
-  style.setAttribute('data-cc-styles', '');
-  style.appendChild(document.createTextNode(css));
+	style.ty = 'text/css';
+	style.setAttribute('data-cc-styles', '');
+	style.appendChild(document.createTextNode(css));
 
-  canvasWrapper.className = 'cc-canvas__wrapper';
-  canvasWrapper.setAttribute('data-cc-canvas-wrapper', '');
+	canvasWrapper.className = 'cc-canvas__wrapper';
+	canvasWrapper.setAttribute('data-cc-canvas-wrapper', '');
 
-  canvas.setAttribute('data-cc-canvas', '');
-  canvas.className = 'cc-canvas';
-  canvas.width = 8;
-  canvas.height = 8;
+	canvas.setAttribute('data-cc-canvas', '');
+	canvas.className = 'cc-canvas';
+	canvas.width = 8;
+	canvas.height = 8;
 
-  canvasWrapper.appendChild(canvas);
+	canvasWrapper.appendChild(canvas);
 
-  document.body.appendChild(style);
-  document.body.appendChild(canvasWrapper);
+	document.body.appendChild(style);
+	document.body.appendChild(canvasWrapper);
 }
 
 function initChecker() {
-  const checker = document.querySelector('[data-cc-checker]');
+	const checker = document.querySelector('[data-cc-checker]');
 
-  if (checker !== null) return;
+	if (checker !== null) return;
 
-  addIframe();
-  addCanvas();
+	addIframe();
+	addCanvas();
 }
 
 function closeChecker() {
-  const checker = document.querySelector('[data-cc-checker]');
-  const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
-  const styles = document.querySelector('[data-cc-styles]')
+	const checker = document.querySelector('[data-cc-checker]');
+	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const styles = document.querySelector('[data-cc-styles]');
 
-  document.body.setAttribute('style', 'cursor: auto;');
+	document.body.setAttribute('style', 'cursor: auto;');
 
-  canvasWrapper.style.display = 'none';
+	canvasWrapper.style.display = 'none';
 
-  checker.remove();
-  styles.remove();
+	checker.remove();
+	styles.remove();
 }
 
 chrome.runtime.onMessage.addListener((r) => {
-  switch (r.type) {
-    case 'closeColorPicker':
-      closeColorPicker();
-      break;
+	switch (r.type) {
+		case 'closeColorPicker':
+			closeColorPicker();
+			break;
 
-    case 'getScreenshot':
-      getScreenshot(r);
-      break;
+		case 'getScreenshot':
+			getScreenshot(r);
+			break;
 
-    case 'updateScreenShot':
-      updateImage(r);
-      break;
+		case 'updateScreenShot':
+			updateImage(r);
+			break;
 
-    case 'initChecker':
-      initChecker();
-      break;
+		case 'initChecker':
+			initChecker();
+			break;
 
-    case 'closeChecker':
-      closeChecker();
-      break;
+		case 'closeChecker':
+			closeChecker();
+			break;
 
-    default:
-  }
+		default:
+	}
 });

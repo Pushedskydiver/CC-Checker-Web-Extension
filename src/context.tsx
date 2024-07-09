@@ -1,31 +1,45 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { getContrast, getLevel, hslToHex, isDark, isHex, rgbToHsl } from './utils/color-utils';
+import { createContext, useContext, useEffect, useState } from 'react';
+import {
+	getContrast,
+	getLevel,
+	hslToHex,
+	isDark,
+	isHex,
+	rgbToHsl,
+} from './utils/color-utils';
 
 import type { TColors, TLevels, TPickedColor } from './global-types';
 
 export interface ProviderProps {
-	children: React.ReactNode
+	children: React.ReactNode;
 }
 
 export interface ColourContrastContextTypes {
-	colors: TColors[],
-	background: number[],
-	foreground: number[],
-	contrast: number,
-	level: TLevels,
-	isBackgroundDark: boolean,
-	isPoorContrast: boolean,
-	handleContrastCheck: (value: number[], name: string) => void,
-	reverseColors: () => void,
-	saveColors: () => void,
-	setColors: React.Dispatch<React.SetStateAction<TColors[]>>,
-	updateView: (bg: number[], fg: number[]) => void
+	colors: TColors[];
+	background: number[];
+	foreground: number[];
+	contrast: number;
+	level: TLevels;
+	isBackgroundDark: boolean;
+	isPoorContrast: boolean;
+	handleContrastCheck: (value: number[], name: string) => void;
+	reverseColors: () => void;
+	saveColors: () => void;
+	setColors: React.Dispatch<React.SetStateAction<TColors[]>>;
+	updateView: (bg: number[], fg: number[]) => void;
 }
 
-const ColourContrastContext = createContext<ColourContrastContextTypes | undefined>(undefined);
+const ColourContrastContext = createContext<
+	ColourContrastContextTypes | undefined
+>(undefined);
 
 const ColourContrastProvider = (props: ProviderProps) => {
-	const levels: TLevels = { AALarge: 'Pass', AA: 'Pass', AAALarge: 'Pass', AAA: 'Pass' };
+	const levels: TLevels = {
+		AALarge: 'Pass',
+		AA: 'Pass',
+		AAALarge: 'Pass',
+		AAA: 'Pass',
+	};
 
 	const storedColors = localStorage.getItem('colors');
 	const storedBackground = localStorage.getItem('background');
@@ -34,13 +48,15 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	const storedLevel = localStorage.getItem('level');
 
 	const localColors = storedColors ? JSON.parse(storedColors) : [];
-	const localBackground = storedBackground ? JSON.parse(storedBackground) : [49.73, 1, 0.71, 1];
-	const localForeground = storedForeground ? JSON.parse(storedForeground) : [NaN, 0, 0.133, 1];
+	const localBackground = storedBackground
+		? JSON.parse(storedBackground)
+		: [49.73, 1, 0.71, 1];
+	const localForeground = storedForeground
+		? JSON.parse(storedForeground)
+		: [NaN, 0, 0.133, 1];
 	const localContrast = storedContrast ? JSON.parse(storedContrast) : 12.72;
 	const localLevel = storedLevel ? JSON.parse(storedLevel) : levels;
 
-	const handlePickedColorRef = useRef(handlePickedColor);
-	
 	const [colors, setColors] = useState<TColors[]>(localColors);
 	const [background, setBackground] = useState<number[]>(localBackground);
 	const [foreground, setForeground] = useState<number[]>(localForeground);
@@ -92,7 +108,9 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		const colors: TColors[] = storedColors ? JSON.parse(storedColors) : [];
 		const bg = hslToHex(background);
 		const fg = hslToHex(foreground);
-		const sameColors = colors.some((color) => color.background === bg && color.foreground === fg);
+		const sameColors = colors.some(
+			(color) => color.background === bg && color.foreground === fg,
+		);
 
 		if (colors.length > 0 && sameColors) return;
 
@@ -130,33 +148,39 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		handleContrastCheck(value, key);
 
 		chrome.runtime.sendMessage({
-			type: 'closeColorPicker'
+			type: 'closeColorPicker',
 		});
 	}
 
+	function handleMessageListener(r: any) {
+		switch (r.type) {
+			case 'colorPicked':
+				handlePickedColor(r);
+				break;
+			default:
+		}
+	}
+
 	useEffect(() => {
-		if (chrome.runtime.onMessage) {
-			chrome.runtime.onMessage.addListener(request => {
-				switch (request.type) {
-					case 'colorPicked':
-						handlePickedColorRef.current(request);
-						break;
-					default:
-				}
-			});
+		chrome.runtime.onMessage.addListener(handleMessageListener);
+
+		return () => {
+			chrome.runtime.onMessage.removeListener(handleMessageListener);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (localStorage.getItem('contrast') === null) return;
+
+		if (foreground[0] === null) {
+			foreground[0] = NaN;
 		}
 
-		if (localStorage.getItem('contrast') !== null) {
-			if (foreground[0] === null) {
-				foreground[0] = NaN;
-			}
+		const backgroundHex = hslToHex(background);
+		const foregroundHex = hslToHex(foreground);
 
-			const backgroundHex = hslToHex(background);
-			const foregroundHex = hslToHex(foreground);
-
-			document.body.style.setProperty('--background-color', backgroundHex);
-			document.body.style.setProperty('--foreground-color', foregroundHex);
-		}
+		document.body.style.setProperty('--background-color', backgroundHex);
+		document.body.style.setProperty('--foreground-color', foregroundHex);
 	}, [background, foreground]);
 
 	return (
@@ -173,24 +197,26 @@ const ColourContrastProvider = (props: ProviderProps) => {
 				reverseColors,
 				saveColors,
 				setColors,
-				updateView
+				updateView,
 			}}
 		>
 			{props.children}
 		</ColourContrastContext.Provider>
 	);
-}
+};
 
 const useColourContrast = () => {
-	const context = useContext(ColourContrastContext)
+	const context = useContext(ColourContrastContext);
 
 	if (context === undefined) {
-		throw new Error('useColourContrast must be used within a ColourContrastProvider')
+		throw new Error(
+			'useColourContrast must be used within a ColourContrastProvider',
+		);
 	}
 
-	return context
-}
+	return context;
+};
 
-export { ColourContrastContext, useColourContrast }
+export { ColourContrastContext, useColourContrast };
 
 export default ColourContrastProvider;

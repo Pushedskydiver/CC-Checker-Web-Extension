@@ -14,11 +14,15 @@ export const Ratio: React.FC = () => {
 			weight="semiBold"
 			className={clsx(
 				styles.ratio,
-				isPoorContrast && !isBackgroundDark ? styles.ratioDark : undefined,
-				isPoorContrast && isBackgroundDark ? styles.ratioLight : undefined,
+				isPoorContrast && !isBackgroundDark
+					? styles.ratioDark
+					: undefined,
+				isPoorContrast && isBackgroundDark
+					? styles.ratioLight
+					: undefined,
 			)}
 		>
 			{contrast.toFixed(2)}
 		</Text>
 	);
-}
+};

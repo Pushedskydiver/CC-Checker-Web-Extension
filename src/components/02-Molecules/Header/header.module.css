@@ -5,7 +5,7 @@
 }
 
 .container {
-  --container: var(--container-max-width);
+	--container: var(--container-max-width);
 
 	composes: container from containers;
 	position: relative;

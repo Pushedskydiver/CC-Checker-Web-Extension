@@ -28,7 +28,8 @@
 
 	inline-size: 100%;
 	padding-block: calc(var(--base-spacing) / 2);
-	padding-inline: calc(var(--base-spacing) * 1.5) calc((var(--base-spacing) * 1.5) + 8.4rem);
+	padding-inline: calc(var(--base-spacing) * 1.5)
+		calc((var(--base-spacing) * 1.5) + 8.4rem);
 	border-radius: var(--base-spacing);
 	border: 3px solid var(--input-outline-color);
 	color: var(--input-color);
