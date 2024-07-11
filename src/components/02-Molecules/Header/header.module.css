@@ -29,3 +29,10 @@
 .titleLight {
 	--title-color: #fff;
 }
+
+.meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: calc(var(--base-spacing) * 4);
+}

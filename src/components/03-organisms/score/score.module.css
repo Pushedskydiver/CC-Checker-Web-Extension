@@ -1,5 +1,14 @@
+.section,
 .container {
 	display: grid;
+	gap: calc(var(--base-spacing) * 3);
+}
+
+.section {
+	gap: calc(var(--base-spacing) * 4);
+}
+
+.container {
 	gap: calc(var(--base-spacing) * 3);
 }
 

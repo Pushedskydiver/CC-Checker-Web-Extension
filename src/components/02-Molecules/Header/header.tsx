@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useColourContrast } from '~/context';
+import { BuyMeACoffeeCTA } from '~/components/01-atoms/bmc-cta/bmc-cta';
 import { Text } from '~/components/01-atoms/text/text';
 import { SkipLink } from '~/components/01-atoms/skip-link/skip-link';
 import { Actions } from '../actions/actions';
@@ -46,7 +47,11 @@ export const Header: React.FC = () => {
 					Colour contrast checker
 				</Text>
 
-				<Actions />
+				<div className={styles.meta}>
+					<BuyMeACoffeeCTA />
+
+					<Actions />
+				</div>
 			</div>
 		</header>
 	);
