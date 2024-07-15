@@ -22,6 +22,7 @@
 	}
 
 	@media (width >= --bp-large) {
-		grid-template-columns: 2.75fr 2fr 2fr;
+		grid-template-columns: repeat(12, 1fr);
+		gap: calc(var(--base-spacing) * 2.5);
 	}
 }

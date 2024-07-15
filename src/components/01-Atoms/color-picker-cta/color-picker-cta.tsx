@@ -8,9 +8,9 @@ export type TColorPickerCta = {
 export const ColorPickerCta: React.FC<TColorPickerCta> = ({ id }) => {
 	const checkPressedKey = (e: KeyboardEvent) => {
 		if (e.key === 'Escape') {
-			chrome.runtime.sendMessage({
-				type: 'closeColorPicker',
-			});
+			// chrome.runtime.sendMessage({
+			// 	type: 'closeColorPicker',
+			// });
 
 			document.removeEventListener('keyup', checkPressedKey);
 		}
@@ -19,10 +19,10 @@ export const ColorPickerCta: React.FC<TColorPickerCta> = ({ id }) => {
 	const capturePage = () => {
 		document.addEventListener('keyup', checkPressedKey);
 
-		chrome.runtime.sendMessage({
-			type: 'getScreenshot',
-			key: id,
-		});
+		// chrome.runtime.sendMessage({
+		// 	type: 'getScreenshot',
+		// 	key: id,
+		// });
 	};
 
 	return (

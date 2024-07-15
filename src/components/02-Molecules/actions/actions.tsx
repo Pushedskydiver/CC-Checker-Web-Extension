@@ -13,9 +13,9 @@ export const Actions: React.FC = () => {
 	const shareUrl = `https://colourcontrast.cc/?background=${bg[1]}&foreground=${fg[1]}`;
 
 	const closeChecker = () => {
-		chrome.runtime.sendMessage({
-			type: 'closeChecker',
-		});
+		// chrome.runtime.sendMessage({
+		// 	type: 'closeChecker',
+		// });
 	};
 
 	return (
@@ -32,7 +32,7 @@ export const Actions: React.FC = () => {
 			<li>
 				<ActionCta
 					label="Reverse Colours"
-					icon={<Swap />}
+					icon={<Swap size={20} />}
 					onClick={reverseColors}
 					withBackground={true}
 				/>
@@ -41,7 +41,7 @@ export const Actions: React.FC = () => {
 			<li>
 				<ActionCta
 					label="Close Colour Contrast Checker"
-					icon={<Cross />}
+					icon={<Cross size={20} />}
 					onClick={closeChecker}
 					withBackground={true}
 				/>

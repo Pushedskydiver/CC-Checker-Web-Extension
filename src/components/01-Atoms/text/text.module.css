@@ -30,48 +30,48 @@
 
 .horizonText {
 	--min: 36;
-	--max: 72;
+	--max: 64;
 
 	font-family: var(--font-family-primary);
-	line-height: 120%;
+	line-height: 114%;
 }
 
 .landmarkText {
 	--min: 24;
-	--max: 48;
+	--max: 34;
 
 	font-family: var(--font-family-primary);
-	line-height: 130%;
+	line-height: 114%;
 }
 
 .pinnacleText {
 	--min: 18;
-	--max: 30;
-
-	font-family: var(--font-family-primary);
-	line-height: 150%;
-}
-
-.scriptText {
-	--min: 16;
 	--max: 24;
 
 	font-family: var(--font-family-primary);
-	line-height: 130%;
+	line-height: 114%;
+}
+
+.scriptText {
+	--min: 18;
+	--max: 22;
+
+	font-family: var(--font-family-primary);
+	line-height: 114%;
 }
 
 .whisperText {
 	--min: 16;
-	--max: 20;
-
-	font-family: var(--font-family-primary);
-	line-height: 150%;
-}
-
-.pulseText {
-	--min: 16;
-	--max: 16;
+	--max: 18;
 
 	font-family: var(--font-family-primary);
 	line-height: 140%;
+}
+
+.pulseText {
+	--min: 14;
+	--max: 14;
+
+	font-family: var(--font-family-primary);
+	line-height: 114%;
 }

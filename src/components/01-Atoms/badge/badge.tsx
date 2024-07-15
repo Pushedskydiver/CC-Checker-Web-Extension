@@ -19,7 +19,7 @@ export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
 		<>
 			<Text
 				size="pulse"
-				weight="medium"
+				weight="semiBold"
 				role="presentation"
 				className={clsx(
 					styles.badge,
@@ -35,12 +35,12 @@ export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
 					{children}
 				</span>
 
-				{isPass ? <Tick /> : <Cross />}
+				{isPass ? <Tick size={20} /> : <Cross size={20} />}
 			</Text>
 
 			<Text
 				size="whisper"
-				weight="medium"
+				weight="semiBold"
 				role="presentation"
 				className={clsx(
 					styles.badgeText,

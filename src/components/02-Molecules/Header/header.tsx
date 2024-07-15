@@ -32,8 +32,8 @@ export const Header: React.FC = () => {
 
 				<Text
 					tag="h1"
-					size="pinnacle"
-					weight="semiBold"
+					size="landmark"
+					weight="bold"
 					className={clsx(
 						styles.title,
 						isPoorContrast && !isBackgroundDark

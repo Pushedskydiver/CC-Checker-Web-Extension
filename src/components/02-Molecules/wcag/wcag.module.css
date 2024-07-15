@@ -2,9 +2,9 @@
 @value --bp-medium_max from --breakpoints;
 
 .list {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
-	gap: calc(var(--base-spacing) * 2);
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--base-spacing) / 2);
 	align-items: start;
 	margin-block: 0;
 	padding: 0;

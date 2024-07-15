@@ -69,7 +69,7 @@ export const ColorControls: React.FC = () => {
 	}, [background, foreground]);
 
 	return (
-		<>
+		<div className={styles.controls}>
 			<section
 				className={styles.control}
 				aria-label="Background colour controls"
@@ -133,6 +133,6 @@ export const ColorControls: React.FC = () => {
 					]}
 				/>
 			</section>
-		</>
+		</div>
 	);
 };

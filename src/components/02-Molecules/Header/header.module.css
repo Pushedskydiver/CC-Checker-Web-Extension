@@ -1,7 +1,7 @@
 @value containers: '../../../styles/modules/container.module.css';
 
 .header {
-	padding-block: calc(var(--base-spacing) * 3) calc(var(--base-spacing) * 2);
+	padding-block: calc(var(--base-spacing) * 4);
 }
 
 .container {
@@ -34,5 +34,5 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: calc(var(--base-spacing) * 4);
+	gap: calc(var(--base-spacing) * 3);
 }

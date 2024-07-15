@@ -1,6 +1,3 @@
-@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
-@value --bp-medium from --breakpoints;
-
 .badge {
 	--badge-bg-color: var(--foreground-color);
 	--badge-fg-color: var(--background-color);
@@ -9,18 +6,14 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
-	gap: var(--base-spacing);
-	padding: var(--base-spacing) calc(var(--base-spacing) * 1.5);
+	gap: calc(var(--base-spacing) * 5.5);
+	padding: calc(var(--base-spacing) * 1.5);
 	border-radius: calc(var(--base-spacing) / 2);
 	background-color: var(--badge-bg-color);
 	color: var(--badge-fg-color);
 
 	& > svg {
 		flex-basis: 2rem;
-	}
-
-	@media (width >= --bp-medium) {
-		padding-block: var(--base-spacing);
 	}
 }
 

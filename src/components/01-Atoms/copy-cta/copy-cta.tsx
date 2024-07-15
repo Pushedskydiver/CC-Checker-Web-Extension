@@ -67,7 +67,7 @@ export const CopyCta: React.FC<TCopyCta> = ({
 						icon === 'clipboard' ? (
 							<Clipboard size={20} />
 						) : (
-							<Share />
+							<Share size={20} />
 						)
 					}
 					withBackground={withBackground}
