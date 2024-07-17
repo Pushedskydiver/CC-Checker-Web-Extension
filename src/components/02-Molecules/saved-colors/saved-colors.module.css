@@ -1,10 +1,14 @@
-@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
-@value --bp-small, --bp-small_max from --breakpoints;
-
 .container {
 	padding: calc(var(--base-spacing) * 2);
 	border-radius: var(--base-spacing);
+	border: 2px solid rgb(0 0 0 / 30%);
 	background-color: #fff;
+}
+
+.containerWithColors {
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--base-spacing) * 4);
 }
 
 .list {
@@ -14,4 +18,20 @@
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
+	flex: 1;
+}
+
+.aside {
+	padding-inline-start: calc(var(--base-spacing) * 1.5);
+}
+
+.cta {
+	border-radius: calc(var(--base-spacing) / 2);
+	color: #000;
+	text-decoration: underline;
+
+	&:focus-visible {
+		outline: 3px solid #000;
+		outline-offset: 3px;
+	}
 }

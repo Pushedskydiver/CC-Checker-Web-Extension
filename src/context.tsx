@@ -23,6 +23,8 @@ export interface ColourContrastContextTypes {
 	isPoorContrastOnLightBg: boolean;
 	isPoorContrastOnDarkBg: boolean;
 	handleContrastCheck: (value: number[], name: string) => void;
+	clearColors(): void;
+	removeColors(bg: string, fg: string): void;
 	reverseColors: () => void;
 	saveColors: () => void;
 	setColors: React.Dispatch<React.SetStateAction<TColors[]>>;
@@ -107,6 +109,27 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		checkContrast(bg, fg);
 	}
 
+	function clearColors() {
+		setColors([]);
+		localStorage.setItem('colors', JSON.stringify([]));
+	}
+
+	function removeColors(bg: string, fg: string) {
+		const colorsToRemove = colors.filter(({ background, foreground }) => {
+			return background !== bg && foreground !== fg;
+		});
+
+		localStorage.setItem('colors', JSON.stringify(colorsToRemove));
+		setColors(colorsToRemove);
+	}
+
+	function reverseColors() {
+		localStorage.setItem('background', JSON.stringify(foreground));
+		localStorage.setItem('foreground', JSON.stringify(background));
+
+		updateView(foreground, background);
+	}
+
 	function saveColors() {
 		const bg = hslToHex(background);
 		const fg = hslToHex(foreground);
@@ -132,13 +155,6 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		checkContrast(backgroundHex, foregroundHex);
 		setBackground(bg);
 		setForeground(fg);
-	}
-
-	function reverseColors() {
-		localStorage.setItem('background', JSON.stringify(foreground));
-		localStorage.setItem('foreground', JSON.stringify(background));
-
-		updateView(foreground, background);
 	}
 
 	function handlePickedColor({ key, rgb }: TPickedColor) {
@@ -195,6 +211,8 @@ const ColourContrastProvider = (props: ProviderProps) => {
 				isPoorContrastOnLightBg,
 				isPoorContrastOnDarkBg,
 				handleContrastCheck,
+				clearColors,
+				removeColors,
 				reverseColors,
 				saveColors,
 				setColors,

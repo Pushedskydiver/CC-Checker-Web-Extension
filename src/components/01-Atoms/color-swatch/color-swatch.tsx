@@ -1,9 +1,9 @@
 import { useColourContrast } from '~/context';
 import { colorToHsl } from '~/utils/color-utils';
+import { Bin } from '../icon/icon';
 import { Text } from '../text/text';
 
 import styles from './color-swatch.module.css';
-import clsx from 'clsx';
 
 export type TColorSwatch = {
 	background: string;
@@ -14,10 +14,9 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 	background,
 	foreground,
 }) => {
-	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg, updateView } =
-		useColourContrast();
+	const { removeColors, updateView } = useColourContrast();
 
-	const applyColors = (): void => {
+	const handleApplyColors = (): void => {
 		const bg = colorToHsl(background);
 		const fg = colorToHsl(foreground);
 
@@ -27,25 +26,36 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 		updateView(bg, fg);
 	};
 
+	const handleRemoveColors = () => {
+		removeColors(background, foreground);
+	};
+
 	return (
-		<button
-			type="button"
-			onClick={applyColors}
-			aria-label={`Background = ${background}. Foreground = ${foreground}. Select to apply these colours.`}
-			style={{
-				backgroundColor: background,
-				color: foreground,
-				border: `2px solid ${foreground}`,
-			}}
-			className={clsx(
-				styles.swatch,
-				isPoorContrastOnLightBg ? styles.swatchDark : undefined,
-				isPoorContrastOnDarkBg ? styles.swatchLight : undefined,
-			)}
-		>
-			<Text size="script" weight="semiBold" role="presentation">
-				Aa
-			</Text>
-		</button>
+		<span className={styles.swatchWrapper}>
+			<button
+				type="button"
+				aria-label={`Background ${background}. Foreground ${foreground}. Select to apply these colours.`}
+				className={styles.swatch}
+				onClick={handleApplyColors}
+				style={{
+					backgroundColor: background,
+					color: foreground,
+					border: `2px solid ${foreground}`,
+				}}
+			>
+				<Text size="script" weight="semiBold" role="presentation">
+					Aa
+				</Text>
+			</button>
+
+			<button
+				type="button"
+				aria-label="Remove colours"
+				className={styles.remove}
+				onClick={handleRemoveColors}
+			>
+				<Bin size={12} />
+			</button>
+		</span>
 	);
 };

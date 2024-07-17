@@ -1,13 +1,14 @@
+import clsx from 'clsx';
 import { useColourContrast } from '~/context';
 import { ColorSwatch } from '~/components/01-atoms/color-swatch/color-swatch';
+import { Text } from '~/components/01-atoms/text/text';
 
 import styles from './saved-colors.module.css';
 
 import type { TColors } from '~/global-types';
-import clsx from 'clsx';
 
 export const SavedColors: React.FC = () => {
-	const { colors } = useColourContrast();
+	const { colors, clearColors } = useColourContrast();
 	const hasColors = colors.length > 0;
 
 	const renderSwatch = (swatch: TColors, i: number): JSX.Element => (
@@ -34,7 +35,11 @@ export const SavedColors: React.FC = () => {
 
 			{hasColors ? (
 				<div className={styles.aside}>
-					<button>Clear all</button>
+					<button className={styles.cta} onClick={clearColors}>
+						<Text weight="medium" role="presentation">
+							Clear all
+						</Text>
+					</button>
 				</div>
 			) : null}
 		</div>
