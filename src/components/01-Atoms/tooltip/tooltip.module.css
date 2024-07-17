@@ -10,10 +10,6 @@
 	}
 }
 
-.ctaWrapper {
-	position: relative;
-}
-
 .tooltip {
 	--tooltip-bg-color: var(--foreground-color);
 	--tooltip-fg-color: var(--background-color);

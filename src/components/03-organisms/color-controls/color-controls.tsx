@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useColourContrast } from '~/context';
 import { colorToHsl, hslToHex, isHex } from '~/utils/color-utils';
+import { SaveColorsCta } from '~/components/02-molecules/save-colors-cta/save-colors-cta';
 import { TextInput } from '~/components/01-atoms/text-input/text-input';
 import { ColourControl } from '~/components/02-molecules/color-control/color-control';
 import { Tabbed } from '../tabbed/tabbed';
@@ -70,69 +71,54 @@ export const ColorControls: React.FC = () => {
 
 	return (
 		<div className={styles.controls}>
-			<section
-				className={styles.control}
-				aria-label="Background colour controls"
-			>
-				<TextInput
-					id="background"
-					labelText="Background colour"
-					minLength={7}
-					value={bgValue}
-					onChange={handleBgChange}
-				/>
+			<div className={styles.foo}>
+				<div className={styles.textInputs}>
+					<TextInput
+						id="background"
+						labelText="Background colour"
+						minLength={7}
+						value={bgValue}
+						onChange={handleBgChange}
+					/>
 
-				<Tabbed
-					id="background-tabs"
-					ariaLabel="Background colour controls"
-					items={[
-						{
-							id: 'rgb-background',
-							name: 'RGB',
-							children: (
-								<ColourControl id="background" type="rgb" />
-							),
-						},
-						{
-							id: 'hsl-background',
-							name: 'HSL',
-							children: <ColourControl id="background" />,
-						},
-					]}
-				/>
-			</section>
+					<TextInput
+						id="foreground"
+						labelText="Foreground colour"
+						minLength={7}
+						value={fgValue}
+						onChange={handleFgChange}
+					/>
+				</div>
 
-			<section
-				className={styles.control}
-				aria-label="Foreground colour controls"
-			>
-				<TextInput
-					id="foreground"
-					labelText="Foreground colour"
-					minLength={7}
-					value={fgValue}
-					onChange={handleFgChange}
-				/>
+				<SaveColorsCta />
+			</div>
 
-				<Tabbed
-					id="foreground-tabs"
-					ariaLabel="Foreground colour controls"
-					items={[
-						{
-							id: 'rgb-foreground',
-							name: 'RGB',
-							children: (
-								<ColourControl id="foreground" type="rgb" />
-							),
-						},
-						{
-							id: 'hsl-foreground',
-							name: 'HSL',
-							children: <ColourControl id="foreground" />,
-						},
-					]}
-				/>
-			</section>
+			<Tabbed
+				id="colour-range-tabs"
+				ariaLabel="Colour range controls"
+				items={[
+					{
+						id: 'rgb-controls',
+						name: 'RGB',
+						children: (
+							<div className={styles.rangeInputs}>
+								<ColourControl id="background-rgb" type="rgb" />
+								<ColourControl id="foreground-rgb" type="rgb" />
+							</div>
+						),
+					},
+					{
+						id: 'hsl-controls',
+						name: 'HSL',
+						children: (
+							<div className={styles.rangeInputs}>
+								<ColourControl id="background-hsl" />
+								<ColourControl id="foreground-hsl" />
+							</div>
+						),
+					},
+				]}
+			/>
 		</div>
 	);
 };

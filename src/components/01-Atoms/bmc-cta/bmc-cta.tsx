@@ -4,7 +4,8 @@ import { useColourContrast } from '~/context';
 import styles from './bmc-cta.module.css';
 
 export const BuyMeACoffeeCTA: React.FC = () => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<a
@@ -14,12 +15,8 @@ export const BuyMeACoffeeCTA: React.FC = () => {
 			target="_blank"
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.ctaDark : undefined,
+				isPoorContrastOnDarkBg ? styles.ctaLight : undefined,
 			)}
 		>
 			<svg

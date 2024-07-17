@@ -1,0 +1,13 @@
+.container {
+	--score-color: var(--foreground-color);
+
+	color: var(--score-color);
+}
+
+.containerDark {
+	--score-color: #000;
+}
+
+.containerLight {
+	--score-color: #fff;
+}

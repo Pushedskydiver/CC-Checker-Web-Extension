@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useColourContrast } from '~/context';
 import { ColorPickerCta } from '../color-picker-cta/color-picker-cta';
-import { CopyCta } from '../copy-cta/copy-cta';
+import { CopyCta } from '../../02-molecules/copy-cta/copy-cta';
 import { Text } from '../text/text';
 
 import styles from './text-input.module.css';
@@ -20,7 +20,8 @@ export const TextInput: React.FC<TTextInput> = ({
 	value,
 	onChange,
 }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<div className={styles.field}>
@@ -28,12 +29,8 @@ export const TextInput: React.FC<TTextInput> = ({
 				htmlFor={id}
 				className={clsx(
 					styles.label,
-					isPoorContrast && !isBackgroundDark
-						? styles.labelDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.labelLight
-						: undefined,
+					isPoorContrastOnLightBg ? styles.labelDark : undefined,
+					isPoorContrastOnDarkBg ? styles.labelLight : undefined,
 				)}
 			>
 				<Text size="pulse" weight="medium" role="presentation">
@@ -57,12 +54,8 @@ export const TextInput: React.FC<TTextInput> = ({
 					onChange={onChange}
 					className={clsx(
 						styles.input,
-						isPoorContrast && !isBackgroundDark
-							? styles.inputDark
-							: undefined,
-						isPoorContrast && isBackgroundDark
-							? styles.inputLight
-							: undefined,
+						isPoorContrastOnLightBg ? styles.inputDark : undefined,
+						isPoorContrastOnDarkBg ? styles.inputLight : undefined,
 					)}
 				/>
 

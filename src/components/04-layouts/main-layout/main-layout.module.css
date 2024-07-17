@@ -17,7 +17,6 @@
 	}
 
 	@media (width >= --bp-medium) {
-		grid-template-columns: 1fr 1fr;
 		gap: calc(var(--base-spacing) * 3);
 	}
 

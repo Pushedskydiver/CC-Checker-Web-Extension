@@ -1,0 +1,13 @@
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-large from --breakpoints;
+
+.section {
+	@media (width >= --bp-large) {
+		grid-column: span 5;
+	}
+}
+
+.container {
+	display: grid;
+	gap: calc(var(--base-spacing) * 2);
+}

@@ -1,0 +1,4 @@
+.text {
+	font-variation-settings: 'wght' var(--font-weight-bold);
+	font-size: 1.2rem;
+}

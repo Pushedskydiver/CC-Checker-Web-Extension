@@ -20,7 +20,8 @@ export const Button: React.FC<TButton> = ({
 	onClick,
 	...buttonAttributes
 }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
 		if (onClick) {
@@ -34,12 +35,8 @@ export const Button: React.FC<TButton> = ({
 			onClick={handleClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.ctaDark : undefined,
+				isPoorContrastOnDarkBg ? styles.ctaLight : undefined,
 				className,
 			)}
 			{...buttonAttributes}
@@ -56,7 +53,8 @@ export const LinkButton: React.FC<TLinkButton> = ({
 	onClick,
 	...linkAttributes
 }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
 		if (onClick) {
@@ -70,12 +68,8 @@ export const LinkButton: React.FC<TLinkButton> = ({
 			onClick={handleClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.ctaDark : undefined,
+				isPoorContrastOnDarkBg ? styles.ctaLight : undefined,
 				className,
 			)}
 			{...linkAttributes}

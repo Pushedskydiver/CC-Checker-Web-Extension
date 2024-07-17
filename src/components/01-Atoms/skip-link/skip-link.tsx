@@ -9,19 +9,16 @@ export type TSkipLink = {
 };
 
 export const SkipLink: React.FC<TSkipLink> = ({ href, bodyText }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<a
 			href={href}
 			className={clsx(
 				styles.link,
-				isPoorContrast && !isBackgroundDark
-					? styles.linkDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.linkLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.linkDark : undefined,
+				isPoorContrastOnDarkBg ? styles.linkLight : undefined,
 			)}
 		>
 			{bodyText}

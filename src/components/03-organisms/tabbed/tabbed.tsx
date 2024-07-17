@@ -25,7 +25,8 @@ export const Tabbed: React.FC<TTabbed> = ({
 	ariaLabel,
 	orientation = 'horizontal',
 }) => {
-	const { isBackgroundDark, isPoorContrast } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 	const {
 		activeTab,
 		tabItemRefs,
@@ -38,12 +39,8 @@ export const Tabbed: React.FC<TTabbed> = ({
 		<div
 			className={clsx(
 				styles.tabs,
-				isPoorContrast && !isBackgroundDark
-					? styles.tabsDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.tabsLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.tabsDark : undefined,
+				isPoorContrastOnDarkBg ? styles.tabsLight : undefined,
 			)}
 		>
 			<ul

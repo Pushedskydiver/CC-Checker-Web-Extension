@@ -1,0 +1,10 @@
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--base-spacing) * 2.5);
+	align-items: center;
+}
+
+.swatch {
+	color: var(--foreground-color);
+}

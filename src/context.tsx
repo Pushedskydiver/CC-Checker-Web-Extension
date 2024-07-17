@@ -20,8 +20,8 @@ export interface ColourContrastContextTypes {
 	foreground: number[];
 	contrast: number;
 	level: TLevels;
-	isBackgroundDark: boolean;
-	isPoorContrast: boolean;
+	isPoorContrastOnLightBg: boolean;
+	isPoorContrastOnDarkBg: boolean;
 	handleContrastCheck: (value: number[], name: string) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
@@ -62,8 +62,11 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	const [foreground, setForeground] = useState<number[]>(localForeground);
 	const [contrast, setContrast] = useState<number>(localContrast);
 	const [level, setLevel] = useState<TLevels>(localLevel);
+
 	const isPoorContrast = contrast < 3;
 	const isBackgroundDark = isDark(background);
+	const isPoorContrastOnLightBg = isPoorContrast && !isBackgroundDark;
+	const isPoorContrastOnDarkBg = isPoorContrast && isBackgroundDark;
 
 	function checkContrast(bg: string, fg: string) {
 		const isBgHex = isHex(bg);
@@ -82,8 +85,9 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	}
 
 	function handleContrastCheck(value: number[], name: string) {
-		const isBackground = name === 'background';
-		const isForeground = name === 'foreground';
+		const isBackground = name.includes('background');
+		const isForeground = name.includes('foreground');
+		const type = isBackground ? 'background' : 'foreground';
 
 		const storedBg = localStorage.getItem('background');
 		const storedFg = localStorage.getItem('foreground');
@@ -97,15 +101,13 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		if (isBackground) setBackground(value);
 		if (isForeground) setForeground(value);
 
-		localStorage.setItem(name, JSON.stringify(value));
-		document.body.style.setProperty(`--${name}-color`, hslToHex(value));
+		localStorage.setItem(type, JSON.stringify(value));
+		document.body.style.setProperty(`--${type}-color`, hslToHex(value));
 
 		checkContrast(bg, fg);
 	}
 
 	function saveColors() {
-		const storedColors = localStorage.getItem('colors');
-		const colors: TColors[] = storedColors ? JSON.parse(storedColors) : [];
 		const bg = hslToHex(background);
 		const fg = hslToHex(foreground);
 		const sameColors = colors.some(
@@ -114,13 +116,10 @@ const ColourContrastProvider = (props: ProviderProps) => {
 
 		if (colors.length > 0 && sameColors) return;
 
-		if (colors.length > 5) {
-			colors.pop();
-		}
+		const newColors = [...colors, { background: bg, foreground: fg }];
 
-		colors.unshift({ background: bg, foreground: fg });
-		localStorage.setItem('colors', JSON.stringify(colors));
-		setColors(colors);
+		localStorage.setItem('colors', JSON.stringify(newColors));
+		setColors(newColors);
 	}
 
 	function updateView(bg: number[], fg: number[]) {
@@ -162,7 +161,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	}
 
 	console.log(handleMessageListener, 'handleMessageListener');
-	
+
 	// useEffect(() => {
 	// 	chrome.runtime.onMessage.addListener(handleMessageListener);
 
@@ -193,8 +192,8 @@ const ColourContrastProvider = (props: ProviderProps) => {
 				foreground,
 				contrast,
 				level,
-				isBackgroundDark,
-				isPoorContrast,
+				isPoorContrastOnLightBg,
+				isPoorContrastOnDarkBg,
 				handleContrastCheck,
 				reverseColors,
 				saveColors,

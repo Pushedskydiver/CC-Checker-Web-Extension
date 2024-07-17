@@ -20,7 +20,8 @@ export const ActionCta: React.FC<TActionCta> = ({
 	children,
 	onClick,
 }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<button
@@ -29,12 +30,8 @@ export const ActionCta: React.FC<TActionCta> = ({
 			onClick={onClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.ctaDark : undefined,
+				isPoorContrastOnDarkBg ? styles.ctaLight : undefined,
 				withBackground ? styles.ctaWithBackground : undefined,
 				className,
 			)}

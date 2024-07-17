@@ -14,7 +14,7 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 	background,
 	foreground,
 }) => {
-	const { isPoorContrast, isBackgroundDark, updateView } =
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg, updateView } =
 		useColourContrast();
 
 	const applyColors = (): void => {
@@ -39,12 +39,8 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 			}}
 			className={clsx(
 				styles.swatch,
-				isPoorContrast && !isBackgroundDark
-					? styles.swatchDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.swatchLight
-					: undefined,
+				isPoorContrastOnLightBg ? styles.swatchDark : undefined,
+				isPoorContrastOnDarkBg ? styles.swatchLight : undefined,
 			)}
 		>
 			<Text size="script" weight="semiBold" role="presentation">

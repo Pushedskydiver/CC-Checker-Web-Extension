@@ -1,6 +1,8 @@
 .field {
 	display: grid;
+	grid-template-columns: max-content 1fr;
 	gap: calc(var(--base-spacing) * 1.5);
+	align-items: center;
 }
 
 .label {
@@ -34,8 +36,16 @@
 	}
 
 	&::-webkit-slider-thumb {
-		inline-size: 2rem;
-		block-size: 2rem;
+		inline-size: 2.4rem;
+		block-size: 2.4rem;
+		border-radius: 50%;
+		background-color: var(--input-thumb-color);
+		appearance: none;
+	}
+
+	&::-moz-range-thumb {
+		inline-size: 2.4rem;
+		block-size: 2.4rem;
 		border-radius: 50%;
 		background-color: var(--input-thumb-color);
 		appearance: none;

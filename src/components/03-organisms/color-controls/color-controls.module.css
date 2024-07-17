@@ -1,17 +1,43 @@
 @value --breakpoints: '../../../styles/modules/breakpoints.module.css';
-@value --bp-large from --breakpoints;
+@value --bp-medium, --bp-large from --breakpoints;
 
 .controls {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 35rem), 1fr));
-	gap: calc(var(--base-spacing) * 1.5);
+	gap: calc(var(--base-spacing) * 3);
 
 	@media (width >= --bp-large) {
 		grid-column: span 7;
 	}
 }
 
-.control {
+.foo {
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--base-spacing) * 1.5);
+	align-items: flex-end;
+}
+
+.textInputs,
+.rangeInputs {
 	display: grid;
-	gap: calc(var(--base-spacing) * 2);
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 33rem), 1fr));
+}
+
+.textInputs {
+	flex: 1;
+	gap: calc(var(--base-spacing) * 1.5);
+}
+
+.saveColorsCta {
+	inline-size: 5rem;
+	block-size: 5rem;
+
+	@media (width >= --bp-medium) {
+		inline-size: 5.6rem;
+		block-size: 5.6rem;
+	}
+}
+
+.rangeInputs {
+	gap: calc(var(--base-spacing) * 5);
 }

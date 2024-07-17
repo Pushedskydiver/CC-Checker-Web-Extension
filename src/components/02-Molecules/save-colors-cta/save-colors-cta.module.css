@@ -1,0 +1,16 @@
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-medium, --bp-large from --breakpoints;
+
+.ctaWrapper {
+	position: relative;
+}
+
+.cta {
+	inline-size: 5rem;
+	block-size: 5rem;
+
+	@media (width >= --bp-medium) {
+		inline-size: 5.6rem;
+		block-size: 5.6rem;
+	}
+}

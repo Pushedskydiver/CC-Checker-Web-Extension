@@ -4,6 +4,7 @@ import { hslToRgb, rgbToHsl } from '~/utils/color-utils';
 import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
 import styles from './color-control.module.css';
+import { Text } from '~/components/01-atoms/text/text';
 
 const nanH = (h: number): number => (Number.isNaN(h) || h === null ? 0 : h);
 
@@ -15,11 +16,13 @@ export type TColourControl = {
 export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
 
+	const isBackground = id.includes('background');
 	const isRgb = type === 'rgb';
+
 	const bg = isRgb ? hslToRgb(background) : background;
 	const fg = isRgb ? hslToRgb(foreground) : foreground;
 
-	const value = id === 'background' ? bg : fg;
+	const value = isBackground ? bg : fg;
 	const valueA = isRgb ? value[0] : round(nanH(value[0]));
 	const valueB = isRgb ? value[1] : round(value[1], 2.5);
 	const valueC = isRgb ? value[2] : round(value[2], 2);
@@ -41,36 +44,42 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	};
 
 	return (
-		<div className={styles.control}>
-			<RangeInput
-				id={`${id}${isRgb ? 'Red' : 'Hue'}`}
-				labelText={labelTextA}
-				max={isRgb ? '255' : '360'}
-				property="0"
-				step={isRgb ? 1 : undefined}
-				value={valueA}
-				onChange={handleChange}
-			/>
+		<div className={styles.container}>
+			<Text size="whisper" weight="bold" className={styles.title}>
+				{isBackground ? 'Background' : 'Foreground'}
+			</Text>
 
-			<RangeInput
-				id={`${id}${isRgb ? 'Green' : 'Saturation'}`}
-				labelText={labelTextB}
-				max={isRgb ? '255' : '1'}
-				step={isRgb ? 1 : 1 / 256}
-				value={valueB}
-				onChange={handleChange}
-				property="1"
-			/>
+			<div className={styles.inputs}>
+				<RangeInput
+					id={`${id}${isRgb ? 'Red' : 'Hue'}`}
+					labelText={labelTextA}
+					max={isRgb ? '255' : '360'}
+					property="0"
+					step={isRgb ? 1 : undefined}
+					value={valueA}
+					onChange={handleChange}
+				/>
 
-			<RangeInput
-				id={`${id}${isRgb ? 'Blue' : 'Lightness'}`}
-				labelText={labelTextC}
-				max={isRgb ? '255' : '1'}
-				property="2"
-				step={isRgb ? 1 : 1 / 256}
-				value={valueC}
-				onChange={handleChange}
-			/>
+				<RangeInput
+					id={`${id}${isRgb ? 'Green' : 'Saturation'}`}
+					labelText={labelTextB}
+					max={isRgb ? '255' : '1'}
+					step={isRgb ? 1 : 1 / 256}
+					value={valueB}
+					onChange={handleChange}
+					property="1"
+				/>
+
+				<RangeInput
+					id={`${id}${isRgb ? 'Blue' : 'Lightness'}`}
+					labelText={labelTextC}
+					max={isRgb ? '255' : '1'}
+					property="2"
+					step={isRgb ? 1 : 1 / 256}
+					value={valueC}
+					onChange={handleChange}
+				/>
+			</div>
 		</div>
 	);
 };

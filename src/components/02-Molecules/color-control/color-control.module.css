@@ -1,5 +1,28 @@
-.control {
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-medium from --breakpoints;
+
+.container {
+	position: relative;
+}
+
+.title {
+	display: block;
+	margin-block-end: calc(var(--base-spacing) * 1.5);
+
+	@media (width >= --bp-medium) {
+		position: absolute;
+		overflow: hidden;
+		block-size: 0;
+		inline-size: 0;
+		padding: 0;
+		border: 0;
+		clip: rect(0 0 0 0);
+		white-space: nowrap;
+	}
+}
+
+.inputs {
 	& > :not([hidden]) ~ :not([hidden]) {
-		margin-block-start: calc(var(--base-spacing) * 1.5);
+		margin-block-start: calc(var(--base-spacing) * 3);
 	}
 }

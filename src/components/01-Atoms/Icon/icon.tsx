@@ -88,6 +88,24 @@ export const Eyedropper: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
+export const Save: React.FC<TIcon> = ({ className, size = 24 }) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width={size}
+		height={size}
+		viewBox="0 0 20 20"
+		aria-hidden="true"
+		focusable="false"
+		pointerEvents="none"
+		className={clsx(styles.icon, className)}
+	>
+		<path
+			fill="currentColor"
+			d="M3.9584 3.9584v12.0833h1.4584v-4.1666a1.4583 1.4583 0 0 1 1.4583-1.4584h6.25a1.4583 1.4583 0 0 1 1.4583 1.4584v4.1666h1.4583V6.5953l-2.6368-2.6369H3.9584Zm3.125 8.125v3.9583h5.8333v-3.9583H7.0834Zm9.1667 5.625h-12.5a1.4583 1.4583 0 0 1-1.4584-1.4583v-12.5a1.4583 1.4583 0 0 1 1.4584-1.4584h9.7414c.3862.0002.757.1536 1.0303.4266l2.7597 2.7597c.273.2733.4267.644.4269 1.0303V16.25a1.4582 1.4582 0 0 1-1.4583 1.4583Zm-8.75-12.9167a.8333.8333 0 1 0 0 1.6667h4.375a.8333.8333 0 0 0 0-1.6666h-4.375Z"
+		/>
+	</svg>
+);
+
 export const Swap: React.FC<TIcon> = ({ className, size = 24 }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"

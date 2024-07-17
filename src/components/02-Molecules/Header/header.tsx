@@ -8,14 +8,15 @@ import { Actions } from '../actions/actions';
 import styles from './header.module.css';
 
 export const Header: React.FC = () => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
 				<SkipLink
-					href="#ratio"
-					bodyText="Skip to colour contrast ratio"
+					href="#score"
+					bodyText="Skip to colour contrast score"
 				/>
 				<SkipLink
 					href="#grades"
@@ -36,12 +37,8 @@ export const Header: React.FC = () => {
 					weight="bold"
 					className={clsx(
 						styles.title,
-						isPoorContrast && !isBackgroundDark
-							? styles.titleDark
-							: undefined,
-						isPoorContrast && isBackgroundDark
-							? styles.titleLight
-							: undefined,
+						isPoorContrastOnLightBg ? styles.titleDark : undefined,
+						isPoorContrastOnDarkBg ? styles.titleLight : undefined,
 					)}
 				>
 					Colour contrast checker

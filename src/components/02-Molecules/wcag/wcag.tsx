@@ -3,16 +3,16 @@ import { Badge } from '~/components/01-atoms/badge/badge';
 
 import styles from './wcag.module.css';
 
-export interface WcagProps {
-	id: string;
-}
-
-export const Wcag: React.FC<WcagProps> = ({ id }) => {
+export const Wcag: React.FC = () => {
 	const { level } = useColourContrast();
 	const { AALarge, AAALarge, AA, AAA } = level;
 
 	return (
-		<ul className={styles.list} aria-label="Colour contrast grades" id={id}>
+		<ul
+			className={styles.list}
+			aria-label="Colour contrast grades"
+			id="grades"
+		>
 			<li
 				className={styles.item}
 				aria-live="polite"

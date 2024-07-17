@@ -69,8 +69,8 @@
 }
 
 .pulseText {
-	--min: 14;
-	--max: 14;
+	--min: 16;
+	--max: 16;
 
 	font-family: var(--font-family-primary);
 	line-height: 114%;

@@ -12,8 +12,9 @@ export type TBadge = {
 };
 
 export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 	const isPass = grade === 'Pass';
+	const { isPoorContrastOnLightBg, isPoorContrastOnDarkBg } =
+		useColourContrast();
 
 	return (
 		<>
@@ -23,12 +24,8 @@ export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
 				role="presentation"
 				className={clsx(
 					styles.badge,
-					isPoorContrast && !isBackgroundDark
-						? styles.badgeDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.badgeLight
-						: undefined,
+					isPoorContrastOnLightBg ? styles.badgeDark : undefined,
+					isPoorContrastOnDarkBg ? styles.badgeLight : undefined,
 				)}
 			>
 				<span className={styles.badgeContent} role="presentation">
@@ -44,12 +41,8 @@ export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
 				role="presentation"
 				className={clsx(
 					styles.badgeText,
-					isPoorContrast && !isBackgroundDark
-						? styles.badgeTextDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.badgeTextLight
-						: undefined,
+					isPoorContrastOnLightBg ? styles.badgeTextDark : undefined,
+					isPoorContrastOnDarkBg ? styles.badgeTextLight : undefined,
 				)}
 			>
 				{type}

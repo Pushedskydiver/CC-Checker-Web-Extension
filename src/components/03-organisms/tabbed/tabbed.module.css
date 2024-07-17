@@ -1,12 +1,15 @@
 .tabs {
+	--tabs-background-color: var(--background-color);
 	--tabs-foreground-color: var(--foreground-color);
 }
 
 .tabsDark {
+	--tabs-background-color: #fff;
 	--tabs-foreground-color: #000;
 }
 
 .tabsLight {
+	--tabs-background-color: #000;
 	--tabs-foreground-color: #fff;
 }
 
@@ -14,62 +17,69 @@
 	list-style-type: none;
 	display: flex;
 	flex-wrap: wrap;
-	margin: 0;
+	margin-block: 0 calc(var(--base-spacing) * 2.5);
 	padding: 0;
-}
-
-.list:has(.item:first-child > .tab[aria-selected='false']) ~ .panel {
-	border-start-start-radius: calc(var(--base-spacing) / 2);
 }
 
 .item {
 	display: grid;
 	min-inline-size: max-content;
+
+	&:first-child .tab {
+		border-start-start-radius: calc(var(--base-spacing) / 2);
+		border-end-start-radius: calc(var(--base-spacing) / 2);
+		border-inline-start: 2px solid var(--tabs-foreground-color);
+		border-inline-end: 1px solid var(--tabs-foreground-color);
+	}
+
+	&:last-child .tab {
+		border-start-end-radius: calc(var(--base-spacing) / 2);
+		border-end-end-radius: calc(var(--base-spacing) / 2);
+		border-inline-start: 1px solid var(--tabs-foreground-color);
+		border-inline-end: 2px solid var(--tabs-foreground-color);
+	}
 }
 
 .tab {
 	position: relative;
-	display: block;
-	padding-block: var(--base-spacing);
-	padding-inline: calc(var(--base-spacing) * 2);
-	border-block-start: 3px solid transparent;
-	border-inline: 3px solid transparent;
-	border-start-end-radius: calc(var(--base-spacing) / 2);
-	border-start-start-radius: calc(var(--base-spacing) / 2);
+	display: grid;
+	padding-block: calc(var(--base-spacing) * 1.5);
+	padding-inline: calc(var(--base-spacing) * 3.5);
+	border-block: 2px solid var(--tabs-foreground-color);
 	color: var(--tabs-foreground-color);
+	background-color: var(--tabs-background-color);
+	text-align: center;
 	text-decoration: none;
 
 	&:focus-visible {
-		outline: 3px solid var(--tabs-foreground-color);
-		outline-offset: calc((var(--base-spacing) * 1.5) * -1);
+		outline: 3px solid var(--tabs-background-color);
+		outline-offset: calc(var(--base-spacing) * -1);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			border-color 0.25s ease-in-out,
+			background-color 0.25s ease-in-out,
+			color 0.25s ease-in-out;
 	}
 }
 
 .tab[aria-selected='true'] {
-	border-inline-color: var(--tabs-foreground-color);
-	border-block-start-color: var(--tabs-foreground-color);
-
-	&::before {
-		content: '';
-		position: absolute;
-		inset-block-start: 100%;
-		inset-inline-start: 0;
-		inline-size: 100%;
-		block-size: 3px;
-		background-color: var(--background-color);
-	}
+	color: var(--tabs-background-color);
+	background-color: var(--tabs-foreground-color);
 
 	@media (prefers-reduced-motion: no-preference) {
 		&::before {
-			transition: background-color 0.3s ease-in-out;
+			transition: background-color 0.25s ease-in-out;
 		}
 	}
 }
 
 .panel {
-	padding: calc(var(--base-spacing) * 2) calc(var(--base-spacing) * 1.5);
-	border: 3px solid var(--tabs-foreground-color);
-	border-start-end-radius: calc(var(--base-spacing) / 2);
-	border-end-start-radius: calc(var(--base-spacing) / 2);
-	border-end-end-radius: calc(var(--base-spacing) / 2);
+	border-radius: calc(var(--base-spacing) / 4);
+
+	&:focus-visible {
+		outline: 3px solid var(--tabs-foreground-color);
+		outline-offset: 3px;
+	}
 }
