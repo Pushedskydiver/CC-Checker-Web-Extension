@@ -8,6 +8,7 @@ export type TTab = {
 	name: string;
 	activeTab: number;
 	tabRef: React.MutableRefObject<{ [key: number]: HTMLElement | null }>;
+	icon?: React.ReactElement<'svg'>;
 	handleTabClick: (
 		e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 		index: number,
@@ -24,6 +25,7 @@ export const Tab: React.FC<TTab> = ({
 	name,
 	activeTab,
 	tabRef,
+	icon,
 	handleTabClick,
 	handleTabKeyDown,
 }) => {
@@ -55,6 +57,7 @@ export const Tab: React.FC<TTab> = ({
 				tabIndex={activeTab !== index ? -1 : undefined}
 				className={styles.tab}
 			>
+				{icon}
 				<Text size="pulse" weight="semiBold" role="presentation">
 					{name}
 				</Text>

@@ -10,6 +10,7 @@ export type TTabbedItem = {
 	id: string;
 	name: string;
 	children: React.ReactNode;
+	icon?: React.ReactElement<'svg'>;
 };
 
 export type TTabbed = {
@@ -60,6 +61,7 @@ export const Tabbed: React.FC<TTabbed> = ({
 						activeTab={activeTab}
 						handleTabClick={handleTabClick}
 						handleTabKeyDown={handleTabKeyDown}
+						icon={item.icon}
 					/>
 				))}
 			</ul>

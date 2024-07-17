@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useColourContrast } from '~/context';
 import { colorToHsl, hslToHex, isHex } from '~/utils/color-utils';
-import { SaveColorsCta } from '~/components/02-molecules/save-colors-cta/save-colors-cta';
+import { Pallette } from '~/components/01-atoms/icon/icon';
 import { TextInput } from '~/components/01-atoms/text-input/text-input';
+import { SaveColorsCta } from '~/components/02-molecules/save-colors-cta/save-colors-cta';
 import { ColourControl } from '~/components/02-molecules/color-control/color-control';
+import { SavedColors } from '~/components/02-molecules/saved-colors/saved-colors';
 import { Tabbed } from '../tabbed/tabbed';
 
 import styles from './color-controls.module.css';
 
 export const ColorControls: React.FC = () => {
-	const { background, foreground, handleContrastCheck } = useColourContrast();
+	const { background, colors, foreground, handleContrastCheck } =
+		useColourContrast();
 
 	const [bgValue, setBgValue] = useState(hslToHex(background));
 	const [fgValue, setFgValue] = useState(hslToHex(foreground));
+
+	const colorsLength = colors.length;
+	const hasNoColors = colorsLength === 0;
+	const colorsName = hasNoColors
+		? 'My colours'
+		: `My colours (${colorsLength})`;
 
 	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		let value = e.target.value;
@@ -116,6 +125,12 @@ export const ColorControls: React.FC = () => {
 								<ColourControl id="foreground-hsl" />
 							</div>
 						),
+					},
+					{
+						id: 'saved-colors',
+						name: colorsName,
+						icon: <Pallette />,
+						children: <SavedColors />,
 					},
 				]}
 			/>

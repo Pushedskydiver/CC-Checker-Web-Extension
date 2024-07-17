@@ -19,8 +19,8 @@
 	}
 
 	@media (width >= --bp-tiny) {
-		inline-size: 5rem;
-		block-size: 5rem;
+		inline-size: 4.8rem;
+		block-size: 4.8rem;
 	}
 }
 
