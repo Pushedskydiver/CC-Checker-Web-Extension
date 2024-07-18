@@ -15,32 +15,18 @@
 
 .list {
 	list-style-type: none;
-	display: flex;
+	display: inline-flex;
 	flex-wrap: wrap;
 	margin-block: 0 calc(var(--base-spacing) * 2.5);
 	padding: 0;
+	border-radius: calc(var(--base-spacing) / 2);
+	border: 1px solid var(--tabs-foreground-color);
+	overflow: hidden;
 }
 
 .item {
-	display: grid;
-	min-inline-size: max-content;
-
-	&:first-child .tab {
-		border-start-start-radius: calc(var(--base-spacing) / 2);
-		border-end-start-radius: calc(var(--base-spacing) / 2);
-		border-inline-start: 2px solid var(--tabs-foreground-color);
-		border-inline-end: 1px solid var(--tabs-foreground-color);
-	}
-
-	&:nth-child(n + 2) .tab {
-		border-inline-start: 1px solid var(--tabs-foreground-color);
-	}
-
-	&:last-child .tab {
-		border-start-end-radius: calc(var(--base-spacing) / 2);
-		border-end-end-radius: calc(var(--base-spacing) / 2);
-		border-inline-end: 2px solid var(--tabs-foreground-color);
-	}
+	flex: 1 1 max-content;
+	border: 1px solid var(--tabs-foreground-color);
 }
 
 .tab {
@@ -48,10 +34,11 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--base-spacing);
+	justify-content: center;
 	align-items: center;
+	block-size: 100%;
 	padding-block: calc(var(--base-spacing) * 1.5);
 	padding-inline: calc(var(--base-spacing) * 3.5);
-	border-block: 2px solid var(--tabs-foreground-color);
 	color: var(--tabs-foreground-color);
 	background-color: var(--tabs-background-color);
 	text-align: center;

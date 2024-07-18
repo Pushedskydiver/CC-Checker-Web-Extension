@@ -15,7 +15,8 @@
 }
 
 .item {
-	display: inline-flex;
+	display: flex;
 	flex-direction: column;
 	gap: var(--base-spacing);
+	flex: 0 1 max-content;
 }

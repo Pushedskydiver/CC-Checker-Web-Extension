@@ -1,5 +1,5 @@
 @value --breakpoints: '../../../styles/modules/breakpoints.module.css';
-@value --bp-medium from --breakpoints;
+@value --bp-large from --breakpoints;
 
 .container {
 	position: relative;
@@ -9,7 +9,7 @@
 	display: block;
 	margin-block-end: calc(var(--base-spacing) * 1.5);
 
-	@media (width >= --bp-medium) {
+	@media (width >= --bp-large) {
 		position: absolute;
 		overflow: hidden;
 		block-size: 0;
