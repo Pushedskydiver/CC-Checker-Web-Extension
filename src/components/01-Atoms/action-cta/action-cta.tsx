@@ -10,7 +10,7 @@ export type TActionCta = {
 	className?: string;
 	children?: React.ReactNode;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-};
+} & Omit<React.HTMLAttributes<'button'>, 'className' | 'onClick'>;
 
 export const ActionCta: React.FC<TActionCta> = ({
 	label,

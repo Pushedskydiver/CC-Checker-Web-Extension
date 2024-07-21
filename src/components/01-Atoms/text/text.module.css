@@ -69,7 +69,7 @@
 }
 
 .pulseText {
-	--min: 16;
+	--min: 14;
 	--max: 16;
 
 	font-family: var(--font-family-primary);

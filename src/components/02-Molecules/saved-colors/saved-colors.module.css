@@ -1,13 +1,23 @@
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-medium, --bp-large from --breakpoints;
+
 .container {
+	display: flex;
+	flex-wrap: wrap;
+	block-size: 100%;
 	padding: calc(var(--base-spacing) * 2);
 	border-radius: var(--base-spacing);
 	border: 2px solid rgb(0 0 0 / 30%);
 	background-color: #fff;
+
+	&:not(.containerWithColors) {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 }
 
 .containerWithColors {
-	display: flex;
-	flex-wrap: wrap;
 	gap: calc(var(--base-spacing) * 4);
 }
 
@@ -34,4 +44,23 @@
 		outline: 3px solid #000;
 		outline-offset: 3px;
 	}
+}
+
+.contentNoColors {
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--base-spacing) * 2);
+	align-items: center;
+	color: #000;
+
+	@media (width >= --bp-medium) {
+		padding-block: calc(var(--base-spacing) * 3);
+	}
+}
+
+.iconNoColors {
+	border-radius: calc(var(--base-spacing) / 2);
+	padding: calc(var(--base-spacing) * 1.25);
+	background-color: #000;
+	color: #fff;
 }

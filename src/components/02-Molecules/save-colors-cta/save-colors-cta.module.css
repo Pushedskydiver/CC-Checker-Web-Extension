@@ -1,8 +1,9 @@
 @value --breakpoints: '../../../styles/modules/breakpoints.module.css';
-@value --bp-medium, --bp-large from --breakpoints;
+@value --bp-medium from --breakpoints;
 
 .ctaWrapper {
 	position: relative;
+	z-index: 10;
 }
 
 .cta {

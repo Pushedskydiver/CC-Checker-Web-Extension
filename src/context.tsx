@@ -115,12 +115,12 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	}
 
 	function removeColors(bg: string, fg: string) {
-		const colorsToRemove = colors.filter(({ background, foreground }) => {
-			return background !== bg && foreground !== fg;
+		const newColors = colors.filter(({ background, foreground }) => {
+			return !(background === bg && foreground === fg);
 		});
 
-		localStorage.setItem('colors', JSON.stringify(colorsToRemove));
-		setColors(colorsToRemove);
+		localStorage.setItem('colors', JSON.stringify(newColors));
+		setColors(newColors);
 	}
 
 	function reverseColors() {

@@ -8,13 +8,16 @@ import styles from './save-colors-cta.module.css';
 
 export const SaveColorsCta: React.FC = () => {
 	const [isSaved, setIsSaved] = useState(false);
-	const { saveColors } = useColourContrast();
+	const { colors, saveColors } = useColourContrast();
 
-	const bodyText = isSaved ? 'Colours saved' : 'Save colours';
+	const hasColorsLimitReached = colors.length === 20;
+	const saveText = hasColorsLimitReached ? 'Limit reached' : 'Colours saved';
+	const bodyText = !isSaved ? 'Save colours' : saveText;
 
 	const setIsSavedState = (): void => {
 		setIsSaved(true);
-		saveColors();
+
+		if (!hasColorsLimitReached) saveColors();
 
 		const delaySetState = setTimeout(() => {
 			setIsSaved(false);

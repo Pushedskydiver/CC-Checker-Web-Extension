@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useColourContrast } from '~/context';
 import { ColorSwatch } from '~/components/01-atoms/color-swatch/color-swatch';
+import { Save } from '~/components/01-atoms/icon/icon';
 import { Text } from '~/components/01-atoms/text/text';
 
 import styles from './saved-colors.module.css';
@@ -40,6 +41,16 @@ export const SavedColors: React.FC = () => {
 							Clear all
 						</Text>
 					</button>
+				</div>
+			) : null}
+
+			{!hasColors ? (
+				<div className={styles.contentNoColors}>
+					<Text tag="p" weight="medium">
+						You can save your colour combinations to revisit later
+					</Text>
+
+					<Save size={40} className={styles.iconNoColors} />
 				</div>
 			) : null}
 		</div>
