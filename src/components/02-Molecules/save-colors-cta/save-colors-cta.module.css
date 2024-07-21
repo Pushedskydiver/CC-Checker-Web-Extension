@@ -11,7 +11,7 @@
 	block-size: 5rem;
 
 	@media (width >= --bp-medium) {
-		inline-size: 5.6rem;
-		block-size: 5.6rem;
+		inline-size: 5.4rem;
+		block-size: 5.4rem;
 	}
 }
