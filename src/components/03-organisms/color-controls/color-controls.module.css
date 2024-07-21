@@ -3,14 +3,14 @@
 
 .controls {
 	display: grid;
-	gap: calc(var(--base-spacing) * 3);
+	gap: calc(var(--base-spacing) * 2.5);
 
 	@media (width >= --bp-large) {
 		grid-column: span 7;
 	}
 }
 
-.foo {
+.content {
 	display: flex;
 	flex-wrap: wrap;
 	gap: calc(var(--base-spacing) * 1.5);

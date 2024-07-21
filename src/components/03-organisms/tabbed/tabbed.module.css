@@ -1,3 +1,6 @@
+@value --breakpoints: '../../../styles/modules/breakpoints.module.css';
+@value --bp-medium, --bp-large from --breakpoints;
+
 .tabs {
 	--tabs-background-color: var(--background-color);
 	--tabs-foreground-color: var(--foreground-color);
@@ -74,5 +77,9 @@
 	&:focus-visible {
 		outline: 3px solid var(--tabs-foreground-color);
 		outline-offset: 3px;
+	}
+
+	@media (width >= --bp-medium) {
+		aspect-ratio: 27/5;
 	}
 }

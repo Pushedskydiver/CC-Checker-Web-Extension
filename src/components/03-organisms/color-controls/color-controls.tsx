@@ -80,7 +80,7 @@ export const ColorControls: React.FC = () => {
 
 	return (
 		<div className={styles.controls}>
-			<div className={styles.foo}>
+			<div className={styles.content}>
 				<div className={styles.textInputs}>
 					<TextInput
 						id="background"
