@@ -1,8 +1,7 @@
 .field {
-	display: grid;
-	grid-template-columns: max-content 1fr;
-	gap: calc(var(--base-spacing) * 1.5);
-	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: var(--base-spacing);
 }
 
 .label {

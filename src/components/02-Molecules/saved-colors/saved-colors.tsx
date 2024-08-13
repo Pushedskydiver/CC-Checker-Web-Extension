@@ -21,6 +21,14 @@ export const SavedColors: React.FC = () => {
 		</li>
 	);
 
+	const renderSwatchItem = (_: TColors, i: number) => {
+		const currentSwatch = colors[i];
+
+		if (currentSwatch) return renderSwatch(currentSwatch, i);
+
+		return <li key={i} className={styles.swatch} role="presentation"></li>;
+	};
+
 	return (
 		<div
 			className={clsx(
@@ -30,7 +38,7 @@ export const SavedColors: React.FC = () => {
 		>
 			{hasColors ? (
 				<ul className={styles.list} aria-label="Saved colours">
-					{colors.map(renderSwatch)}
+					{Array.from({ length: 20 }, renderSwatchItem)}
 				</ul>
 			) : null}
 
@@ -41,6 +49,10 @@ export const SavedColors: React.FC = () => {
 							Clear all
 						</Text>
 					</button>
+
+					<Text aria-live="polite" weight="medium">
+						{colors.length} of 20
+					</Text>
 				</div>
 			) : null}
 

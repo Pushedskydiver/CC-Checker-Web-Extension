@@ -33,6 +33,10 @@ export const isDark = (hsl: number[]): boolean => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') < 60;
 };
 
+export const isLight = (hsl: number[]): boolean => {
+	return chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') >= 80;
+};
+
 export const colorToRgb = (hex: string): [number, number, number] => {
 	return chroma(hex).rgb();
 };

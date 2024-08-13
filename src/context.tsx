@@ -162,9 +162,9 @@ const ColourContrastProvider = (props: ProviderProps) => {
 
 		handleContrastCheck(value, key);
 
-		// chrome.runtime.sendMessage({
-		// 	type: 'closeColorPicker',
-		// });
+		chrome.runtime.sendMessage({
+			type: 'closeColorPicker',
+		});
 	}
 
 	function handleMessageListener(r: any) {
@@ -176,15 +176,13 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		}
 	}
 
-	console.log(handleMessageListener, 'handleMessageListener');
+	useEffect(() => {
+		chrome.runtime.onMessage.addListener(handleMessageListener);
 
-	// useEffect(() => {
-	// 	chrome.runtime.onMessage.addListener(handleMessageListener);
-
-	// 	return () => {
-	// 		chrome.runtime.onMessage.removeListener(handleMessageListener);
-	// 	};
-	// }, []);
+		return () => {
+			chrome.runtime.onMessage.removeListener(handleMessageListener);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (localStorage.getItem('contrast') === null) return;

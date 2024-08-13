@@ -26,7 +26,7 @@ export const Score: React.FC<TScore> = ({ score }) => {
 
 			<Text
 				id="score"
-				size="pinnacle"
+				size="landmark"
 				weight="bold"
 				className={styles.score}
 			>

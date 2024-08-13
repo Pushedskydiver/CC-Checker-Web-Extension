@@ -23,6 +23,6 @@
 
 .inputs {
 	& > :not([hidden]) ~ :not([hidden]) {
-		margin-block-start: calc(var(--base-spacing) * 3);
+		margin-block-start: calc(var(--base-spacing) * 2);
 	}
 }

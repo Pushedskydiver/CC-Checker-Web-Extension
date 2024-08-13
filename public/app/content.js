@@ -6,7 +6,7 @@ const image = new Image();
 
 const css = `
   body {
-    padding-bottom: 475px !important;
+    padding-bottom: 465px !important;
     height: auto !important;
   }
 
@@ -15,7 +15,8 @@ const css = `
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 475px;
+	height: 55svh;
+    max-height: 465px;
     border: none;
     transform: translateY(0);
     z-index: 2147483647;
