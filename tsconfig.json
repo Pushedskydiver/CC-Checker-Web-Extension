@@ -1,45 +1,36 @@
 {
-	"compileOnSave": true,
 	"compilerOptions": {
-		"baseUrl": ".",
-		"importHelpers": true,
-		"forceConsistentCasingInFileNames": true,
-		"sourceMap": true,
-		"noUnusedParameters": true,
-		"noUnusedLocals": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "node",
 		"target": "ES2022",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"jsx": "react-jsx",
-		"lib": [
-			"DOM",
-			"DOM.Iterable",
-			"ES2022"
-		],
-		"types": [
-			"chrome",
-			"vite/client"
-		],
-		"allowSyntheticDefaultImports": true,
-		"strict": true,
-		"allowJs": true,
-		"rootDir": "./src",
+		"useDefineForClassFields": true,
+
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"moduleDetection": "force",
+		"verbatimModuleSyntax": true,
+		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"noEmit": true,
+
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"forceConsistentCasingInFileNames": true,
+
+		"skipLibCheck": true,
+		"erasableSyntaxOnly": true,
+		"noUncheckedSideEffectImports": true,
+
+		"types": ["chrome", "vite/client"],
+
+		"baseUrl": ".",
 		"paths": {
-			"~/*": [
-				"./src/*"
-			]
+			"~/*": ["./src/*"]
 		}
 	},
-	"include": [
-		"src/**/*"
-	],
-	"exclude": [
-		"node_modules",
-		".dccache",
-	]
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
 }

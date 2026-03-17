@@ -1,5 +1,6 @@
 import round from 'lodash.round';
 import { useColourContrast } from '~/context';
+import type { ColorTuple } from '~/global-types';
 import { hslToRgb, rgbToHsl } from '~/utils/color-utils';
 import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
@@ -28,12 +29,12 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	const labelTextC = isRgb ? `Blue ${valueC}` : `Lightness ${valueC}`;
 
 	const handleChange = ({ target }: { target: HTMLInputElement }): void => {
-		const abc = [...value];
+		const abc: ColorTuple = [...value];
 		const property = target.getAttribute('property');
 
 		if (!property) return;
 
-		abc[parseFloat(property)] = parseFloat(target.value);
+		abc[parseFloat(property) as 0 | 1 | 2] = parseFloat(target.value);
 
 		const colorValue = isRgb ? rgbToHsl(abc) : abc;
 

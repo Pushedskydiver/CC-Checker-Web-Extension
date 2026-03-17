@@ -8,7 +8,7 @@ import {
 	rgbToHsl,
 } from './utils/color-utils';
 
-import type { TColors, TLevels, TPickedColor } from './global-types';
+import type { ColorTuple, TColors, TLevels, TPickedColor } from './global-types';
 
 export interface ProviderProps {
 	children: React.ReactNode;
@@ -16,17 +16,17 @@ export interface ProviderProps {
 
 export interface ColourContrastContextTypes {
 	colors: TColors[];
-	background: number[];
-	foreground: number[];
+	background: ColorTuple;
+	foreground: ColorTuple;
 	contrast: number;
 	level: TLevels;
 	isBackgroundDark: boolean;
 	isPoorContrast: boolean;
-	handleContrastCheck: (value: number[], name: string) => void;
+	handleContrastCheck: (value: ColorTuple, name: string) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
 	setColors: React.Dispatch<React.SetStateAction<TColors[]>>;
-	updateView: (bg: number[], fg: number[]) => void;
+	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
 }
 
 const ColourContrastContext = createContext<
@@ -58,8 +58,8 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	const localLevel = storedLevel ? JSON.parse(storedLevel) : levels;
 
 	const [colors, setColors] = useState<TColors[]>(localColors);
-	const [background, setBackground] = useState<number[]>(localBackground);
-	const [foreground, setForeground] = useState<number[]>(localForeground);
+	const [background, setBackground] = useState<ColorTuple>(localBackground);
+	const [foreground, setForeground] = useState<ColorTuple>(localForeground);
 	const [contrast, setContrast] = useState<number>(localContrast);
 	const [level, setLevel] = useState<TLevels>(localLevel);
 	const isPoorContrast = contrast < 3;
@@ -81,15 +81,15 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		setLevel(newLevel);
 	}
 
-	function handleContrastCheck(value: number[], name: string) {
+	function handleContrastCheck(value: ColorTuple, name: string) {
 		const isBackground = name === 'background';
 		const isForeground = name === 'foreground';
 
 		const storedBg = localStorage.getItem('background');
 		const storedFg = localStorage.getItem('foreground');
 
-		const localBg = storedBg ? JSON.parse(storedBg) : background;
-		const localFg = storedFg ? JSON.parse(storedFg) : foreground;
+		const localBg: ColorTuple = storedBg ? JSON.parse(storedBg) : background;
+		const localFg: ColorTuple = storedFg ? JSON.parse(storedFg) : foreground;
 
 		const bg = isBackground ? hslToHex(value) : hslToHex(localBg);
 		const fg = isForeground ? hslToHex(value) : hslToHex(localFg);
@@ -123,7 +123,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		setColors(colors);
 	}
 
-	function updateView(bg: number[], fg: number[]) {
+	function updateView(bg: ColorTuple, fg: ColorTuple) {
 		const backgroundHex = hslToHex(bg);
 		const foregroundHex = hslToHex(fg);
 
@@ -143,7 +143,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	}
 
 	function handlePickedColor({ key, rgb }: TPickedColor) {
-		const value = rgbToHsl(rgb) as number[];
+		const value = rgbToHsl(rgb);
 
 		handleContrastCheck(value, key);
 
@@ -152,12 +152,9 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		});
 	}
 
-	function handleMessageListener(r: any) {
-		switch (r.type) {
-			case 'colorPicked':
-				handlePickedColor(r);
-				break;
-			default:
+	function handleMessageListener(r: { type: string } & Partial<TPickedColor>) {
+		if (r.type === 'colorPicked' && r.key && r.rgb) {
+			handlePickedColor({ key: r.key, rgb: r.rgb });
 		}
 	}
 

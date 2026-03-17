@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
 
-import type { TLevels } from '~/global-types';
+import type { ColorTuple, TLevels } from '~/global-types';
 
 export const isHex = (hex: string): boolean => {
 	try {
@@ -11,7 +11,7 @@ export const isHex = (hex: string): boolean => {
 	}
 };
 
-export const isHsl = (hsl: number[]): boolean => {
+export const isHsl = (hsl: ColorTuple): boolean => {
 	try {
 		const color = chroma.hsl(hsl[0], hsl[1], hsl[2]);
 		return !!color;
@@ -20,7 +20,7 @@ export const isHsl = (hsl: number[]): boolean => {
 	}
 };
 
-export const isRgb = (rgb: number[]): boolean => {
+export const isRgb = (rgb: ColorTuple): boolean => {
 	try {
 		const color = chroma.rgb(rgb[0], rgb[1], rgb[2]);
 		return !!color;
@@ -29,27 +29,27 @@ export const isRgb = (rgb: number[]): boolean => {
 	}
 };
 
-export const isDark = (hsl: number[]): boolean => {
+export const isDark = (hsl: ColorTuple): boolean => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') < 60;
 };
 
-export const colorToRgb = (hex: string): [number, number, number] => {
+export const colorToRgb = (hex: string): ColorTuple => {
 	return chroma(hex).rgb();
 };
 
-export const colorToHsl = (hex: string): [number, number, number] => {
+export const colorToHsl = (hex: string): ColorTuple => {
 	return chroma(hex).hsl();
 };
 
-export const hslToHex = (hsl: number[]): string => {
+export const hslToHex = (hsl: ColorTuple): string => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).hex();
 };
 
-export const hslToRgb = (hsl: number[]): [number, number, number] => {
+export const hslToRgb = (hsl: ColorTuple): ColorTuple => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).rgb();
 };
 
-export const rgbToHsl = (rgb: number[]): [number, number, number] => {
+export const rgbToHsl = (rgb: ColorTuple): ColorTuple => {
 	return chroma.rgb(rgb[0], rgb[1], rgb[2]).hsl();
 };
 
@@ -60,7 +60,7 @@ export const getContrast = (bg: string, fg: string): number => {
 export const getColorValue = (
 	path: string | null,
 	fallback: string,
-): [number, number, number] => {
+): ColorTuple => {
 	const isPathAndHex = path && isHex(path);
 	const value = colorToHsl(isPathAndHex ? path : fallback);
 
