@@ -181,7 +181,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 	}, [background, foreground]);
 
 	return (
-		<ColourContrastContext.Provider
+		<ColourContrastContext
 			value={{
 				colors,
 				background,
@@ -198,7 +198,7 @@ const ColourContrastProvider = (props: ProviderProps) => {
 			}}
 		>
 			{props.children}
-		</ColourContrastContext.Provider>
+		</ColourContrastContext>
 	);
 };
 

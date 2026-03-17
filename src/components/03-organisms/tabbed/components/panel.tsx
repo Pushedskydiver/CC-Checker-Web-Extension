@@ -20,7 +20,7 @@ export const Panel: React.FC<TPanel> = ({
 		role="tabpanel"
 		aria-labelledby={`tab-${id}`}
 		hidden={activeTab !== index}
-		ref={(element) => (panelRef.current[index] = element)}
+		ref={(element) => { panelRef.current[index] = element; }}
 		tabIndex={-1}
 		className={styles.panel}
 	>

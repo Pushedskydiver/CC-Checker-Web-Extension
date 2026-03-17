@@ -13,9 +13,9 @@ export default defineConfig({
 	build: {
 		outDir: 'build',
 		modulePreload: false,
-		rollupOptions: {
+		rolldownOptions: {
 			output: {
-				inlineDynamicImports: true,
+				codeSplitting: false,
 			},
 		},
 	},

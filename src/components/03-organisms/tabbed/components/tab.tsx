@@ -51,7 +51,7 @@ export const Tab: React.FC<TTab> = ({
 				aria-selected={activeTab === index}
 				onClick={handleClick}
 				onKeyDown={handleKeyDown}
-				ref={(element) => (tabRef.current[index] = element)}
+				ref={(element) => { tabRef.current[index] = element; }}
 				tabIndex={activeTab !== index ? -1 : undefined}
 				className={styles.tab}
 			>

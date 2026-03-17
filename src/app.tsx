@@ -6,7 +6,7 @@ import { MainLayout } from './components/04-layouts/main-layout/main-layout';
 
 import './styles/globals.css';
 
-const App = (): JSX.Element => (
+const App = (): React.JSX.Element => (
 	<ColourContrastProvider>
 		<Header />
 
