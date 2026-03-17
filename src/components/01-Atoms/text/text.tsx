@@ -19,7 +19,7 @@ export type TextWeights =
 	| 'bold';
 
 export type TText = {
-	tag?: keyof Omit<JSX.IntrinsicElements, 'mux-player'>;
+	tag?: keyof React.JSX.IntrinsicElements;
 	size?: TextSizes;
 	weight?: TextWeights;
 } & React.HtmlHTMLAttributes<Element>;

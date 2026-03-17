@@ -10,7 +10,7 @@ import type { TColors } from '~/global-types';
 export const SavedColors: React.FC = () => {
 	const { background, foreground, colors, setColors } = useColourContrast();
 
-	const renderSwatch = (swatch: TColors, i: number): JSX.Element => (
+	const renderSwatch = (swatch: TColors, i: number): React.JSX.Element => (
 		<ColorSwatch
 			key={`${swatch.background}-${swatch.foreground}-${i}`}
 			background={swatch.background}
