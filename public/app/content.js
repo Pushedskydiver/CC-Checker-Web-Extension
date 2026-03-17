@@ -159,7 +159,7 @@ function addCanvas() {
 	const canvasWrapper = document.createElement('div');
 	const canvas = document.createElement('canvas');
 
-	style.ty = 'text/css';
+	style.type = 'text/css';
 	style.setAttribute('data-cc-styles', '');
 	style.appendChild(document.createTextNode(css));
 
@@ -191,12 +191,11 @@ function closeChecker() {
 	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
 	const styles = document.querySelector('[data-cc-styles]');
 
-	document.body.setAttribute('style', 'cursor: auto;');
+	document.body.style.cursor = 'auto';
 
-	canvasWrapper.style.display = 'none';
-
-	checker.remove();
-	styles.remove();
+	if (canvasWrapper) canvasWrapper.style.display = 'none';
+	if (checker) checker.remove();
+	if (styles) styles.remove();
 }
 
 chrome.runtime.onMessage.addListener((r) => {

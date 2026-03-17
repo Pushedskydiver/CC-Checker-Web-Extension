@@ -21,6 +21,8 @@
     {
       "resources": [
         "index.html",
+        "error.html",
+        "assets/*",
         "fonts/avenir-next-variable.woff2"
       ],
       "matches": [
