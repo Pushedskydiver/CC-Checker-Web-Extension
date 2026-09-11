@@ -1,0 +1,346 @@
+# Git conventions
+
+Adapted from nas-stacks', moe's and tamaclaude's `docs/GIT.md`, all of which descend from
+chief-clancy's. The disciplines carry over: one vocabulary for branch prefixes and commit types, a
+gitmoji table, no `--amend`, a stated list of what actually enforces the rules, and a blast-radius
+list. The shape of the commit line does not — this repo has its own, and it predates this document.
+
+What changed on the way over:
+
+- **No changesets, no semver tooling, no npm publish, no deploy.** Nothing here is published to npm
+  and nothing happens on merge. The sources' Release Flow and Deploy Flow sections become
+  [Releases](#releases): a zip file and a manual Chrome Web Store upload.
+- **Ticket keys.** moe says "no ticket numbers"; this repo has them. `CC-001`, `CC-002` and `CC-003`
+  are keys in Alex's own tracker for the two colour-contrast projects (the sibling web app,
+  `Pushedskydiver/Colour-Contrast-Checker`, uses the same keys and the same commit format).
+- **Gitmoji position.** chief-clancy, moe and tamaclaude put the gitmoji first (`✨ feat(scope): …`);
+  nas-stacks puts it after the colon (`feat: ✨ …`). Here it follows the ticket key:
+  `feat: CC-002 - ✨ Add rgb colour options, tidy up code`.
+- **No label taxonomy, no squash mandate, no direct-to-`main` exception.** Each is deliberately not
+  adopted; see [Deliberately not adopted](#deliberately-not-adopted) for the re-entry conditions.
+
+Where this document describes what the repo already does, it says so and points at commits. Where
+the history contradicts it, that is called out as drift with the correction; history is not
+rewritten.
+
+## What actually enforces any of this
+
+Checked against the live repo with `gh api` on 4 September 2026, not inferred from the sources:
+
+| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                             |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                              |
+| Required status checks on `main` | **None yet.** `.github/workflows/ci.yml` (job `quality`: `npm ci`, lint, build, Playwright e2e on `ubuntu-latest`) was added on 4 September 2026 and has never run — the branch carrying it is unpushed. **Re-entry:** once `quality` has run green on a PR, make it required and rewrite this row. |
+| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                |
+| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                  |
+
+So, apart from the review requirement, this file is instructions, knowingly — the weaker instrument.
+Two things follow: "CI was green" means CI reported green, so read the run before merging; and the
+re-entry condition above is a five-minute job, to be done the same day `quality` first passes.
+
+The history shows why it matters. Three PRs have ever merged — #5 (a 2020 Dependabot bump, landed
+without a merge commit), #13 and #17 (merge commits) — and every other commit on `main` was pushed
+directly. Branch protection now blocks that path for anyone who is not an admin; this document asks
+Alex to treat it as blocked for him too.
+
+## Branch strategy
+
+`main` is the trunk. Every branch is cut from `main` and lands back on `main` via a PR.
+
+```
+main ← feat/ | fix/ | chore/ | refactor/ | docs/ | ci/ | test/ | build/
+```
+
+### Naming
+
+```
+<type>/CC-<n>[-short-slug]
+```
+
+`<type>` is the commit type from the [types table](#types) — one vocabulary, not two. `CC-<n>` is
+the ticket key; the slug is optional and tells apart branches on the same ticket. Observed:
+`feat/CC-002` (behind PR #17) and `feat/CC-003-apca-3` fit; `CC-Dependencies` (behind PR #13, 2023)
+predates the convention; `feat/vite-migration` carries no ticket key, which is drift. It is not being
+renamed mid-flight; the next branch on the ticket follows the format.
+
+### Live branches, 4 September 2026
+
+| Branch                      | State                                                                                                                                                                                                                                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main`                      | Local `main` is one commit ahead of `origin/main` — `3043249 fix: CC-002 - 🐛 Fix issue with rgb options being in wrong order` (8 July 2024). It is the merge-base of `feat/vite-migration`, so it lands with that PR; afterwards bring local `main` back to `origin/main` rather than pushing it. |
+| `feat/vite-migration`       | The CRA → Vite migration, the 4 September 2026 fixes and these docs. Not pushed yet.                                                                                                                                                                                                               |
+| `feat/CC-003-apca-3`        | APCA contrast experiment. Pushed; last commit `chore: CC-003 - 🎨 Update app`, 13 August 2024. Needs rebasing onto post-migration `main` before it can be reviewed.                                                                                                                                |
+| `dependabot/npm_and_yarn/*` | **Bot-owned.** Eight remote branches behind PRs #18–#25. Never commit to them. See [Dependabot](#dependabot).                                                                                                                                                                                      |
+
+### What needs a PR
+
+Everything. `main` is protected, and the sources' direct-to-`main` exception for small doc fixes is
+not adopted: nothing here is appended to so often that a PR costs more than the reasoning it
+protects, and the docs sit on the [blast-radius list](#blast-radius-docs) anyway. A typo fix is a
+one-commit PR; with `enforce_admins` off it costs Alex a click.
+
+Cut the branch as the literal first action after syncing, before any edit — moe's rule, with the
+same two failure modes it exists to prevent (stacking an unmerged PR's commits under the next branch;
+committing the next slice onto local `main`):
+
+```bash
+git checkout main && git pull --ff-only
+git checkout -b <type>/CC-<n>-<slug>
+```
+
+## Commit messages
+
+### Format
+
+```
+<type>: CC-<n> - <gitmoji> Description
+```
+
+Type, colon, ticket key, space-hyphen-space, gitmoji, capitalised imperative description. This is
+what the repo has written since `refactor: CC-001 - ♻️ Refactor extension, fix issue with brave
+browser` (29 June 2024). It is the reverse of the other repos' `<gitmoji> <type>(scope):` and not
+nas-stacks' `<type>: <gitmoji>` either. It is written down rather than changed because the type leads
+the line — `git log --grep '^fix:'` works — and because the sibling web app uses the identical format,
+so a change here would split two histories to gain nothing.
+
+Three eras in `git log`, and only the last is drift:
+
+- **2019–2023: gitmoji only**, sometimes as shortcodes — `:sparkles: Add header component, make app
+work as chrome extension`, `♻️ Improve accessibility and functionality`. Pre-convention; left alone.
+- **2024: the full format** — `feat: CC-002 - ✨ Add rgb colour options, tidy up code`.
+- **17 March 2026: the five most recent commits on `feat/vite-migration` dropped the gitmoji** —
+  `chore: CC-002 - Upgrade to React 19 and Vite 8`, `refactor: CC-002 - Inline PostCSS config into
+vite.config.ts`. Drift, not a second convention; not amended (see [No `--amend`](#no---amend)).
+
+Two smaller drifts on `main`, also left in place: `bug: CC-002 - 🐛 Fix issue with header file name`
+(4 July 2024) is a typo for `fix`; and 🎨 has served as a generic "I edited something" marker
+(`chore: CC-002 - 🎨 Update UI`, `chore: CC-003 - 🎨 Update app`). 🎨 is not in the table below, and a
+subject of the shape `Update <thing>` tells `git log` nothing — say what broke, or what this adds.
+
+### Types
+
+| Type       | Gitmoji | Use for                                               |
+| ---------- | ------- | ----------------------------------------------------- |
+| `feat`     | ✨      | New capability                                        |
+| `fix`      | 🐛      | Bug fix                                               |
+| `chore`    | 📦      | Maintenance, config, dependency work                  |
+| `refactor` | ♻️      | Restructuring, no behaviour change                    |
+| `docs`     | 📝      | Documentation only                                    |
+| `style`    | 💄      | Formatting, cosmetic, no behaviour change             |
+| `test`     | ✅      | Adding or changing tests (`test/e2e/**`)              |
+| `ci`       | 👷      | `.github/workflows/**`, `.github/dependabot.yml` only |
+| `build`    | 🔧      | `vite.config.ts`, `tsconfig*.json`, lint tooling      |
+| `perf`     | ⚡️      | Performance                                           |
+
+Ten types. `feat`, `fix`, `chore`, `refactor` and `style` are already in the history; `docs`,
+`test`, `ci`, `build` and `perf` are added because the repo now has docs, an e2e suite, a workflow
+and a build config that change on their own. Not adopted from the sources: `security` (a security
+fix here is a `fix`) and `remove` — the history already uses `chore: … 🔥` for removals.
+
+The table gives each type a default. Where a more specific gitmoji says something the type does not,
+use it — the history already does: 🔥 for removing files, ⬆️ for dependency bumps (Dependabot's own
+titles use it too), 🙈 for `.gitignore`. Copy the character out of this table rather than typing
+one: `♻️` and `⚡️` carry a trailing U+FE0F variation selector, and the bare codepoint is a different
+string that a grep will silently miss.
+
+### Examples
+
+All real, from `git log`:
+
+```
+feat: CC-002 - ✨ Add rgb colour options, tidy up code
+fix: CC-002 - 🐛 Fix issue with rgb options being in wrong order
+refactor: CC-002 - ♻️ Migrate from CRA/Craco to Vite, add extension error handling
+style: CC-003 - 💄 Update tabbed styles
+chore: CC-002 - 🔥 Remove app file to put back
+```
+
+### Bodies
+
+The subject says what changed. **The body says why, what it cost, and what was tried and was
+wrong.** Bodies are new here — no commit before 17 March 2026 has one, apart from Dependabot's and
+the PR title GitHub pasted into the two merge commits — and the ones since are the standard to aim at.
+
+`git show 3a106f0` (`fix: CC-002 - Sync React 19 JSX type fixes to uppercase-path Git entries`) is
+the worked example, and an honest one. Its body says the case-insensitive macOS filesystem had Git
+tracking both `01-Atoms` and `01-atoms` as separate entries, and that the commit syncs fixes already
+made under the lowercase paths to their uppercase twins. The mechanism was right; the fix was wrong.
+The uppercase entries should not have existed, and on 4 September 2026 a fresh Linux clone could not
+build (`UNRESOLVED_IMPORT` plus 21 TS2307 errors) until the tree was re-indexed with
+`git rm -r --cached src/components && git add src/components` and `core.ignorecase=false` was set.
+The body made that diagnosis a five-minute job rather than an archaeology dig — a recorded wrong
+belief tells the next reader which plausible fix to distrust.
+
+For anything touching `public/app/*.js` or the manifest, say whether it was exercised in a real
+Chrome (build, load unpacked, click the toolbar) or only by the e2e suite, which cannot grant
+`activeTab` and never sees the error popup. Blank line after the subject; wrap at 80 columns.
+Claude-authored commits carry a `Co-Authored-By: Claude …` trailer — keep it.
+
+### No `--amend`
+
+Never `git commit --amend`, even for a typo, even before pushing. A follow-up is a new commit. The
+repo already carries the price visibly: `feat: CC-002 - ✨ Add rbg colour options` (4 July 2024,
+`rbg` permanent) and `chore: CC-002 - 🔥 Remove app file to put back` twice in a row (5 July 2024).
+The five gitmoji-less subjects on `feat/vite-migration` stay for the same reason: an amend rewrites a
+commit that a review agent, a PR page or `PROGRESS.md` may already have cited by hash.
+
+## Pull requests
+
+### Title
+
+Same format as a commit subject: `<type>: CC-<n> - <gitmoji> Description`. Both human-authored PRs
+in the history missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add dependabot`, #17
+was `Feat/cc 002` — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
+records nothing about what it did. Nothing checks the title; that is why it is written here.
+
+If Alex squashes, the title matters more. `squash_merge_commit_title` is `COMMIT_OR_PR_TITLE` (a
+one-commit branch takes its commit subject, a multi-commit branch takes the PR title) and
+`squash_merge_commit_message` is `COMMIT_MESSAGES` (every body on the branch, concatenated). The
+merge box is editable and nothing checks it afterwards: read it before confirming, and rewrite the
+concatenation into a summary rather than shipping it.
+
+### Body
+
+`PULL_REQUEST_TEMPLATE.md` at the repo root (GitHub honours root, `docs/` or `.github/`) pre-fills
+five headings. What each one wants here:
+
+| Heading                                     | Answer with                                                                                                                                                                                                                    |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                            |
+| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, clipboard contents and the store package are outside the suite (`docs/TESTING.md`).     |
+| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                  |
+| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                       |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)). |
+
+### Labels
+
+**No label taxonomy — deliberately.** The repo has eight of GitHub's default labels plus `dependencies`,
+which Dependabot created; the only label ever applied to a PR is that one, on Dependabot's own PRs and on #13.
+Two human-authored PRs do not need a filter. Re-entry: thirty human PRs.
+
+### Who merges
+
+Alex merges. Claude Code never merges, never approves, and does not post review comments on the
+PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns the PR's audit trail.
+
+## Merge strategy
+
+Merge commits, squash and rebase are all enabled, and the history uses merge commits
+(`28fe57f Merge pull request #17 …`, `cd77ed5 Merge pull request #13 …`). **Which button is Alex's
+call, per PR.** The trade-off, stated once:
+
+- **Merge commit** keeps every branch commit and its body reachable from `main`. For the migration
+  branch, whose bodies are the only record of why several things were done, that is the safer
+  default.
+- **Squash** gives `git log --oneline main` one line per change. It eats the bodies unless the merge
+  box is rewritten (see [Title](#title)), and it makes `git branch -d` refuse afterwards (below).
+- **Rebase** is enabled and unused. Do not start.
+
+Two unrelated changes are two PRs, not two commits on one branch — squash would collapse the second
+change's reasoning, and a merge commit would bury it under one PR title.
+
+### After the merge
+
+`delete_branch_on_merge` is **off**, so the remote branch survives the merge. Delete it by hand
+unless the PR body says why it is being kept (a branch whose commits each explain one defect, or
+record something tried and wrong, is a record — say so in the PR body **before** merging, so the
+next cleanup sweep does not delete it for tidiness).
+
+```bash
+gh pr view <n> --json state,mergedAt          # state must be MERGED before anything below
+git push origin --delete <branch>
+git checkout main && git pull --ff-only && git fetch --prune
+git branch -d <branch>                         # merge commit: deletes cleanly
+git branch -D <branch>                         # squash: -d refuses; -D is correct once gh says MERGED
+npm ci
+npm run lint && npm run build && npm run test:e2e
+```
+
+`npm ci` because a merge can move `package-lock.json` underneath you; the suite because `main` is a
+combination that was never checked on any one branch's head. Deliberately not an npm script: it
+force-deletes branches, and one command that does that is a mistyped argument away from discarding
+unmerged work.
+
+## Dependabot
+
+Config is `.github/dependabot.yml`: weekly npm updates grouped into `dev-dependencies` and
+`production-dependencies`, monthly `github-actions`. Until 4 September 2026 that file sat at
+`.github/ISSUE_TEMPLATE/dependabot.yml`, where it had lived since 2022 and where GitHub never read
+it — every Dependabot PR in the history is a security alert, not a scheduled update. GitHub reads
+the config from the default branch, so nothing changes until the migration merges.
+
+**PRs #18–#25 are obsolete.** They are 2024 security bumps (postcss 7→8, webpack, micromatch,
+express, rollup) against the CRA/webpack tree that `feat/vite-migration` deletes. Once the migration
+has merged, close them — do not merge them, do not rebase them:
+
+```bash
+for n in 18 19 20 21 22 23 24 25; do
+  gh pr close "$n" --delete-branch \
+    --comment "Superseded by the Vite migration; this dependency is no longer in the tree."
+done
+git fetch --prune
+```
+
+Dependabot's own subjects (`:arrow_up: Bump rollup from 2.70.1 to 2.79.2`) are bot format; leave them alone.
+`git revert` subjects (`Revert "…"`) get the same treatment — none has been needed yet.
+
+## Releases
+
+There is no release automation. **Merged is not published** — the full sequence and the reasons are
+in [`DEVELOPMENT.md` §Merged is not published](DEVELOPMENT.md#merged-is-not-published); this is the
+git-side summary.
+
+1. The version lives in **both** `package.json` and `public/manifest.json`, unlinked. They read
+   1.6.1 and 1.6.2 on 4 September 2026 (the manifest had at some point regressed from 1.6.4); 1.7.0
+   was chosen to be safely above anything that may have been uploaded. The bump is a release commit,
+   not part of every PR.
+2. Check the currently published version in the Chrome Web Store developer dashboard first. It is
+   recorded nowhere in this repo, and the store rejects a version that is not greater than it.
+3. `npm run package` builds and zips `build/` to `cc-checker-1.7.0.zip`, dotfiles excluded. Upload
+   it by hand.
+4. **Tag the commit the zip was built from, after the store accepts it.** `git tag` prints nothing
+   today — no release in the extension's history can be mapped back to a commit. Start with the
+   next one:
+
+```bash
+git tag -a v1.7.0 -m "Chrome Web Store 1.7.0"
+git push origin v1.7.0
+```
+
+A tag is a fact about the store, not about `main`: it goes on the packaged commit once the upload is
+accepted, not on the merge.
+
+## Blast-radius docs
+
+Editing any of these needs a PR regardless of the size of the diff, and Alex reviews the
+**substance**, not just the button — with `enforce_admins` off, the approve button is his own, so
+the reading is the whole gate:
+
+- `CLAUDE.md` (and `AGENTS.md`, a symlink to it)
+- `docs/**` — this file, `ARCHITECTURE.md`, `DEVELOPMENT.md`, `TESTING.md`, `CONVENTIONS.md`,
+  `SELF-REVIEW.md`, `DA-REVIEW.md`, `REVIEW-PATTERNS.md`, `RATIONALIZATIONS.md`, `GLOSSARY.md`
+- `.claude/agents/**` — `da-review.md`, `copilot-surrogate.md`, `spec-grill.md`; these are executed
+  as instructions, so a change here changes behaviour the way a code change does
+- `public/manifest.json` — permissions, `web_accessible_resources`, the version; a bad entry ships
+  to every user on the next release and cannot be recalled
+- `.github/workflows/**` — decides what gets checked
+
+`copilot-surrogate` is mandatory on all five (review-trigger table in `CLAUDE.md`). This list
+is the source of truth; re-check it rather than reciting it from memory.
+
+## Deliberately not adopted
+
+Named with a re-entry condition, so a future reader can tell an omission from a miss:
+
+- **Type and scope labels** — see [Labels](#labels). Re-entry: thirty human PRs.
+- **Squash as the only merge method** (moe, nas-stacks). Re-entry: if `git log --oneline main` stops
+  reading as a list of changes, disable merge commits in the repo settings and rewrite
+  [Merge strategy](#merge-strategy).
+- **A PR-title check workflow** (moe's `pr-title-check.yml`). Re-entry: after `quality` is a required
+  check, if titles keep drifting the way #13 and #17 did.
+- **The direct-to-`main` drift-fix predicate** — see [What needs a PR](#what-needs-a-pr). Re-entry:
+  a doc that is appended to constantly; re-read nas-stacks' five clauses before importing it.
+- **Scopes in the subject** (`feat(scope):`). The ticket key occupies that slot; name the execution
+  context (`content.js`, `background.js`, `src/`) in the description instead.
+- **Reverts and drills.** No deliberate break has ever been merged here and there is no deploy to
+  drill; the `Revert "…"` rule above is all that carries over.

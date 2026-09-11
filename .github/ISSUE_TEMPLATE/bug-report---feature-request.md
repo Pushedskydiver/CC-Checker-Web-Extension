@@ -19,8 +19,8 @@ about: Create a report to help us improve
 
 **Please mention other relevant information.**
 
--   Node version
--   npm version
--   Operating system
--   CLI version
--   Browser
+- Node version
+- npm version
+- Operating system
+- CLI version
+- Browser
