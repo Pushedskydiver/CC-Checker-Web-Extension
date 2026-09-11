@@ -6,21 +6,23 @@ Living state document — current state, what's next. Session-by-session detail 
 ## Next workstreams (after Session 2)
 
 Updated 11 September 2026, end of Session 2 — **the CRA → Vite migration on `feat/vite-migration` is finished and
-verified, and the CLAUDE.md / docs / agents set has been ported in.** Nothing is committed or pushed yet: the whole
-session sits in the working tree and index of the local `feat/vite-migration` branch (see "Loading instructions").
+verified, and the CLAUDE.md / docs / agents set has been ported in.** As of 11 September 2026 all of it is
+committed on the local `feat/vite-migration` branch (six commits, `84dbc5f`..`5b92bde`, tree clean) but **not
+pushed** (see "Loading instructions").
 
-1. **Land the migration.** Commit the working tree in logical chunks (suggested order below), push
-   `feat/vite-migration`, open a PR against `main`, let the new CI run, make its `quality` check a required
-   status check once it is green, then Alex merges.
+1. **Land the migration.** Push `feat/vite-migration`, open a PR against `main`, let the new CI run, make its
+   `quality` check a required status check once it is green, then Alex merges.
 2. **Release 1.7.0.** After merge: check the currently published version in the Chrome Web Store dashboard,
    `npm run package`, upload `cc-checker-1.7.0.zip`, tag `v1.7.0`. Merged is not published.
 3. **Close the eight obsolete Dependabot PRs** (#18–#25, 2024, against the old webpack tree) after the merge.
 4. **Unit tests for `src/utils/color-utils.ts`** (vitest) — the re-entry condition for mutation testing.
 5. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
 
-### Suggested commit sequence for the working tree
+### Commit sequence as landed on 11 September 2026
 
-Each line is one commit; the index already holds the case-only renames from step 1.
+One commit per line, in this order, plus a sixth (`5b92bde`) that stops tracking `.vscode/settings.json` — `git add`
+refuses paths under an ignored directory, so the removal missed commit 2 and that commit carries one machine's
+editor colours in history.
 
 1. `fix: CC-002 - 🐛 Normalise component directory casing in the git index` (the staged `01-Atoms` → `01-atoms`
    renames; a Linux checkout could not build before this).
@@ -79,12 +81,11 @@ copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVE
 ### Session 3 loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file, then `docs/DEVELOPMENT.md` once.
-2. Run `git status --short | head` — expect the staged case renames plus the modified/untracked set above. If the
-   tree is clean, Session 2's commits have landed; skip to workstream 2.
+2. Run `git status --short` (expect clean) and `git log --oneline -7` (expect the six commits above on top of
+   `f877f16`). If `origin/feat/vite-migration` exists, the push has happened; check the PR and CI next.
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine). Expect 18 passing tests.
-4. Follow the commit sequence above unless Alex says otherwise; do not squash the case-rename commit into another —
-   it is easier to review alone.
+4. Do not squash the case-rename commit into another when merging — it is easier to review alone.
 
 ## Session archive
 
