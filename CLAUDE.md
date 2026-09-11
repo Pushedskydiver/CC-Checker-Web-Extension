@@ -47,8 +47,10 @@ Upgrade to React 19 and Vite 8`) — that is drift, not a new convention. Branch
 gh pr create --title "fix: CC-002 - 🐛 Description"   # same format as a commit subject
 ```
 
-`PULL_REQUEST_TEMPLATE.md` at the repo root supplies the body. **Merge policy: Alex merges. Claude
-never does.** Branch protection on `main` requires one approving review and a green
+`PULL_REQUEST_TEMPLATE.md` at the repo root supplies the body. **Merge policy: Alex merges human PRs; Claude never does.** One delegated exception,
+granted by Alex on 11 September 2026: a Dependabot PR whose `Lint, build, e2e` run is green may be
+merged by Claude (`gh pr merge <n> --merge --admin --delete-branch`) and recreated
+(`@dependabot recreate`) when its group needs rebuilding. Branch protection on `main` requires one approving review and a green
 `Lint, build, e2e` status check (the `quality` job in `.github/workflows/ci.yml`: lint, build, e2e
 on Linux — required since 11 September 2026, after its first green run on PR #28), with
 `enforce_admins` off so Alex can merge his own PRs. Squash versus merge commit is his call per PR

@@ -3,19 +3,64 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 3)
+## Next workstreams (after Session 4)
 
-Updated 11 September 2026, end of Session 3 — **the CRA → Vite migration on `feat/vite-migration` is finished and
-verified, and the CLAUDE.md / docs / agents set has been ported in.** As of 11 September 2026 it is **merged
-into `main`** (PR #28, merge commit `08542e6`), `Lint, build, e2e` is a required status check, and the repo
-settings changed the same day are listed under Session 3 below.
+Updated 11 September 2026, end of Session 4 — **the migration is merged and 2.1.0 is with the store for review**
+(`v2.1.0` on `c5da9fc`; #40 merged as `0accd3b`). Alex's next ask, in his words: he is "happy the migration is
+done" but wants a deep dive into code quality, project architecture and readability — the large context file,
+whether React Compiler or other React 19 features help, whether the code is simple to follow.
 
-1. **Release 2.1.0.** The release commit (version bump in both files) is on `main` once the release PR merges;
-   `npm run package` from it gives `cc-checker-2.1.0.zip`; Alex uploads it; then tag `v2.1.0` on that commit once
-   the store accepts it. Merged is not published. (Why 2.1.0 and not 1.7.0: Session 4.)
-2. **Merge or close the remaining Dependabot PRs** — see Session 3.
-3. **Unit tests for `src/utils/color-utils.ts`** (vitest) — the re-entry condition for mutation testing.
+1. **Code-quality deep dive (CC-004 suggested).** Brief below. Order of work per `CLAUDE.md`: grill the brief
+   with `spec-grill`, produce an ordered PR plan, Alex approves it, then one PR at a time with `da-review` on
+   every `src/**` change and the e2e suite as the gate.
+2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here. Users run 2.0.1 until then.
+3. **Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.
 4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
+
+### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
+
+Facts, not impressions — re-measure before acting; the commands are one-liners.
+
+- **Size.** 31 `.ts/.tsx` files, 1,894 lines; 25 CSS modules. Largest: `src/context.tsx` 221 lines,
+  `color-controls.tsx` 138, `icon.tsx` 120, `cta.tsx` 105, `useTabbed.ts` 92.
+- **`src/context.tsx` does five jobs:** owns the colour state, derives contrast/level/dark on every render,
+  reads and writes `localStorage`, exposes the actions (`handleContrastCheck`, `reverseColors`, `saveColors`,
+  `updateView`), and bridges `chrome.runtime.onMessage`. Candidates: a pure colour model (a reducer, or
+  `useSyncExternalStore` over a tiny store) with persistence and the message bridge as separate hooks; a typed
+  action API instead of `handleContrastCheck(value, name: string)` dispatching on `'background' | 'foreground'`.
+- **One pattern is copied 16 times across 12 files:** `isPoorContrast && !isBackgroundDark ? styles.xDark :
+undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` under `src/`). Two structural
+  fixes to weigh: a `useThemeClass(styles)` hook, or — probably better — the provider sets
+  `data-contrast="poor"` / `data-scheme="dark"` on `document.body` once and the CSS modules select on them,
+  removing the JavaScript branch entirely. Either way the e2e suite already covers the visible outcome.
+- **React 19 in use today:** Context rendered as its own provider, `useEffectEvent` (2 sites). Not in use
+  anywhere: `useMemo`, `useCallback`, `memo`, `useReducer`, `use`, `useSyncExternalStore`. That absence is
+  exactly what **React Compiler** exists for: `babel-plugin-react-compiler` 1.0.0 is published and
+  `@vitejs/plugin-react` 6.1 takes it via `babel.plugins`. Run `npx react-compiler-healthcheck` first, then
+  enable it, then measure — bundle size (`build/assets/index-*.js`, 259.74 kB before), e2e 18/18, and a
+  before/after render count on the slider path if it is worth the instrumentation. A compiler that changes
+  nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
+- **`React.FC` in 25 files** — `docs/CONVENTIONS.md` §Components currently mandates it. Decide once: keep, or
+  move to plain typed functions (the React docs' current default). A convention change is a doc PR first.
+- **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
+  `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
+  in the repo, `docs/TESTING.md` §Future), then the component is a form.
+- **Message names live in three places** (`content.js`, `background.js`, `src/`) as string literals, and the
+  two `public/app/*.js` files are untyped and unbundled. An architecture option, not a quick win: build them
+  from TypeScript as extra Vite entries sharing one `messages.ts`. It changes the manifest paths and the
+  packaging, so it needs its own spec — and the store rejection of 11 September is the reminder that manifest
+  changes get tested by uploading.
+- **`react-copy-to-clipboard`** is the last class-component dependency. `docs/ARCHITECTURE.md` §Permissions
+  says why it stays; the way out is `allow="clipboard-write"` on the iframe `content.js` creates, then
+  `navigator.clipboard.writeText`. Spike it with an e2e test that reads the clipboard back.
+- **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
+  `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
+- **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
+  sprite, `useTabbed` and the `Tab`/`Panel` pair carry refs through props. Judge these after the structural
+  items, not before — they are the ones most likely to be solved by the items above.
+
+Out of scope for this workstream: APCA (`feat/CC-003-apca-3`, Alex may never add it), Safari, and any
+manifest or permission change.
 
 ### Commit sequence as landed on 11 September 2026
 
@@ -64,6 +109,10 @@ until then 2.0.1 is what they run.
 
 **Not done, deliberately:** nothing beyond the tag until the store publishes the reviewed build. The
 `feat/CC-003-apca-3` branch and its stash are untouched.
+
+**Later the same day:** #40 merged (`0accd3b`); 2.1.0 submitted for store review with a corrected listing description
+(saved colours are capped at 5, not 20) and test instructions. Alex's Dependabot delegation is now written down
+(`docs/GIT.md` §Who merges). Handoff for the code-quality workstream written above.
 
 **Corrected in this session:** the APCA attribution above went into six docs, a commit message (`2f50beb`) and PR
 #37's body before Alex read it. The commit and PR text stand as written (history is not rewritten); the docs are
@@ -140,13 +189,17 @@ copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVE
 **Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
 from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-### Session 4 loading instructions
+### Session 5 loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded), then this file, then `docs/DEVELOPMENT.md` once.
-2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `cb1c325` or later);
-   `gh pr list` shows what Dependabot has queued since — merging green Dependabot PRs is delegated (Session 3).
+1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then `docs/CONVENTIONS.md` and
+   `docs/ARCHITECTURE.md` once — the brief above cites both.
+2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `0accd3b` or later);
+   `gh pr list` for anything Dependabot has queued (green ones are delegated — `docs/GIT.md` §Who merges).
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
-   (`npx playwright install chromium` first on a new machine). Expect 18 passing tests.
+   (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
+   Expect 18 passing tests.
+4. Re-measure the brief's numbers, then dispatch `spec-grill` on the brief (discovery round, then one
+   verification round) and turn it into an ordered PR plan for Alex to approve. Do not start code before that.
 
 ## Session archive
 

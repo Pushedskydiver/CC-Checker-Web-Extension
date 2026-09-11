@@ -28,7 +28,8 @@ reaches users_; everything keyed to npm publishing or container deploys is named
    skipped. [§The review gate](#the-review-gate--architectural--da--self--pr).
 4. **Push and open the PR.** CI runs `quality` on Linux — the only case-sensitive checkout in the
    loop. Watch it.
-5. **Alex merges.** Claude never merges. Merge commit or squash is Alex's call per PR.
+5. **Alex merges.** Claude never merges a human PR; green Dependabot PRs are delegated
+   (`docs/GIT.md` §Who merges). Merge commit or squash is Alex's call per PR.
 6. **(Release only) `npm run package`, then upload the zip in the Web Store dashboard.** Merged is
    not published — [§Merged is not published](#merged-is-not-published).
 
@@ -211,7 +212,8 @@ thirty seconds later — so the review chain is doing the whole job.
 
 ### What must be true before asking Alex to merge
 
-**Claude does not merge and has no standing authority to.** The criteria below are a pre-merge
+**Claude does not merge human PRs and has no standing authority to** (Dependabot's green bumps are
+the one delegated exception — `docs/GIT.md` §Who merges). The criteria below are a pre-merge
 checklist, not a permission grant. All must hold before the handover; if one does not, fix it
 rather than raising it as a caveat:
 
