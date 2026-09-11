@@ -38,8 +38,8 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 
 **Done:** PR #28 pushed, CI green on its first Linux run (lint, build, 18/18 e2e in 56s), merged by Alex as
 `08542e6`. The eight 2024 Dependabot PRs (#18–#25) closed with their branches. Dependabot woke up once its config
-was on the default branch: #29 (`actions/checkout` 7) and #30 (`actions/upload-artifact` 7) merged; #31
-(`actions/setup-node` 7) rebased clean and awaits Alex; #33 (`fast-uri` 3.1.7, a security bump closing the audit's one high finding)
+was on the default branch: #29 (`actions/checkout` 7) and #30 (`actions/upload-artifact` 7) merged, as did #31
+(`actions/setup-node` 7) once Dependabot had rebased it; #33 (`fast-uri` 3.1.7, a security bump closing the audit's one high finding)
 is green and awaits Alex; #32 (the grouped dev-dependency bump) fails `npm ci` because it lifts ESLint to 10 while
 the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at 9 (the DA review's
 simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now ignores major bumps
@@ -102,7 +102,7 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
 
 1. Read `CLAUDE.md` (auto-loaded), then this file, then `docs/DEVELOPMENT.md` once.
 2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `08542e6` or later);
-   `gh pr list` shows what Dependabot has queued and whether #31/#32/#33 are still open.
+   `gh pr list` shows what Dependabot has queued and whether #32/#33 are still open.
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine). Expect 18 passing tests.
 

@@ -413,7 +413,7 @@ and the three `.claude/agents/` (`da-review`, `copilot-surrogate`, `spec-grill`)
 condition, or dropped outright:**
 
 - **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and this repo has
-  six merged PRs, three of them human-authored. Re-entry: after roughly ten PRs, when there is
+  seven merged PRs, three of them human-authored. Re-entry: after roughly ten PRs, when there is
   something to route against.
 - **Changesets, semver tooling, npm publishing, release workflows.** Nothing here is published to
   npm; the release is a zip and a dashboard. Re-entry: the day a Web Store upload is automated —

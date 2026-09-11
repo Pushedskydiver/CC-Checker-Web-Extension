@@ -40,7 +40,7 @@ covers what you changed, so read the run before merging.
 
 The history shows why it matters. Until 11 September 2026 three PRs had ever merged — #5 (a 2020
 Dependabot bump, landed without a merge commit), #13 and #17 (merge commits) — and every other
-commit on `main` was pushed directly (#28, #29 and #30 have since merged the protected way). Branch protection now blocks that path for anyone who is not an admin; this document asks
+commit on `main` was pushed directly (#28–#31 have since merged the protected way). Branch protection now blocks that path for anyone who is not an admin; this document asks
 Alex to treat it as blocked for him too.
 
 ## Branch strategy
