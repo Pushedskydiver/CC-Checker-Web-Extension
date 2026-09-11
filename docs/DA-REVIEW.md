@@ -378,7 +378,11 @@ load time, and the store does at upload.
 - [ ] `version` matches `package.json` and is greater than the published one (check the Web Store
       dashboard; the published version is recorded nowhere in this repo).
 - [ ] `run_at` stays `document_idle`; the e2e `page` fixture depends on it.
-- [ ] Every path (`./app/*.js`, `./favicons/*`, `error.html`) exists under `public/` in that case.
+- [ ] Every path (`app/*.js`, `favicons/*`, `error.html`) exists under `public/` in that case, and none
+      carries a `./` prefix or points at a file of another size. On 11 September 2026 the store rejected
+      the 2.1.0 upload as missing two icons that were in the zip; it accepted the same files once the
+      `./` prefixes were gone and a real 128×128 icon (documented as mandatory) was declared.
+- [ ] `icons` declares `16`, `32`, `48` and `128` at least, each file the size its key says.
 - [ ] Loaded unpacked once after the change (`npm run build`, then Load unpacked on `build/`) —
       the only check that runs Chrome's own manifest validation.
 

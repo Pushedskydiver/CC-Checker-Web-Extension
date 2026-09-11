@@ -47,7 +47,13 @@ adding it. The provenance of 2.0.1 stays unknown; the docs now say so rather tha
 session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
 `npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
 
-**Not done, deliberately:** no tag. `v2.1.0` goes on the release commit only after the store accepts the upload
+**Upload accepted:** the zip built from the tree in `c5da9fc` (manifest paths without `./`, plus 16/32/96/128 icons — the
+store documents 128 as mandatory and the manifest had lacked one since 1.5.0) was accepted by the dashboard on
+11 September 2026. The two changes went in together, so the store's exact trigger is not isolated; what is known is
+that the container was not it (an unchanged-manifest zip was rejected from Info-ZIP, Python and fflate alike) and the
+manifest was. `v2.1.0` is tagged on `c5da9fc`, the packaged commit, per `docs/GIT.md` §Releases.
+
+**Not done, deliberately:** nothing beyond the tag until the store publishes the reviewed build. `v2.1.0` goes on the release commit only after the store accepts the upload
 (`docs/GIT.md` §Releases). The `feat/CC-003-apca-3` branch and its stash are untouched.
 
 **Corrected in this session:** the APCA attribution above went into six docs, a commit message (`2f50beb`) and PR
