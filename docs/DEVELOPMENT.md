@@ -114,10 +114,11 @@ Releasing, in order:
 
 1. Bump `version` in **both** `package.json` and `public/manifest.json`. They are not linked, and
    on 4 September 2026 they disagreed (1.6.1 against 1.6.2, the manifest having regressed from an
-   earlier 1.6.4); 1.7.0 was chosen to be safely above anything that may have been uploaded.
-2. **Check the dashboard for the currently published version before uploading.** It is not
-   recorded anywhere in this repo, and the store rejects a version that is not greater than the
-   one it already has.
+   earlier 1.6.4); 1.7.0 was chosen to be safely above anything that may have been uploaded, and
+   was not — the public listing showed 2.0.1 on 11 September 2026, so the release is 2.1.0.
+2. **Check the currently published version before uploading.** It is not recorded anywhere in
+   this repo, and the store rejects a version that is not greater than the one it already has. The
+   public listing page shows it without the dashboard (URL in `docs/GIT.md` §Releases).
 3. `npm run package`, then upload `cc-checker-<version>.zip` by hand.
 
 The version bump is part of a release, not of every PR — a feature PR that bumps the manifest

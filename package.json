@@ -1,6 +1,6 @@
 {
   "name": "cc-checker-chrome-extension",
-  "version": "1.7.0",
+  "version": "2.1.0",
   "description": "WCAG accessibility colour contrast checker chrome extension",
   "license": "MIT",
   "private": true,
