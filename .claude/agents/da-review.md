@@ -92,9 +92,9 @@ authoritative; this list is what to look for while walking the diff. Every incid
 - **Case-sensitivity.** On 4 September 2026 the Git index tracked `01-Atoms/`, `02-Molecules/`,
   `Icon/`, `Ratio/` and `Header/` while the disk and every import used lowercase. macOS plus
   `core.ignorecase=true` hid it; a Linux clone failed with `UNRESOLVED_IMPORT` and 21 TS2307
-  errors. A green build on Alex's Mac is not evidence for a case-sensitive checkout, and
-  `.github/workflows/ci.yml` has never run. For any added, renamed or moved path this must print
-  nothing:
+  errors. A green build on Alex's Mac is not evidence for a case-sensitive checkout; only the
+  Linux CI run (`.github/workflows/ci.yml`, required on `main` since 11 September 2026) is. For any
+  added, renamed or moved path this must print nothing:
 
     ```bash
     git ls-files src | grep -E '/[A-Z]'
@@ -123,8 +123,8 @@ authoritative; this list is what to look for while walking the diff. Every incid
   instead of `#331111`. The fix that held sanitises at creation (`toHslTuple` in
   `src/utils/color-utils.ts`). A `useEffect` that mutates or re-sets state from derived values, or
   an `eslint-disable` on a `react-hooks` rule, is the same shape again.
-- **Has this been observed working, or does it merely exist?** `ci.yml` has never run. A pass
-  under the e2e `patched` fixture proves the picker pipeline, not the `activeTab` grant. The suite
+- **Has this been observed working, or does it merely exist?** A pass under the e2e `patched`
+  fixture proves the picker pipeline, not the `activeTab` grant. The suite
   does not cover a real toolbar click, the error popup UI, incognito, clipboard contents, the Web
   Store package or Safari. A claim of the form "this now covers X" needs the command and what it
   printed — `18 passed` on 4 September 2026 — or a dated loaded-unpacked observation behind it.
@@ -159,8 +159,9 @@ errors, or failed requests while driving the UI` — sees only what its filter a
 - `docs/DA-REVIEW.md` §Verify subagent claims before acting applies to you — if you cite prior
   research or prior-round findings, re-verify against the file before carrying it forward.
 - Don't dismiss findings with "another layer owns it" — review layers are additive, not exclusive.
-  CI is not a required check on `main` and has never run, so "CI would catch it" is a report, not a
-  gate. There is no deploy that fails loudly thirty seconds after a merge; the review chain is
+  CI has been a required check on `main` since 11 September 2026, but it runs the same suite you
+  can run locally — "CI would catch it" holds only for what the suite covers, and a green check is
+  not a review. There is no deploy that fails loudly thirty seconds after a merge; the review chain is
   doing the whole job.
 - If a dismissal reasoning matches a `docs/RATIONALIZATIONS.md` entry, say so explicitly and
   override the dismissal.

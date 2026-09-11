@@ -37,9 +37,9 @@ npx playwright show-trace test-results/<test-dir>/trace.zip   # replay a failed 
   the flag only reaches Playwright's built-in fixtures. To watch a run, flip that literal locally
   and do not commit it.
 - CI (`.github/workflows/ci.yml`, job `quality`) runs `npm ci`, `npm run lint`, `npm run build`,
-  `npx playwright install --with-deps chromium`, `npm run test:e2e` on `ubuntu-latest`. As of
-  4 September 2026 it has never run — the branch is unpushed — and it is not a required status
-  check on `main`. Re-entry: after its first green run on a PR, make `quality` required.
+  `npx playwright install --with-deps chromium`, `npm run test:e2e` on `ubuntu-latest`. Its
+  display name `Lint, build, e2e` has been a required status check on `main` since 11 September
+  2026; its first run (PR #28) was green: lint, build, 18/18 e2e in 56 s.
 
 The pre-push gate is `npm run lint && npm run build && npm run test:e2e`, green locally before every
 push. Only CI proves the case-sensitive checkout — on 4 September 2026 the Git index tracked
@@ -264,8 +264,6 @@ Groups: 1 service worker, 3 content script, 11 app, 3 colour picker (patched man
 - **An accessibility scan.** Run axe (`@axe-core/playwright`) inside the app frame once the
   checker is open, as its own test in the `app` group. The a11y fixes of 4 September 2026 (live
   region, `<li>`, `aria-controls`, focusable skip targets) are the kind a scan would have flagged.
-- **Make CI's `quality` job a required check** after its first green run — owned by
-  `docs/DEVELOPMENT.md`, repeated here because the suite is the check.
 
 ## Not ported from the source documents
 

@@ -25,22 +25,22 @@ rewritten.
 
 ## What actually enforces any of this
 
-Checked against the live repo with `gh api` on 4 September 2026, not inferred from the sources:
+Checked against the live repo with `gh api` on 11 September 2026, not inferred from the sources:
 
-| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                             |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                              |
-| Required status checks on `main` | **None yet.** `.github/workflows/ci.yml` (job `quality`: `npm ci`, lint, build, Playwright e2e on `ubuntu-latest`) was added on 4 September 2026 and has never run — the branch carrying it is unpushed. **Re-entry:** once `quality` has run green on a PR, make it required and rewrite this row. |
-| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                |
-| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                  |
+| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                     |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                                                      |
+| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge. |
+| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                        |
+| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                          |
 
-So, apart from the review requirement, this file is instructions, knowingly — the weaker instrument.
-Two things follow: "CI was green" means CI reported green, so read the run before merging; and the
-re-entry condition above is a five-minute job, to be done the same day `quality` first passes.
+So, apart from the review requirement and the CI check, this file is instructions, knowingly — the
+weaker instrument. One thing follows: a required check proves the job passed, not that the job
+covers what you changed, so read the run before merging.
 
-The history shows why it matters. Three PRs have ever merged — #5 (a 2020 Dependabot bump, landed
-without a merge commit), #13 and #17 (merge commits) — and every other commit on `main` was pushed
-directly. Branch protection now blocks that path for anyone who is not an admin; this document asks
+The history shows why it matters. Until 11 September 2026 three PRs had ever merged — #5 (a 2020
+Dependabot bump, landed without a merge commit), #13 and #17 (merge commits) — and every other
+commit on `main` was pushed directly (#28–#31 have since merged the protected way). Branch protection now blocks that path for anyone who is not an admin; this document asks
 Alex to treat it as blocked for him too.
 
 ## Branch strategy
@@ -60,17 +60,17 @@ main ← feat/ | fix/ | chore/ | refactor/ | docs/ | ci/ | test/ | build/
 `<type>` is the commit type from the [types table](#types) — one vocabulary, not two. `CC-<n>` is
 the ticket key; the slug is optional and tells apart branches on the same ticket. Observed:
 `feat/CC-002` (behind PR #17) and `feat/CC-003-apca-3` fit; `CC-Dependencies` (behind PR #13, 2023)
-predates the convention; `feat/vite-migration` carries no ticket key, which is drift. It is not being
-renamed mid-flight; the next branch on the ticket follows the format.
+predates the convention; `feat/vite-migration` (merged 11 September 2026) carried no ticket key, which
+was drift, left alone mid-flight; the next branch on the ticket follows the format.
 
-### Live branches, 4 September 2026
+### Live branches, 11 September 2026
 
-| Branch                      | State                                                                                                                                                                                                                                                                                              |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `main`                      | Local `main` is one commit ahead of `origin/main` — `3043249 fix: CC-002 - 🐛 Fix issue with rgb options being in wrong order` (8 July 2024). It is the merge-base of `feat/vite-migration`, so it lands with that PR; afterwards bring local `main` back to `origin/main` rather than pushing it. |
-| `feat/vite-migration`       | The CRA → Vite migration, the 4 September 2026 fixes and these docs. Not pushed yet.                                                                                                                                                                                                               |
-| `feat/CC-003-apca-3`        | APCA contrast experiment. Pushed; last commit `chore: CC-003 - 🎨 Update app`, 13 August 2024. Needs rebasing onto post-migration `main` before it can be reviewed.                                                                                                                                |
-| `dependabot/npm_and_yarn/*` | **Bot-owned.** Eight remote branches behind PRs #18–#25. Never commit to them. See [Dependabot](#dependabot).                                                                                                                                                                                      |
+| Branch                | State                                                                                                                                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `main`                | Trunk; the migration merged into it on 11 September 2026 (PR #28, `08542e6`). Protected: one review plus the `Lint, build, e2e` check.                                                                        |
+| `feat/vite-migration` | The CRA → Vite migration, the 4 September 2026 fixes and these docs. Merged and deleted, 11 September 2026.                                                                                                   |
+| `feat/CC-003-apca-3`  | APCA contrast experiment. Pushed; last commit `chore: CC-003 - 🎨 Update app`, 13 August 2024. Needs rebasing onto post-migration `main` before it can be reviewed.                                           |
+| `dependabot/*`        | **Bot-owned.** One remote branch per open Dependabot PR (`npm_and_yarn/*`, `github_actions/*`). Never commit to them; ask the bot (`@dependabot rebase` / `recreate`) instead. See [Dependabot](#dependabot). |
 
 ### What needs a PR
 
@@ -108,7 +108,7 @@ Three eras in `git log`, and only the last is drift:
 - **2019–2023: gitmoji only**, sometimes as shortcodes — `:sparkles: Add header component, make app
 work as chrome extension`, `♻️ Improve accessibility and functionality`. Pre-convention; left alone.
 - **2024: the full format** — `feat: CC-002 - ✨ Add rgb colour options, tidy up code`.
-- **17 March 2026: the five most recent commits on `feat/vite-migration` dropped the gitmoji** —
+- **17 March 2026: five commits on `feat/vite-migration` dropped the gitmoji** (the seven that followed on 11 September 2026 carry it) —
   `chore: CC-002 - Upgrade to React 19 and Vite 8`, `refactor: CC-002 - Inline PostCSS config into
 vite.config.ts`. Drift, not a second convention; not amended (see [No `--amend`](#no---amend)).
 
@@ -139,7 +139,7 @@ fix here is a `fix`) and `remove` — the history already uses `chore: … 🔥`
 
 The table gives each type a default. Where a more specific gitmoji says something the type does not,
 use it — the history already does: 🔥 for removing files, ⬆️ for dependency bumps (Dependabot's own
-titles use it too), 🙈 for `.gitignore`. Copy the character out of this table rather than typing
+titles used it until 2024; the 2026 config produces `chore(deps): Bump …`), 🙈 for `.gitignore`. Copy the character out of this table rather than typing
 one: `♻️` and `⚡️` carry a trailing U+FE0F variation selector, and the bare codepoint is a different
 string that a grep will silently miss.
 
@@ -188,16 +188,15 @@ commit that a review agent, a PR page or `PROGRESS.md` may already have cited by
 
 ### Title
 
-Same format as a commit subject: `<type>: CC-<n> - <gitmoji> Description`. Both human-authored PRs
-in the history missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add dependabot`, #17
-was `Feat/cc 002` — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
+Same format as a commit subject: `<type>: CC-<n> - <gitmoji> Description`. The first two human-authored
+PRs missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add dependabot`, #17 was
+`Feat/cc 002`; #28 followed it — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
 records nothing about what it did. Nothing checks the title; that is why it is written here.
 
-If Alex squashes, the title matters more. `squash_merge_commit_title` is `COMMIT_OR_PR_TITLE` (a
-one-commit branch takes its commit subject, a multi-commit branch takes the PR title) and
-`squash_merge_commit_message` is `COMMIT_MESSAGES` (every body on the branch, concatenated). The
-merge box is editable and nothing checks it afterwards: read it before confirming, and rewrite the
-concatenation into a summary rather than shipping it.
+Whichever button Alex presses, the title is the commit subject: since 11 September 2026
+`merge_commit_title` and `squash_merge_commit_title` are `PR_TITLE`, and both `*_message` settings
+are `PR_BODY`. The merge box is still editable and nothing checks it afterwards: read it before
+confirming.
 
 ### Body
 
@@ -215,8 +214,8 @@ five headings. What each one wants here:
 ### Labels
 
 **No label taxonomy — deliberately.** The repo has eight of GitHub's default labels plus `dependencies`,
-which Dependabot created; the only label ever applied to a PR is that one, on Dependabot's own PRs and on #13.
-Two human-authored PRs do not need a filter. Re-entry: thirty human PRs.
+`github_actions` and `javascript`, all created by Dependabot for its own PRs; `dependencies` is also on #13.
+Three human-authored PRs do not need a filter. Re-entry: thirty human PRs.
 
 ### Who merges
 
@@ -226,14 +225,18 @@ PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns th
 ## Merge strategy
 
 Merge commits, squash and rebase are all enabled, and the history uses merge commits
-(`28fe57f Merge pull request #17 …`, `cd77ed5 Merge pull request #13 …`). **Which button is Alex's
-call, per PR.** The trade-off, stated once:
+(`28fe57f Merge pull request #17 …`, `cd77ed5 Merge pull request #13 …`). Since 11 September 2026
+the repo settings make the **PR title the commit subject and the PR body the commit message for
+both merge commits and squashes**, so the [Title](#title) format is the commit format and nothing
+needs retyping in the merge box. **Which button is Alex's call, per PR.** The trade-off, stated
+once:
 
 - **Merge commit** keeps every branch commit and its body reachable from `main`. For the migration
   branch, whose bodies are the only record of why several things were done, that is the safer
   default.
-- **Squash** gives `git log --oneline main` one line per change. It eats the bodies unless the merge
-  box is rewritten (see [Title](#title)), and it makes `git branch -d` refuse afterwards (below).
+- **Squash** gives `git log --oneline main` one line per change. It eats the branch commits'
+  bodies — the squash commit carries the PR body instead — and it makes `git branch -d` refuse
+  afterwards (below).
 - **Rebase** is enabled and unused. Do not start.
 
 Two unrelated changes are two PRs, not two commits on one branch — squash would collapse the second
@@ -241,14 +244,13 @@ change's reasoning, and a merge commit would bury it under one PR title.
 
 ### After the merge
 
-`delete_branch_on_merge` is **off**, so the remote branch survives the merge. Delete it by hand
-unless the PR body says why it is being kept (a branch whose commits each explain one defect, or
-record something tried and wrong, is a record — say so in the PR body **before** merging, so the
-next cleanup sweep does not delete it for tidiness).
+`delete_branch_on_merge` has been **on** since 11 September 2026: GitHub deletes the remote branch
+the moment a PR merges. Keeping one is therefore the deliberate act — a branch whose commits each
+explain one defect, or record something tried and wrong, is a record; say so in the PR body
+**before** merging and use "Restore branch" on the merged PR's page afterwards.
 
 ```bash
 gh pr view <n> --json state,mergedAt          # state must be MERGED before anything below
-git push origin --delete <branch>
 git checkout main && git pull --ff-only && git fetch --prune
 git branch -d <branch>                         # merge commit: deletes cleanly
 git branch -D <branch>                         # squash: -d refuses; -D is correct once gh says MERGED
@@ -266,22 +268,23 @@ unmerged work.
 Config is `.github/dependabot.yml`: weekly npm updates grouped into `dev-dependencies` and
 `production-dependencies`, monthly `github-actions`. Until 4 September 2026 that file sat at
 `.github/ISSUE_TEMPLATE/dependabot.yml`, where it had lived since 2022 and where GitHub never read
-it — every Dependabot PR in the history is a security alert, not a scheduled update. GitHub reads
-the config from the default branch, so nothing changes until the migration merges.
+it — every Dependabot PR before 11 September 2026 was a security alert, not a scheduled update.
+GitHub reads the config from the default branch, so it took effect when the migration merged; the
+first scheduled PRs (#29–#32) arrived within the hour, alongside a security bump (#33).
 
-**PRs #18–#25 are obsolete.** They are 2024 security bumps (postcss 7→8, webpack, micromatch,
-express, rollup) against the CRA/webpack tree that `feat/vite-migration` deletes. Once the migration
-has merged, close them — do not merge them, do not rebase them:
+**Major ESLint bumps are ignored on purpose** (`ignore:` in `dependabot.yml`): the peer ranges of
+`eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at ESLint 9, so a grouped bump
+that lifts ESLint to 10 fails `npm ci` in CI (#32, 11 September 2026 — jsx-a11y is the wall npm
+reports first, the same one hit on 4 September; react is the one behind it). The ignore also mutes a
+security bump that would need the major. Re-entry: when both
+`npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint` print a range
+with `^10`, drop the ignore and take the bump.
 
-```bash
-for n in 18 19 20 21 22 23 24 25; do
-  gh pr close "$n" --delete-branch \
-    --comment "Superseded by the Vite migration; this dependency is no longer in the tree."
-done
-git fetch --prune
-```
+**PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
+rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on
+11 September 2026 once #28 had landed.
 
-Dependabot's own subjects (`:arrow_up: Bump rollup from 2.70.1 to 2.79.2`) are bot format; leave them alone.
+Dependabot's own subjects (`:arrow_up: Bump rollup from 2.70.1 to 2.79.2` in 2024, `chore(deps): Bump actions/checkout from 6 to 7` since 11 September 2026) are bot format; leave them alone.
 `git revert` subjects (`Revert "…"`) get the same treatment — none has been needed yet.
 
 ## Releases
@@ -336,8 +339,8 @@ Named with a re-entry condition, so a future reader can tell an omission from a 
 - **Squash as the only merge method** (moe, nas-stacks). Re-entry: if `git log --oneline main` stops
   reading as a list of changes, disable merge commits in the repo settings and rewrite
   [Merge strategy](#merge-strategy).
-- **A PR-title check workflow** (moe's `pr-title-check.yml`). Re-entry: after `quality` is a required
-  check, if titles keep drifting the way #13 and #17 did.
+- **A PR-title check workflow** (moe's `pr-title-check.yml`). Re-entry: if titles keep drifting the
+  way #13 and #17 did — since the PR title is now the merge-commit subject, drift lands on `main`.
 - **The direct-to-`main` drift-fix predicate** — see [What needs a PR](#what-needs-a-pr). Re-entry:
   a doc that is appended to constantly; re-read nas-stacks' five clauses before importing it.
 - **Scopes in the subject** (`feat(scope):`). The ticket key occupies that slot; name the execution

@@ -79,8 +79,8 @@ any push that touches paths, this must print nothing:
 git ls-files src | grep -E '/[A-Z]'
 ```
 
-CI on Linux (`.github/workflows/ci.yml`) is the real gate — and as of 4 September 2026 it has never
-run, so it is not yet evidence of anything either.
+CI on Linux (`.github/workflows/ci.yml`) is the real gate — required on `main` since 11 September
+2026, after a first green run (PR #28) had made it evidence of something.
 
 ### "It's the same config, just typed."
 
@@ -236,9 +236,10 @@ declarative and the platform reads declarations. Nothing is left to do.
 to `.github/dependabot.yml` on 4 September 2026. The illusion had support: Dependabot _did_ open
 PRs (#18–#25, security bumps from 2024), but those come from the repository's security-alert
 setting, which does not use the file, so the visible activity was evidence for a different
-mechanism. The same shape is live today: `.github/workflows/ci.yml` is configured, has never run
-and is not a required check on `main` (`docs/DEVELOPMENT.md` §CI, and what it can and cannot do;
-re-entry: make `quality` required after its first green run on a PR).
+mechanism. The same shape was live until 11 September 2026: `.github/workflows/ci.yml` was
+configured but had never run and was not a required check on `main`; it became one the day of its
+first green run (PR #28), which is exactly the artefact this entry asks for
+(`docs/DEVELOPMENT.md` §CI, and what it can and cannot do).
 
 **What to do instead.** Configured is not running. Find the artefact that proves the platform read
 the file — a Dependabot PR whose title matches your groups, a run on the Actions tab, a status check

@@ -9,8 +9,9 @@ edited `public/app/content.js` cannot see what it assumed about `public/app/back
 **Why this repo needs it, stated plainly:** the other side of a merge is a zip uploaded by hand to
 the Chrome Web Store and installed into strangers' browsers, where the content script runs on every
 page they visit (`<all_urls>`). There is no rollback except another upload, the store rejects a
-version that is not greater than the published one, and `.github/workflows/ci.yml` has never run and
-is not a required check. Until it is, this review is the gate.
+version that is not greater than the published one, and `.github/workflows/ci.yml` (a required
+check on `main` since 11 September 2026) only runs the same suite anyone can run locally. This
+review is the gate for everything the suite does not cover.
 
 **Adapted from the `docs/DA-REVIEW.md` in chief-clancy, moe, nas-stacks and tamaclaude.** What
 ported is the disciplines, the severity vocabulary, and the habit of treating a checklist item as
@@ -29,7 +30,7 @@ attributes, assertion tightness, copy-paste errors.
 
 This is a **living document**. When a review round, a CI run or a Web Store rejection catches
 something this checklist should have caught, add the check here immediately — with the date and
-the failure, not a generalised principle. **Last reviewed:** 4 September 2026.
+the failure, not a generalised principle. **Last reviewed:** 11 September 2026.
 
 ---
 
@@ -124,8 +125,8 @@ against the wrong input; flag it at the same severity. It must carry:
 - **The control**, wherever a negative result is the claim: green before the fix, red with it
   reverted.
 - **Ran-and-passed versus did-not-run.** A `test.skip`, a pass on the second attempt under CI's
-  `retries: 1`, and a workflow that has never executed print differently and mean different things.
-  `ci.yml` is in the last category until its first run.
+  `retries: 1`, and a workflow that has never executed print differently and mean different things
+  (`ci.yml` was in the last category until PR #28's run on 11 September 2026).
 
 Claims unverifiable from the laptop must say so. The e2e suite does not cover a real toolbar click
 and its `activeTab` grant, the error popup UI, incognito, clipboard contents, the Web Store package
@@ -424,13 +425,17 @@ load time, and the store does at upload.
 - [ ] The TypeScript layout is deliberate: `tsc` is the 7.0 native compiler via `@typescript/native`;
       `typescript` is aliased to `@typescript/typescript6` so typescript-eslint has a JS API.
 - [ ] ESLint stays on 9: ESLint 10 was rejected on 4 September 2026 because
-      `eslint-plugin-jsx-a11y` does not declare it as a peer. An upgrade PR shows the peer resolving.
+      `eslint-plugin-jsx-a11y` does not declare it as a peer, and `eslint-plugin-react` 7.37 does
+      not either. An upgrade PR shows both peers resolving.
 - [ ] Prettier reads `.editorconfig`; there is no `.prettierrc`, and a diff that adds one is a
       finding unless that is the point.
 - [ ] Globs are run, not eyeballed. On 4 September 2026 the `format` glob skipped root files and
       `lint:css --fix` reached `build/`.
-- [ ] `.github/dependabot.yml` is at that path; `ci.yml` has never run, and its first green run is
-      the re-entry condition for making `quality` a required check on `main`.
+- [ ] `.github/dependabot.yml` is at that path and still ignores major `eslint` / `@eslint/js`
+      bumps while `eslint-plugin-jsx-a11y` and `eslint-plugin-react` stop at ESLint 9 in their peer
+      ranges (check each: `npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint`); `ci.yml`'s job is still named
+      `Lint, build, e2e`, because that display name is what branch protection requires — renaming
+      the job silently un-gates `main`.
 - [ ] `.nvmrc` (`24`), `engines.node` and `setup-node`'s `node-version-file` agree.
 - [ ] `npm run package` still excludes dotfiles, and the `stripDotfiles` plugin still runs.
 
@@ -446,8 +451,8 @@ DA owns the prose layer; [SELF-REVIEW.md](SELF-REVIEW.md) owns literals inside c
 - [ ] Every claim about the loaded extension is dated or marked unverified; e2e coverage gaps are
       listed, not implied away.
 - [ ] Paths and identifiers exist, in the repo's case: kebab-case, numbered tiers, `~/` alias.
-- [ ] Commit messages follow `<type>: CC-<n> - <gitmoji> Description`. The last five commits on
-      the branch dropped the gitmoji; that is drift, not a new convention.
+- [ ] Commit messages follow `<type>: CC-<n> - <gitmoji> Description`. Five commits of 17 March
+      2026 on the migration branch dropped the gitmoji; that is drift, not a new convention.
 - [ ] Citations name sections, not line numbers; British spelling in prose while code identifiers
       keep their existing `color` spelling.
 

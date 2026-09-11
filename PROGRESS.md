@@ -3,26 +3,24 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 2)
+## Next workstreams (after Session 3)
 
-Updated 11 September 2026, end of Session 2 — **the CRA → Vite migration on `feat/vite-migration` is finished and
-verified, and the CLAUDE.md / docs / agents set has been ported in.** As of 11 September 2026 all of it is
-committed on the local `feat/vite-migration` branch (six commits, `84dbc5f`..`5b92bde`, tree clean) but **not
-pushed** (see "Loading instructions").
+Updated 11 September 2026, end of Session 3 — **the CRA → Vite migration on `feat/vite-migration` is finished and
+verified, and the CLAUDE.md / docs / agents set has been ported in.** As of 11 September 2026 it is **merged
+into `main`** (PR #28, merge commit `08542e6`), `Lint, build, e2e` is a required status check, and the repo
+settings changed the same day are listed under Session 3 below.
 
-1. **Land the migration.** Push `feat/vite-migration`, open a PR against `main`, let the new CI run, make its
-   `quality` check a required status check once it is green, then Alex merges.
-2. **Release 1.7.0.** After merge: check the currently published version in the Chrome Web Store dashboard,
+1. **Release 1.7.0.** After merge: check the currently published version in the Chrome Web Store dashboard,
    `npm run package`, upload `cc-checker-1.7.0.zip`, tag `v1.7.0`. Merged is not published.
-3. **Close the eight obsolete Dependabot PRs** (#18–#25, 2024, against the old webpack tree) after the merge.
-4. **Unit tests for `src/utils/color-utils.ts`** (vitest) — the re-entry condition for mutation testing.
-5. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
+2. **Merge or close the remaining Dependabot PRs** — see Session 3.
+3. **Unit tests for `src/utils/color-utils.ts`** (vitest) — the re-entry condition for mutation testing.
+4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
 
 ### Commit sequence as landed on 11 September 2026
 
 One commit per line, in this order, plus a sixth (`5b92bde`) that stops tracking `.vscode/settings.json` — `git add`
 refuses paths under an ignored directory, so the removal missed commit 2 and that commit carries one machine's
-editor colours in history.
+editor colours in history — and a seventh (`963659a`) updating this file. Seven in all.
 
 1. `fix: CC-002 - 🐛 Normalise component directory casing in the git index` (the staged `01-Atoms` → `01-atoms`
    renames; a Linux checkout could not build before this).
@@ -36,6 +34,28 @@ editor colours in history.
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
 
+## Session 3 — 11 September 2026 (landing)
+
+**Done:** PR #28 pushed, CI green on its first Linux run (lint, build, 18/18 e2e in 56s), merged by Alex as
+`08542e6`. The eight 2024 Dependabot PRs (#18–#25) closed with their branches. Dependabot woke up once its config
+was on the default branch: #29 (`actions/checkout` 7) and #30 (`actions/upload-artifact` 7) merged, as did #31
+(`actions/setup-node` 7) once Dependabot had rebased it; #33 (`fast-uri` 3.1.7, a security bump closing the audit's one high finding)
+is green and awaits Alex; #32 (the grouped dev-dependency bump) fails `npm ci` because it lifts ESLint to 10 while
+the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at 9 (the DA review's
+simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now ignores major bumps
+of `eslint` and `@eslint/js`; the other six bumps resolve without them. **Manual step:** the ignore takes effect
+only once this docs PR is merged to `main`; then comment `@dependabot recreate` on #32 (or close it and wait for
+the weekly run) and check the recreated table lists six packages with `eslint` and `@eslint/js` absent.
+
+**Repo settings changed, all via `gh api` and re-read afterwards:** `Lint, build, e2e` required on `main`
+(`strict` off; review rule, stale-review dismissal, no force-push/deletion unchanged; `enforce_admins` still off);
+`delete_branch_on_merge` on; auto-merge and "update branch" allowed; merge-commit and squash titles set to the PR
+title with the PR body as the message; secret scanning and push protection on (public repo, free).
+
+**Local note:** with `core.ignorecase=false` on a case-insensitive disk, checking out any commit older than the
+casing fix (e.g. `feat/CC-003-apca-3`) collides with the lowercase files; fast-forward refs without checkout, or
+work from a fresh clone.
+
 ## Session 2 — 11 September 2026 (continuation after the session limit)
 
 **Done:** the docs fact-check that the limit interrupted on 4 September finished — every one of the 15 prose files
@@ -46,7 +66,7 @@ byte-equal to `DEFAULT_FOREGROUND`; `playwright.config.ts` added to the "both" r
 table so the table and `copilot-surrogate.md` agree. Pre-push suite re-run after both: lint (tsc ×2, ESLint,
 stylelint, prettier) green, build green, e2e 18/18.
 
-**Still open, unchanged from Session 1:** nothing is committed or pushed; the commit sequence above still applies.
+**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`)**:** nothing is committed or pushed; the commit sequence above still applies.
 Two loose ends the cross-check left for Alex: `copilot-surrogate.md`'s own trigger also names comment-block edits
 in `public/app/*.js` (a path table cannot express that — leave as a superset or drop it), and `docs/TESTING.md`
 cites `fixtures.ts` by line number, which will drift.
@@ -70,22 +90,21 @@ panel; every pick handled twice; the copy/share confirmation hidden from screen 
 the hygiene list in `docs/REVIEW-PATTERNS.md`.
 
 **Decided:** TypeScript 7 native `tsc` stays, with `typescript` aliased to `@typescript/typescript6` for
-typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10); versions bumped to
+typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10 — nor, found in Session 3, does eslint-plugin-react); versions bumped to
 1.7.0 in both files; `react-copy-to-clipboard` kept (no `clipboard-write` in the iframe); AGENTS.md is a symlink;
 `PROGRESS.md` + `docs/history/SESSIONS.md` adopted from chief-clancy/moe; `docs/INDEX.md`, changesets and
 copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVELOPMENT.md` §Not ported).
 
-**Open, for Alex:** merge strategy per PR (history has merge commits); whether to enable
-`delete_branch_on_merge`; the published Web Store version (unknown from here); Safari timing.
+**Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
+from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-### Session 3 loading instructions
+### Session 4 loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file, then `docs/DEVELOPMENT.md` once.
-2. Run `git status --short` (expect clean) and `git log --oneline -7` (expect the six commits above on top of
-   `f877f16`). If `origin/feat/vite-migration` exists, the push has happened; check the PR and CI next.
+2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `08542e6` or later);
+   `gh pr list` shows what Dependabot has queued and whether #32/#33 are still open.
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine). Expect 18 passing tests.
-4. Do not squash the case-rename commit into another when merging — it is easier to review alone.
 
 ## Session archive
 

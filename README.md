@@ -67,8 +67,8 @@ npm run lint && npm run build && npm run test:e2e
 ```
 
 `.github/workflows/ci.yml` runs the same three steps on Ubuntu for every pull request and every
-push to `main`. It is not a required status check on `main` yet; it becomes one after its first
-green run. It matters because it is the only Linux checkout in the loop: on 4 September 2026 the
+push to `main`. It has been a required status check on `main` since 11 September 2026, after its
+first green run on PR #28. It matters because it is the only Linux checkout in the loop: on 4 September 2026 the
 Git index still tracked `01-Atoms/`, `02-Molecules/`, `Icon/`, `Ratio/` and `Header/` in their old
 capitalisation while the disk and every import were lowercase. macOS hid it for the whole migration; a case-sensitive
 clone could not build. A green build on the author's Mac is not evidence for CI.
@@ -100,7 +100,7 @@ merged is not published.
    rejects any upload whose version is not greater than it.
 2. Bump `version` in **both** `package.json` and `public/manifest.json`. They are not linked; on
    4 September 2026 they had drifted to 1.6.1 and 1.6.2, and the manifest had at some point gone
-   backwards from 1.6.4, which is why the next release was 1.7.0.
+   backwards from 1.6.4, which is why both were bumped to 1.7.0 (bumped, not yet released).
 3. `npm run package` produces `cc-checker-<version>.zip` from a fresh build.
 4. Upload the zip by hand in the developer dashboard.
 
