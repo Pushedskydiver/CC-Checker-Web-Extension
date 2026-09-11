@@ -33,6 +33,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "fflate": "^0.8.3",
     "globals": "^17.12.0",
     "postcss": "^8.5.28",
     "postcss-preset-env": "^11.5.2",
@@ -47,7 +48,7 @@
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch",
-    "package": "npm run build && rm -f cc-checker-$npm_package_version.zip && cd build && zip -qr ../cc-checker-$npm_package_version.zip . -x '.*' -x '*/.*'",
+    "package": "npm run build && node scripts/package.mjs",
     "lint": "npm run lint:ts && npm run lint:js && npm run lint:css && npm run format:check",
     "lint:ts": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "lint:js": "eslint .",

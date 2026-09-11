@@ -47,6 +47,16 @@ adding it. The provenance of 2.0.1 stays unknown; the docs now say so rather tha
 session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
 `npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
 
+**Upload rejected — cause not yet confirmed:** the store reports `favicons/favicon-48x48.png` and `favicon-72x72.png`
+"missing from the uploaded package". The files are byte-identical to the ones inside the store's published 2.0.1 CRX
+(downloaded and diffed), whose manifest used the same `./favicons/…` paths. A first theory — the two files were the
+only entries `zip` had left _stored_ uncompressed — was disproved: Chrome's own `--pack-extension` stores them too, and
+a fully deflated zip was rejected identically. `scripts/package.mjs` (fflate) stays because it removes the system
+`zip` dependency and makes the artefact reproducible, not because it fixes this. Two further candidates were sent to
+Alex as zips, one variable at a time: (a) manifest paths without the `./` prefix; (b) that plus a genuine 128×128
+icon (documented by the store as mandatory, absent since 1.5.0), a real 96×96 (the file was 512×512) and 16/32
+(branch `fix/CC-002-manifest-paths`). The accepted variant, once observed, is the cause; record it here.
+
 **Not done, deliberately:** no tag. `v2.1.0` goes on the release commit only after the store accepts the upload
 (`docs/GIT.md` §Releases). The `feat/CC-003-apca-3` branch and its stash are untouched.
 
