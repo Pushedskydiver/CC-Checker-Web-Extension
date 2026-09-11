@@ -219,8 +219,13 @@ Three human-authored PRs do not need a filter. Re-entry: thirty human PRs.
 
 ### Who merges
 
-Alex merges. Claude Code never merges, never approves, and does not post review comments on the
-PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns the PR's audit trail.
+Alex merges human PRs. Claude Code never merges those, never approves, and does not post review
+comments on the PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns the PR's
+audit trail. **Delegated exception (Alex, 11 September 2026):** Dependabot PRs with a green
+`Lint, build, e2e` run may be merged by Claude — `gh pr merge <n> --merge --admin --delete-branch`
+(the review rule blocks a non-admin merge; `enforce_admins` is off) — and asked to rebuild with a
+`@dependabot recreate` comment. #33 and #35 went in that way. A red run, a conflict Dependabot
+cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back, not force it.
 
 ## Merge strategy
 
