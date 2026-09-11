@@ -257,7 +257,7 @@ Store developer dashboard — `docs/DEVELOPMENT.md` §Merged is not published. T
 _both_ `package.json` and `public/manifest.json`, unlinked: on 4 September 2026 they read 1.6.1 and
 1.6.2, and the manifest had at some point regressed from 1.6.4. The published version was not
 known, so 1.7.0 was chosen to sit "safely above anything that might have been uploaded" — and on
-11 September 2026 the public listing showed 2.0.1, uploaded from the never-merged APCA branch. The
+11 September 2026 the public listing showed 2.0.1, a build that no commit in this repo carries. The
 store rejects a version that is not greater than the published one; the release became 2.1.0.
 
 **What to do instead.** Name the artefact users run and say when it last changed: here that is the
