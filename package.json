@@ -1,65 +1,66 @@
 {
   "name": "cc-checker-chrome-extension",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "WCAG accessibility colour contrast checker chrome extension",
-  "license": "ISC",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
   "author": {
     "name": "Alex Clapperton",
     "email": "hi@alexclapperton.co.uk",
     "url": "https://alexclapperton.co.uk"
   },
   "dependencies": {
-    "@craco/craco": "^7.1.0",
-    "chroma-js": "2.4.2",
+    "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
-    "lodash.round": "^4.0.4",
-    "lodash.throttle": "^4.1.1",
-    "react": "^18.3.1",
-    "react-copy-to-clipboard": "^5.1.0",
-    "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.3"
+    "react": "^19.2.8",
+    "react-copy-to-clipboard": "^5.1.1",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@craco/types": "^7.1.0",
-    "@types/chroma-js": "^2.4.4",
-    "@types/chrome": "0.0.268",
-    "@types/lodash.round": "^4.0.9",
-    "@types/lodash.throttle": "^4.1.9",
-    "@types/node": "^20.14.9",
-    "@types/react": "^18.2.20",
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.62.1",
+    "@types/chroma-js": "^3.1.2",
+    "@types/chrome": "^0.2.8",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
     "@types/react-copy-to-clipboard": "^5.0.7",
-    "@types/react-dom": "^18.2.7",
-    "postcss": "^8.4.38",
-    "postcss-preset-env": "^9.5.14",
-    "postcss-sort-media-queries": "^5.2.0",
-    "prettier": "^3.3.2",
-    "stylelint": "^16.6.1",
-    "stylelint-order": "^6.0.4",
-    "stylelint-use-logical": "^2.1.2"
+    "@types/react-dom": "^19.2.7",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "postcss": "^8.5.28",
+    "postcss-preset-env": "^11.5.1",
+    "postcss-sort-media-queries": "^6.7.1",
+    "prettier": "^3.9.6",
+    "stylelint": "^17.4.1",
+    "stylelint-use-logical": "^2.1.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.69.0",
+    "vite": "^8.2.2"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "INLINE_RUNTIME_CHUNK=false craco build",
-    "format": "prettier \"*/**/*.{js,jsx,ts,tsx,json,md,css,scss}\" --write",
-    "lint:css": "stylelint \"./**/*.{css,scss}\" --fix",
-    "lint:ts": "tsc -p tsconfig.json --noEmit",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "package": "npm run build && rm -f cc-checker-$npm_package_version.zip && cd build && zip -qr ../cc-checker-$npm_package_version.zip . -x '.*' -x '*/.*'",
+    "lint": "npm run lint:ts && npm run lint:js && npm run lint:css && npm run format:check",
+    "lint:ts": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "format": "prettier \"**/*.{js,mjs,ts,tsx,json,md,css,html,yml}\" --write",
+    "format:check": "prettier \"**/*.{js,mjs,ts,tsx,json,md,css,html,yml}\" --check",
+    "test": "npm run build && playwright test",
+    "test:e2e": "playwright test"
   },
   "engines": {
-    "node": ">=20"
-  },
-  "volta": {
-    "node": "20.12.0"
+    "node": ">=24.0.0"
   },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "overrides": {
-    "@csstools/media-query-list-parser": "2.1.3"
-  }
+    "chrome >= 111"
+  ]
 }

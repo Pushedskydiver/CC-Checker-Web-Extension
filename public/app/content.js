@@ -1,12 +1,18 @@
+// Content script. Injects the checker UI (an extension page in a fixed iframe at
+// the bottom of the viewport) and implements the eyedropper loupe over a
+// screenshot of the visible tab supplied by the service worker.
+
+const IFRAME_HEIGHT = 475;
+const LOUPE_SIZE = 8; // sampled pixels per side
+
 let scrollStopDelay = null;
 let keyValue = null;
 
-const dpr = window.devicePixelRatio || 1;
 const image = new Image();
 
 const css = `
   body {
-    padding-bottom: 475px !important;
+    padding-bottom: ${IFRAME_HEIGHT}px !important;
     height: auto !important;
   }
 
@@ -15,7 +21,7 @@ const css = `
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 475px;
+    height: ${IFRAME_HEIGHT}px;
     border: none;
     transform: translateY(0);
     z-index: 2147483647;
@@ -55,62 +61,61 @@ const css = `
   }
 `;
 
+const getCanvasWrapper = () => document.querySelector('[data-cc-canvas-wrapper]');
+
 function getColorData(e) {
-	const key = keyValue;
-	const canvas = e.target.querySelector('[data-cc-canvas]');
+	const canvas = e.currentTarget.querySelector('[data-cc-canvas]');
 	const ctx = canvas.getContext('2d', { willReadFrequently: true });
 	const data = ctx.getImageData(3, 3, 1, 1).data;
 	const rgb = [data[0], data[1], data[2]];
 
-	e.target.removeEventListener(e.type, (f) => getColorData(f.key));
-
 	chrome.runtime.sendMessage({
 		type: 'colorPicked',
-		key,
+		key: keyValue,
 		rgb,
 	});
 }
 
 function setCanvasData(e) {
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
+
+	if (!canvasWrapper) return;
+
 	const canvas = canvasWrapper.querySelector('[data-cc-canvas]');
 	const ctx = canvas.getContext('2d', { willReadFrequently: true });
+	// Read on every move: the page zoom (and so the screenshot scale) can change
+	// after this script was loaded.
+	const dpr = window.devicePixelRatio || 1;
 
-	const r = e.clientX * dpr - 8;
-	const o = e.clientY * dpr - 8;
-	const f = e.pageY - 40;
-	const c = e.pageX - 40;
+	const sourceX = e.clientX * dpr - LOUPE_SIZE;
+	const sourceY = e.clientY * dpr - LOUPE_SIZE;
 
-	ctx.drawImage(image, r, o, 8, 8, 0, 0, 8, 8);
+	ctx.drawImage(image, sourceX, sourceY, LOUPE_SIZE, LOUPE_SIZE, 0, 0, LOUPE_SIZE, LOUPE_SIZE);
 
-	canvasWrapper.style.top = `${f}px`;
-	canvasWrapper.style.left = `${c}px`;
+	canvasWrapper.style.top = `${e.pageY - 40}px`;
+	canvasWrapper.style.left = `${e.pageX - 40}px`;
 }
 
 function updateScreenShot() {
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
 
-	canvasWrapper.style.display = 'none';
+	if (canvasWrapper) canvasWrapper.style.display = 'none';
 
-	const delayScreenshot = setTimeout(() => {
+	setTimeout(() => {
 		chrome.runtime.sendMessage({ type: 'updateScreenShot' });
-
-		clearTimeout(delayScreenshot);
 	}, 66);
 }
 
 function scrollStop() {
 	clearTimeout(scrollStopDelay);
 
-	scrollStopDelay = setTimeout(() => {
-		updateScreenShot();
-	}, 66);
+	scrollStopDelay = setTimeout(updateScreenShot, 66);
 }
 
 function closeColorPicker() {
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
 
-	canvasWrapper.style.display = 'none';
+	clearTimeout(scrollStopDelay);
 
 	window.removeEventListener('resize', scrollStop);
 	window.removeEventListener('scroll', scrollStop);
@@ -118,11 +123,16 @@ function closeColorPicker() {
 	document.body.removeEventListener('mousemove', setCanvasData);
 	document.body.style.cursor = 'auto';
 
+	if (!canvasWrapper) return;
+
+	canvasWrapper.style.display = 'none';
 	canvasWrapper.removeEventListener('click', getColorData);
 }
 
 function getScreenshot({ key, data }) {
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
+
+	if (!canvasWrapper) return;
 
 	keyValue = key;
 	image.src = data;
@@ -136,7 +146,9 @@ function getScreenshot({ key, data }) {
 }
 
 function updateImage({ data }) {
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
+
+	if (!canvasWrapper) return;
 
 	canvasWrapper.style.display = 'block';
 	image.src = data;
@@ -159,7 +171,6 @@ function addCanvas() {
 	const canvasWrapper = document.createElement('div');
 	const canvas = document.createElement('canvas');
 
-	style.ty = 'text/css';
 	style.setAttribute('data-cc-styles', '');
 	style.appendChild(document.createTextNode(css));
 
@@ -168,8 +179,8 @@ function addCanvas() {
 
 	canvas.setAttribute('data-cc-canvas', '');
 	canvas.className = 'cc-canvas';
-	canvas.width = 8;
-	canvas.height = 8;
+	canvas.width = LOUPE_SIZE;
+	canvas.height = LOUPE_SIZE;
 
 	canvasWrapper.appendChild(canvas);
 
@@ -187,40 +198,45 @@ function initChecker() {
 }
 
 function closeChecker() {
+	// Tear the picker down first so no listener or pending screenshot can bring
+	// the loupe back after the UI has gone.
+	closeColorPicker();
+
 	const checker = document.querySelector('[data-cc-checker]');
-	const canvasWrapper = document.querySelector('[data-cc-canvas-wrapper]');
+	const canvasWrapper = getCanvasWrapper();
 	const styles = document.querySelector('[data-cc-styles]');
 
-	document.body.setAttribute('style', 'cursor: auto;');
-
-	canvasWrapper.style.display = 'none';
-
-	checker.remove();
-	styles.remove();
+	if (canvasWrapper) canvasWrapper.remove();
+	if (checker) checker.remove();
+	if (styles) styles.remove();
 }
 
-chrome.runtime.onMessage.addListener((r) => {
-	switch (r.type) {
-		case 'closeColorPicker':
-			closeColorPicker();
-			break;
+// Only the top-level document hosts the checker. The service worker addresses
+// the tab, not a frame, so every frame receives these messages.
+if (window.self === window.top) {
+	chrome.runtime.onMessage.addListener((r) => {
+		switch (r.type) {
+			case 'closeColorPicker':
+				closeColorPicker();
+				break;
 
-		case 'getScreenshot':
-			getScreenshot(r);
-			break;
+			case 'getScreenshot':
+				getScreenshot(r);
+				break;
 
-		case 'updateScreenShot':
-			updateImage(r);
-			break;
+			case 'updateScreenShot':
+				updateImage(r);
+				break;
 
-		case 'initChecker':
-			initChecker();
-			break;
+			case 'initChecker':
+				initChecker();
+				break;
 
-		case 'closeChecker':
-			closeChecker();
-			break;
+			case 'closeChecker':
+				closeChecker();
+				break;
 
-		default:
-	}
-});
+			default:
+		}
+	});
+}

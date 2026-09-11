@@ -5,7 +5,7 @@ export type TPanel = {
 	index: number;
 	activeTab: number;
 	children: React.ReactNode;
-	panelRef: React.MutableRefObject<{ [key: number]: HTMLElement | null }>;
+	panelRef: React.RefObject<{ [key: number]: HTMLElement | null }>;
 };
 
 export const Panel: React.FC<TPanel> = ({
@@ -20,7 +20,9 @@ export const Panel: React.FC<TPanel> = ({
 		role="tabpanel"
 		aria-labelledby={`tab-${id}`}
 		hidden={activeTab !== index}
-		ref={(element) => (panelRef.current[index] = element)}
+		ref={(element) => {
+			panelRef.current[index] = element;
+		}}
 		tabIndex={-1}
 		className={styles.panel}
 	>

@@ -7,7 +7,7 @@ export type TTab = {
 	index: number;
 	name: string;
 	activeTab: number;
-	tabRef: React.MutableRefObject<{ [key: number]: HTMLElement | null }>;
+	tabRef: React.RefObject<{ [key: number]: HTMLElement | null }>;
 	handleTabClick: (
 		e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 		index: number,
@@ -32,13 +32,6 @@ export const Tab: React.FC<TTab> = ({
 	};
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>): void => {
-		const regex = /ArrowUp|ArrowRight|ArrowDown|ArrowLeft|Tab/;
-
-		if (!e.key.match(regex)) {
-			e.preventDefault();
-			return;
-		}
-
 		handleTabKeyDown(e, 'horizontal');
 	};
 
@@ -49,9 +42,12 @@ export const Tab: React.FC<TTab> = ({
 				href={`#panel-${id}`}
 				role="tab"
 				aria-selected={activeTab === index}
+				aria-controls={`panel-${id}`}
 				onClick={handleClick}
 				onKeyDown={handleKeyDown}
-				ref={(element) => (tabRef.current[index] = element)}
+				ref={(element) => {
+					tabRef.current[index] = element;
+				}}
 				tabIndex={activeTab !== index ? -1 : undefined}
 				className={styles.tab}
 			>

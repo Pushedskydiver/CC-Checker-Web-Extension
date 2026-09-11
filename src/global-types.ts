@@ -1,3 +1,5 @@
+export type ColorTuple = [number, number, number];
+
 export type TColors = {
 	background: string;
 	foreground: string;
@@ -12,5 +14,5 @@ export type TLevels = {
 
 export type TPickedColor = {
 	key: keyof TColors;
-	rgb: [number, number, number];
+	rgb: ColorTuple;
 };

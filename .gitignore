@@ -3,16 +3,18 @@
 
 # production
 build
+*.zip
+
+# tests
+test-results
+playwright-report
 
 # local env files
 .env.*
 !.env.example
 
-# public storybook folder
-public/storybook
-
-# local Netlify folder
-.netlify
+# editor personalisation (Peacock colours etc.)
+.vscode/
 
 # debug
 npm-debug.log*
@@ -25,4 +27,8 @@ yarn-error.log*
 .DS_Store
 .dccache
 .cache
-*storybook.log
+
+# Claude Code: only the agent definitions are shared
+.claude/*
+!.claude/agents/
+!.claude/agents/**
