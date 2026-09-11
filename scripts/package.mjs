@@ -1,11 +1,17 @@
 // Zips build/ into cc-checker-<version>.zip for the Chrome Web Store.
 //
-// Why not `zip -r`: Info-ZIP stores an entry uncompressed when deflating would
-// not shrink it, and the Web Store's unpacker then reported the two smallest
-// icons — favicon-48x48.png and favicon-72x72.png, the only "stor" entries —
-// as "missing from the uploaded package" (11 September 2026, the 2.1.0 upload).
-// fflate deflates every entry regardless of gain. Dotfiles are skipped, as the
-// old `-x '.*'` did.
+// Why a script and not `zip -r`: it removes the dependency on a system zip
+// binary (absent on Windows, version-dependent elsewhere) and makes the
+// artefact byte-identical wherever it is built, including CI. Every entry is
+// deflated; dotfiles are skipped, as the old `-x '.*'` did.
+//
+// History: written on 11 September 2026 while diagnosing a Web Store rejection
+// ("The icon file ./favicons/favicon-48x48.png is missing from the uploaded
+// package", and 72x72). The first theory — that the store could not read the
+// two entries Info-ZIP had left stored uncompressed — was wrong: Chrome's own
+// --pack-extension stores the same two files and the store's repack of 2.0.1
+// deflates them, and a fully deflated zip was rejected with the same message.
+// The cause was elsewhere (see PROGRESS.md, Session 4). Kept for the reasons above.
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { zipSync } from 'fflate';
