@@ -54,7 +54,8 @@ The pre-push suite, which must be green before every push:
 npm run lint && npm run build && npm run test:e2e
 ```
 
-Playwright's Chromium is installed once per machine: `npx playwright install chromium`. Prettier
+Playwright's Chromium is installed once per machine, and again after a `@playwright/test` bump (the pinned
+build changes with the package): `npx playwright install chromium`. Prettier
 takes its config from `.editorconfig`; there is no `.prettierrc`.
 
 **What the e2e suite does not cover**, so nobody mistakes 18 green tests for a tested release: a
