@@ -46,6 +46,12 @@ not ready and may never be added, so the release ships from `main` as **2.1.0**.
 session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
 `npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
 
+**Upload rejected once, fixed:** the store reported `favicons/favicon-48x48.png` and `favicon-72x72.png` "missing
+from the uploaded package". They were in the zip — as the only two entries Info-ZIP had left _stored_ rather than
+deflated (too small to shrink), and the store's unpacker does not see stored entries. `scripts/package.mjs` (fflate)
+now deflates every entry; `npm run package` calls it. Verified: 15 entries, 0 stored, 0 dotfiles, e2e 18/18 against
+the unzipped artefact.
+
 **Not done, deliberately:** no tag. `v2.1.0` goes on the release commit only after the store accepts the upload
 (`docs/GIT.md` §Releases). The `feat/CC-003-apca-3` branch and its stash are untouched.
 
