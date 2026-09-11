@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ES2022",
-		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+		"target": "esnext",
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
 		"jsx": "react-jsx",
 		"useDefineForClassFields": true,
 
@@ -26,7 +26,6 @@
 
 		"types": ["chrome", "vite/client"],
 
-		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./src/*"]
 		}

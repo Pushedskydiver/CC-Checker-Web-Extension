@@ -1,0 +1,17 @@
+# Dependabot version updates. This file must live at .github/dependabot.yml —
+# it sat under .github/ISSUE_TEMPLATE/ for years, where GitHub never read it.
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+      production-dependencies:
+        dependency-type: 'production'
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'

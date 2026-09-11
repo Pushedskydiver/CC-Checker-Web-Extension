@@ -1,5 +1,8 @@
-module.exports = {
-	plugins: ['stylelint-order', 'stylelint-use-logical'],
+/** @type {import('stylelint').Config} */
+
+export default {
+	plugins: ['stylelint-use-logical'],
+	ignoreFiles: ['build/**', 'node_modules/**'],
 	rules: {
 		'selector-class-pattern': null,
 		'no-descending-specificity': null,
@@ -16,7 +19,8 @@ module.exports = {
 		'at-rule-no-unknown': [
 			true,
 			{
-				ignoreAtRules: ['value', 'define-mixin', 'mixin'],
+				// CSS Modules `@value` (breakpoint tokens shared between modules)
+				ignoreAtRules: ['value'],
 			},
 		],
 		'property-no-unknown': [
@@ -25,12 +29,5 @@ module.exports = {
 				ignoreProperties: ['composes', 'composes-with'],
 			},
 		],
-		'function-no-unknown': [
-			true,
-			{
-				ignoreFunctions: ['strip'],
-			},
-		],
 	},
-	// ignoreFiles: ['app/styles/*.css', 'public/build/**/*.css'],
 };
