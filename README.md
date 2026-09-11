@@ -40,7 +40,7 @@ on a tab whose toolbar icon you have clicked. On pages Chrome will not let exten
 ## Development
 
 Requirements: Node 24 (`.nvmrc` says `24`; `nvm use` picks it up) and npm. Playwright's Chromium
-is not fetched by `npm ci`, so run `npx playwright install chromium` once per machine before the
+is not fetched by `npm ci`, so run `npx playwright install chromium` once per machine (and again after a `@playwright/test` bump) before the
 e2e suite.
 
 | Command            | What it does                                                                                  |

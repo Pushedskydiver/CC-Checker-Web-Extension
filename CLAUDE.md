@@ -11,7 +11,7 @@ goal is Safari support, which nothing in this tree has been adapted for yet (`do
 
 ```bash
 npm install
-npx playwright install chromium   # once per machine; the e2e suite drives real Chromium
+npx playwright install chromium   # once per machine, and again after a @playwright/test bump
 
 npm run build                     # vite build → build/ (one JS + one CSS file, dotfiles stripped)
 npm run watch                     # rebuild on save, then reload the page the checker is open on

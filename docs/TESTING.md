@@ -18,7 +18,7 @@ write a test that can actually fail, and how to state what a green run does not 
 ## Commands
 
 ```bash
-npx playwright install chromium                               # once per machine
+npx playwright install chromium   # once per machine, and again after a @playwright/test bump
 npm test                                                      # build, then the suite
 npm run test:e2e                                              # the suite against the existing build/
 npx playwright test -g "NaN hue"                              # one test, matched on its title
@@ -55,7 +55,8 @@ Playwright Test, one project, one spec file. Every test gets its own persistent 
 (`fs.mkdtempSync` → `cc-ext-profile-*`) launched with `--load-extension=<dir>` and
 `--disable-extensions-except=<dir>`, and `channel: 'chromium'` — the full Chromium build in its
 new headless mode. The default `chromium-headless-shell` cannot load extensions at all, which is
-why the channel is pinned and why `npx playwright install chromium` is a one-off prerequisite.
+why the channel is pinned and why `npx playwright install chromium` is a prerequisite (once per machine, and
+again after each `@playwright/test` bump — 1.63 wanted a Chromium build the 1.62 cache did not have).
 
 Each test also gets its own loopback HTTP server serving `TEST_PAGE`: three 120px blocks
 (`#red`, `#green`, `#blue`), a child `<iframe src="/child">`, and 1500px of filler so the page

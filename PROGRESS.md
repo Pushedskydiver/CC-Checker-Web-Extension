@@ -39,13 +39,19 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 **Done:** PR #28 pushed, CI green on its first Linux run (lint, build, 18/18 e2e in 56s), merged by Alex as
 `08542e6`. The eight 2024 Dependabot PRs (#18–#25) closed with their branches. Dependabot woke up once its config
 was on the default branch: #29 (`actions/checkout` 7) and #30 (`actions/upload-artifact` 7) merged, as did #31
-(`actions/setup-node` 7) once Dependabot had rebased it; #33 (`fast-uri` 3.1.7, a security bump closing the audit's one high finding)
-is green and awaits Alex; #32 (the grouped dev-dependency bump) fails `npm ci` because it lifts ESLint to 10 while
-the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at 9 (the DA review's
-simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now ignores major bumps
-of `eslint` and `@eslint/js`; the other six bumps resolve without them. **Manual step:** the ignore takes effect
-only once this docs PR is merged to `main`; then comment `@dependabot recreate` on #32 (or close it and wait for
-the weekly run) and check the recreated table lists six packages with `eslint` and `@eslint/js` absent.
+(`actions/setup-node` 7) once Dependabot had rebased it; #33 (`fast-uri` 3.1.7, a security bump closing the
+audit's one high finding) merged as `6b05529`; #32 (the grouped dev-dependency bump) failed `npm ci` because it
+lifted ESLint to 10 while the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at
+9 (the DA review's simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now
+ignores major bumps of `eslint` and `@eslint/js` (PR #34); once that was on `main`, `@dependabot recreate` on #32
+made Dependabot close it ("updatable in another way") and open #35 — six packages, `eslint` and `@eslint/js`
+absent, CI green — merged as `cb1c325`. Alex delegated the Dependabot handling ("I will let you do the rest").
+`main` at `cb1c325` re-verified locally after `npm ci`: lint, build, e2e 18/18. Zero open PRs.
+
+**Gotcha found on the way:** the `@playwright/test` bump in #35 (1.62 → 1.63) wants a newer Chromium build than
+the local cache had, so every e2e test failed with "Executable doesn't exist" until `npx playwright install
+chromium` was rerun. CI never sees this because it installs fresh. The "once per machine" wording in the docs
+now says "and again after a `@playwright/test` bump".
 
 **Repo settings changed, all via `gh api` and re-read afterwards:** `Lint, build, e2e` required on `main`
 (`strict` off; review rule, stale-review dismissal, no force-push/deletion unchanged; `enforce_admins` still off);
@@ -101,8 +107,8 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
 ### Session 4 loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file, then `docs/DEVELOPMENT.md` once.
-2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `08542e6` or later);
-   `gh pr list` shows what Dependabot has queued and whether #32/#33 are still open.
+2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `cb1c325` or later);
+   `gh pr list` shows what Dependabot has queued since — merging green Dependabot PRs is delegated (Session 3).
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine). Expect 18 passing tests.
 
