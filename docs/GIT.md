@@ -296,8 +296,9 @@ git-side summary.
 1. The version lives in **both** `package.json` and `public/manifest.json`, unlinked. They read
    1.6.1 and 1.6.2 on 4 September 2026 (the manifest had at some point regressed from 1.6.4); 1.7.0
    was chosen to be safely above anything that may have been uploaded — wrongly: on 11 September
-   the public listing showed 2.0.1, uploaded from `feat/CC-003-apca-3`, so the first release from
-   `main` is 2.1.0. The bump is a release commit, not part of every PR.
+   the public listing showed 2.0.1, a build no commit in this repo carries (not the APCA branch,
+   which was never released), so the first release from `main` is 2.1.0. The bump is a release
+   commit, not part of every PR.
 2. Check the currently published version first. It is recorded nowhere in this repo, and the store
    rejects a version that is not greater than it. The public listing shows it without a login:
    https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe.
