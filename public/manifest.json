@@ -8,27 +8,41 @@
     "default_title": "Open CC Checker"
   },
   "icons": {
-    "48": "./favicons/favicon-48x48.png",
-    "72": "./favicons/favicon-72x72.png",
-    "96": "./favicons/favicon-96x96.png",
-    "144": "./favicons/favicon-144x144.png",
-    "256": "./favicons/favicon-256x256.png"
+    "16": "favicons/favicon-16x16.png",
+    "32": "favicons/favicon-32x32.png",
+    "48": "favicons/favicon-48x48.png",
+    "72": "favicons/favicon-72x72.png",
+    "96": "favicons/favicon-96x96.png",
+    "128": "favicons/favicon-128x128.png",
+    "144": "favicons/favicon-144x144.png",
+    "256": "favicons/favicon-256x256.png"
   },
-  "permissions": ["activeTab"],
+  "permissions": [
+    "activeTab"
+  ],
   "web_accessible_resources": [
     {
-      "resources": ["index.html", "fonts/avenir-next-variable.woff2"],
-      "matches": ["<all_urls>"],
+      "resources": [
+        "index.html",
+        "fonts/avenir-next-variable.woff2"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
       "use_dynamic_url": true
     }
   ],
   "background": {
-    "service_worker": "./app/background.js"
+    "service_worker": "app/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["./app/content.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "app/content.js"
+      ],
       "run_at": "document_idle"
     }
   ]
