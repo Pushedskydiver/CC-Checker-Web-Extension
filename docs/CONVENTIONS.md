@@ -28,14 +28,14 @@ Every non-obvious rule below names the incident that produced it. All of them ar
 
 ### Where a thing gets written down
 
-| It belongs in                                             | When                                                                            |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| The source file, next to the line                         | Why one value, guard or ordering is the way it is. The default.                 |
-| `eslint.config.mjs`, `stylelint.config.mjs`, `tsconfig.*` | Anything a tool can enforce; a relaxation lives here with a comment.            |
-| `.github/workflows/ci.yml`                                | What must be green before a merge (not yet a required check — see below).       |
-| `docs/`                                                   | Rules and process: how work is done, reviewed, tested, released.                |
-| `PROGRESS.md` / `docs/history/SESSIONS.md`                | State: what is finished, what is next, how the next session loads. Never rules. |
-| `CLAUDE.md` (`AGENTS.md` is a symlink to it)              | Only what an agent must know before touching anything; the rest is a pointer.   |
+| It belongs in                                             | When                                                                                                |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| The source file, next to the line                         | Why one value, guard or ordering is the way it is. The default.                                     |
+| `eslint.config.mjs`, `stylelint.config.mjs`, `tsconfig.*` | Anything a tool can enforce; a relaxation lives here with a comment.                                |
+| `.github/workflows/ci.yml`                                | What must be green before a merge (a required check on `main` since 11 September 2026 — see below). |
+| `docs/`                                                   | Rules and process: how work is done, reviewed, tested, released.                                    |
+| `PROGRESS.md` / `docs/history/SESSIONS.md`                | State: what is finished, what is next, how the next session loads. Never rules.                     |
+| `CLAUDE.md` (`AGENTS.md` is a symlink to it)              | Only what an agent must know before touching anything; the rest is a pointer.                       |
 
 `public/manifest.json` is JSON and cannot carry a comment, so the reasoning behind every manifest
 key (`activeTab` only, `use_dynamic_url`, no `all_frames`) lives in `docs/ARCHITECTURE.md`. `docs/`
@@ -298,9 +298,9 @@ npm run lint && npm run build && npm run test:e2e
 ```
 
 `.github/workflows/ci.yml` runs the same three on `ubuntu-latest` (plus `npm ci` and
-`npx playwright install --with-deps chromium`) on every PR and push to `main`. It has not run yet
-(the branch is unpushed) and is **not** a required status check; once it has gone green on a PR,
-make `quality` required on `main`. Until then Alex's approval is the only gate GitHub enforces.
+`npx playwright install --with-deps chromium`) on every PR and push to `main`. Its display name,
+`Lint, build, e2e`, has been a required status check on `main` since 11 September 2026 (first green
+run: PR #28), alongside Alex's approval.
 
 Worth knowing about the members:
 

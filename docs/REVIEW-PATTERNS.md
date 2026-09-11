@@ -14,7 +14,7 @@ any of them is the trigger to promote it per `docs/DEVELOPMENT.md` §Process-rul
 every defect below; no gate caught any of them. They were found on 4 September 2026 by five finder
 agents plus hands-on reproduction (a case-sensitive disk image, a child iframe, a grey on the
 saturation slider), then pinned by the Playwright suite in `test/e2e/extension.spec.ts` (18 tests).
-The fixes are in the working tree; `PROGRESS.md` gives the intended commit sequence.
+The fixes merged into `main` on 11 September 2026 (PR #28); `PROGRESS.md` records the commit sequence.
 
 **Adapted from nas-stacks' and moe's `docs/REVIEW-PATTERNS.md`** for structure and the
 living-document convention only. Their catches belong to a Python relay, shell scripts and a pnpm
@@ -37,8 +37,8 @@ src/components && git add src/components`) and setting `core.ignorecase=false` l
 - **Detect:** `git ls-files src/components | grep -E '/[A-Z]'` must print nothing (it prints
   nothing today). A green build on the author's Mac is not evidence for a case-sensitive checkout.
 - **Structural fix:** the `quality` job in `.github/workflows/ci.yml` runs `npm ci`, lint, build
-  and e2e on `ubuntu-latest`. It has never run — the branch is unpushed — and is not yet a required
-  status check. Re-entry: after its first green run on a PR, make `quality` required on `main`.
+  and e2e on `ubuntu-latest`, and its display name `Lint, build, e2e` has been a required status
+  check on `main` since 11 September 2026, after its first green run on PR #28.
 
 ## 2. A "typed" rewrite of a silent no-op changes behaviour
 
@@ -184,8 +184,8 @@ replaced by `eslint.config.mjs`.
 
 - **Detect:** for every config file, name its consumer and prove it reads that path. A config whose
   tool never complains about anything is the tell.
-- **Structural fix:** none mechanical. The Dependabot move is itself unproven: the branch is
-  unpushed, so GitHub has not yet read the new path. Verify after the first push.
+- **Structural fix:** none mechanical. The artefact for the Dependabot move arrived on 11 September
+  2026: the grouped `dev-dependencies` PR (#32), which only the new config could have produced.
 
 ## 10. Verifier fan-out mistaken for rigour
 

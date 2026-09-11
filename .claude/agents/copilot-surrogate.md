@@ -60,8 +60,8 @@ directives and is the source of truth; in words, dispatch when any of these hold
    `package-lock.json`, `build/`, `test-results/`, `public/favicons/`, `public/fonts/`,
    `public/images/`, `.DS_Store`, `.vscode/`, and anything non-text. There are no snapshots and no
    generated source here, so the filter removes little — which is deliberate.
-3. **Ceiling: 20 files or ~300 KB post-filter.** The whole tracked text of this repo is under 100 KB
-   of code and roughly 265 KB of prose, so a change that trips the ceiling is either the docs port
+3. **Ceiling: 20 files or ~400 KB post-filter.** The whole tracked text of this repo is about 100 KB
+   of code and config and roughly 350 KB of prose (11 September 2026), so a change that trips the ceiling is either the docs port
    itself or something that should have been split. If the post-filter set exceeds it, stop without
    walking any file and return a single-line escalation header
    `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 300 KB)` followed by the file
@@ -80,8 +80,9 @@ directives and is the source of truth; in words, dispatch when any of these hold
 
 - **Named identifier.** A file path, an npm script, a message `type`, a `data-cc-*` attribute, a
   `localStorage` key, a CSS Module class, a `@value` token, a manifest key, an exported constant.
-  `grep` for it. Two traps that are easy to misquote from memory: the scripts are `test:e2e`,
-  `lint:ts`, `lint:js`, `lint:css`, `format:check`, `watch` and `package` (`node -e
+  `grep` for it. Two traps that are easy to misquote from memory: the scripts are `build`, `watch`,
+  `package`, `lint`, `lint:ts`, `lint:js`, `lint:css`, `format`, `format:check`, `test` and
+  `test:e2e` (`node -e
 "console.log(Object.keys(require('./package.json').scripts))"`), and the message types are
   `getScreenshot` but `updateScreenShot` — different casing, both correct:
 
@@ -137,7 +138,7 @@ directives and is the source of truth; in words, dispatch when any of these hold
 - **Verification claim.** "verified", "tested", "green", "passes", "works". Each needs the command
   verbatim and what it printed in the same paragraph (`18 passed` on 4 September 2026), and needs
   to say which of _ran the e2e suite_ and _loaded unpacked_ actually happened — they prove
-  different things, and neither proves a case-sensitive checkout while `ci.yml` has never run.
+  different things, and neither proves a case-sensitive checkout — only the Linux CI run does.
 - **Adverb of confidence.** "always", "never", "only", "silently", "cannot". Each is a strong
   claim. "Only `index.html` and the font need listing" rests on a dated observation; "nothing else
   sends this message" needs the grep in the same paragraph. Try to construct the counter-case.

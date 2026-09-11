@@ -37,7 +37,7 @@ unpacked extension — `npm run build`, then chrome://extensions → Developer m
 
 Deliberately the reverse of chief-clancy, moe and tamaclaude (`<gitmoji> <type>(scope):`) and not
 nas-stacks (`<type>: <gitmoji>`) either; the sibling web app uses this exact format, so do not import
-another repo's. The last five commits on `feat/vite-migration` dropped the gitmoji (`chore: CC-002 -
+another repo's. Five commits of 17 March 2026 on the migration branch dropped the gitmoji (`chore: CC-002 -
 Upgrade to React 19 and Vite 8`) — that is drift, not a new convention. Branches are
 `<type>/CC-<n>[-short-slug]`. Full type/gitmoji table: `docs/GIT.md`.
 
@@ -48,12 +48,13 @@ gh pr create --title "fix: CC-002 - 🐛 Description"   # same format as a commi
 ```
 
 `PULL_REQUEST_TEMPLATE.md` at the repo root supplies the body. **Merge policy: Alex merges. Claude
-never does.** Branch protection on `main` requires one approving review with `enforce_admins` off,
-so Alex can merge his own PRs; squash versus merge commit is his call per PR (history has merge
-commits). CI (`.github/workflows/ci.yml`: lint, build, e2e on Linux) is a report, not a gate — it was
-added on 4 September 2026 and has not run yet; once it has gone green on a PR, make `quality` a
-required check. Merged is not published: `npm run package` plus a manual Chrome Web Store upload is
-a separate, Alex-only step.
+never does.** Branch protection on `main` requires one approving review and a green
+`Lint, build, e2e` status check (the `quality` job in `.github/workflows/ci.yml`: lint, build, e2e
+on Linux — required since 11 September 2026, after its first green run on PR #28), with
+`enforce_admins` off so Alex can merge his own PRs. Squash versus merge commit is his call per PR
+(history has merge commits); either way the repo settings make the PR title the commit subject and
+the PR body its message, and the branch is deleted on merge. Merged is not published:
+`npm run package` plus a manual Chrome Web Store upload is a separate, Alex-only step.
 
 ## Architecture
 
@@ -87,7 +88,8 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
 - **TypeScript 7 (native `tsc`, aliased as `@typescript/native`) type-checks; TypeScript 6 sits under
   the `typescript` name purely so typescript-eslint can run.** ESLint is pinned to 9: ESLint 10 was
   tried and rejected on 4 September 2026 because `eslint-plugin-jsx-a11y` does not declare it as a
-  peer.
+  peer, and `eslint-plugin-react` 7.37 does not either (found 11 September 2026 behind the first
+  wall). `dependabot.yml` ignores major `eslint` / `@eslint/js` bumps until both do.
 - **`react-copy-to-clipboard` stays.** The UI runs in a cross-origin iframe created without
   `allow="clipboard-write"`, so `navigator.clipboard.writeText` is blocked; the library's
   `execCommand('copy')` path works.
@@ -113,13 +115,13 @@ explicit trigger phrases rather than always-on.
   `da-review` from a fresh context — the one that wrote the change cannot see what it assumed. It is
   a grep, not a judgement:
 
-    | Trigger                                                                                          | Review                         |
-    | ------------------------------------------------------------------------------------------------ | ------------------------------ |
-    | `src/**`, `public/app/**`                                                                        | `da-review`, mandatory         |
-    | `docs/**`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                         | `copilot-surrogate`, mandatory |
-    | `public/manifest.json`, `vite.config.ts`, `package.json` deps, `.github/workflows/**`, `test/**` | both                           |
-    | Diff over 200 lines excluding `package-lock.json`                                                | both                           |
-    | A spec or plan, before code moves against it                                                     | `spec-grill`                   |
+    | Trigger                                                                                                                  | Review                         |
+    | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
+    | `src/**`, `public/app/**`                                                                                                | `da-review`, mandatory         |
+    | `docs/**`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                                                 | `copilot-surrogate`, mandatory |
+    | `public/manifest.json`, `vite.config.ts`, `playwright.config.ts`, `package.json` deps, `.github/workflows/**`, `test/**` | both                           |
+    | Diff over 200 lines excluding `package-lock.json`                                                                        | both                           |
+    | A spec or plan, before code moves against it                                                                             | `spec-grill`                   |
 
     `copilot-surrogate` reads touched files at HEAD in full, not the diff. Reviews return findings
     in-chat and never post PR comments — Alex owns the PR audit trail.

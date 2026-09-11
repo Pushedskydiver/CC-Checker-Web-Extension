@@ -11,6 +11,15 @@ updates:
         dependency-type: 'development'
       production-dependencies:
         dependency-type: 'production'
+    ignore:
+      # The peer ranges of eslint-plugin-jsx-a11y 6.10 and eslint-plugin-react 7.37 stop at
+      # ESLint 9, so an ESLint 10 bump fails `npm ci` (PR #32, 11 September 2026). This also mutes
+      # a security bump that needs the major. Drop it once
+      # `npm view eslint-plugin-jsx-a11y eslint-plugin-react peerDependencies.eslint` shows ^10 for both.
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:

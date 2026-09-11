@@ -27,7 +27,7 @@ same, and every incident below is from the verification of the Vite migration on
 This is a **living document**. When something slips past DA + self-review + CI and shows up as a
 broken panel on a page nobody tested, add the specific check here the same day, with its date.
 
-**Last reviewed:** 4 September 2026.
+**Last reviewed:** 11 September 2026.
 
 ---
 
@@ -74,8 +74,8 @@ Applies to commit messages, PR bodies, code comments, `PROGRESS.md` entries and 
   `tsc` were green locally while the Git index still tracked `01-Atoms/`, `02-Molecules/`, `Icon/`,
   `Ratio/` and `Header/` against lowercase imports; a case-sensitive clone produced
   `UNRESOLVED_IMPORT` and 21 TS2307 errors. macOS plus `core.ignorecase=true` hid it. Only CI on
-  `ubuntu-latest` proves the checkout builds — and CI has not yet had its first run, so until it
-  has, write "not verified on a case-sensitive checkout" rather than implying it.
+  `ubuntu-latest` proves the checkout builds; if the PR's run has not finished, write "not yet
+  verified on a case-sensitive checkout" rather than implying it.
 - Never assert a negative — "nothing else sends this message", "no other module uses this class" —
   without the grep in the same paragraph.
 
@@ -304,8 +304,8 @@ workers. There are no unit tests yet (`docs/TESTING.md`).
 ## PR
 
 - **Title** matches a commit subject: `<type>: CC-<n> - <gitmoji> Description`, ticket key between
-  the type and the gitmoji, gitmoji copied from `docs/GIT.md`. The last five commits on
-  `feat/vite-migration` dropped the gitmoji; that is drift, not a precedent.
+  the type and the gitmoji, gitmoji copied from `docs/GIT.md`. Five commits of 17 March 2026 on the migration branch
+  dropped the gitmoji; that is drift, not a precedent.
 - **Template filled.** `PULL_REQUEST_TEMPLATE.md` at the repo root asks what kind of change, whether
   tests were added, the motivation, whether anything breaks, and the environment. Answer each
   heading; "see commits" is not an answer. Say what changed and why, not a file listing.
@@ -316,8 +316,8 @@ workers. There are no unit tests yet (`docs/TESTING.md`).
     ```
 
 - **CI green** on the PR before asking for review — it is the only run on a case-sensitive
-  checkout. Until `quality` has had its first green run it is not a required check; after it has,
-  make it one and note that in `docs/DEVELOPMENT.md`.
+  checkout, and `Lint, build, e2e` has been a required check on `main` since 11 September 2026, so
+  a red run blocks the merge button as well as the review.
 - **Alex merges.** Claude never does, and never posts review comments on the PR — findings go in
   chat. Squash versus merge commit is Alex's call per PR.
 - **Merged is not published.** If the PR is meant to ship, the version bump is in both files and

@@ -138,18 +138,19 @@ fix was re-indexing (`git rm -r --cached src/components && git add src/component
 `core.ignorecase=false`; the gate is the Linux runner. A green build on the author's Mac is not
 evidence for a case-sensitive checkout.
 
-**Branch protection on `main`, checked with `gh api` on 4 September 2026:** one approving review
-required, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is
-off, so Alex can merge his own PRs without a second reviewer. **There are no required status
-checks.** The `quality` job has never run — the branch that adds it is unpushed — and a check
-never observed green is not evidence of anything, so it was left non-required on purpose. **Re-entry
-condition: once `quality` has run green on a real PR, make it a required check on `main`.** Until
-then CI reports; it cannot block a merge, and treating a red check as blocking is reader
-discipline, the weakest kind of rule in this document.
+**Branch protection on `main`, re-checked with `gh api` on 11 September 2026:** one approving
+review required, stale reviews dismissed on push, force-pushes and deletions blocked, and
+**`Lint, build, e2e` is a required status check** (`strict` off). `enforce_admins` is off, so Alex
+can merge his own PRs without a second reviewer. The check was deliberately left non-required until
+it had been observed green — a check never seen passing is not evidence of anything — and that
+happened on PR #28's first run (lint, build, 18/18 e2e in 56 s on `ubuntu-latest`), so it was made
+required the same day. A red check now blocks the merge button; a green one still only proves the
+job passed, not that the job covers your change.
 
-Housekeeping: open PRs #18–#25 are 2024 Dependabot bumps against the old CRA/webpack tree and
-should be **closed, not merged** once the Vite migration lands; `.github/dependabot.yml` was only
-moved to where GitHub reads it on 4 September 2026 (it sat under `.github/ISSUE_TEMPLATE/` since 2022).
+Housekeeping, done 11 September 2026: PRs #18–#25 (2024 Dependabot bumps against the old
+CRA/webpack tree) were closed, not merged; `.github/dependabot.yml`, moved on 4 September to where
+GitHub reads it (it sat under `.github/ISSUE_TEMPLATE/` since 2022), started producing PRs as soon
+as it reached the default branch.
 
 ### One change in flight
 
@@ -212,8 +213,9 @@ thirty seconds later — so the review chain is doing the whole job.
 checklist, not a permission grant. All must hold before the handover; if one does not, fix it
 rather than raising it as a caveat:
 
-- `npm run lint`, `npm run build` and `npm run test:e2e` green **locally and in CI**. CI is not a
-  required check, so its status has to be read, not assumed — go and look at the `quality` job.
+- `npm run lint`, `npm run build` and `npm run test:e2e` green **locally and in CI**. CI is a
+  required check, but a green tick proves the job ran, not that it exercises your change — go and
+  look at the `quality` job's log.
 - DA review and self-review both completed, on this PR's HEAD, not on an earlier commit.
 - No BLOCKING or MATERIAL finding dismissed. Fixed, or fixed differently, with the reason in the
   PR body.
@@ -411,7 +413,7 @@ and the three `.claude/agents/` (`da-review`, `copilot-surrogate`, `spec-grill`)
 condition, or dropped outright:**
 
 - **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and this repo has
-  three merged PRs, two of them human-authored. Re-entry: after roughly ten PRs, when there is
+  six merged PRs, three of them human-authored. Re-entry: after roughly ten PRs, when there is
   something to route against.
 - **Changesets, semver tooling, npm publishing, release workflows.** Nothing here is published to
   npm; the release is a zip and a dashboard. Re-entry: the day a Web Store upload is automated —
@@ -437,7 +439,8 @@ condition, or dropped outright:**
 ## When to update this doc
 
 A new step enters the review gate; the pre-push suite gains or loses a command; a rule gets
-promoted to a gate (update both the ladder and whatever now enforces it); `quality` becomes a
-required check (rewrite [§CI](#ci-and-what-it-can-and-cannot-do) to say so); the Web Store upload
+promoted to a gate (update both the ladder and whatever now enforces it); the required status
+checks or branch protection on `main` change (rewrite
+[§CI](#ci-and-what-it-can-and-cannot-do) to say so); the Web Store upload
 is automated (rewrite [§The lifecycle](#the-lifecycle--a-change-end-to-end) rather than amending
 it); Safari support starts (packaging gains an Xcode path and the lifecycle forks).
