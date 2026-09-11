@@ -255,9 +255,10 @@ users get it. Nothing in a GitHub PR view says the model does not apply here.
 zips `build/` to `cc-checker-<version>.zip`, then Alex uploading that zip by hand in the Chrome Web
 Store developer dashboard — `docs/DEVELOPMENT.md` §Merged is not published. The version lives in
 _both_ `package.json` and `public/manifest.json`, unlinked: on 4 September 2026 they read 1.6.1 and
-1.6.2, and the manifest had at some point regressed from 1.6.4. The published version is not known
-exactly; 1.7.0 was chosen to sit safely above anything that might have been uploaded, because the
-store rejects a version that is not greater than the published one.
+1.6.2, and the manifest had at some point regressed from 1.6.4. The published version was not
+known, so 1.7.0 was chosen to sit "safely above anything that might have been uploaded" — and on
+11 September 2026 the public listing showed 2.0.1, uploaded from the never-merged APCA branch. The
+store rejects a version that is not greater than the published one; the release became 2.1.0.
 
 **What to do instead.** Name the artefact users run and say when it last changed: here that is the
 zip in the dashboard, not `main`. Before a release, check the dashboard for the published version,

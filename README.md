@@ -100,7 +100,10 @@ merged is not published.
    rejects any upload whose version is not greater than it.
 2. Bump `version` in **both** `package.json` and `public/manifest.json`. They are not linked; on
    4 September 2026 they had drifted to 1.6.1 and 1.6.2, and the manifest had at some point gone
-   backwards from 1.6.4, which is why both were bumped to 1.7.0 (bumped, not yet released).
+   backwards from 1.6.4, which is why both were first bumped to 1.7.0. On 11 September 2026 the public
+   listing showed the store already at 2.0.1 — an upload from the unfinished `feat/CC-003-apca-3`
+   branch that never merged — so the release became 2.1.0. Step 1 is not optional; the public
+   listing page shows the version without the dashboard.
 3. `npm run package` produces `cc-checker-<version>.zip` from a fresh build.
 4. Upload the zip by hand in the developer dashboard.
 

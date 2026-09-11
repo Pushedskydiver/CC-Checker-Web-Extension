@@ -295,19 +295,21 @@ git-side summary.
 
 1. The version lives in **both** `package.json` and `public/manifest.json`, unlinked. They read
    1.6.1 and 1.6.2 on 4 September 2026 (the manifest had at some point regressed from 1.6.4); 1.7.0
-   was chosen to be safely above anything that may have been uploaded. The bump is a release commit,
-   not part of every PR.
-2. Check the currently published version in the Chrome Web Store developer dashboard first. It is
-   recorded nowhere in this repo, and the store rejects a version that is not greater than it.
-3. `npm run package` builds and zips `build/` to `cc-checker-1.7.0.zip`, dotfiles excluded. Upload
+   was chosen to be safely above anything that may have been uploaded — wrongly: on 11 September
+   the public listing showed 2.0.1, uploaded from `feat/CC-003-apca-3`, so the first release from
+   `main` is 2.1.0. The bump is a release commit, not part of every PR.
+2. Check the currently published version first. It is recorded nowhere in this repo, and the store
+   rejects a version that is not greater than it. The public listing shows it without a login:
+   https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe.
+3. `npm run package` builds and zips `build/` to `cc-checker-2.1.0.zip`, dotfiles excluded. Upload
    it by hand.
 4. **Tag the commit the zip was built from, after the store accepts it.** `git tag` prints nothing
    today — no release in the extension's history can be mapped back to a commit. Start with the
    next one:
 
 ```bash
-git tag -a v1.7.0 -m "Chrome Web Store 1.7.0"
-git push origin v1.7.0
+git tag -a v2.1.0 -m "Chrome Web Store 2.1.0"
+git push origin v2.1.0
 ```
 
 A tag is a fact about the store, not about `main`: it goes on the packaged commit once the upload is

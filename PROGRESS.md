@@ -10,8 +10,9 @@ verified, and the CLAUDE.md / docs / agents set has been ported in.** As of 11 S
 into `main`** (PR #28, merge commit `08542e6`), `Lint, build, e2e` is a required status check, and the repo
 settings changed the same day are listed under Session 3 below.
 
-1. **Release 1.7.0.** After merge: check the currently published version in the Chrome Web Store dashboard,
-   `npm run package`, upload `cc-checker-1.7.0.zip`, tag `v1.7.0`. Merged is not published.
+1. **Release 2.1.0.** The release commit (version bump in both files) is on `main` once the release PR merges;
+   `npm run package` from it gives `cc-checker-2.1.0.zip`; Alex uploads it; then tag `v2.1.0` on that commit once
+   the store accepts it. Merged is not published. (Why 2.1.0 and not 1.7.0: Session 4.)
 2. **Merge or close the remaining Dependabot PRs** — see Session 3.
 3. **Unit tests for `src/utils/color-utils.ts`** (vitest) — the re-entry condition for mutation testing.
 4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
@@ -33,6 +34,20 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 4 — 11 September 2026 (release)
+
+**Done:** the pre-release check the docs prescribe — read the published version before uploading — was done
+against the public listing (https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe), which showed
+**2.0.1 with 40,000 users**. `main` had never been above 1.7.0; the only 2.x in git is the manifest on
+`feat/CC-003-apca-3` (2.0.0, August 2024, CRA-era, `apca-w3`, a new results UI — 2.0.1 itself was never
+committed). So the store ships the unfinished APCA branch, and 1.7.0 would have been rejected. Alex's call: APCA is
+not ready and may never be added, so the release ships from `main` as **2.1.0**. Both version files bumped in this
+session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
+`npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
+
+**Not done, deliberately:** no tag. `v2.1.0` goes on the release commit only after the store accepts the upload
+(`docs/GIT.md` §Releases). The `feat/CC-003-apca-3` branch and its stash are untouched.
 
 ## Session 3 — 11 September 2026 (landing)
 
@@ -97,7 +112,7 @@ the hygiene list in `docs/REVIEW-PATTERNS.md`.
 
 **Decided:** TypeScript 7 native `tsc` stays, with `typescript` aliased to `@typescript/typescript6` for
 typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10 — nor, found in Session 3, does eslint-plugin-react); versions bumped to
-1.7.0 in both files; `react-copy-to-clipboard` kept (no `clipboard-write` in the iframe); AGENTS.md is a symlink;
+1.7.0 in both files (superseded by 2.1.0 in Session 4); `react-copy-to-clipboard` kept (no `clipboard-write` in the iframe); AGENTS.md is a symlink;
 `PROGRESS.md` + `docs/history/SESSIONS.md` adopted from chief-clancy/moe; `docs/INDEX.md`, changesets and
 copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVELOPMENT.md` §Not ported).
 
