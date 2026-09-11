@@ -1,5 +1,13 @@
-import { createContext, useContext, useEffect, useState } from 'react';
 import {
+	createContext,
+	useContext,
+	useEffect,
+	useEffectEvent,
+	useState,
+} from 'react';
+
+import {
+	colorToHsl,
 	getContrast,
 	getLevel,
 	hslToHex,
@@ -8,7 +16,17 @@ import {
 	rgbToHsl,
 } from './utils/color-utils';
 
-import type { ColorTuple, TColors, TLevels, TPickedColor } from './global-types';
+import type {
+	ColorTuple,
+	TColors,
+	TLevels,
+	TPickedColor,
+} from './global-types';
+
+/** Must match the `--background-color` / `--foreground-color` defaults in styles/globals.css. */
+export const DEFAULT_BACKGROUND = '#ffe66d';
+export const DEFAULT_FOREGROUND = '#222222';
+export const MAX_SAVED_COLORS = 5;
 
 export interface ProviderProps {
 	children: React.ReactNode;
@@ -25,7 +43,6 @@ export interface ColourContrastContextTypes {
 	handleContrastCheck: (value: ColorTuple, name: string) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
-	setColors: React.Dispatch<React.SetStateAction<TColors[]>>;
 	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
 }
 
@@ -33,152 +50,138 @@ const ColourContrastContext = createContext<
 	ColourContrastContextTypes | undefined
 >(undefined);
 
+const isNumberOrNull = (value: unknown): value is number | null =>
+	value === null || typeof value === 'number';
+
+/**
+ * Colours persist in localStorage as HSL tuples. Anything that is not a tuple
+ * of numbers (an older build's shape, a hand-edited value) falls back to the
+ * default rather than throwing inside render.
+ */
+function readStoredColor(key: string, fallbackHex: string): ColorTuple {
+	const fallback = colorToHsl(fallbackHex);
+
+	try {
+		const stored: unknown = JSON.parse(localStorage.getItem(key) ?? 'null');
+
+		if (!Array.isArray(stored) || stored.length < 3) return fallback;
+		if (!stored.slice(0, 3).every(isNumberOrNull)) return fallback;
+
+		const [h, s, l] = stored as (number | null)[];
+
+		return [h ?? 0, s ?? 0, l ?? 0];
+	} catch {
+		return fallback;
+	}
+}
+
+function readStoredColors(): TColors[] {
+	try {
+		const stored: unknown = JSON.parse(
+			localStorage.getItem('colors') ?? '[]',
+		);
+
+		if (!Array.isArray(stored)) return [];
+
+		return stored.filter(
+			(entry: unknown): entry is TColors =>
+				typeof entry === 'object' &&
+				entry !== null &&
+				'background' in entry &&
+				'foreground' in entry &&
+				isHex(String(entry.background)) &&
+				isHex(String(entry.foreground)),
+		);
+	} catch {
+		return [];
+	}
+}
+
 const ColourContrastProvider = (props: ProviderProps) => {
-	const levels: TLevels = {
-		AALarge: 'Pass',
-		AA: 'Pass',
-		AAALarge: 'Pass',
-		AAA: 'Pass',
-	};
+	const [colors, setColors] = useState<TColors[]>(readStoredColors);
+	const [background, setBackground] = useState<ColorTuple>(() =>
+		readStoredColor('background', DEFAULT_BACKGROUND),
+	);
+	const [foreground, setForeground] = useState<ColorTuple>(() =>
+		readStoredColor('foreground', DEFAULT_FOREGROUND),
+	);
 
-	const storedColors = localStorage.getItem('colors');
-	const storedBackground = localStorage.getItem('background');
-	const storedForeground = localStorage.getItem('foreground');
-	const storedContrast = localStorage.getItem('contrast');
-	const storedLevel = localStorage.getItem('level');
-
-	const localColors = storedColors ? JSON.parse(storedColors) : [];
-	const localBackground = storedBackground
-		? JSON.parse(storedBackground)
-		: [49.73, 1, 0.71, 1];
-	const localForeground = storedForeground
-		? JSON.parse(storedForeground)
-		: [NaN, 0, 0.133, 1];
-	const localContrast = storedContrast ? JSON.parse(storedContrast) : 12.72;
-	const localLevel = storedLevel ? JSON.parse(storedLevel) : levels;
-
-	const [colors, setColors] = useState<TColors[]>(localColors);
-	const [background, setBackground] = useState<ColorTuple>(localBackground);
-	const [foreground, setForeground] = useState<ColorTuple>(localForeground);
-	const [contrast, setContrast] = useState<number>(localContrast);
-	const [level, setLevel] = useState<TLevels>(localLevel);
+	const backgroundHex = hslToHex(background);
+	const foregroundHex = hslToHex(foreground);
+	const contrast = getContrast(backgroundHex, foregroundHex);
+	const level = getLevel(contrast);
 	const isPoorContrast = contrast < 3;
 	const isBackgroundDark = isDark(background);
 
-	function checkContrast(bg: string, fg: string) {
-		const isBgHex = isHex(bg);
-		const isFgHex = isHex(fg);
-
-		if (!isBgHex || !isFgHex) return;
-
-		const newContrast = getContrast(bg, fg);
-		const newLevel = getLevel(newContrast);
-
-		localStorage.setItem('contrast', `${newContrast}`);
-		localStorage.setItem('level', JSON.stringify(newLevel));
-
-		setContrast(newContrast);
-		setLevel(newLevel);
-	}
-
-	function handleContrastCheck(value: ColorTuple, name: string) {
-		const isBackground = name === 'background';
-		const isForeground = name === 'foreground';
-
-		const storedBg = localStorage.getItem('background');
-		const storedFg = localStorage.getItem('foreground');
-
-		const localBg: ColorTuple = storedBg ? JSON.parse(storedBg) : background;
-		const localFg: ColorTuple = storedFg ? JSON.parse(storedFg) : foreground;
-
-		const bg = isBackground ? hslToHex(value) : hslToHex(localBg);
-		const fg = isForeground ? hslToHex(value) : hslToHex(localFg);
-
-		if (isBackground) setBackground(value);
-		if (isForeground) setForeground(value);
-
-		localStorage.setItem(name, JSON.stringify(value));
-		document.body.style.setProperty(`--${name}-color`, hslToHex(value));
-
-		checkContrast(bg, fg);
-	}
-
-	function saveColors() {
-		const storedColors = localStorage.getItem('colors');
-		const colors: TColors[] = storedColors ? JSON.parse(storedColors) : [];
-		const bg = hslToHex(background);
-		const fg = hslToHex(foreground);
-		const sameColors = colors.some(
-			(color) => color.background === bg && color.foreground === fg,
-		);
-
-		if (colors.length > 0 && sameColors) return;
-
-		if (colors.length > 5) {
-			colors.pop();
-		}
-
-		colors.unshift({ background: bg, foreground: fg });
-		localStorage.setItem('colors', JSON.stringify(colors));
-		setColors(colors);
-	}
-
 	function updateView(bg: ColorTuple, fg: ColorTuple) {
-		const backgroundHex = hslToHex(bg);
-		const foregroundHex = hslToHex(fg);
+		localStorage.setItem('background', JSON.stringify(bg));
+		localStorage.setItem('foreground', JSON.stringify(fg));
 
-		document.body.style.setProperty('--background-color', backgroundHex);
-		document.body.style.setProperty('--foreground-color', foregroundHex);
-
-		checkContrast(backgroundHex, foregroundHex);
 		setBackground(bg);
 		setForeground(fg);
 	}
 
-	function reverseColors() {
-		localStorage.setItem('background', JSON.stringify(foreground));
-		localStorage.setItem('foreground', JSON.stringify(background));
+	function handleContrastCheck(value: ColorTuple, name: string) {
+		if (name === 'background') updateView(value, foreground);
+		if (name === 'foreground') updateView(background, value);
+	}
 
+	function reverseColors() {
 		updateView(foreground, background);
 	}
 
-	function handlePickedColor({ key, rgb }: TPickedColor) {
-		const value = rgbToHsl(rgb);
+	function saveColors() {
+		const alreadySaved = colors.some(
+			(color) =>
+				color.background === backgroundHex &&
+				color.foreground === foregroundHex,
+		);
 
-		handleContrastCheck(value, key);
+		if (alreadySaved) return;
+
+		const next = [
+			{ background: backgroundHex, foreground: foregroundHex },
+			...colors,
+		].slice(0, MAX_SAVED_COLORS);
+
+		localStorage.setItem('colors', JSON.stringify(next));
+		setColors(next);
+	}
+
+	const handlePickedColor = useEffectEvent(({ key, rgb }: TPickedColor) => {
+		handleContrastCheck(rgbToHsl(rgb), key);
 
 		chrome.runtime.sendMessage({
 			type: 'closeColorPicker',
 		});
-	}
-
-	function handleMessageListener(r: { type: string } & Partial<TPickedColor>) {
-		if (r.type === 'colorPicked' && r.key && r.rgb) {
-			handlePickedColor({ key: r.key, rgb: r.rgb });
-		}
-	}
+	});
 
 	useEffect(() => {
-		chrome.runtime.onMessage.addListener(handleMessageListener);
+		function handleMessage(
+			message: { type: string } & Partial<TPickedColor>,
+			sender: chrome.runtime.MessageSender,
+		) {
+			// The content script's broadcast and the service worker's relay both
+			// arrive here. Only the relay reaches this iframe in incognito windows,
+			// so that is the one handled; the direct copy (sender.tab set) is ignored.
+			if (sender.tab) return;
+
+			if (message.type === 'colorPicked' && message.key && message.rgb) {
+				handlePickedColor({ key: message.key, rgb: message.rgb });
+			}
+		}
+
+		chrome.runtime.onMessage.addListener(handleMessage);
 
 		return () => {
-			chrome.runtime.onMessage.removeListener(handleMessageListener);
+			chrome.runtime.onMessage.removeListener(handleMessage);
 		};
 	}, []);
 
 	useEffect(() => {
-		if (localStorage.getItem('contrast') === null) return;
-
-		if (foreground[0] === null) {
-			foreground[0] = NaN;
-		}
-
-		const backgroundHex = hslToHex(background);
-		const foregroundHex = hslToHex(foreground);
-
 		document.body.style.setProperty('--background-color', backgroundHex);
 		document.body.style.setProperty('--foreground-color', foregroundHex);
-	}, [background, foreground]);
+	}, [backgroundHex, foregroundHex]);
 
 	return (
 		<ColourContrastContext
@@ -193,7 +196,6 @@ const ColourContrastProvider = (props: ProviderProps) => {
 				handleContrastCheck,
 				reverseColors,
 				saveColors,
-				setColors,
 				updateView,
 			}}
 		>
@@ -214,6 +216,6 @@ const useColourContrast = () => {
 	return context;
 };
 
-export { ColourContrastContext, useColourContrast };
+export { useColourContrast };
 
 export default ColourContrastProvider;

@@ -3,26 +3,28 @@ import { clsx } from 'clsx';
 import styles from './text.module.css';
 
 export type TextSizes =
-	| 'horizon'
-	| 'landmark'
-	| 'pinnacle'
-	| 'script'
-	| 'whisper'
-	| 'pulse';
+	'horizon' | 'landmark' | 'pinnacle' | 'script' | 'whisper' | 'pulse';
 
 export type TextWeights =
-	| 'light'
-	| 'thin'
-	| 'regular'
-	| 'medium'
-	| 'semiBold'
-	| 'bold';
+	'light' | 'thin' | 'regular' | 'medium' | 'semiBold' | 'bold';
+
+export type TTextTag =
+	| 'span'
+	| 'div'
+	| 'p'
+	| 'h1'
+	| 'h2'
+	| 'h3'
+	| 'h4'
+	| 'strong'
+	| 'em'
+	| 'small';
 
 export type TText = {
-	tag?: keyof React.JSX.IntrinsicElements;
+	tag?: TTextTag;
 	size?: TextSizes;
 	weight?: TextWeights;
-} & React.HtmlHTMLAttributes<Element>;
+} & React.HTMLAttributes<HTMLElement>;
 
 export const Text: React.FC<TText> = ({
 	tag: Tag = 'span',

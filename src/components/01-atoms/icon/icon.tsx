@@ -3,12 +3,7 @@ import clsx from 'clsx';
 import styles from './icon.module.css';
 
 export type TIconName =
-	| 'clipboard'
-	| 'tick'
-	| 'cross'
-	| 'eyedropper'
-	| 'swap'
-	| 'share';
+	'clipboard' | 'tick' | 'cross' | 'eyedropper' | 'swap' | 'share';
 
 export type TIcon = {
 	size?: number;

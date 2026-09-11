@@ -3,7 +3,7 @@
   "name": "Colour Contrast Checker",
   "short_name": "CC Checker",
   "description": "Check the contrast between different colour combinations against WCAG standards",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "action": {
     "default_title": "Open CC Checker"
   },
@@ -14,20 +14,11 @@
     "144": "./favicons/favicon-144x144.png",
     "256": "./favicons/favicon-256x256.png"
   },
-  "permissions": [
-    "activeTab"
-  ],
+  "permissions": ["activeTab"],
   "web_accessible_resources": [
     {
-      "resources": [
-        "index.html",
-        "error.html",
-        "assets/*",
-        "fonts/avenir-next-variable.woff2"
-      ],
-      "matches": [
-        "<all_urls>"
-      ],
+      "resources": ["index.html", "fonts/avenir-next-variable.woff2"],
+      "matches": ["<all_urls>"],
       "use_dynamic_url": true
     }
   ],
@@ -36,14 +27,9 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "./app/content.js"
-      ],
-      "run_at": "document_idle",
-      "all_frames": true
+      "matches": ["<all_urls>"],
+      "js": ["./app/content.js"],
+      "run_at": "document_idle"
     }
   ]
 }

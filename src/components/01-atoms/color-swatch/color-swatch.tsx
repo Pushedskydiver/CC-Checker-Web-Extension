@@ -1,9 +1,10 @@
+import clsx from 'clsx';
+
 import { useColourContrast } from '~/context';
 import { colorToHsl } from '~/utils/color-utils';
 import { Text } from '../text/text';
 
 import styles from './color-swatch.module.css';
-import clsx from 'clsx';
 
 export type TColorSwatch = {
 	background: string;
@@ -18,13 +19,7 @@ export const ColorSwatch: React.FC<TColorSwatch> = ({
 		useColourContrast();
 
 	const applyColors = (): void => {
-		const bg = colorToHsl(background);
-		const fg = colorToHsl(foreground);
-
-		localStorage.setItem('background', JSON.stringify(bg));
-		localStorage.setItem('foreground', JSON.stringify(fg));
-
-		updateView(bg, fg);
+		updateView(colorToHsl(background), colorToHsl(foreground));
 	};
 
 	return (

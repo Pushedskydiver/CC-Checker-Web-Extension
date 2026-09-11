@@ -2,17 +2,19 @@ import { useRef, useState } from 'react';
 
 type TOrientation = 'horizontal' | 'vertical';
 
+type TRefMap = React.RefObject<{ [key: number]: HTMLElement | null }>;
+
 export type TUseTabbed = {
 	activeTab: number;
-	tabItemRefs: React.MutableRefObject<{ [key: number]: HTMLElement | null }>;
-	tabPanelRefs: React.MutableRefObject<{ [key: number]: HTMLElement | null }>;
+	tabItemRefs: TRefMap;
+	tabPanelRefs: TRefMap;
 	handleTabClick: (
 		e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 		index: number,
 	) => void;
 	handleTabKeyDown: (
 		e: React.KeyboardEvent<HTMLAnchorElement>,
-		orientation: 'horizontal' | 'vertical',
+		orientation: TOrientation,
 	) => void;
 };
 
@@ -30,35 +32,32 @@ export const useTabbed = (): TUseTabbed => {
 		setActiveTab(index);
 	};
 
+	const getTabCount = (): number =>
+		Object.values(tabItemRefs.current).filter(Boolean).length;
+
+	// WAI-ARIA tabs: arrow keys move focus and wrap, Home/End jump to the ends.
 	const getNextIndex = (
-		direction: string,
+		key: string,
 		orientation: TOrientation,
-		activeTab: number,
-	): number => {
+	): number | undefined => {
 		const isVertical = orientation === 'vertical';
 		const next = isVertical ? 'ArrowDown' : 'ArrowRight';
 		const previous = isVertical ? 'ArrowUp' : 'ArrowLeft';
+		const count = getTabCount();
 
-		switch (direction) {
+		if (count === 0) return undefined;
+
+		switch (key) {
 			case next:
-				return activeTab + 1;
+				return (activeTab + 1) % count;
 			case previous:
-				return activeTab - 1;
+				return (activeTab - 1 + count) % count;
+			case 'Home':
+				return 0;
+			case 'End':
+				return count - 1;
 			default:
-				return activeTab;
-		}
-	};
-
-	const setNextActiveTab = (
-		direction: string,
-		orientation: TOrientation,
-	): void => {
-		const tabRefs = tabItemRefs.current;
-		const newIndex = getNextIndex(direction, orientation, activeTab);
-
-		if (tabRefs[newIndex] !== undefined) {
-			setActiveTab(newIndex);
-			tabItemRefs.current[newIndex]?.focus();
+				return undefined;
 		}
 	};
 
@@ -66,20 +65,21 @@ export const useTabbed = (): TUseTabbed => {
 		e: React.KeyboardEvent<HTMLAnchorElement>,
 		orientation: TOrientation,
 	): void => {
-		const isVertical = orientation === 'vertical';
-		const next = isVertical ? 'ArrowDown' : 'ArrowRight';
-		const previous = isVertical ? 'ArrowUp' : 'ArrowLeft';
-		const toPanel = isVertical ? 'ArrowRight' : 'ArrowDown';
+		const toPanel = orientation === 'vertical' ? 'ArrowRight' : 'ArrowDown';
 
 		if (e.key === toPanel) {
 			e.preventDefault();
 			tabPanelRefs.current[activeTab]?.focus();
+			return;
 		}
 
-		if (e.key === next || e.key === previous) {
-			e.preventDefault();
-			setNextActiveTab(e.key, orientation);
-		}
+		const nextIndex = getNextIndex(e.key, orientation);
+
+		if (nextIndex === undefined) return;
+
+		e.preventDefault();
+		setActiveTab(nextIndex);
+		tabItemRefs.current[nextIndex]?.focus();
 	};
 
 	return {

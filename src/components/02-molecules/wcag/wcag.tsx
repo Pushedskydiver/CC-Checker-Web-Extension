@@ -10,9 +10,13 @@ export interface WcagProps {
 export const Wcag: React.FC<WcagProps> = ({ id }) => {
 	const { level } = useColourContrast();
 	const { AALarge, AAALarge, AA, AAA } = level;
-	``;
 	return (
-		<ul className={styles.list} aria-label="Colour contrast grades" id={id}>
+		<ul
+			className={styles.list}
+			aria-label="Colour contrast grades"
+			id={id}
+			tabIndex={-1}
+		>
 			<li
 				className={styles.item}
 				aria-live="polite"

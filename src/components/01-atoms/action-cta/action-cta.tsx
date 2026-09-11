@@ -5,7 +5,7 @@ import styles from './action-cta.module.css';
 
 export type TActionCta = {
 	label: string;
-	icon?: React.ReactElement<'svg'>;
+	icon?: React.ReactNode;
 	withBackground?: boolean;
 	className?: string;
 	children?: React.ReactNode;

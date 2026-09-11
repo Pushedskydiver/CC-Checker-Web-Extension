@@ -10,7 +10,10 @@ export type TTextInput = {
 	id: 'background' | 'foreground';
 	labelText: string;
 	value: string;
-} & Pick<React.ComponentProps<'input'>, 'minLength' | 'name' | 'onChange'>;
+} & Pick<
+	React.ComponentProps<'input'>,
+	'minLength' | 'name' | 'onChange' | 'onBlur'
+>;
 
 export const TextInput: React.FC<TTextInput> = ({
 	id,
@@ -19,6 +22,7 @@ export const TextInput: React.FC<TTextInput> = ({
 	name,
 	value,
 	onChange,
+	onBlur,
 }) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
@@ -55,6 +59,7 @@ export const TextInput: React.FC<TTextInput> = ({
 					spellCheck="false"
 					value={value}
 					onChange={onChange}
+					onBlur={onBlur}
 					className={clsx(
 						styles.input,
 						isPoorContrast && !isBackgroundDark

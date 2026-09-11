@@ -31,9 +31,7 @@ export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
 						: undefined,
 				)}
 			>
-				<span className={styles.badgeContent} role="presentation">
-					{children}
-				</span>
+				<span role="presentation">{children}</span>
 
 				{isPass ? <Tick /> : <Cross />}
 			</Text>

@@ -10,6 +10,7 @@ export const Ratio: React.FC = () => {
 	return (
 		<Text
 			id="ratio"
+			tabIndex={-1}
 			size="landmark"
 			weight="semiBold"
 			className={clsx(

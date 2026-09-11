@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
 import { useColourContrast } from '~/context';
 import { colorToHsl, hslToHex, isHex } from '~/utils/color-utils';
 import { TextInput } from '~/components/01-atoms/text-input/text-input';
@@ -7,66 +8,63 @@ import { Tabbed } from '../tabbed/tabbed';
 
 import styles from './color-controls.module.css';
 
+type TColorName = 'background' | 'foreground';
+
+/**
+ * A hex is applied once it is a complete 6-digit colour. Shorthand (3–5 digit)
+ * values are left alone while the user is still typing: auto-expanding them
+ * used to hijack the input mid-entry.
+ */
+const toCompleteHex = (raw: string): string | null => {
+	const value = raw.trim();
+	const isShortHand = /^#?[0-9a-f]{3,5}$/i.test(value);
+
+	if (isShortHand) return null;
+
+	const withHash = value.startsWith('#') ? value : `#${value}`;
+
+	if (withHash.length !== 7 || !isHex(withHash)) return null;
+
+	return withHash;
+};
+
 export const ColorControls: React.FC = () => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
 
-	const [bgValue, setBgValue] = useState(hslToHex(background));
-	const [fgValue, setFgValue] = useState(hslToHex(foreground));
+	// While the user is typing, the input shows their draft; otherwise it shows
+	// the canonical hex of the current colour.
+	const [bgDraft, setBgDraft] = useState<string | null>(null);
+	const [fgDraft, setFgDraft] = useState<string | null>(null);
 
-	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		let value = e.target.value;
-
-		const name = e.target.id;
-		const hslValue = isHex(value) ? colorToHsl(value) : null;
-		const valueHasHash = value.indexOf('#') !== -1;
-		const isHexCode = isHex(value);
-		const isNum = /^\d+$/.test(value);
-		const isShortHand = /(^#?[0-9a-f]{3,5}|[0-9a-f]{3])$/gim.test(value);
-		const isRed = value.toLowerCase() === 'red';
-
-		if (value.length >= 6 && !valueHasHash && isHexCode && isNum) {
-			value = `#${value}`;
-		}
-
-		if (value.length <= 3 && !valueHasHash && !isRed) {
-			return;
-		}
-
-		if (isShortHand && !isRed) {
-			return;
-		}
-
-		if (value.length < 7 && !isHexCode) {
-			return;
-		}
-
-		if (!isHexCode) {
-			return;
-		}
-
-		if (!isShortHand && hslValue) {
-			handleContrastCheck(hslValue, name);
-		}
+	const drafts: Record<TColorName, string | null> = {
+		background: bgDraft,
+		foreground: fgDraft,
+	};
+	const setDraft: Record<TColorName, (value: string | null) => void> = {
+		background: setBgDraft,
+		foreground: setFgDraft,
+	};
+	const hex: Record<TColorName, string> = {
+		background: hslToHex(background),
+		foreground: hslToHex(foreground),
 	};
 
-	const handleBgChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const value = e.target.value;
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		const name = e.target.id as TColorName;
+		const complete = toCompleteHex(e.target.value);
 
-		setBgValue(value);
-		handleOnChange(e);
+		if (complete === null) {
+			setDraft[name](e.target.value);
+			return;
+		}
+
+		setDraft[name](null);
+		handleContrastCheck(colorToHsl(complete), name);
 	};
 
-	const handleFgChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const value = e.target.value;
-
-		setFgValue(value);
-		handleOnChange(e);
+	const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+		setDraft[e.target.id as TColorName](null);
 	};
-
-	useEffect(() => {
-		setBgValue(hslToHex(background));
-		setFgValue(hslToHex(foreground));
-	}, [background, foreground]);
 
 	return (
 		<>
@@ -78,8 +76,9 @@ export const ColorControls: React.FC = () => {
 					id="background"
 					labelText="Background colour"
 					minLength={7}
-					value={bgValue}
-					onChange={handleBgChange}
+					value={drafts.background ?? hex.background}
+					onChange={handleChange}
+					onBlur={handleBlur}
 				/>
 
 				<Tabbed
@@ -110,8 +109,9 @@ export const ColorControls: React.FC = () => {
 					id="foreground"
 					labelText="Foreground colour"
 					minLength={7}
-					value={fgValue}
-					onChange={handleFgChange}
+					value={drafts.foreground ?? hex.foreground}
+					onChange={handleChange}
+					onBlur={handleBlur}
 				/>
 
 				<Tabbed

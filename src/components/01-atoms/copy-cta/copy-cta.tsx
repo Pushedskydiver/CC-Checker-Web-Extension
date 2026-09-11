@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import CopyToClipboard from 'react-copy-to-clipboard';
+
 import { useColourContrast } from '~/context';
 import { ActionCta } from '../action-cta/action-cta';
 import { Clipboard, Share } from '../icon/icon';
@@ -15,6 +16,8 @@ export type TCopyCta = {
 	withBackground?: boolean;
 };
 
+const COPIED_VISIBLE_MS = 2000;
+
 export const CopyCta: React.FC<TCopyCta> = ({
 	value,
 	icon = 'clipboard',
@@ -22,29 +25,37 @@ export const CopyCta: React.FC<TCopyCta> = ({
 	withBackground = false,
 }) => {
 	const isUrl = value.includes('http');
-	const [copied, setCopiedState] = useState(false);
+	const [copied, setCopied] = useState(false);
+	const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 	const copyText = isUrl
 		? 'Generate share URL'
 		: `Copy ${value} to clipboard`;
 	const copiedText = isUrl ? 'URL added to clipboard' : 'Copied';
-	const bodyText = copied ? copiedText : copyText;
 
-	const setCopyState = (): void => {
-		setCopiedState(true);
+	useEffect(() => {
+		return () => {
+			if (resetTimer.current) clearTimeout(resetTimer.current);
+		};
+	}, []);
 
-		const delaySetState = setTimeout(() => {
-			setCopiedState(false);
-			clearTimeout(delaySetState);
-		}, 2000);
+	const handleCopy = (): void => {
+		if (resetTimer.current) clearTimeout(resetTimer.current);
+
+		setCopied(true);
+
+		resetTimer.current = setTimeout(() => {
+			setCopied(false);
+		}, COPIED_VISIBLE_MS);
 	};
 
 	return (
 		<span className={styles.ctaWrapper}>
+			{/* A live region: the confirmation is inserted on copy so screen readers announce it. */}
 			<Text
 				size="pulse"
 				weight="medium"
-				aria-hidden="true"
+				role="status"
 				className={clsx(
 					styles.tooltip,
 					styles[`${tooltipPosition}Tooltip`],
@@ -57,12 +68,12 @@ export const CopyCta: React.FC<TCopyCta> = ({
 					copied ? styles.tooltipFadeInOut : undefined,
 				)}
 			>
-				{bodyText}
+				{copied ? copiedText : ''}
 			</Text>
 
-			<CopyToClipboard text={value} onCopy={setCopyState}>
+			<CopyToClipboard text={value} onCopy={handleCopy}>
 				<ActionCta
-					label={bodyText}
+					label={copyText}
 					icon={
 						icon === 'clipboard' ? (
 							<Clipboard size={20} />

@@ -1,44 +1,44 @@
-import round from 'lodash.round';
 import { useColourContrast } from '~/context';
-import type { ColorTuple } from '~/global-types';
-import { hslToRgb, rgbToHsl } from '~/utils/color-utils';
+import { hslToRgb, rgbToHsl, roundTo } from '~/utils/color-utils';
 import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
 import styles from './color-control.module.css';
 
-const nanH = (h: number): number => (Number.isNaN(h) || h === null ? 0 : h);
+import type { ColorTuple } from '~/global-types';
 
 export type TColourControl = {
-	id: string;
+	id: 'background' | 'foreground';
 	type?: 'hsl' | 'rgb';
 };
+
+const HSL_STEP = 1 / 256;
 
 export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
 
 	const isRgb = type === 'rgb';
-	const bg = isRgb ? hslToRgb(background) : background;
-	const fg = isRgb ? hslToRgb(foreground) : foreground;
+	const hsl = id === 'background' ? background : foreground;
+	const value = isRgb ? hslToRgb(hsl) : hsl;
 
-	const value = id === 'background' ? bg : fg;
-	const valueA = isRgb ? value[0] : round(nanH(value[0]));
-	const valueB = isRgb ? value[1] : round(value[1], 2.5);
-	const valueC = isRgb ? value[2] : round(value[2], 2);
-	const labelTextA = isRgb ? `Red ${valueA}` : `Hue ${valueA}°`;
-	const labelTextB = isRgb ? `Green ${valueB}` : `Saturation ${valueB}`;
-	const labelTextC = isRgb ? `Blue ${valueC}` : `Lightness ${valueC}`;
+	// Labels are rounded for reading; the inputs get the raw value so the thumb
+	// never snaps away from the stored colour.
+	const labelTextA = isRgb
+		? `Red ${value[0]}`
+		: `Hue ${Math.round(value[0])}°`;
+	const labelTextB = isRgb
+		? `Green ${value[1]}`
+		: `Saturation ${roundTo(value[1], 2)}`;
+	const labelTextC = isRgb
+		? `Blue ${value[2]}`
+		: `Lightness ${roundTo(value[2], 2)}`;
 
-	const handleChange = ({ target }: { target: HTMLInputElement }): void => {
-		const abc: ColorTuple = [...value];
-		const property = target.getAttribute('property');
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		const channel = Number(e.target.dataset.channel) as 0 | 1 | 2;
+		const next: ColorTuple = [value[0], value[1], value[2]];
 
-		if (!property) return;
+		next[channel] = parseFloat(e.target.value);
 
-		abc[parseFloat(property) as 0 | 1 | 2] = parseFloat(target.value);
-
-		const colorValue = isRgb ? rgbToHsl(abc) : abc;
-
-		handleContrastCheck(colorValue, id);
+		handleContrastCheck(isRgb ? rgbToHsl(next) : next, id);
 	};
 
 	return (
@@ -46,30 +46,30 @@ export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
 			<RangeInput
 				id={`${id}${isRgb ? 'Red' : 'Hue'}`}
 				labelText={labelTextA}
-				max={isRgb ? '255' : '360'}
-				property="0"
-				step={isRgb ? 1 : undefined}
-				value={valueA}
+				channel={0}
+				max={isRgb ? 255 : 360}
+				step={1}
+				value={value[0]}
 				onChange={handleChange}
 			/>
 
 			<RangeInput
 				id={`${id}${isRgb ? 'Green' : 'Saturation'}`}
 				labelText={labelTextB}
-				max={isRgb ? '255' : '1'}
-				step={isRgb ? 1 : 1 / 256}
-				value={valueB}
+				channel={1}
+				max={isRgb ? 255 : 1}
+				step={isRgb ? 1 : HSL_STEP}
+				value={value[1]}
 				onChange={handleChange}
-				property="1"
 			/>
 
 			<RangeInput
 				id={`${id}${isRgb ? 'Blue' : 'Lightness'}`}
 				labelText={labelTextC}
-				max={isRgb ? '255' : '1'}
-				property="2"
-				step={isRgb ? 1 : 1 / 256}
-				value={valueC}
+				channel={2}
+				max={isRgb ? 255 : 1}
+				step={isRgb ? 1 : HSL_STEP}
+				value={value[2]}
 				onChange={handleChange}
 			/>
 		</div>
