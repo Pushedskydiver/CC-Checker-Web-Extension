@@ -433,7 +433,7 @@ load time, and the store does at upload.
       `lint:css --fix` reached `build/`.
 - [ ] `.github/dependabot.yml` is at that path and still ignores major `eslint` / `@eslint/js`
       bumps while `eslint-plugin-jsx-a11y` and `eslint-plugin-react` stop at ESLint 9 in their peer
-      ranges (`npm view eslint-plugin-jsx-a11y eslint-plugin-react peerDependencies.eslint`); `ci.yml`'s job is still named
+      ranges (check each: `npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint`); `ci.yml`'s job is still named
       `Lint, build, e2e`, because that display name is what branch protection requires — renaming
       the job silently un-gates `main`.
 - [ ] `.nvmrc` (`24`), `engines.node` and `setup-node`'s `node-version-file` agree.

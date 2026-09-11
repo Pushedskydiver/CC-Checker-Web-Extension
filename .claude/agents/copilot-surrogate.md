@@ -64,7 +64,7 @@ directives and is the source of truth; in words, dispatch when any of these hold
    of code and config and roughly 350 KB of prose (11 September 2026), so a change that trips the ceiling is either the docs port
    itself or something that should have been split. If the post-filter set exceeds it, stop without
    walking any file and return a single-line escalation header
-   `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 300 KB)` followed by the file
+   `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 400 KB)` followed by the file
    list, so the dispatching context can surface it to Alex.
 4. **Read each touched file at HEAD in full — not the diff.** This is the load-bearing mechanical
    contract of this agent and there is no version of the job that skips it. Kept prose written

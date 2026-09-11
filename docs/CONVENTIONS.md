@@ -278,7 +278,8 @@ sail through `npm run build`; only the e2e suite or a manual reload would report
   jsx-runtime, `eslint-plugin-react-hooks` 7 recommended, `eslint-plugin-jsx-a11y` recommended,
   project rules, then `eslint-config-prettier` last so no formatting rule fights Prettier. ESLint
   10 was tried and rejected on 4 September 2026 because `eslint-plugin-jsx-a11y` 6.10 does not
-  declare it as a peer; retry when it does.
+  declare it as a peer, and `eslint-plugin-react` 7.37 does not either (11 September 2026); retry
+  when both do — `docs/GIT.md` §Dependabot has the check.
 - **`eslint-disable` is almost never the answer.** There are zero `eslint-disable`,
   `stylelint-disable`, `@ts-ignore` or `@ts-expect-error` comments in the tree (grep,
   4 September 2026). The only relaxations are in `eslint.config.mjs`, scoped to `test/**` and

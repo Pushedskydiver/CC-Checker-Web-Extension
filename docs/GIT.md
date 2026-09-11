@@ -139,7 +139,7 @@ fix here is a `fix`) and `remove` — the history already uses `chore: … 🔥`
 
 The table gives each type a default. Where a more specific gitmoji says something the type does not,
 use it — the history already does: 🔥 for removing files, ⬆️ for dependency bumps (Dependabot's own
-titles use it too), 🙈 for `.gitignore`. Copy the character out of this table rather than typing
+titles used it until 2024; the 2026 config produces `chore(deps): Bump …`), 🙈 for `.gitignore`. Copy the character out of this table rather than typing
 one: `♻️` and `⚡️` carry a trailing U+FE0F variation selector, and the bare codepoint is a different
 string that a grep will silently miss.
 
@@ -188,9 +188,9 @@ commit that a review agent, a PR page or `PROGRESS.md` may already have cited by
 
 ### Title
 
-Same format as a commit subject: `<type>: CC-<n> - <gitmoji> Description`. Both human-authored PRs
-in the history missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add dependabot`, #17
-was `Feat/cc 002` — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
+Same format as a commit subject: `<type>: CC-<n> - <gitmoji> Description`. The first two human-authored
+PRs missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add dependabot`, #17 was
+`Feat/cc 002`; #28 followed it — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
 records nothing about what it did. Nothing checks the title; that is why it is written here.
 
 Whichever button Alex presses, the title is the commit subject: since 11 September 2026
@@ -276,15 +276,15 @@ first scheduled PRs (#29–#32) arrived within the hour, alongside a security bu
 `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at ESLint 9, so a grouped bump
 that lifts ESLint to 10 fails `npm ci` in CI (#32, 11 September 2026 — jsx-a11y is the wall npm
 reports first, the same one hit on 4 September; react is the one behind it). The ignore also mutes a
-security bump that would need the major. Re-entry: when
-`npm view eslint-plugin-jsx-a11y eslint-plugin-react peerDependencies.eslint` shows `^10` for both,
-drop the ignore and take the bump.
+security bump that would need the major. Re-entry: when both
+`npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint` print a range
+with `^10`, drop the ignore and take the bump.
 
 **PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
 rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on
 11 September 2026 once #28 had landed.
 
-Dependabot's own subjects (`:arrow_up: Bump rollup from 2.70.1 to 2.79.2`) are bot format; leave them alone.
+Dependabot's own subjects (`:arrow_up: Bump rollup from 2.70.1 to 2.79.2` in 2024, `chore(deps): Bump actions/checkout from 6 to 7` since 11 September 2026) are bot format; leave them alone.
 `git revert` subjects (`Revert "…"`) get the same treatment — none has been needed yet.
 
 ## Releases

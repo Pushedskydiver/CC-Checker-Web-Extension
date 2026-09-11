@@ -45,7 +45,7 @@ the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 
 simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now ignores major bumps
 of `eslint` and `@eslint/js`; the other six bumps resolve without them. **Manual step:** the ignore takes effect
 only once this docs PR is merged to `main`; then comment `@dependabot recreate` on #32 (or close it and wait for
-the weekly run) and check the recreated table lists seven packages with `eslint` and `@eslint/js` absent.
+the weekly run) and check the recreated table lists six packages with `eslint` and `@eslint/js` absent.
 
 **Repo settings changed, all via `gh api` and re-read afterwards:** `Lint, build, e2e` required on `main`
 (`strict` off; review rule, stale-review dismissal, no force-push/deletion unchanged; `enforce_admins` still off);
@@ -66,7 +66,7 @@ byte-equal to `DEFAULT_FOREGROUND`; `playwright.config.ts` added to the "both" r
 table so the table and `copilot-surrogate.md` agree. Pre-push suite re-run after both: lint (tsc ×2, ESLint,
 stylelint, prettier) green, build green, e2e 18/18.
 
-**Still open, unchanged from Session 1:** nothing is committed or pushed; the commit sequence above still applies.
+**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`)**:** nothing is committed or pushed; the commit sequence above still applies.
 Two loose ends the cross-check left for Alex: `copilot-surrogate.md`'s own trigger also names comment-block edits
 in `public/app/*.js` (a path table cannot express that — leave as a superset or drop it), and `docs/TESTING.md`
 cites `fixtures.ts` by line number, which will drift.
@@ -90,7 +90,7 @@ panel; every pick handled twice; the copy/share confirmation hidden from screen 
 the hygiene list in `docs/REVIEW-PATTERNS.md`.
 
 **Decided:** TypeScript 7 native `tsc` stays, with `typescript` aliased to `@typescript/typescript6` for
-typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10); versions bumped to
+typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10 — nor, found in Session 3, does eslint-plugin-react); versions bumped to
 1.7.0 in both files; `react-copy-to-clipboard` kept (no `clipboard-write` in the iframe); AGENTS.md is a symlink;
 `PROGRESS.md` + `docs/history/SESSIONS.md` adopted from chief-clancy/moe; `docs/INDEX.md`, changesets and
 copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVELOPMENT.md` §Not ported).
