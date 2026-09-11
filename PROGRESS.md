@@ -39,10 +39,11 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 
 **Done:** the pre-release check the docs prescribe — read the published version before uploading — was done
 against the public listing (https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe), which showed
-**2.0.1 with 40,000 users**. `main` had never been above 1.7.0; the only 2.x in git is the manifest on
-`feat/CC-003-apca-3` (2.0.0, August 2024, CRA-era, `apca-w3`, a new results UI — 2.0.1 itself was never
-committed). So the store ships the unfinished APCA branch, and 1.7.0 would have been rejected. Alex's call: APCA is
-not ready and may never be added, so the release ships from `main` as **2.1.0**. Both version files bumped in this
+**2.0.1 with 40,000 users**. `main` had never been above 1.7.0 and no commit in git carries 2.0.1, so 1.7.0
+would have been rejected; the release ships from `main` as **2.1.0**. Where the store's 2.0.1 build came from is
+**not recorded in git** — the only 2.x manifest is 2.0.0 on `feat/CC-003-apca-3`, and this session first wrote
+that up as "the store ships the APCA branch". **Alex corrected it: APCA was never released**, and he is not
+adding it. The provenance of 2.0.1 stays unknown; the docs now say so rather than name a branch. Both version files bumped in this
 session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
 `npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
 
@@ -54,6 +55,11 @@ the unzipped artefact.
 
 **Not done, deliberately:** no tag. `v2.1.0` goes on the release commit only after the store accepts the upload
 (`docs/GIT.md` §Releases). The `feat/CC-003-apca-3` branch and its stash are untouched.
+
+**Corrected in this session:** the APCA attribution above went into six docs, a commit message (`2f50beb`) and PR
+#37's body before Alex read it. The commit and PR text stand as written (history is not rewritten); the docs are
+fixed in the follow-up PR. Lesson, now in `docs/DA-REVIEW.md` §Permission audit: when the published build is not in
+git, write "unknown" — do not infer it from the nearest branch.
 
 ## Session 3 — 11 September 2026 (landing)
 

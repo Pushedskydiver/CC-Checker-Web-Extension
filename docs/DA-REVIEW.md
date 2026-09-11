@@ -235,8 +235,10 @@ switches read it: `background.js`, `content.js`, and the `handleMessage` effect 
 - `version` is bumped in both `package.json` and `public/manifest.json`; they are not linked. On
   4 September 2026 they read 1.6.1 and 1.6.2, the manifest having regressed from 1.6.4, so 1.7.0 was
   chosen to be "safely above anything uploaded" — and on 11 September the public listing showed
-  2.0.1 already published from `feat/CC-003-apca-3`, so the release became 2.1.0. A release PR that
-  did not read the listing first is a finding.
+  2.0.1 already published, a build no commit in git carries, so the release became 2.1.0. A release
+  PR that did not read the listing first is a finding. So is naming where a published build came
+  from when git does not say: the 2.0.1 write-up first attributed it to `feat/CC-003-apca-3` (the
+  nearest 2.x manifest), and Alex corrected it — APCA was never released. Write "unknown".
 - No `minimum_chrome_version` — deliberate; the build target is `browserslist` (`chrome >= 111`).
 - Safari is a future concern, not a plan: `use_dynamic_url` and `chrome.action.openPopup` are
   Chromium-only, and nothing has been adapted.
