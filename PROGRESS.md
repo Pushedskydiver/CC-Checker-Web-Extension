@@ -7,14 +7,16 @@ Living state document — current state, what's next. Session-by-session detail 
 
 Updated 12 September 2026, end of Session 5 — **CC-004 is under way: the brief below has been grilled, Alex
 approved an ordered twelve-item plan, and PRs 1 to 4 have merged** (`8ac0bdc`, `83dec25`, `e62b069`,
-`9156ff2`). 2.1.0 is still with the
-store for review; users run 2.0.1.
+`9156ff2`). **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
+`40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
    plan below. PRs 1 to 4 merged, no branch open. Resume at PR 5, the `React.FC` documentation
    decision, which has no dependency. One PR at a time, `da-review` on every `src/**` change, both
    reviews wherever the `CLAUDE.md` trigger table says so, the e2e suite as the gate.
-2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here.
+2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
+   submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
+   anyone watching. Users are on it. Nothing further; the next release repeats `docs/GIT.md` §Releases.
 3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
    it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a ten-file
    documentation sweep with it.
@@ -63,7 +65,7 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   enable it, then measure — bundle size (`build/assets/index-*.js`, 259.74 kB before), e2e 18/18, and a
   before/after render count on the slider path if it is worth the instrumentation. A compiler that changes
   nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
-- **`React.FC` in 25 files** — `docs/CONVENTIONS.md` §Components currently mandates it. Decide once: keep, or
+- **`React.FC` in 25 files** — `docs/CONVENTIONS.md` §TypeScript and React currently mandates it. Decide once: keep, or
   move to plain typed functions (the React docs' current default). A convention change is a doc PR first.
 - **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
   `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
@@ -101,7 +103,8 @@ manifest or permission change.
 Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `CLAUDE.md` trigger
 fires, not a record — "both" means `da-review` and `copilot-surrogate`, and a PR that crosses 200 changed
 lines fires both whatever its paths. Row 2 is the worked example: predicted surrogate-only, it came to 232
-lines and fired both. Row 10 is one concern in two PRs, so the plan is twelve numbered items in thirteen
+lines and fired both — 232 at the time that was measured, 305 by the time it merged. Row 10 is one concern
+in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
 | #   | PR                                                                                  | Reviews   | After |
@@ -219,7 +222,7 @@ not part of CC-004, since nothing here depends on it.
 1. **The brief's own proof claim was false, and it changed the order of work.** It asserted "the e2e suite
    already covers the visible outcome" of the poor-contrast switch. It does not: there is no assertion
    anywhere in the suite on a variant class or any control's resolved colour, so by inspection all sixteen
-   branches could be deleted with the suite still green. The control — delete one branch, watch a test go
+   branches (fifteen since PR 3) could be deleted with the suite still green. The control — delete one branch, watch a test go
    red — was **not** run, because there is no test to redden; that absence is the finding. The refactor's first PR is therefore a failing test, not the refactor.
    A brief that cites coverage is not evidence of coverage — read the assertions.
 2. **The repo already held the fact that killed the documented clipboard route, two documents away.**
@@ -238,29 +241,26 @@ not part of CC-004, since nothing here depends on it.
    `docs/SELF-REVIEW.md` §Before you write the word verified failing to hold, and the cause is the weak form
    itself: every commit body on this branch asserts the suite without pasting what it printed. The fix is
    mechanical — run the chain, paste its last lines, then write the sentence.
-5. **A review finding was disproved with evidence rather than accepted.** The DA pass suggested tightening
-   the new build guard against a nested `ENOENT` mid-walk; a probe showed a subtree deleted during a
-   recursive read does not throw at all, so the extra condition would have been validation for a scenario
-   that cannot happen. Deferred with the probe recorded, not silently dropped.
+5. **A review finding can be disproved, and that needs a probe too.** The DA pass wanted the new build
+   guard tightened against a case a probe then showed cannot happen. Deferring a finding is a claim like any
+   other: it carries evidence or it is a dismissal. (Event, PR #42; the rule is the second sentence.)
 6. **Promoting a transitive dependency to a direct one exposed a major that would have silently undone
    the fix it shipped with — through a PR Claude is delegated to merge.** `copy-to-clipboard` was already
    in the lockfile under the React wrapper; making it direct put it in the weekly
-   `production-dependencies` group, and its 4.x returns `Promise<boolean>`, on which
-   `if (!copy(value))` is always false. The guard would vanish, and 4.x also defaults its
-   `window.prompt` fallback off, so the failure path would go silent too. The DA pass swapped 4.0.2 in
-   and **every gate stayed green** — which under `docs/GIT.md` §Who merges makes it auto-mergeable. The
-   fix is a type annotation (`const copied: boolean`), so the bump fails `lint:ts` instead; no `ignore`,
-   because a red PR is better than a muted one. Generalise: when a dependency moves from transitive to
-   direct, ask what its next major does to the code that now calls it directly.
-7. **A stale test run under-reported the count and it reached ten files.** A full run printed `19 passed`
+   `production-dependencies` group, where its 4.x would have made the new guard a no-op and silenced the
+   failure path with it. The DA pass swapped 4.0.2 in and **every gate stayed green**, which under
+   `docs/GIT.md` §Who merges makes it auto-mergeable. Mechanism, the type-annotation gate and what taking
+   the major would need are in `docs/GIT.md` §Dependabot. **Generalise: when a dependency moves from
+   transitive to direct, ask what its next major does to the code that now calls it directly.**
+7. **A stale test run under-reported the count and it reached six files.** A full run printed `19 passed`
    immediately after a rebuild when `--list` said 20. The number went into a documentation sweep before
    anyone re-derived it. Counts come from `npx playwright test --list` and `grep -c "^\ttest("`, which
    agree with each other, not from the tail of a run.
-8. **A review agent's scratch spec was briefly in the working tree.** The surrogate pass saw
-   `test/e2e/zz-scratch.spec.ts` mid-run — the DA pass's own reproduction, removed moments later — and
-   flagged that `git add -A` would have shipped it. It did not, but two commits this session used
-   `git add -A` while review agents were running. Stage by path, or check
-   `git status --untracked-files=all` first.
+8. **Stage by path while review agents are running.** The surrogate pass saw
+   `test/e2e/zz-scratch.spec.ts` in the working tree mid-run — the DA pass's own reproduction, removed
+   moments later. It was never committed, and git records no staging command so whether a broad `git add`
+   would have caught it is not provable after the fact; the habit is the finding. Check
+   `git status --untracked-files=all` before staging.
 
 ## Session 4 — 11 September 2026 (release)
 
@@ -371,20 +371,21 @@ copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVE
 **Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
 from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-### Session 6 loading instructions
+## Session 6 loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
 2. **Archive Session 1 before writing anything.** At this handoff the detail band held exactly five
-   session entries and about 8.2k tokens — under both triggers — but a Session 6 entry makes six, which
+   session entries and about 8.9k tokens for the whole file, of which the detail band is roughly half —
+   under both triggers — but a Session 6 entry makes six, which
    is over the five-entry trigger in `docs/DEVELOPMENT.md` §Session handoff. Compress Session 1 to a
    one-line row in `docs/history/SESSIONS.md`, which is still empty.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `9156ff2` or later), `gh pr list` (expected empty — PRs 1 to 4 all merged 12 September 2026
    and their branches are deleted; only `main` and the untouched `feat/CC-003-apca-3` remain on the
    remote). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
-   written down there, `copy-to-clipboard` majors, which must go red on `lint:ts` and must not be
-   merged without re-reading the guard in `copy-cta.tsx`.
+   written down under `docs/GIT.md` §Dependabot, `copy-to-clipboard` majors, which must go red on
+   `lint:ts` and must not be merged without re-reading the guard in `copy-cta.tsx`.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 20 passing tests until PR 7 adds unit tests and a fourth command.
@@ -402,8 +403,8 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
    rejected; open only in that Alex may revisit it once he sees the ten-file documentation sweep PR 7
    carries. Note PR #42's merged body calls that PR "PR 8" — it was renumbered to 7 when the plan was
    written down, and the plan is the authority; **(b)** whether workstream 5, the sibling's three
-   missing fixes, starts before or after CC-004 finishes; **(c)** whether the store has published 2.1.0 — read
-   the public listing, do not assume it (`docs/GIT.md` §Releases has the URL).
+   missing fixes, starts before or after CC-004 finishes; ~~**(c)** whether the store has published 2.1.0~~ — settled 12 September 2026, it has. Read the
+   public listing rather than assuming, next time too (`docs/GIT.md` §Releases has the URL).
 
 ## Session archive
 
