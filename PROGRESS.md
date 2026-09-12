@@ -82,8 +82,9 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
   wanted does work: the suite gained two clipboard assertions in PR 4 (12 September 2026) — the
   share button's value, and that a refused copy announces nothing — green three consecutive local
-  runs on macOS. Whether they hold on `ubuntu-latest` is PR 4's own CI run to establish and is not
-  claimed here.
+  runs on macOS, and green on `ubuntu-latest` in PR 4's own CI run — `real clipboard (1.3s)`,
+  `refused copy announces nothing (1.4s)`, `20 passed (18.1s)`. That settles the open question from
+  PR 43, which had one agent's Linux-container run and no reproduction.
 - **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
   `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
 - **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG

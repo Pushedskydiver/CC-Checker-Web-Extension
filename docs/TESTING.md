@@ -253,9 +253,9 @@ make test order a hidden input. Never share a context across tests to save time.
 Bump these in the same commit as the intentional growth. A drop without an intentional change is
 a red flag.
 
-| Suite                        | Count    | Time                                 | Command                                    | Measured          |
-| ---------------------------- | -------- | ------------------------------------ | ------------------------------------------ | ----------------- |
-| `test/e2e/extension.spec.ts` | 20 tests | 8.2s locally, 4 workers (three runs) | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
+| Suite                        | Count    | Time                                                                    | Command                                    | Measured          |
+| ---------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
+| `test/e2e/extension.spec.ts` | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
 
 Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched manifest).
 
