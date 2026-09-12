@@ -10,9 +10,11 @@ What changed on the way over:
 - **No changesets, no semver tooling, no npm publish, no deploy.** Nothing here is published to npm
   and nothing happens on merge. The sources' Release Flow and Deploy Flow sections become
   [Releases](#releases): a zip file and a manual Chrome Web Store upload.
-- **Ticket keys.** moe says "no ticket numbers"; this repo has them. `CC-001`, `CC-002` and `CC-003`
-  are keys in Alex's own tracker for the two colour-contrast projects (the sibling web app,
-  `Pushedskydiver/Colour-Contrast-Checker`, uses the same keys and the same commit format).
+- **Ticket keys.** moe says "no ticket numbers"; this repo has them. `CC-001`, `CC-002`, `CC-003`
+  and `CC-004` are keys in Alex's own tracker for the two colour-contrast projects (the sibling web
+  app, `Pushedskydiver/Colour-Contrast-Checker`, uses the same keys and the same commit format).
+  `CC-004` is the code-quality workstream opened on 12 September 2026 (`PROGRESS.md` §The approved
+  plan).
 - **Gitmoji position.** chief-clancy, moe and tamaclaude put the gitmoji first (`✨ feat(scope): …`);
   nas-stacks puts it after the colon (`feat: ✨ …`). Here it follows the ticket key:
   `feat: CC-002 - ✨ Add rgb colour options, tidy up code`.
@@ -309,9 +311,10 @@ git-side summary.
    https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe.
 3. `npm run package` builds and zips `build/` to `cc-checker-2.1.0.zip`, dotfiles excluded. Upload
    it by hand.
-4. **Tag the commit the zip was built from, after the store accepts it.** `git tag` prints nothing
-   today — no release in the extension's history can be mapped back to a commit. Start with the
-   next one:
+4. **Tag the commit the zip was built from, after the store accepts it.** This started with 2.1.0:
+   `git tag` prints `v2.1.0` and `git rev-list -n1 v2.1.0` gives `c5da9fc`, the packaged commit
+   (checked 12 September 2026). No earlier release can be mapped back to a commit, so 2.1.0 is the
+   first. The next one follows the same shape:
 
 ```bash
 git tag -a v2.1.0 -m "Chrome Web Store 2.1.0"
