@@ -6,9 +6,6 @@ import styles from './cta.module.css';
 
 export type TButton = React.ButtonHTMLAttributes<HTMLButtonElement> & CtaShared;
 
-export type TLinkButton = React.AnchorHTMLAttributes<HTMLAnchorElement> &
-	CtaShared;
-
 type CtaShared = React.PropsWithChildren<{
 	className?: string;
 }>;
@@ -46,42 +43,6 @@ export const Button: React.FC<TButton> = ({
 		>
 			{children}
 		</button>
-	);
-};
-
-export const LinkButton: React.FC<TLinkButton> = ({
-	href,
-	children,
-	className,
-	onClick,
-	...linkAttributes
-}) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
-	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-		if (onClick) {
-			onClick(e);
-		}
-	};
-
-	return (
-		<a
-			href={href}
-			onClick={handleClick}
-			className={clsx(
-				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
-				className,
-			)}
-			{...linkAttributes}
-		>
-			{children}
-		</a>
 	);
 };
 
