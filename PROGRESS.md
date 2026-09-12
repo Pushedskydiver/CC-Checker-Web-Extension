@@ -6,7 +6,7 @@ Living state document — current state, what's next. Session-by-session detail 
 ## Next workstreams (after Session 5)
 
 Updated 12 September 2026, end of Session 5 — **CC-004 is under way: the brief below has been grilled, Alex
-approved an ordered twelve-PR plan, and the first PR has merged** (#42 as `8ac0bdc`). 2.1.0 is still with the
+approved an ordered twelve-item plan, and the first PR has merged** (#42 as `8ac0bdc`). 2.1.0 is still with the
 store for review; users run 2.0.1.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
