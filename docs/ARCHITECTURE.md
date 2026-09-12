@@ -318,7 +318,7 @@ one retry in CI, traces kept on failure.
 
 ```bash
 npm run build && npm run test:e2e   # or: npm test
-npx playwright install chromium     # once per machine
+npx playwright install chromium     # once per machine, and again after a @playwright/test bump
 ```
 
 - **It loads the real build.** `extensionDir` throws if `build/manifest.json` is missing, then

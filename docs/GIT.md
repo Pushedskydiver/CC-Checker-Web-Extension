@@ -311,9 +311,10 @@ git-side summary.
    https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe.
 3. `npm run package` builds and zips `build/` to `cc-checker-2.1.0.zip`, dotfiles excluded. Upload
    it by hand.
-4. **Tag the commit the zip was built from, after the store accepts it.** `git tag` prints nothing
-   today — no release in the extension's history can be mapped back to a commit. Start with the
-   next one:
+4. **Tag the commit the zip was built from, after the store accepts it.** This started with 2.1.0:
+   `git tag` prints `v2.1.0` and `git rev-list -n1 v2.1.0` gives `c5da9fc`, the packaged commit
+   (checked 12 September 2026). No earlier release can be mapped back to a commit, so 2.1.0 is the
+   first. The next one follows the same shape:
 
 ```bash
 git tag -a v2.1.0 -m "Chrome Web Store 2.1.0"
