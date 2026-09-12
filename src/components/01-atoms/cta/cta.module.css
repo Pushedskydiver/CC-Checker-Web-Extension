@@ -13,10 +13,6 @@
 	background-color: var(--cta-bg-color);
 	color: var(--cta-fg-color);
 
-	&:is(a) {
-		text-decoration: none;
-	}
-
 	&:focus-visible {
 		outline: 3px solid var(--cta-bg-color);
 		outline-offset: 3px;
