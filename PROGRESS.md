@@ -25,6 +25,16 @@ store for review; users run 2.0.1.
 
 ### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
 
+**Superseded 12 September 2026 — kept as the pre-grill record, not as instructions.** The grill disproved
+four claims below: that the e2e suite already covers the poor-contrast switch (no assertion in the suite
+touches a variant class or any control's resolved colour); that `@vitejs/plugin-react` 6.1 takes the React
+Compiler via `babel.plugins` (that option does not exist); that the compiler forbids rule-of-hooks violations
+(not at `panicThreshold: 'none'`, which is both the default and what React says production must use); and that
+the import style is mixed in a way the conventions do not already mandate. Four of the six "dead exports" had
+already gone in `c74071b`, and the hex-input logic is one regex with three early returns rather than a chain.
+§The approved plan below is the authority and carries the evidence; read this only for what was measured on
+11 September.
+
 Facts, not impressions — re-measure before acting; the commands are one-liners.
 
 - **Size.** 31 `.ts/.tsx` files, 1,894 lines; 25 CSS modules. Largest: `src/context.tsx` 221 lines,
@@ -80,20 +90,20 @@ manifest or permission change.
 Three `spec-grill` discovery rounds plus one verification round, measured against `main` at `94cd658`. Sizes
 are estimates; "both" means `da-review` and `copilot-surrogate`, per the `CLAUDE.md` trigger table.
 
-| #   | PR                                                                                  | Reviews    | After |
-| --- | ----------------------------------------------------------------------------------- | ---------- | ----- |
-| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both       | —     |
-| 2   | Correct the documented route off `react-copy-to-clipboard` (in flight)              | surrogate  | —     |
-| 3   | Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (~58 lines)             | da-review  | —     |
-| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e          | both       | 2     |
-| 5   | Replace the `React.FC` rule with plain typed functions (docs)                        | surrogate  | —     |
-| 6   | Convert 32 signatures in 25 files + the three drift renames                          | da-review  | 5     |
-| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep  | both       | —     |
-| 8   | Extract the hex-input parser to `src/utils/`, with tests                            | da-review  | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail              | both       | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms        | da/both    | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation            | da-review  | —     |
-| 12  | Deferred: context reducer or external store, justified by its own unit tests         | da-review  | 7, 11 |
+| #   | PR                                                                                  | Reviews   | After |
+| --- | ----------------------------------------------------------------------------------- | --------- | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both      | —     |
+| 2   | Correct the documented route off `react-copy-to-clipboard` (in flight)              | surrogate | —     |
+| 3   | Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (~58 lines)             | da-review | —     |
+| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e         | both      | 2     |
+| 5   | Replace the `React.FC` rule with plain typed functions (docs)                       | surrogate | —     |
+| 6   | Convert 32 signatures in 25 files + the three drift renames                         | da-review | 5     |
+| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep | both      | —     |
+| 8   | Extract the hex-input parser to `src/utils/`, with tests                            | da-review | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail              | both      | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms       | da/both   | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation           | da-review | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests        | da-review | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
 
