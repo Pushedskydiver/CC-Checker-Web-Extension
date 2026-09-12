@@ -16,7 +16,7 @@ npx playwright install chromium   # once per machine, and again after a @playwri
 npm run build                     # vite build → build/ (one JS + one CSS file, dotfiles stripped)
 npm run watch                     # rebuild on save, then reload the page the checker is open on
 npm run lint                      # tsc ×2, eslint, stylelint, prettier --check
-npm run test:e2e                  # 19 Playwright tests against the built extension, ~8s
+npm run test:e2e                  # 20 Playwright tests against the built extension, ~8s
 npm run package                   # build, then zip build/ → cc-checker-<version>.zip for the store
 
 # Pre-push suite (run before every git push — no exceptions)

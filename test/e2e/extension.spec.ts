@@ -273,8 +273,6 @@ test.describe('app', () => {
 
 		await frame.getByRole('button', { name: 'Generate share URL' }).click();
 
-		// The confirmation is only announced when the copy actually succeeded, so
-		// these two assertions together are what guards the failed-copy case.
 		await expect(
 			frame
 				.getByRole('status')
@@ -284,6 +282,42 @@ test.describe('app', () => {
 		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
 			'https://colourcontrast.cc/?background=ffe66d&foreground=222222',
 		);
+	});
+
+	test('a refused copy announces nothing', async ({ page, openChecker }) => {
+		// The failure path: `copy-to-clipboard` falls back to `window.prompt` when
+		// the copy command is refused, then returns false. Playwright auto-dismisses
+		// dialogs, but the handler is explicit so the prompt is part of the record.
+		const dialogs: string[] = [];
+		page.on('dialog', (dialog) => {
+			dialogs.push(dialog.type());
+			// `.catch` rather than `void`: if the dialog is still open when the
+			// context tears down, the rejection surfaces as an error outside any
+			// test rather than a failure. Seen once in ten runs before this.
+			dialog.dismiss().catch(() => undefined);
+		});
+
+		const frame = await openChecker();
+
+		// The only way in: no-user-activation still copies successfully in this
+		// Chromium, so refusal has to come from the command itself.
+		await frame.evaluate(() => {
+			document.execCommand = () => false;
+		});
+
+		await frame.getByRole('button', { name: 'Generate share URL' }).click();
+
+		expect(dialogs).toEqual(['prompt']);
+
+		// Read the attribute rather than the role: the tooltip is hidden when empty,
+		// so `getByRole('status')` cannot see it and would pass vacuously.
+		expect(
+			await frame.evaluate(() =>
+				[...document.querySelectorAll('[role="status"]')].map(
+					(node) => node.textContent ?? '',
+				),
+			),
+		).toEqual(['', '', '']);
 	});
 
 	test('skip links target real, focusable ids', async ({ openChecker }) => {

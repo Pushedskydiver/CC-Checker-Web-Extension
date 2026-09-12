@@ -6,7 +6,7 @@ Living state document — current state, what's next. Session-by-session detail 
 ## Next workstreams (after Session 5)
 
 Updated 12 September 2026, end of Session 5 — **CC-004 is under way: the brief below has been grilled, Alex
-approved an ordered twelve-item plan, and the first PR has merged** (#42 as `8ac0bdc`). 2.1.0 is still with the
+approved an ordered twelve-item plan, and PRs 1 to 3 have merged** (`8ac0bdc`, `83dec25`, `e62b069`). 2.1.0 is still with the
 store for review; users run 2.0.1.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
@@ -80,10 +80,10 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   types — which drops the last class component with no change to `content.js`. That swap also fixes a
   defect found on the way: the wrapper calls `onCopy` whatever the copy returned, so a failed copy is
   announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
-  wanted does work: the suite gained its first clipboard assertion in PR 4 (12 September 2026),
-  green three consecutive local runs on macOS. Whether it holds on `ubuntu-latest` is PR 4's own CI
-  run to establish and is not claimed here. Row 3 of the plan also predicted `da-review` alone and
-  fired both, because the diff crossed 200 lines.
+  wanted does work: the suite gained two clipboard assertions in PR 4 (12 September 2026) — the
+  share button's value, and that a refused copy announces nothing — green three consecutive local
+  runs on macOS. Whether they hold on `ubuntu-latest` is PR 4's own CI run to establish and is not
+  claimed here.
 - **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
   `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
 - **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
@@ -105,7 +105,7 @@ pull requests.
 | --- | ----------------------------------------------------------------------------------- | --------- | ----- |
 | 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both      | —     |
 | 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)      | both      | —     |
-| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)     | both      | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)     | da-review | —     |
 | 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e (open)  | both      | 2     |
 | 5   | Replace the `React.FC` rule with plain typed functions (docs)                       | surrogate | —     |
 | 6   | Convert 32 signatures in 25 files + the three drift renames                         | da-review | 5     |
@@ -349,15 +349,17 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **First, establish whether PR 2 landed.** It was opened from `docs/CC-004-clipboard-route` and had not
-   merged when this was written, so "resume at PR 3" assumes something that may not have happened. Run
-   `git status --short` (expect clean), `git log --oneline -3 origin/main`, and `gh pr list`; if PR 2 is
-   still open, finishing it is the first action, not PR 3. Green Dependabot PRs are delegated
-   (`docs/GIT.md` §Who merges).
+2. **First, establish which PRs landed.** PRs 1 to 3 merged on 12 September 2026; PR 4 was opened
+   from `fix/CC-004-failed-copy-announced` and had not merged when this was written, so the resume
+   point below assumes it did. Run `git status --short` (expect clean),
+   `git log --oneline -5 origin/main`, and `gh pr list`; if PR 4 is still open, finishing it is the
+   first action. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one
+   exception now written down there, `copy-to-clipboard` majors.
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 19 passing tests until PR 7 adds unit tests and a fourth command.
-4. **Resume at PR 3 of the approved plan**, one PR at a time, cutting the branch as the literal first action.
+   Expect 20 passing tests until PR 7 adds unit tests and a fourth command.
+4. **Resume at PR 5 of the approved plan**, the `React.FC` documentation decision, which has no
+   dependency — one PR at a time, cutting the branch as the literal first action.
    The plan is already approved: do not re-grill it, and do not reorder it without saying why.
 5. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1, at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out).

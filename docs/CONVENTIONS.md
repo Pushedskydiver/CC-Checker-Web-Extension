@@ -309,7 +309,7 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **The e2e suite is the only test.** 19 Playwright tests in `test/e2e/`, loading `build/` into a
+- **The e2e suite is the only test.** 20 Playwright tests in `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content
   script → service worker → iframe flow; the picker tests use the patched-manifest fixture
   (`test.use({ patched: true })`). Not

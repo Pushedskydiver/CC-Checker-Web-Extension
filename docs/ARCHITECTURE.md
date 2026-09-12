@@ -313,7 +313,7 @@ build/
 ## Testing seam
 
 The only automated tests are Playwright end-to-end tests in `test/e2e/` (`fixtures.ts`,
-`extension.spec.ts`), configured by `playwright.config.ts`: 19 tests, 4 workers locally and 2 in CI,
+`extension.spec.ts`), configured by `playwright.config.ts`: 20 tests, 4 workers locally and 2 in CI,
 one retry in CI, traces kept on failure.
 
 ```bash

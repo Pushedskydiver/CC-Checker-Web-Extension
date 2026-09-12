@@ -134,8 +134,8 @@ baseline signal. It is a real signal — about the tests that exist.
 **What happened here.** Until 4 September 2026 there were no tests at all. "The tests pass" was true
 the way "no alarm fired" is true in a building with no alarm: the comparator bug, the NaN hue, the
 range-input `min`, the `all_frames` injection, the live picker listeners after `closeChecker` and
-the double-handled `colorPicked` all sat under that green. The suite that now exists — 18 Playwright
-tests in `test/e2e/extension.spec.ts`, all passing that day in about seven seconds — was written
+the double-handled `colorPicked` all sat under that green. The suite written in response — 18 Playwright tests in
+`test/e2e/extension.spec.ts` that day, all passing in about seven seconds — came
 _after_ the bugs had been found by hand, and is evidence only about the behaviours it encodes.
 
 **What to do instead.** Say what the suite covers, not that it passes; `docs/TESTING.md` §What is

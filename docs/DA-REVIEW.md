@@ -414,9 +414,11 @@ load time, and the store does at upload.
       `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session GUID —
       `docs/ARCHITECTURE.md` §Deliberately not changed), and a host page can revoke the async API
       anyway. The suite asserts what the share button puts on the clipboard, by reading it back
-      from the host page after a real click (12 September 2026). What it still does not cover is
-      the failure path — a host page refusing the copy command — which is why the guard on
-      `copy()`'s return value in `copy-cta.tsx` has no test.
+      from the host page after a real click, and asserts that a refused copy announces nothing,
+      by stubbing `document.execCommand` (both 12 September 2026). The guard on `copy()`'s return
+      value in `copy-cta.tsx` annotates its result as `boolean` on purpose: `copy-to-clipboard` 4.x
+      returns a promise, on which the guard would be a no-op — do not inline it back into the
+      `if`.
 - [ ] Prop types are `T`-prefixed, components `React.FC<TName>`, cross-directory imports via `~/`,
       `React.RefObject` not `React.MutableRefObject`.
 

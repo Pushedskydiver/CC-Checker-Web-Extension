@@ -287,6 +287,16 @@ security bump that would need the major. Re-entry: when both
 `npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint` print a range
 with `^10`, drop the ignore and take the bump.
 
+**`copy-to-clipboard` majors are not delegable.** It became a direct production dependency on
+12 September 2026 and sits in the weekly `production-dependencies` group, so 4.x will be offered.
+In 4.x `copy()` returns `Promise<boolean>`, its `window.prompt` fallback defaults off, and it tries
+`navigator.clipboard` first — which is blocked in this iframe. Taking it needs
+`await copy(value, { fallbackToPrompt: true })` and a re-read of the guard in
+`src/components/01-atoms/copy-cta/copy-cta.tsx`. There is deliberately no `ignore` entry: the
+result is annotated `boolean` there, so the bump fails `lint:ts` with `TS2322` and the PR goes red
+rather than being merged as a green one under [Who merges](#who-merges). Verified 12 September 2026
+by pointing the type declaration at a promise-returning signature.
+
 **PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
 rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on
 11 September 2026 once #28 had landed.
