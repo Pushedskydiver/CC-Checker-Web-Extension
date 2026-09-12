@@ -149,7 +149,8 @@ against ground truth. Buckets — straddles are fine:
   subresources to the static origin (verified 4 September 2026 — unlisted favicons loaded with
   HTTP 200); what `postcss-sort-media-queries` does with a comparator returning NaN (a silent no-op,
   verified the same day); whether `document.execCommand('copy')` works in a cross-origin iframe
-  without `allow="clipboard-write"` (it does — why `react-copy-to-clipboard` stays). Verify against
+  without `allow="clipboard-write"` (it does — which is why the copy path is `execCommand`, whatever
+  wraps it). Verify against
   documentation or an observation, never a restatement.
 - **Structural claim** — the layout tree in `README.md`, the message table in this file.
 - **Loaded-extension claim** — anything about the running extension the e2e suite does not cover:
@@ -408,11 +409,14 @@ load time, and the store does at upload.
       Skip-link targets carry `tabIndex={-1}`.
 - [ ] Every new visual element has its poor-contrast variant (`isPoorContrast` with
       `isBackgroundDark`), or the reviewer can say why not.
-- [ ] `react-copy-to-clipboard` stays: `navigator.clipboard.writeText` is blocked in this iframe
-      with or without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a
-      per-session GUID — `docs/ARCHITECTURE.md` §Deliberately not changed). The suite does not
-      assert clipboard contents, though it can: a read-back worked on macOS and in a Linux
-      container, 12 September 2026.
+- [ ] Copying still goes through `document.execCommand('copy')`:
+      `navigator.clipboard.writeText` is blocked in this iframe with or without
+      `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session GUID —
+      `docs/ARCHITECTURE.md` §Deliberately not changed), and a host page can revoke the async API
+      anyway. The suite does not assert clipboard contents, though it can: a host-page read-back
+      after a real click returned the expected string on macOS, 12 September 2026, reproduced twice
+      independently. The same check inside a Linux container passed once, in one agent's run, and
+      has not been reproduced — treat Linux as unproven until a PR's own CI run shows it.
 - [ ] Prop types are `T`-prefixed, components `React.FC<TName>`, cross-directory imports via `~/`,
       `React.RefObject` not `React.MutableRefObject`.
 

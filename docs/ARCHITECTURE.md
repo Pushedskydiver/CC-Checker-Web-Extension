@@ -29,9 +29,10 @@ follows from that:
    `navigator.clipboard.writeText` is blocked inside the iframe with or without
    `allow="clipboard-write"`, because a bare feature name delegates the permission to the frame's
    `src` origin and `use_dynamic_url: true` makes that a per-session GUID that never matches the
-   static origin the document loads with. `react-copy-to-clipboard` is kept on purpose: its
-   `document.execCommand('copy')` path works there. What a swap to the async API would actually
-   require, and why it could only ever be an enhancement, is under
+   static origin the document loads with. `document.execCommand('copy')` does work there, which is
+   why the copy buttons go through it; `react-copy-to-clipboard` is only the wrapper around that
+   call, and CC-004 PR 4 replaces the wrapper without touching this constraint. What a swap to the
+   async API would actually require, and why it could only ever be an enhancement, is under
    [§Deliberately not changed](#deliberately-not-changed-and-what-was-not-ported).
 4. **The panel is 475px tall, always.** `IFRAME_HEIGHT` in `content.js` fixes the iframe height and
    pads the host `body` by the same amount so nothing on the page is hidden underneath. The app inside
@@ -369,10 +370,12 @@ Add-ons. Firefox is not a target and nothing has been checked against it.
 
 Kept on purpose during the Vite migration, each with the condition that would reopen it:
 
-- `react-copy-to-clipboard` — kept because `document.execCommand('copy')` works in this cross-origin
-  iframe and the async API does not. ~~Until the iframe is created with `allow="clipboard-write"` and
-  the async clipboard API is verified in a real cross-origin frame.~~ That condition could never be
-  met, corrected 12 September 2026 after measuring five iframe variants against the repo's own
+- `document.execCommand('copy')` rather than `navigator.clipboard.writeText` — kept because the
+  synchronous path works in this cross-origin iframe and the async one does not. Until
+  12 September 2026 this bullet gave the re-entry condition as "the iframe is created with
+  `allow="clipboard-write"` and the async clipboard API is verified in a real cross-origin frame".
+  That could never be met, and the correction is below rather than struck through because this is a
+  rule document, not a handoff surface. Measured across five iframe variants against the repo's own
   fixtures: a bare `allow="clipboard-write"` left `featurePolicy.allowsFeature('clipboard-write')`
   false and `writeText` throwing `NotAllowedError`, identical to shipping no attribute at all, for
   the `use_dynamic_url` reason in §The one decision everything follows from. Removing
