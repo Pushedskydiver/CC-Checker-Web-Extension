@@ -6,14 +6,17 @@ Living state document — current state, what's next. Session-by-session detail 
 ## Next workstreams (after Session 5)
 
 Updated 12 September 2026, end of Session 5 — **CC-004 is under way: the brief below has been grilled, Alex
-approved an ordered twelve-item plan, and PRs 1 to 3 have merged** (`8ac0bdc`, `83dec25`, `e62b069`). 2.1.0 is still with the
-store for review; users run 2.0.1.
+approved an ordered twelve-item plan, and PRs 1 to 4 have merged** (`8ac0bdc`, `83dec25`, `e62b069`,
+`9156ff2`). **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
+`40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1, 2 and 3 merged; PR 4 open. Resume at PR 5, the `React.FC` documentation
+   plan below. PRs 1 to 4 merged, no branch open. Resume at PR 5, the `React.FC` documentation
    decision, which has no dependency. One PR at a time, `da-review` on every `src/**` change, both
    reviews wherever the `CLAUDE.md` trigger table says so, the e2e suite as the gate.
-2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here.
+2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
+   submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
+   anyone watching. Users are on it. Nothing further; the next release repeats `docs/GIT.md` §Releases.
 3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
    it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a ten-file
    documentation sweep with it.
@@ -49,7 +52,8 @@ Facts, not impressions — re-measure before acting; the commands are one-liners
   `updateView`), and bridges `chrome.runtime.onMessage`. Candidates: a pure colour model (a reducer, or
   `useSyncExternalStore` over a tiny store) with persistence and the message bridge as separate hooks; a typed
   action API instead of `handleContrastCheck(value, name: string)` dispatching on `'background' | 'foreground'`.
-- **One pattern is copied 16 times across 12 files:** `isPoorContrast && !isBackgroundDark ? styles.xDark :
+- ~~**One pattern is copied 16 times across 12 files:**~~ 15 times across 12 files as of PR 3, which
+  deleted one with `LinkButton`. `isPoorContrast && !isBackgroundDark ? styles.xDark :
 undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` under `src/`). Two structural
   fixes to weigh: a `useThemeClass(styles)` hook, or — probably better — the provider sets
   `data-contrast="poor"` / `data-scheme="dark"` on `document.body` once and the CSS modules select on them,
@@ -61,7 +65,7 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   enable it, then measure — bundle size (`build/assets/index-*.js`, 259.74 kB before), e2e 18/18, and a
   before/after render count on the slider path if it is worth the instrumentation. A compiler that changes
   nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
-- **`React.FC` in 25 files** — `docs/CONVENTIONS.md` §Components currently mandates it. Decide once: keep, or
+- **`React.FC` in 25 files** — `docs/CONVENTIONS.md` §TypeScript and React currently mandates it. Decide once: keep, or
   move to plain typed functions (the React docs' current default). A convention change is a doc PR first.
 - **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
   `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
@@ -99,7 +103,8 @@ manifest or permission change.
 Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `CLAUDE.md` trigger
 fires, not a record — "both" means `da-review` and `copilot-surrogate`, and a PR that crosses 200 changed
 lines fires both whatever its paths. Row 2 is the worked example: predicted surrogate-only, it came to 232
-lines and fired both. Row 10 is one concern in two PRs, so the plan is twelve numbered items in thirteen
+lines and fired both — 232 at the time that was measured, 305 by the time it merged. Row 10 is one concern
+in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
 | #   | PR                                                                                  | Reviews   | After |
@@ -107,9 +112,9 @@ pull requests.
 | 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both      | —     |
 | 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)      | both      | —     |
 | 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)     | da-review | —     |
-| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e (open)  | both      | 2     |
+| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)    | both      | 2     |
 | 5   | Replace the `React.FC` rule with plain typed functions (docs)                       | surrogate | —     |
-| 6   | Convert 32 signatures in 25 files + the three drift renames                         | da-review | 5     |
+| 6   | Convert 31 signatures in 25 files + the three drift renames                         | da-review | 5     |
 | 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep | both      | —     |
 | 8   | Extract the hex-input parser to `src/utils/`, with tests                            | da-review | 7     |
 | 9   | Pin the poor-contrast colour switch with a test that can actually fail              | both      | —     |
@@ -177,7 +182,7 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
 
-## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, first PR)
+## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
 
 **Model choice first, at Alex's request** — he asked for a recommendation with "strong, real evidence" before
 any agent was spun up. Settled on **Opus 5 at effort `high`, ultracode off**, with the three adversarial
@@ -197,9 +202,13 @@ agents on Opus 5 — one on the build-harness claims, one on the clipboard claim
 were settled by the coordinator inline with `grep`, `diff` and `node`. That inline half is
 self-verification, which `docs/DEVELOPMENT.md` §Verification rounds is explicit is not the same thing as an
 independent check; it is recorded as what happened rather than counted as a round. The two agents plus the
-`da-review` and `copilot-surrogate` passes on PRs 1 and 2 are the independent evidence. **PR 1 merged** (#42,
-`8ac0bdc`) — the build-error masking fix, found during the grill rather than in the brief. PR 2, the clipboard
-documentation correction, is in flight.
+`da-review` and `copilot-surrogate` passes on every PR are the independent evidence.
+
+**All four PRs merged the same day**, each through the full gate (architectural → DA → self → PR) with both
+reviews wherever the trigger table said so: #42 `8ac0bdc` the build-error masking fix, #43 `83dec25` the
+clipboard route correction and this plan, #44 `e62b069` the dead exports, #45 `9156ff2` the failed-copy
+announcement. Three of the four fixed defects **the brief did not know about**; only #44 came from it.
+Across the session the review passes falsified **fourteen** claims of mine, nine of them in #43 alone.
 
 **Two of the six approval questions were either/ors that "yes to all six" could not settle, so they were
 decided and stated rather than left ambiguous:** the pre-push suite becomes **four commands with the unit
@@ -213,7 +222,7 @@ not part of CC-004, since nothing here depends on it.
 1. **The brief's own proof claim was false, and it changed the order of work.** It asserted "the e2e suite
    already covers the visible outcome" of the poor-contrast switch. It does not: there is no assertion
    anywhere in the suite on a variant class or any control's resolved colour, so by inspection all sixteen
-   branches could be deleted with the suite still green. The control — delete one branch, watch a test go
+   branches (fifteen since PR 3) could be deleted with the suite still green. The control — delete one branch, watch a test go
    red — was **not** run, because there is no test to redden; that absence is the finding. The refactor's first PR is therefore a failing test, not the refactor.
    A brief that cites coverage is not evidence of coverage — read the assertions.
 2. **The repo already held the fact that killed the documented clipboard route, two documents away.**
@@ -232,10 +241,26 @@ not part of CC-004, since nothing here depends on it.
    `docs/SELF-REVIEW.md` §Before you write the word verified failing to hold, and the cause is the weak form
    itself: every commit body on this branch asserts the suite without pasting what it printed. The fix is
    mechanical — run the chain, paste its last lines, then write the sentence.
-5. **A review finding was disproved with evidence rather than accepted.** The DA pass suggested tightening
-   the new build guard against a nested `ENOENT` mid-walk; a probe showed a subtree deleted during a
-   recursive read does not throw at all, so the extra condition would have been validation for a scenario
-   that cannot happen. Deferred with the probe recorded, not silently dropped.
+5. **A review finding can be disproved, and that needs a probe too.** The DA pass wanted the new build
+   guard tightened against a case a probe then showed cannot happen. Deferring a finding is a claim like any
+   other: it carries evidence or it is a dismissal. (Event, PR #42; the rule is the second sentence.)
+6. **Promoting a transitive dependency to a direct one exposed a major that would have silently undone
+   the fix it shipped with — through a PR Claude is delegated to merge.** `copy-to-clipboard` was already
+   in the lockfile under the React wrapper; making it direct put it in the weekly
+   `production-dependencies` group, where its 4.x would have made the new guard a no-op and silenced the
+   failure path with it. The DA pass swapped 4.0.2 in and **every gate stayed green**, which under
+   `docs/GIT.md` §Who merges makes it auto-mergeable. Mechanism, the type-annotation gate and what taking
+   the major would need are in `docs/GIT.md` §Dependabot. **Generalise: when a dependency moves from
+   transitive to direct, ask what its next major does to the code that now calls it directly.**
+7. **A stale test run under-reported the count and it reached six files.** A full run printed `19 passed`
+   immediately after a rebuild when `--list` said 20. The number went into a documentation sweep before
+   anyone re-derived it. Counts come from `npx playwright test --list` and `grep -c "^\ttest("`, which
+   agree with each other, not from the tail of a run.
+8. **Stage by path while review agents are running.** The surrogate pass saw
+   `test/e2e/zz-scratch.spec.ts` in the working tree mid-run — the DA pass's own reproduction, removed
+   moments later. It was never committed, and git records no staging command so whether a broad `git add`
+   would have caught it is not provable after the fact; the habit is the finding. Check
+   `git status --untracked-files=all` before staging.
 
 ## Session 4 — 11 September 2026 (release)
 
@@ -346,35 +371,42 @@ copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVE
 **Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
 from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-### Session 6 loading instructions
+## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **First, establish which PRs landed.** PRs 1 to 3 merged on 12 September 2026; PR 4 was opened
-   from `fix/CC-004-failed-copy-announced` and had not merged when this was written, so the resume
-   point below assumes it did. Run `git status --short` (expect clean),
-   `git log --oneline -5 origin/main`, and `gh pr list`; if PR 4 is still open, finishing it is the
-   first action. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one
-   exception now written down there, `copy-to-clipboard` majors.
-3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
+2. **Archive Session 1 before writing anything.** Neither trigger in `docs/DEVELOPMENT.md` §Session
+   handoff had fired at this handoff: five session entries against "more than five", and roughly 4.5k
+   tokens of detail band inside a 9k file against "past roughly 10k". Adding a Session 6 entry makes six,
+   which does fire it. Compress Session 1 to a one-line row in `docs/history/SESSIONS.md`, which is still
+   empty. Count entries with `grep -c '^## Session [0-9]'` — this block is deliberately not named
+   `## Session …` so it does not inflate that count, and it sits outside the session entries so
+   compressing one cannot take it.
+3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
+   (expect `9156ff2` or later), `gh pr list` (expected empty — PRs 1 to 4 all merged 12 September 2026
+   and their branches are deleted; only `main` and the untouched `feat/CC-003-apca-3` remain on the
+   remote). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
+   written down under `docs/GIT.md` §Dependabot, `copy-to-clipboard` majors, which must go red on
+   `lint:ts` and must not be merged without re-reading the guard in `copy-cta.tsx`.
+4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 20 passing tests until PR 7 adds unit tests and a fourth command.
-4. **Resume at PR 5 of the approved plan**, the `React.FC` documentation decision, which has no
+5. **Resume at PR 5 of the approved plan**, the `React.FC` documentation decision, which has no
    dependency — one PR at a time, cutting the branch as the literal first action.
    The plan is already approved: do not re-grill it, and do not reorder it without saying why.
-5. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
+6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1, at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out).
    **Set these at the start of the session — they are not configured.** `~/.claude/settings.json` still
    carries `"effortLevel": "xhigh"` globally and no repo-level settings file exists, so Session 5's choice
    was session-scoped and does not carry over. Settle what a shell command can settle before spending an
    agent.
-6. Decision branches carried in: **(a)** the decision is that the **pre-push suite** gains a fourth
+7. Decision branches carried in: **(a)** the decision is that the **pre-push suite** gains a fourth
    command, `test:unit`, running second — _not_ that the unit tests hide inside `npm test`, which is what it
    rejected; open only in that Alex may revisit it once he sees the ten-file documentation sweep PR 7
    carries. Note PR #42's merged body calls that PR "PR 8" — it was renumbered to 7 when the plan was
    written down, and the plan is the authority; **(b)** whether workstream 5, the sibling's three
-   missing fixes, starts before or after CC-004 finishes; **(c)** whether the store has published 2.1.0 — read
-   the public listing, do not assume it (`docs/GIT.md` §Releases has the URL).
+   missing fixes, starts before or after CC-004 finishes; ~~**(c)** whether the store has published 2.1.0~~ — settled 12 September 2026, it has. Read the
+   public listing rather than assuming, next time too (`docs/GIT.md` §Releases has the URL).
 
 ## Session archive
 
