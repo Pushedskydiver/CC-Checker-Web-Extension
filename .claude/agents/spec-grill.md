@@ -79,8 +79,8 @@ a generic checklist.
 - **What signal proves this worked in a real Chrome, and would its absence be visible?** The
   e2e suite proves the built extension loads in headless Chromium and the content script → service
   worker → iframe flow works, with the eyedropper under a _patched_ manifest. It does not cover a
-  real toolbar click and its `activeTab` grant, the `error.html` popup, an incognito window, what
-  lands on the clipboard, the Web Store package, or Safari. If the spec's proof is "the tests
+  real toolbar click and its `activeTab` grant, the `error.html` popup, an incognito window, the
+  clipboard's failure path, the Web Store package, or Safari. If the spec's proof is "the tests
   pass", ask which of those it is silent on and whether the design has a loaded-unpacked step, with
   a named observer, for each.
 - **Does it need a permission or a gesture the harness cannot grant?** `captureVisibleTab` is legal

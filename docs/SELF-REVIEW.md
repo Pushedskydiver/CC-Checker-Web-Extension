@@ -68,8 +68,9 @@ Applies to commit messages, PR bodies, code comments, `PROGRESS.md` entries and 
       script → service worker → iframe flow works, including the eyedropper under the patched manifest;
     - **loaded unpacked** (`npm run build` → chrome://extensions → Developer mode → Load unpacked →
       `build/`) — the only way to exercise a real toolbar click, the `activeTab` grant, the
-      `error.html` popup, an incognito window, or what actually lands on the clipboard. The suite
-      cannot do any of these; say which one you did by hand, or that you did not.
+      `error.html` popup, or an incognito window. The suite cannot do any of these; say which one
+      you did by hand, or that you did not. It _can_ read the clipboard back, and does for the
+      share button since 12 September 2026.
 - A green build on the author's Mac is not a Linux checkout. On 4 September 2026 `npm run build` and
   `tsc` were green locally while the Git index still tracked `01-Atoms/`, `02-Molecules/`, `Icon/`,
   `Ratio/` and `Header/` against lowercase imports; a case-sensitive clone produced

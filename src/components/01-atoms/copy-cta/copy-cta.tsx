@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import copy from 'copy-to-clipboard';
 
 import { useColourContrast } from '~/context';
 import { ActionCta } from '../action-cta/action-cta';
@@ -40,6 +40,29 @@ export const CopyCta: React.FC<TCopyCta> = ({
 	}, []);
 
 	const handleCopy = (): void => {
+		// Announcing when the copy failed would put the confirmation into the
+		// `role="status"` region below while nothing reached the clipboard. That is
+		// what shipped until 12 September 2026: `react-copy-to-clipboard` called
+		// `onCopy(text, result)` whatever `result` was, and this handler took no
+		// arguments, so a failed copy still announced "URL added to clipboard" to a
+		// screen reader. `copy` returns false when `document.execCommand('copy')`
+		// is refused — an enterprise clipboard policy, or a browser that does not
+		// implement it, which is a live question for the Safari port. Not
+		// `Permissions-Policy`: that governs `navigator.clipboard`, and the
+		// `execCommand` path works in this iframe with no `allow` attribute at all
+		// (`docs/ARCHITECTURE.md` §Deliberately not changed).
+		//
+		// `copied` is annotated rather than inlined into the `if`, and the
+		// annotation is the gate. `copy-to-clipboard` 4.x returns
+		// `Promise<boolean>`, on which `!copy(value)` is always false — the guard
+		// would vanish silently, and since 4.x also defaults its `window.prompt`
+		// fallback off, the failure path would go silent with it. The annotation
+		// turns that major bump into a `TS2322` in `lint:ts` instead
+		// (`docs/GIT.md` §Dependabot).
+		const copied: boolean = copy(value);
+
+		if (!copied) return;
+
 		if (resetTimer.current) clearTimeout(resetTimer.current);
 
 		setCopied(true);
@@ -71,19 +94,14 @@ export const CopyCta: React.FC<TCopyCta> = ({
 				{copied ? copiedText : ''}
 			</Text>
 
-			<CopyToClipboard text={value} onCopy={handleCopy}>
-				<ActionCta
-					label={copyText}
-					icon={
-						icon === 'clipboard' ? (
-							<Clipboard size={20} />
-						) : (
-							<Share />
-						)
-					}
-					withBackground={withBackground}
-				/>
-			</CopyToClipboard>
+			<ActionCta
+				label={copyText}
+				onClick={handleCopy}
+				icon={
+					icon === 'clipboard' ? <Clipboard size={20} /> : <Share />
+				}
+				withBackground={withBackground}
+			/>
 		</span>
 	);
 };

@@ -205,13 +205,13 @@ confirming.
 `PULL_REQUEST_TEMPLATE.md` at the repo root (GitHub honours root, `docs/` or `.github/`) pre-fills
 five headings. What each one wants here:
 
-| Heading                                     | Answer with                                                                                                                                                                                                                    |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                            |
-| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, clipboard contents and the store package are outside the suite (`docs/TESTING.md`).     |
-| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                  |
-| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                       |
-| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)). |
+| Heading                                     | Answer with                                                                                                                                                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                  |
+| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, the clipboard's failure path and the store package are outside the suite (`docs/TESTING.md`). |
+| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                        |
+| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                             |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).       |
 
 ### Labels
 
@@ -286,6 +286,16 @@ reports first, the same one hit on 4 September; react is the one behind it). The
 security bump that would need the major. Re-entry: when both
 `npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint` print a range
 with `^10`, drop the ignore and take the bump.
+
+**`copy-to-clipboard` majors are not delegable.** It became a direct production dependency on
+12 September 2026 and sits in the weekly `production-dependencies` group, so 4.x will be offered.
+In 4.x `copy()` returns `Promise<boolean>`, its `window.prompt` fallback defaults off, and it tries
+`navigator.clipboard` first — which is blocked in this iframe. Taking it needs
+`await copy(value, { fallbackToPrompt: true })` and a re-read of the guard in
+`src/components/01-atoms/copy-cta/copy-cta.tsx`. There is deliberately no `ignore` entry: the
+result is annotated `boolean` there, so the bump fails `lint:ts` with `TS2322` and the PR goes red
+rather than being merged as a green one under [Who merges](#who-merges). Verified 12 September 2026
+by pointing the type declaration at a promise-returning signature.
 
 **PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
 rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on

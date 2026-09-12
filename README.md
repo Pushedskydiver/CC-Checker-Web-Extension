@@ -86,7 +86,8 @@ in about seven seconds. The eyedropper tests run against a copy of the manifest 
 toolbar click that Playwright cannot perform.
 
 What it does not prove: a real toolbar click and `activeTab` grant, the error popup as a popup,
-incognito, what actually lands on the clipboard, the zip that goes to the Web Store, or anything
+incognito, what happens when a page refuses the copy command, the zip that goes to the Web Store, or
+anything
 about Safari. There are no unit tests; the pure colour utilities in `src/utils/color-utils.ts` are
 the first candidates. Fixtures, the patched-manifest option, and how to add a test are in
 [docs/TESTING.md](docs/TESTING.md).

@@ -44,7 +44,7 @@ runner and no dev server: the app needs `chrome.*` APIs, so it only runs loaded 
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `npm run lint`     | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass | ~4s            |
 | `npm run build`    | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                   | under 1s       |
-| `npm run test:e2e` | the built extension loads in headless Chromium and the 18 Playwright tests in `test/e2e/` pass, eyedropper included                           | ~7s, 4 workers |
+| `npm run test:e2e` | the built extension loads in headless Chromium and the 20 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included             | ~8s, 4 workers |
 | `npm test`         | `build` then `test:e2e` — use it when unsure the build is fresh                                                                               | ~8s            |
 | `npm run watch`    | rebuilds `build/` on save for manual testing                                                                                                  | continuous     |
 | `npm run package`  | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                  | seconds        |
@@ -59,10 +59,11 @@ Playwright's Chromium is installed once per machine, and again after a `@playwri
 build changes with the package): `npx playwright install chromium`. Prettier
 takes its config from `.editorconfig`; there is no `.prettierrc`.
 
-**What the e2e suite does not cover**, so nobody mistakes 18 green tests for a tested release: a
+**What the e2e suite does not cover**, so nobody mistakes 20 green tests for a tested release: a
 real toolbar click and the `activeTab` grant behind it (the picker tests run a manifest copy with
 `host_permissions: ["<all_urls>"]` because Playwright cannot click the toolbar), the error popup,
-incognito, clipboard contents, the Web Store package, and Safari. Those are checked by hand:
+incognito, the clipboard's failure path, the Web Store package, and Safari — the share button's
+clipboard value is asserted as of 12 September 2026. Those are checked by hand:
 
 ```bash
 npm run build

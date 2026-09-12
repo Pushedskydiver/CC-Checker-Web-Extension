@@ -30,8 +30,8 @@ follows from that:
    `allow="clipboard-write"`, because a bare feature name delegates the permission to the frame's
    `src` origin and `use_dynamic_url: true` makes that a per-session GUID that never matches the
    static origin the document loads with. `document.execCommand('copy')` does work there, which is
-   why the copy buttons go through it; `react-copy-to-clipboard` is only the wrapper around that
-   call, and CC-004 PR 4 replaces the wrapper without touching this constraint. What a swap to the
+   why the copy buttons go through it, calling `copy-to-clipboard` directly since 12 September 2026.
+   What a swap to the
    async API would actually require, and why it could only ever be an enhancement, is under
    [§Deliberately not changed](#deliberately-not-changed-and-what-was-not-ported).
 4. **The panel is 475px tall, always.** `IFRAME_HEIGHT` in `content.js` fixes the iframe height and
@@ -313,7 +313,7 @@ build/
 ## Testing seam
 
 The only automated tests are Playwright end-to-end tests in `test/e2e/` (`fixtures.ts`,
-`extension.spec.ts`), configured by `playwright.config.ts`: 18 tests, 4 workers locally and 2 in CI,
+`extension.spec.ts`), configured by `playwright.config.ts`: 20 tests, 4 workers locally and 2 in CI,
 one retry in CI, traces kept on failure.
 
 ```bash
@@ -343,7 +343,8 @@ npx playwright install chromium     # once per machine, and again after a @playw
   the suite, which is the point. `setRange` drives React-controlled range inputs through the native
   value setter plus an `input` event, the way a user would.
 - **Not covered:** a real toolbar click and `activeTab` grant, the error popup UI, incognito windows,
-  clipboard contents, the Web Store package, Safari.
+  the clipboard's failure path (a host page revoking the copy command), the Web Store package,
+  Safari. The share button's clipboard value _is_ asserted, since 12 September 2026.
 
 ## Safari and other browsers
 

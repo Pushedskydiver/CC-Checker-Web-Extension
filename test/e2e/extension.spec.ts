@@ -256,6 +256,70 @@ test.describe('app', () => {
 		).toBeVisible();
 	});
 
+	test('the share button puts the share URL on the real clipboard', async ({
+		context,
+		page,
+		openChecker,
+		serverUrl,
+	}) => {
+		// The grant goes on the host page, not the panel: `grantPermissions`
+		// rejects an opaque `chrome-extension://` origin, and the read-back happens
+		// on the host anyway.
+		await context.grantPermissions(['clipboard-read', 'clipboard-write'], {
+			origin: serverUrl,
+		});
+
+		const frame = await openChecker();
+
+		await frame.getByRole('button', { name: 'Generate share URL' }).click();
+
+		await expect(
+			frame
+				.getByRole('status')
+				.filter({ hasText: 'URL added to clipboard' }),
+		).toBeVisible();
+
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+			'https://colourcontrast.cc/?background=ffe66d&foreground=222222',
+		);
+	});
+
+	test('a refused copy announces nothing', async ({ page, openChecker }) => {
+		// The failure path: `copy-to-clipboard` falls back to `window.prompt` when
+		// the copy command is refused, then returns false. Playwright auto-dismisses
+		// dialogs, but the handler is explicit so the prompt is part of the record.
+		const dialogs: string[] = [];
+		page.on('dialog', (dialog) => {
+			dialogs.push(dialog.type());
+			// `.catch` rather than `void`: if the dialog is still open when the
+			// context tears down, the rejection surfaces as an error outside any
+			// test rather than a failure. Seen once in ten runs before this.
+			dialog.dismiss().catch(() => undefined);
+		});
+
+		const frame = await openChecker();
+
+		// The only way in: no-user-activation still copies successfully in this
+		// Chromium, so refusal has to come from the command itself.
+		await frame.evaluate(() => {
+			document.execCommand = () => false;
+		});
+
+		await frame.getByRole('button', { name: 'Generate share URL' }).click();
+
+		expect(dialogs).toEqual(['prompt']);
+
+		// Read the attribute rather than the role: the tooltip is hidden when empty,
+		// so `getByRole('status')` cannot see it and would pass vacuously.
+		expect(
+			await frame.evaluate(() =>
+				[...document.querySelectorAll('[role="status"]')].map(
+					(node) => node.textContent ?? '',
+				),
+			),
+		).toEqual(['', '', '']);
+	});
+
 	test('skip links target real, focusable ids', async ({ openChecker }) => {
 		const frame = await openChecker();
 		const targets = await frame.evaluate(() =>
