@@ -19,6 +19,26 @@ const stripDotfiles = (): Plugin => ({
 		const entries = await readdir(outDir, {
 			withFileTypes: true,
 			recursive: true,
+		}).catch((error: NodeJS.ErrnoException) => {
+			// `closeBundle` runs even when the build failed before emitting anything,
+			// and rolldown then reports this hook's throw as the only error. On
+			// 12 September 2026 an unresolvable import in `src/app.tsx` printed
+			// nothing but `ENOENT: ... scandir 'build'` on a tree with no `build/`
+			// (a fresh clone, or after `rm -rf build`); with `build/` present the
+			// same tree named the file, line and column.
+			//
+			// Not replaceable by the hook's own `error` argument, which rolldown
+			// types as `(this, error?: Error)`: on a failed build Vite 8.2.2 calls
+			// `closeBundle` twice, once with that error and once without, so
+			// `if (error) return` would still read a missing `build/` on the second
+			// call and re-create the mask (probed 12 September 2026; a successful
+			// build calls it once, without).
+			//
+			// Only a missing outDir is ignorable — anything else still has to
+			// surface, or this becomes the defect it fixes.
+			if (error.code !== 'ENOENT') throw error;
+
+			return [];
 		});
 
 		await Promise.all(
