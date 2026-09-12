@@ -19,6 +19,17 @@ const stripDotfiles = (): Plugin => ({
 		const entries = await readdir(outDir, {
 			withFileTypes: true,
 			recursive: true,
+		}).catch((error: NodeJS.ErrnoException) => {
+			// `closeBundle` runs even when the build failed before emitting anything,
+			// and rolldown then reports this hook's throw as the only error. On
+			// 12 September 2026 an unresolvable import in `src/app.tsx` printed
+			// nothing but `ENOENT: ... scandir 'build'` on a tree with no `build/`
+			// (a fresh clone, or after `rm -rf build`); with `build/` present the
+			// same tree named the file and column. Only a missing outDir is
+			// ignorable — anything else still has to surface.
+			if (error.code !== 'ENOENT') throw error;
+
+			return [];
 		});
 
 		await Promise.all(
