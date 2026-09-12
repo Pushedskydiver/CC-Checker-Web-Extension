@@ -371,15 +371,17 @@ copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVE
 **Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
 from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-## Session 6 loading instructions
+## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Archive Session 1 before writing anything.** At this handoff the detail band held exactly five
-   session entries and about 8.9k tokens for the whole file, of which the detail band is roughly half —
-   under both triggers — but a Session 6 entry makes six, which
-   is over the five-entry trigger in `docs/DEVELOPMENT.md` §Session handoff. Compress Session 1 to a
-   one-line row in `docs/history/SESSIONS.md`, which is still empty.
+2. **Archive Session 1 before writing anything.** Neither trigger in `docs/DEVELOPMENT.md` §Session
+   handoff had fired at this handoff: five session entries against "more than five", and roughly 4.5k
+   tokens of detail band inside a 9k file against "past roughly 10k". Adding a Session 6 entry makes six,
+   which does fire it. Compress Session 1 to a one-line row in `docs/history/SESSIONS.md`, which is still
+   empty. Count entries with `grep -c '^## Session [0-9]'` — this block is deliberately not named
+   `## Session …` so it does not inflate that count, and it sits outside the session entries so
+   compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `9156ff2` or later), `gh pr list` (expected empty — PRs 1 to 4 all merged 12 September 2026
    and their branches are deleted; only `main` and the untouched `feat/CC-003-apca-3` remain on the
