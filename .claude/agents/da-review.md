@@ -125,8 +125,8 @@ authoritative; this list is what to look for while walking the diff. Every incid
   an `eslint-disable` on a `react-hooks` rule, is the same shape again.
 - **Has this been observed working, or does it merely exist?** A pass under the e2e `patched`
   fixture proves the picker pipeline, not the `activeTab` grant. The suite
-  does not cover a real toolbar click, the error popup UI, incognito, clipboard contents, the Web
-  Store package or Safari. A claim of the form "this now covers X" needs the command and what it
+  does not cover a real toolbar click, the error popup UI, incognito, the clipboard's failure path,
+  the Web Store package or Safari. A claim of the form "this now covers X" needs the command and what it
   printed — `18 passed` on 4 September 2026 — or a dated loaded-unpacked observation behind it.
 - **Merged ≠ published.** Nothing reaches users until Alex runs `npm run package` and uploads the
   zip; the store rejects a version not greater than the published one, and the published version

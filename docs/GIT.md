@@ -205,13 +205,13 @@ confirming.
 `PULL_REQUEST_TEMPLATE.md` at the repo root (GitHub honours root, `docs/` or `.github/`) pre-fills
 five headings. What each one wants here:
 
-| Heading                                     | Answer with                                                                                                                                                                                                                    |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                            |
-| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, clipboard contents and the store package are outside the suite (`docs/TESTING.md`).     |
-| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                  |
-| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                       |
-| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)). |
+| Heading                                     | Answer with                                                                                                                                                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                  |
+| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, the clipboard's failure path and the store package are outside the suite (`docs/TESTING.md`). |
+| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                        |
+| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                             |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).       |
 
 ### Labels
 

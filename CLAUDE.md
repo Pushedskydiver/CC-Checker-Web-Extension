@@ -16,7 +16,7 @@ npx playwright install chromium   # once per machine, and again after a @playwri
 npm run build                     # vite build → build/ (one JS + one CSS file, dotfiles stripped)
 npm run watch                     # rebuild on save, then reload the page the checker is open on
 npm run lint                      # tsc ×2, eslint, stylelint, prettier --check
-npm run test:e2e                  # 18 Playwright tests against the built extension, ~7s
+npm run test:e2e                  # 19 Playwright tests against the built extension, ~8s
 npm run package                   # build, then zip build/ → cc-checker-<version>.zip for the store
 
 # Pre-push suite (run before every git push — no exceptions)
@@ -95,9 +95,9 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
 - **Copying runs through `document.execCommand('copy')`, and `allow="clipboard-write"` is not a way
   off it.** `navigator.clipboard.writeText` is blocked in this cross-origin iframe with or without
   that attribute, and any host page can revoke the async API even when it is granted. Do not swap to
-  it; keep `execCommand` as the path that works. `react-copy-to-clipboard` is the wrapper around it
-  today and CC-004 PR 4 replaces the wrapper with the `copy-to-clipboard` function it calls — that
-  changes the dependency, not this constraint. Mechanism and measurements:
+  it; keep `execCommand` as the path that works. `copy-to-clipboard` is called directly for it since
+  12 September 2026 — the `react-copy-to-clipboard` wrapper is gone, and with it the last class
+  component. Mechanism and measurements:
   `docs/ARCHITECTURE.md` §Deliberately not changed.
 - **A case-sensitive checkout is the real build target.** The Git index carried `01-Atoms/`, `Icon/`
   and friends while every import was lowercase; macOS hid it and a Linux clone could not build (21

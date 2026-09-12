@@ -129,8 +129,8 @@ against the wrong input; flag it at the same severity. It must carry:
   (`ci.yml` was in the last category until PR #28's run on 11 September 2026).
 
 Claims unverifiable from the laptop must say so. The e2e suite does not cover a real toolbar click
-and its `activeTab` grant, the error popup UI, incognito, clipboard contents, the Web Store package
-or Safari. "Not verified against a real toolbar click" is worth more than a confident sentence.
+and its `activeTab` grant, the error popup UI, incognito, the clipboard's failure path, the Web
+Store package or Safari. "Not verified against a real toolbar click" is worth more than a confident sentence.
 Symmetrically: cite the file and line you read, not your recollection. A fabricated citation costs
 trust in every other finding.
 
@@ -413,10 +413,10 @@ load time, and the store does at upload.
       `navigator.clipboard.writeText` is blocked in this iframe with or without
       `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session GUID —
       `docs/ARCHITECTURE.md` §Deliberately not changed), and a host page can revoke the async API
-      anyway. The suite does not assert clipboard contents, though it can: a host-page read-back
-      after a real click returned the expected string on macOS, 12 September 2026, reproduced twice
-      independently. The same check inside a Linux container passed once, in one agent's run, and
-      has not been reproduced — treat Linux as unproven until a PR's own CI run shows it.
+      anyway. The suite asserts what the share button puts on the clipboard, by reading it back
+      from the host page after a real click (12 September 2026). What it still does not cover is
+      the failure path — a host page refusing the copy command — which is why the guard on
+      `copy()`'s return value in `copy-cta.tsx` has no test.
 - [ ] Prop types are `T`-prefixed, components `React.FC<TName>`, cross-directory imports via `~/`,
       `React.RefObject` not `React.MutableRefObject`.
 

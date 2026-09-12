@@ -309,12 +309,13 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **The e2e suite is the only test.** 18 Playwright tests in `test/e2e/`, loading `build/` into a
+- **The e2e suite is the only test.** 19 Playwright tests in `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content
   script → service worker → iframe flow; the picker tests use the patched-manifest fixture
   (`test.use({ patched: true })`). Not
-  covered: a real toolbar click / `activeTab` grant, the error popup UI, incognito, clipboard
-  contents, the Web Store package, Safari. There are no unit tests; see `docs/TESTING.md`.
+  covered: a real toolbar click / `activeTab` grant, the error popup UI, incognito, the clipboard's
+  failure path, the Web Store package, Safari — though the share button's clipboard value is
+  asserted since 12 September 2026. There are no unit tests; see `docs/TESTING.md`.
 - **`npm test` is build + e2e**; `test:e2e` alone assumes `build/` is current.
 
 ### Verify a gate can fail

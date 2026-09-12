@@ -10,8 +10,9 @@ approved an ordered twelve-item plan, and the first PR has merged** (#42 as `8ac
 store for review; users run 2.0.1.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PR 1 merged; PR 2 in flight. Resume at PR 3. One PR at a time, `da-review` on every `src/**`
-   change, both reviews wherever the `CLAUDE.md` trigger table says so, the e2e suite as the gate.
+   plan below. PRs 1, 2 and 3 merged; PR 4 open. Resume at PR 5, the `React.FC` documentation
+   decision, which has no dependency. One PR at a time, `da-review` on every `src/**` change, both
+   reviews wherever the `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here.
 3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
    it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a ten-file
@@ -79,7 +80,10 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   types — which drops the last class component with no change to `content.js`. That swap also fixes a
   defect found on the way: the wrapper calls `onCopy` whatever the copy returned, so a failed copy is
   announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
-  wanted does work, on macOS and in a Linux container.
+  wanted does work: the suite gained its first clipboard assertion in PR 4 (12 September 2026),
+  green three consecutive local runs on macOS. Whether it holds on `ubuntu-latest` is PR 4's own CI
+  run to establish and is not claimed here. Row 3 of the plan also predicted `da-review` alone and
+  fired both, because the diff crossed 200 lines.
 - **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
   `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
 - **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
@@ -100,9 +104,9 @@ pull requests.
 | #   | PR                                                                                  | Reviews   | After |
 | --- | ----------------------------------------------------------------------------------- | --------- | ----- |
 | 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both      | —     |
-| 2   | Correct the documented route off `react-copy-to-clipboard` (in flight)              | both      | —     |
-| 3   | Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (~58 lines)             | da-review | —     |
-| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e         | both      | 2     |
+| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)      | both      | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)     | both      | —     |
+| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e (open)  | both      | 2     |
 | 5   | Replace the `React.FC` rule with plain typed functions (docs)                       | surrogate | —     |
 | 6   | Convert 32 signatures in 25 files + the three drift renames                         | da-review | 5     |
 | 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep | both      | —     |
@@ -352,7 +356,7 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
    (`docs/GIT.md` §Who merges).
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 18 passing tests until PR 7 adds unit tests and a fourth command.
+   Expect 19 passing tests until PR 7 adds unit tests and a fourth command.
 4. **Resume at PR 3 of the approved plan**, one PR at a time, cutting the branch as the literal first action.
    The plan is already approved: do not re-grill it, and do not reorder it without saying why.
 5. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
