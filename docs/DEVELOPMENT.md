@@ -281,6 +281,16 @@ the thing being verified: here, one finder round and one verification round over
 proportionate, and a verifier per finding is not. When the agents you are about to dispatch
 outnumber the files in `src/`, stop and reproduce by hand instead.
 
+**Cap concurrent review agents at two, and settle by shell first.** On 12 September 2026 four
+verification agents were dispatched at once on the code-quality brief and **all four died on HTTP
+429** — "You've hit your session limit" — before doing any work; the discovery round's findings
+survived only because they had already returned. Same class as the 4 September incident by a
+different mechanism (a rate limit rather than a context budget), which makes it the second instance
+and so the trigger to write the number down. The shape that worked: split the claims into what a
+`grep`, `diff` or `node` one-liner can settle — do those inline — and what genuinely needs a build
+or a browser harness, then spend at most two agents on those. Of the nine claims falsified on that
+workstream, the coordinator settled four at the primary source in single commands.
+
 ---
 
 ## Session handoff

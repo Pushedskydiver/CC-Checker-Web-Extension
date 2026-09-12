@@ -3,21 +3,41 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 4)
+## Next workstreams (after Session 5)
 
-Updated 11 September 2026, end of Session 4 — **the migration is merged and 2.1.0 is with the store for review**
-(`v2.1.0` on `c5da9fc`; #40 merged as `0accd3b`). Alex's next ask, in his words: he is "happy the migration is
-done" but wants a deep dive into code quality, project architecture and readability — the large context file,
-whether React Compiler or other React 19 features help, whether the code is simple to follow.
+Updated 12 September 2026, end of Session 5 — **CC-004 is under way: the brief below has been grilled, Alex
+approved an ordered twelve-item plan, and the first PR has merged** (#42 as `8ac0bdc`). 2.1.0 is still with the
+store for review; users run 2.0.1.
 
-1. **Code-quality deep dive (CC-004 suggested).** Brief below. Order of work per `CLAUDE.md`: grill the brief
-   with `spec-grill`, produce an ordered PR plan, Alex approves it, then one PR at a time with `da-review` on
-   every `src/**` change and the e2e suite as the gate.
-2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here. Users run 2.0.1 until then.
-3. **Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.
-4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari.
+1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
+   plan below. PR 1 merged; PR 2 in flight. Resume at PR 3. One PR at a time, `da-review` on every `src/**`
+   change, both reviews wherever the `CLAUDE.md` trigger table says so, the e2e suite as the gate.
+2. **Store review of 2.1.0.** Nothing to do until the store publishes; then one line here.
+3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
+   it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a ten-file
+   documentation sweep with it.
+4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari. It is now also the
+   re-entry condition for giving `public/app/*.js` a build and a shared `messages.ts`.
+5. **Wake the sibling web app.** Not started. Alex answered a six-question list "yes to all six" on
+   12 September 2026, which accepts the premise that the sibling's missing fixes are worth making; **that it
+   is a workstream of its own rather than part of CC-004 was decided in-session, not by Alex** — his answer
+   could not settle an either/or (see §Session 5). Confirm the shape with him before starting. `Pushedskydiver/Colour-Contrast-Checker` carries three fixes this repo made on 4 September — the
+   grey-hue defect, range inputs that cannot take a `min`, and the tab keyboard handling. Three small commits
+   there, not an API here. Nothing in CC-004 depends on it, so it is scheduled whenever Alex wants it.
 
 ### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
+
+**Superseded 12 September 2026 — kept as the pre-grill record, not as instructions.** The grill disproved
+four claims below: that the e2e suite already covers the poor-contrast switch (no assertion in the suite
+touches a variant class or any control's resolved colour); that `@vitejs/plugin-react` 6.1 takes the React
+Compiler via `babel.plugins` (that option does not exist); that the compiler forbids rule-of-hooks violations
+(not at `panicThreshold: 'none'`, which is both the default and what React says production must use); and that
+the import style is mixed in a way the conventions do not already mandate. Four of the six "dead exports" had
+already gone in `c74071b`, and the hex-input logic is one regex with three early returns rather than a chain.
+Two more are dead rather than merely imprecise: the shared-`messages.ts` paragraph still reads as a live
+architecture option and the toolchain refuses it; and "`useEffectEvent` (2 sites)" counts one call plus its
+import, so there is one site. §The approved plan below is the authority and carries the evidence; read this only for what was measured on
+11 September.
 
 Facts, not impressions — re-measure before acting; the commands are one-liners.
 
@@ -50,9 +70,16 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   from TypeScript as extra Vite entries sharing one `messages.ts`. It changes the manifest paths and the
   packaging, so it needs its own spec — and the store rejection of 11 September is the reminder that manifest
   changes get tested by uploading.
-- **`react-copy-to-clipboard`** is the last class-component dependency. `docs/ARCHITECTURE.md` §Permissions
-  says why it stays; the way out is `allow="clipboard-write"` on the iframe `content.js` creates, then
-  `navigator.clipboard.writeText`. Spike it with an e2e test that reads the clipboard back.
+- **`react-copy-to-clipboard`** is the last class-component dependency. ~~The way out is
+  `allow="clipboard-write"` on the iframe `content.js` creates, then `navigator.clipboard.writeText`.
+  Spike it with an e2e test that reads the clipboard back.~~ Corrected 12 September 2026: that attribute
+  changes nothing here, and a host page can revoke the async API anyway while `execCommand` keeps working
+  (`docs/ARCHITECTURE.md` §Deliberately not changed carries the measurements). The dependency goes instead
+  by importing the `copy-to-clipboard` function it wraps — already resolved in the lockfile, ships its own
+  types — which drops the last class component with no change to `content.js`. That swap also fixes a
+  defect found on the way: the wrapper calls `onCopy` whatever the copy returned, so a failed copy is
+  announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
+  wanted does work, on macOS and in a Linux container.
 - **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
   `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
 - **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
@@ -61,6 +88,71 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
 
 Out of scope for this workstream: APCA (`feat/CC-003-apca-3`, Alex may never add it), Safari, and any
 manifest or permission change.
+
+### The approved plan (CC-004), approved by Alex 12 September 2026
+
+Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `CLAUDE.md` trigger
+fires, not a record — "both" means `da-review` and `copilot-surrogate`, and a PR that crosses 200 changed
+lines fires both whatever its paths. Row 2 is the worked example: predicted surrogate-only, it came to 232
+lines and fired both. Row 10 is one concern in two PRs, so the plan is twelve numbered items in thirteen
+pull requests.
+
+| #   | PR                                                                                  | Reviews   | After |
+| --- | ----------------------------------------------------------------------------------- | --------- | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both      | —     |
+| 2   | Correct the documented route off `react-copy-to-clipboard` (in flight)              | both      | —     |
+| 3   | Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (~58 lines)             | da-review | —     |
+| 4   | Stop announcing a failed copy as a success; drop the wrapper; clipboard e2e         | both      | 2     |
+| 5   | Replace the `React.FC` rule with plain typed functions (docs)                       | surrogate | —     |
+| 6   | Convert 32 signatures in 25 files + the three drift renames                         | da-review | 5     |
+| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep | both      | —     |
+| 8   | Extract the hex-input parser to `src/utils/`, with tests                            | da-review | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail              | both      | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms       | da/both   | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation           | da-review | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests        | da-review | 7, 11 |
+
+**What the grill killed, each recorded with a re-entry condition rather than built:**
+
+- **React Compiler.** `@vitejs/plugin-react` 6.1.1 has no `babel` option, so the brief's mechanism does not
+  exist. There are two seams, not one, and they are separate implementations: `react({ compiler: true })`
+  does `await import('oxc-transform-react')` — the Rust port — and errors without it
+  (`dist/index.js:201-208`); `babel-plugin-react-compiler` is reached only through the plugin's exported
+  `reactCompilerPreset` (`dist/index.js:46`) plus `@rolldown/plugin-babel`. All three are optional peers and
+  **none is installed or in `package-lock.json`**. The cost, measured on the Babel route in a scratch clone
+  on 12 September 2026, is 13,145 bytes (259,741 → 272,886, +5.06%); `panicThreshold` is a
+  `babel-plugin-react-compiler` option, it defaults to `'none'`, React's docs say production must always use
+  `'none'`, and at that setting a planted conditional hook built green and silent. Whether
+  `oxc-transform-react` honours `panicThreshold` at all is **unchecked**. What is checked: `npm run lint:js`
+  already errors on a conditionally-called hook inside the required check, so the compiler forbids nothing
+  new. Re-entry: a measured render problem in the panel, or a mode that warns on skipped components without
+  failing the build.
+- **A shared `messages.ts` built as extra Vite entries.** Refused by this toolchain — two inputs against
+  `codeSplitting: false` gives `[INVALID_OPTION]`, library mode refuses multiple entries with iife — a
+  content script cannot `import` as a classic script, and bundling scopes the `isRestrictedUrl` global the
+  first e2e test reads. No message name has ever been renamed. Re-entry: the Safari `browser.*` shim.
+- **Other React 19 features.** Considered; none earns its place. `forwardRef`, `memo`, `useDeferredValue`,
+  `useTransition` and `Activity` are all absent and none answers a problem that has occurred here.
+- **The import-style sweep.** It contradicted a standing rule: 42 `~/` imports, 27 relative non-CSS, 24
+  relative CSS and **zero** cross-tier relative imports is exactly what `docs/CONVENTIONS.md` mandates, and
+  that section says not to convert existing ones.
+- **A shared package with the sibling web app.** Between the two `color-utils.ts`, a longest-common-
+  subsequence run gives 39 shared lines, 27 of them non-blank and 16 carrying more than a brace or a bare
+  `return` (`difflib.SequenceMatcher`, 12 September 2026; an earlier "36" in this file counted unified-diff
+  context lines, which measures nothing, and is withdrawn). Of 21 same-named component files, **one** is
+  byte-identical — `tabbed.tsx`, and it sits at `02-molecules/` in the sibling against `03-organisms/` here,
+  so it is not even in the same tier. The domain rule has already forked too: the web app stabilises at six
+  saved pairs, this repo slices to five. Re-entry, both halves required: the second
+  time a colour-utility fix has to be hand-applied there, **and** the sibling has a test runner. PR 7 folds in
+  one cheap measurement — run the new unit tests against a copy of the sibling's file — which produces
+  evidence and commits to nothing.
+- **Adopting `knip`.** Run it once for PR 3 and stop. It reports five unused exports and eight unused types,
+  most of them used inside their own file, plus `public/app/*.js` as unused files it cannot resolve from the
+  manifest.
+
+**Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
+inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. Unavoidable
+while the library is used; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
 ### Commit sequence as landed on 11 September 2026
 
@@ -79,6 +171,66 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, first PR)
+
+**Model choice first, at Alex's request** — he asked for a recommendation with "strong, real evidence" before
+any agent was spun up. Settled on **Opus 5 at effort `high`, ultracode off**, with the three adversarial
+agents pinned to Fable 5.1. The evidence: Anthropic's own guidance is Opus 5 first and Fable only "when your
+evals on Claude Opus 5 at higher effort still fall short"; on SWE-bench Pro at default effort Opus 5 matched
+Fable 5.1 within noise (91.7% against 92.1%) at about 15% less per solved task; and for work that fits in one
+context "the coordinator's model alone at lower effort came out ahead" in every case Anthropic measured, which
+is this repo at 1,894 lines. Alex's other repos already run this process on Opus 5. Recorded so it is not
+re-litigated: this repo's own `effortLevel` was `xhigh` globally, and ultracode suppresses the large-workflow
+warning, which is why both were turned down rather than left.
+
+**Done:** the brief was grilled by three `spec-grill` discovery rounds (structural, tooling, cross-repo),
+then turned into the plan above, which Alex approved. **The verification round is worth describing exactly,
+because the first attempt did not run.** Four fresh-context verifiers were dispatched on Fable 5.1 and all
+four died on HTTP 429 before doing any work (pattern 3 below). It was re-dispatched as **two** fresh-context
+agents on Opus 5 — one on the build-harness claims, one on the clipboard claims — and the remaining claims
+were settled by the coordinator inline with `grep`, `diff` and `node`. That inline half is
+self-verification, which `docs/DEVELOPMENT.md` §Verification rounds is explicit is not the same thing as an
+independent check; it is recorded as what happened rather than counted as a round. The two agents plus the
+`da-review` and `copilot-surrogate` passes on PRs 1 and 2 are the independent evidence. **PR 1 merged** (#42,
+`8ac0bdc`) — the build-error masking fix, found during the grill rather than in the brief. PR 2, the clipboard
+documentation correction, is in flight.
+
+**Two of the six approval questions were either/ors that "yes to all six" could not settle, so they were
+decided and stated rather than left ambiguous:** the pre-push suite becomes **four commands with the unit
+tests second**, before the build, because they need no build and fail in milliseconds — hiding them inside
+`npm test` while the documented gate skipped them would be the gate-that-cannot-see-a-failure problem
+`docs/CONVENTIONS.md` warns about; and **waking the sibling web app is its own workstream** (item 5 above),
+not part of CC-004, since nothing here depends on it.
+
+**Major novel patterns Session 5:**
+
+1. **The brief's own proof claim was false, and it changed the order of work.** It asserted "the e2e suite
+   already covers the visible outcome" of the poor-contrast switch. It does not: there is no assertion
+   anywhere in the suite on a variant class or any control's resolved colour, so by inspection all sixteen
+   branches could be deleted with the suite still green. The control — delete one branch, watch a test go
+   red — was **not** run, because there is no test to redden; that absence is the finding. The refactor's first PR is therefore a failing test, not the refactor.
+   A brief that cites coverage is not evidence of coverage — read the assertions.
+2. **The repo already held the fact that killed the documented clipboard route, two documents away.**
+   `docs/DA-REVIEW.md` recorded that `getURL('index.html')` returns a per-session GUID origin redirected to
+   the static one; `docs/ARCHITECTURE.md` said the way out was `allow="clipboard-write"`. Both sentences
+   stood for eight days and nobody joined them. That join is exactly what the `copilot-surrogate`
+   cross-context pass exists for, and it had never been run across those two files together.
+3. **Four concurrent Fable 5.1 subagents exhausted the session limit before doing any work.** All four
+   verification agents died on HTTP 429; the discovery round's output survived only because it had already
+   returned. Same class as `docs/REVIEW-PATTERNS.md` #10 by a different mechanism, so it is n=2 and the rule
+   is promoted rather than restated here: `docs/DEVELOPMENT.md` §Scale the fan-out now carries the
+   concurrency number and this dated instance.
+4. **This session shipped a false "suite green" claim in a commit body.** `777fd96` said "Pre-push suite
+   green: lint, build, e2e 18/18" when Prettier was rejecting `PROGRESS.md`, because the message was written
+   before `format:check` ran. Corrected in `c780745` rather than amended. It is the first instance here of
+   `docs/SELF-REVIEW.md` §Before you write the word verified failing to hold, and the cause is the weak form
+   itself: every commit body on this branch asserts the suite without pasting what it printed. The fix is
+   mechanical — run the chain, paste its last lines, then write the sentence.
+5. **A review finding was disproved with evidence rather than accepted.** The DA pass suggested tightening
+   the new build guard against a nested `ENOENT` mid-walk; a probe showed a subtree deleted during a
+   recursive read does not throw at all, so the extra condition would have been validation for a scenario
+   that cannot happen. Deferred with the probe recorded, not silently dropped.
 
 ## Session 4 — 11 September 2026 (release)
 
@@ -182,24 +334,40 @@ the hygiene list in `docs/REVIEW-PATTERNS.md`.
 
 **Decided:** TypeScript 7 native `tsc` stays, with `typescript` aliased to `@typescript/typescript6` for
 typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10 — nor, found in Session 3, does eslint-plugin-react); versions bumped to
-1.7.0 in both files (superseded by 2.1.0 in Session 4); `react-copy-to-clipboard` kept (no `clipboard-write` in the iframe); AGENTS.md is a symlink;
+1.7.0 in both files (superseded by 2.1.0 in Session 4); `react-copy-to-clipboard` kept ~~(no `clipboard-write` in the iframe)~~ (reason corrected 12 September 2026 — the absent attribute was never the cause; §Session 5 pattern 2); AGENTS.md is a symlink;
 `PROGRESS.md` + `docs/history/SESSIONS.md` adopted from chief-clancy/moe; `docs/INDEX.md`, changesets and
 copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVELOPMENT.md` §Not ported).
 
 **Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
 from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
-### Session 5 loading instructions
+### Session 6 loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then `docs/CONVENTIONS.md` and
-   `docs/ARCHITECTURE.md` once — the brief above cites both.
-2. Run `git status --short` (expect clean) and `git log --oneline -3 origin/main` (expect `0accd3b` or later);
-   `gh pr list` for anything Dependabot has queued (green ones are delegated — `docs/GIT.md` §Who merges).
+1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
+   brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
+2. **First, establish whether PR 2 landed.** It was opened from `docs/CC-004-clipboard-route` and had not
+   merged when this was written, so "resume at PR 3" assumes something that may not have happened. Run
+   `git status --short` (expect clean), `git log --oneline -3 origin/main`, and `gh pr list`; if PR 2 is
+   still open, finishing it is the first action, not PR 3. Green Dependabot PRs are delegated
+   (`docs/GIT.md` §Who merges).
 3. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 18 passing tests.
-4. Re-measure the brief's numbers, then dispatch `spec-grill` on the brief (discovery round, then one
-   verification round) and turn it into an ordered PR plan for Alex to approve. Do not start code before that.
+   Expect 18 passing tests until PR 7 adds unit tests and a fourth command.
+4. **Resume at PR 3 of the approved plan**, one PR at a time, cutting the branch as the literal first action.
+   The plan is already approved: do not re-grill it, and do not reorder it without saying why.
+5. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
+   `copilot-surrogate` on Fable 5.1, at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out).
+   **Set these at the start of the session — they are not configured.** `~/.claude/settings.json` still
+   carries `"effortLevel": "xhigh"` globally and no repo-level settings file exists, so Session 5's choice
+   was session-scoped and does not carry over. Settle what a shell command can settle before spending an
+   agent.
+6. Decision branches carried in: **(a)** the decision is that the **pre-push suite** gains a fourth
+   command, `test:unit`, running second — _not_ that the unit tests hide inside `npm test`, which is what it
+   rejected; open only in that Alex may revisit it once he sees the ten-file documentation sweep PR 7
+   carries. Note PR #42's merged body calls that PR "PR 8" — it was renumbered to 7 when the plan was
+   written down, and the plan is the authority; **(b)** whether workstream 5, the sibling's three
+   missing fixes, starts before or after CC-004 finishes; **(c)** whether the store has published 2.1.0 — read
+   the public listing, do not assume it (`docs/GIT.md` §Releases has the URL).
 
 ## Session archive
 

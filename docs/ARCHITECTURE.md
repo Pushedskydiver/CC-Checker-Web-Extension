@@ -25,10 +25,15 @@ follows from that:
    contexts, not content scripts, and the iframe has no tab id to address. The service worker sees
    `sender.tab` on every message from the iframe, so it forwards to that tab — and because it also
    sees `sender.tab.windowId`, it is the context that calls `captureVisibleTab`.
-3. **The clipboard is restricted.** `content.js` creates the iframe without `allow="clipboard-write"`,
-   so `navigator.clipboard.writeText` is blocked inside it. `react-copy-to-clipboard` is kept on
-   purpose: its `document.execCommand('copy')` path works there. Do not swap it for the async API
-   without also changing the iframe's `allow` attribute, and re-verify in a real tab.
+3. **The clipboard is restricted, and an `allow` attribute does not lift it.**
+   `navigator.clipboard.writeText` is blocked inside the iframe with or without
+   `allow="clipboard-write"`, because a bare feature name delegates the permission to the frame's
+   `src` origin and `use_dynamic_url: true` makes that a per-session GUID that never matches the
+   static origin the document loads with. `document.execCommand('copy')` does work there, which is
+   why the copy buttons go through it; `react-copy-to-clipboard` is only the wrapper around that
+   call, and CC-004 PR 4 replaces the wrapper without touching this constraint. What a swap to the
+   async API would actually require, and why it could only ever be an enhancement, is under
+   [§Deliberately not changed](#deliberately-not-changed-and-what-was-not-ported).
 4. **The panel is 475px tall, always.** `IFRAME_HEIGHT` in `content.js` fixes the iframe height and
    pads the host `body` by the same amount so nothing on the page is hidden underneath. The app inside
    is responsive to viewport width only; height is a constant the layout is designed against.
@@ -313,7 +318,7 @@ one retry in CI, traces kept on failure.
 
 ```bash
 npm run build && npm run test:e2e   # or: npm test
-npx playwright install chromium     # once per machine
+npx playwright install chromium     # once per machine, and again after a @playwright/test bump
 ```
 
 - **It loads the real build.** `extensionDir` throws if `build/manifest.json` is missing, then
@@ -365,8 +370,24 @@ Add-ons. Firefox is not a target and nothing has been checked against it.
 
 Kept on purpose during the Vite migration, each with the condition that would reopen it:
 
-- `react-copy-to-clipboard` — until the iframe is created with `allow="clipboard-write"` and the async
-  clipboard API is verified in a real cross-origin frame.
+- `document.execCommand('copy')` rather than `navigator.clipboard.writeText` — kept because the
+  synchronous path works in this cross-origin iframe and the async one does not. Until
+  12 September 2026 this bullet gave the re-entry condition as "the iframe is created with
+  `allow="clipboard-write"` and the async clipboard API is verified in a real cross-origin frame".
+  That could never be met, and the correction is below rather than struck through because this is a
+  rule document, not a handoff surface. Measured across five iframe variants against the repo's own
+  fixtures: a bare `allow="clipboard-write"` left `featurePolicy.allowsFeature('clipboard-write')`
+  false and `writeText` throwing `NotAllowedError`, identical to shipping no attribute at all, for
+  the `use_dynamic_url` reason in §The one decision everything follows from. Removing
+  `use_dynamic_url` made that same attribute work, which is the isolation that proves the cause.
+  Only `allow="clipboard-write *"` or the explicit
+  `allow="clipboard-write chrome-extension://${chrome.runtime.id}"` grant it. Even then a host page
+  sending `Permissions-Policy: clipboard-write=()` revokes it, while `execCommand('copy')` kept
+  working on that same page in the same run — so on `<all_urls>`, with no rollback between a bad
+  upload and the next store review, the async API can only be an enhancement behind a `try`/`catch`
+  that retains the `execCommand` path. Do not feature-detect it with
+  `navigator.permissions.query({ name: 'clipboard-write' })`: that reported `granted` in all eight
+  runs, including every blocked one. Use `featurePolicy.allowsFeature` or a `try`/`catch`.
 - `activeTab`-only permissions — until a feature genuinely needs `tabs`, `storage` or host
   permissions; each widens the install warning.
 - The fixed 475px panel — until a resizable or dockable panel is designed; the host body padding and
