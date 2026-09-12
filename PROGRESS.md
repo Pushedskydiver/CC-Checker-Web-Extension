@@ -179,7 +179,7 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
 
-## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, first PR)
+## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
 
 **Model choice first, at Alex's request** — he asked for a recommendation with "strong, real evidence" before
 any agent was spun up. Settled on **Opus 5 at effort `high`, ultracode off**, with the three adversarial
