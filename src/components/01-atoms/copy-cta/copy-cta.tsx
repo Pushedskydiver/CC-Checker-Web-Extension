@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import copy from 'copy-to-clipboard';
 
 import { useColourContrast } from '~/context';
 import { ActionCta } from '../action-cta/action-cta';
@@ -40,6 +40,15 @@ export const CopyCta: React.FC<TCopyCta> = ({
 	}, []);
 
 	const handleCopy = (): void => {
+		// `copy` returns false when the document's copy command is refused — a host
+		// page whose `Permissions-Policy` forbids it, or a browser that blocks it.
+		// Announcing then would put the confirmation into the `role="status"`
+		// region below while nothing reached the clipboard. That is what shipped
+		// until 12 September 2026: `react-copy-to-clipboard` called `onCopy(text,
+		// result)` whatever `result` was, and this handler took no arguments, so a
+		// failed copy still announced "URL added to clipboard" to a screen reader.
+		if (!copy(value)) return;
+
 		if (resetTimer.current) clearTimeout(resetTimer.current);
 
 		setCopied(true);
@@ -71,19 +80,14 @@ export const CopyCta: React.FC<TCopyCta> = ({
 				{copied ? copiedText : ''}
 			</Text>
 
-			<CopyToClipboard text={value} onCopy={handleCopy}>
-				<ActionCta
-					label={copyText}
-					icon={
-						icon === 'clipboard' ? (
-							<Clipboard size={20} />
-						) : (
-							<Share />
-						)
-					}
-					withBackground={withBackground}
-				/>
-			</CopyToClipboard>
+			<ActionCta
+				label={copyText}
+				onClick={handleCopy}
+				icon={
+					icon === 'clipboard' ? <Clipboard size={20} /> : <Share />
+				}
+				withBackground={withBackground}
+			/>
 		</span>
 	);
 };

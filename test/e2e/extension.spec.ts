@@ -256,6 +256,36 @@ test.describe('app', () => {
 		).toBeVisible();
 	});
 
+	test('the share button puts the share URL on the real clipboard', async ({
+		context,
+		page,
+		openChecker,
+		serverUrl,
+	}) => {
+		// The grant goes on the host page, not the panel: `grantPermissions`
+		// rejects an opaque `chrome-extension://` origin, and the read-back happens
+		// on the host anyway.
+		await context.grantPermissions(['clipboard-read', 'clipboard-write'], {
+			origin: serverUrl,
+		});
+
+		const frame = await openChecker();
+
+		await frame.getByRole('button', { name: 'Generate share URL' }).click();
+
+		// The confirmation is only announced when the copy actually succeeded, so
+		// these two assertions together are what guards the failed-copy case.
+		await expect(
+			frame
+				.getByRole('status')
+				.filter({ hasText: 'URL added to clipboard' }),
+		).toBeVisible();
+
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+			'https://colourcontrast.cc/?background=ffe66d&foreground=222222',
+		);
+	});
+
 	test('skip links target real, focusable ids', async ({ openChecker }) => {
 		const frame = await openChecker();
 		const targets = await frame.evaluate(() =>
