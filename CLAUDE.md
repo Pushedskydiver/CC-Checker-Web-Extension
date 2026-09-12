@@ -92,9 +92,13 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
   tried and rejected on 4 September 2026 because `eslint-plugin-jsx-a11y` does not declare it as a
   peer, and `eslint-plugin-react` 7.37 does not either (found 11 September 2026 behind the first
   wall). `dependabot.yml` ignores major `eslint` / `@eslint/js` bumps until both do.
-- **`react-copy-to-clipboard` stays.** The UI runs in a cross-origin iframe created without
-  `allow="clipboard-write"`, so `navigator.clipboard.writeText` is blocked; the library's
-  `execCommand('copy')` path works.
+- **`react-copy-to-clipboard` stays, and `allow="clipboard-write"` is not the way out.** The UI runs
+  in a cross-origin iframe where `navigator.clipboard.writeText` is blocked with or without that
+  attribute: a bare feature name delegates to the frame's `src` origin, and `use_dynamic_url: true`
+  makes that a per-session GUID that never matches the static origin the document loads with
+  (measured 12 September 2026). The library's `execCommand('copy')` path works. What a swap would
+  actually require, and why a host page can revoke it anyway, is in `docs/ARCHITECTURE.md`
+  §Deliberately not changed.
 - **A case-sensitive checkout is the real build target.** The Git index carried `01-Atoms/`, `Icon/`
   and friends while every import was lowercase; macOS hid it and a Linux clone could not build (21
   TS2307 errors, 4 September 2026). `core.ignorecase` is `false` locally — keep it so, and treat CI

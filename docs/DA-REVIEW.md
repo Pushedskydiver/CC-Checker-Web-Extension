@@ -408,8 +408,11 @@ load time, and the store does at upload.
       Skip-link targets carry `tabIndex={-1}`.
 - [ ] Every new visual element has its poor-contrast variant (`isPoorContrast` with
       `isBackgroundDark`), or the reviewer can say why not.
-- [ ] `react-copy-to-clipboard` stays: the iframe is created without `allow="clipboard-write"`, so
-      `navigator.clipboard.writeText` is blocked there, and e2e cannot verify clipboard contents.
+- [ ] `react-copy-to-clipboard` stays: `navigator.clipboard.writeText` is blocked in this iframe
+      with or without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a
+      per-session GUID — `docs/ARCHITECTURE.md` §Deliberately not changed). The suite does not
+      assert clipboard contents, though it can: a read-back worked on macOS and in a Linux
+      container, 12 September 2026.
 - [ ] Prop types are `T`-prefixed, components `React.FC<TName>`, cross-directory imports via `~/`,
       `React.RefObject` not `React.MutableRefObject`.
 

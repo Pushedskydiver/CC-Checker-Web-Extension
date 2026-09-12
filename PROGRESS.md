@@ -50,9 +50,16 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   from TypeScript as extra Vite entries sharing one `messages.ts`. It changes the manifest paths and the
   packaging, so it needs its own spec — and the store rejection of 11 September is the reminder that manifest
   changes get tested by uploading.
-- **`react-copy-to-clipboard`** is the last class-component dependency. `docs/ARCHITECTURE.md` §Permissions
-  says why it stays; the way out is `allow="clipboard-write"` on the iframe `content.js` creates, then
-  `navigator.clipboard.writeText`. Spike it with an e2e test that reads the clipboard back.
+- **`react-copy-to-clipboard`** is the last class-component dependency. ~~The way out is
+  `allow="clipboard-write"` on the iframe `content.js` creates, then `navigator.clipboard.writeText`.
+  Spike it with an e2e test that reads the clipboard back.~~ Corrected 12 September 2026: that attribute
+  changes nothing here, and a host page can revoke the async API anyway while `execCommand` keeps working
+  (`docs/ARCHITECTURE.md` §Deliberately not changed carries the measurements). The dependency goes instead
+  by importing the `copy-to-clipboard` function it wraps — already resolved in the lockfile, ships its own
+  types — which drops the last class component with no change to `content.js`. That swap also fixes a
+  defect found on the way: the wrapper calls `onCopy` whatever the copy returned, so a failed copy is
+  announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
+  wanted does work, on macOS and in a Linux container.
 - **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
   `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
 - **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
