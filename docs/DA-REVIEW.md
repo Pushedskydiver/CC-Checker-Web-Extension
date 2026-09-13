@@ -419,8 +419,10 @@ load time, and the store does at upload.
       value in `copy-cta.tsx` annotates its result as `boolean` on purpose: `copy-to-clipboard` 4.x
       returns a promise, on which the guard would be a no-op — do not inline it back into the
       `if`.
-- [ ] Prop types are `T`-prefixed, components `React.FC<TName>`, cross-directory imports via `~/`,
-      `React.RefObject` not `React.MutableRefObject`.
+- [ ] Prop types are `T`-prefixed, components are plain typed functions
+      (`({ … }: TName) =>`, no `React.FC` — changed 13 September 2026, `docs/CONVENTIONS.md`
+      §TypeScript and React), cross-directory imports via `~/`, `React.RefObject` not
+      `React.MutableRefObject`.
 
 ## CSS Modules
 
