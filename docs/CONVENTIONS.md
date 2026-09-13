@@ -3,7 +3,8 @@
 Four tools have opinions about this repo and `npm run lint` runs all of them in order: `tsc` over
 both tsconfigs, `eslint .`, `stylelint "src/**/*.css"` and `prettier --check`. Everything they
 enforce is marked as enforced below. Everything else holds because it is written down here and
-because the files already follow it — read `src/components/01-atoms/badge/badge.tsx`,
+because the files already follow it (bar the `React.FC` signatures that §TypeScript and React marks
+as drift) — read `src/components/01-atoms/badge/badge.tsx`,
 `src/context.tsx`, `src/utils/color-utils.ts` and `public/app/content.js` before writing anything.
 
 Adapted from the `docs/CONVENTIONS.md` in tamaclaude, moe and nas-stacks. Kept: what a comment is
@@ -22,8 +23,9 @@ linter holds is a rule nobody has to remember. **Taste-shaped rules** (what to d
 when a comment earns its length) are prose that makes the intent legible; the bar is "does the
 intent survive a hostile re-read?", not "can a reviewer tick a box?".
 
-Every non-obvious rule below names the incident that produced it. All of them are from
-4 September 2026, the day the CRA → Vite migration was verified end to end; the full list is in
+Every non-obvious rule below names the incident that produced it. Most are from 4 September 2026,
+the day the CRA → Vite migration was verified end to end, and later ones carry their own date; the
+4 September list is in
 `docs/REVIEW-PATTERNS.md`. A proposed rule that cannot cite an incident should wait for one.
 
 ### Where a thing gets written down
@@ -116,18 +118,22 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `T`-prefixed prop type declared above them in the same file (`TBadge`, `TRangeInput`,
   `TCopyCta`). No `React.FC`, `FC` or `FunctionComponent`; a component with no props takes no
   parameter, and one that renders `children` gets it from its prop type — spelled out as
-  `children: React.ReactNode` in `TBadge`, or inherited from `React.PropsWithChildren` (`TButton`)
-  or `React.HTMLAttributes` (`TText`). Named exports only, except `App` (`src/app.tsx`) and
-  `ColourContrastProvider` (`src/context.tsx`), which are default exports. Not enforced.
-  **Changed 13 September 2026 from a `React.FC<TName>` mandate** (CC-004), for three reasons
-  checked that day: in the installed `@types/react` 19.2, `FC<P>` is only
-  `(props: P) => ReactNode | Promise<ReactNode>` — no implicit `children`, so it adds nothing
-  these components use; the two default exports above were already plain typed arrows, so
-  the mandate described a form the entry points did not follow; and react.dev's TypeScript guide
-  types props on the parameter and never mentions `React.FC`. The 31 `React.FC` signatures in 25
-  files that predate the change are drift: convert them in one pass, not file by file, so the tree
-  never carries both forms longer than one PR. `WcagProps`, `TextSizes` and `TextWeights` predate
-  the prefix and are drift too: rename them when their file is next touched, not in a drive-by.
+  `children: React.ReactNode` in `TBadge`, or inherited, as `TButton` does through `CtaShared` (a
+  `React.PropsWithChildren`) and `TText` through `React.HTMLAttributes`. Named exports only, except
+  `App` (`src/app.tsx`) and `ColourContrastProvider` (`src/context.tsx`), which are default
+  exports. Not enforced.
+  **Changed 13 September 2026 from a `React.FC<TName>` mandate** (CC-004). The incident: the
+  mandate did not describe the tree — `App` and `ColourContrastProvider` were already plain typed
+  arrows, so the two entry points sat outside a rule that said every component used `React.FC`.
+  Two further reasons, checked that day: in the installed `@types/react` 19.2, `FC<P>` is the call
+  signature `(props: P) => ReactNode | Promise<ReactNode>` plus a deprecated `propTypes` and a
+  `displayName` that nothing in `src/` sets — no implicit `children` — so it gives these
+  components nothing a typed parameter does not; and react.dev's TypeScript guide types props on
+  the parameter and never mentions `React.FC`. The 31 `React.FC` signatures in 25 files that
+  predate the change are drift: convert them in one pass, not file by file, so the tree never
+  carries both forms longer than one PR. `WcagProps`, `ProviderProps`, `CtaShared`, `TextSizes`
+  and `TextWeights` predate the prefix and are drift too: rename them when their file is next
+  touched, not in a drive-by.
 - **`type` for props; `interface` only where it already is** (`src/context.tsx` and `WcagProps` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
 - **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
