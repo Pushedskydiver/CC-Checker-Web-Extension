@@ -225,8 +225,9 @@ guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
   amended.
 
 **#50 and #51 were rebase-merged, #49 got a merge commit.** `docs/GIT.md` §Merge strategy still says rebase
-is "enabled and unused. Do not start"; that is Alex's call per PR, so it was flagged as a separate task
-rather than edited here. Two consequences hit this session: commit bodies on `main` cite branch hashes that
+is "enabled and unused. Do not start"; that is Alex's call per PR, so it was flagged as a Claude Code task
+chip in the session UI — not a GitHub issue, so nothing in the repo tracks it except decision branch (e)
+below — rather than edited here. Two consequences hit this session: commit bodies on `main` cite branch hashes that
 were rewritten by the merge (`326029c`, `113e6cd`), and `git branch -d` refused both merged branches —
 content was diffed against `origin/main` first, then `-D`.
 
@@ -236,8 +237,9 @@ content was diffed against `origin/main` first, then `-D`.
 `WcagProps`, `TextSizes` and `TextWeights`, because PR 6 touches those files. `ProviderProps` waits until
 `src/context.tsx` is next touched; ~~`ColourContrastContextTypes` is un-prefixed too but is a context value, not
 a prop type, so the rule as worded does not reach it~~ — superseded by #52: two of its renames were unions, so
-the prefix covers every declared type, and `docs/CONVENTIONS.md` now names three left as drift
-(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`).
+the prefix covers every declared type, and on #52's branch `docs/CONVENTIONS.md` names three left as drift
+(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`); `main` still lists the older five until #52
+merges.
 
 **Major novel patterns Session 6:**
 
@@ -460,7 +462,8 @@ cites `fixtures.ts` by line number, which will drift.
    converts anything~~ — settled: Alex merged #50 with arrows; **(d)** #48 — take `copy-to-clipboard` 4.x
    (what that needs is in `docs/GIT.md` §Dependabot) or hold it; React 19.3.0 rides in the same group PR
    either way; **(e)** whether rebase merges are now accepted — `docs/GIT.md` §Merge strategy says "unused.
-   Do not start" and #50 and #51 used it; a separate task asks Alex before changing the doc. The store published 2.1.0
+   Do not start" and #50 and #51 used it; Session 6 raised a task chip (not a GitHub issue) that asks Alex
+   before changing the doc — if it was never started, ask him directly. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL).
 
