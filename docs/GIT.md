@@ -287,15 +287,17 @@ security bump that would need the major. Re-entry: when both
 `npm view eslint-plugin-jsx-a11y peerDependencies.eslint` and `npm view eslint-plugin-react peerDependencies.eslint` print a range
 with `^10`, drop the ignore and take the bump.
 
-**`copy-to-clipboard` majors are not delegable.** It became a direct production dependency on
-12 September 2026 and sits in the weekly `production-dependencies` group, so 4.x will be offered.
-In 4.x `copy()` returns `Promise<boolean>`, its `window.prompt` fallback defaults off, and it tries
-`navigator.clipboard` first — which is blocked in this iframe. Taking it needs
-`await copy(value, { fallbackToPrompt: true })` and a re-read of the guard in
-`src/components/01-atoms/copy-cta/copy-cta.tsx`. There is deliberately no `ignore` entry: the
-result is annotated `boolean` there, so the bump fails `lint:ts` with `TS2322` and the PR goes red
-rather than being merged as a green one under [Who merges](#who-merges). Verified 12 September 2026
-by pointing the type declaration at a promise-returning signature.
+**`copy-to-clipboard` is no longer a dependency** (13 September 2026). It became a direct
+production dependency on 12 September 2026, in the weekly `production-dependencies` group, and its
+result in `copy-cta.tsx` was annotated `boolean` so that 4.x — whose `copy()` returns
+`Promise<boolean>` — would fail `lint:ts` with `TS2322` rather than merge green under
+[Who merges](#who-merges). Dependabot's #48 did exactly that. Taking 4.x then showed that it tries
+`navigator.clipboard` first and that Chrome logs a permissions-policy `console.error` on every copy
+click, so the path this app used was ported into `src/utils/copy-text.ts` and the dependency
+removed (`docs/ARCHITECTURE.md` §Deliberately not changed). Once that lands, #48 is to be asked to
+`@dependabot recreate` so only the rest of its group remains. The lesson outlives the package: when
+a dependency moves from transitive to direct, ask what its next major does to the code that now
+calls it.
 
 **PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
 rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on

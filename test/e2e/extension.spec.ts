@@ -285,8 +285,8 @@ test.describe('app', () => {
 	});
 
 	test('a refused copy announces nothing', async ({ page, openChecker }) => {
-		// The failure path: `copy-to-clipboard` falls back to `window.prompt` when
-		// the copy command is refused, then returns false. Playwright auto-dismisses
+		// The failure path: `copyText` falls back to `window.prompt` when the copy
+		// command is refused, then returns false. Playwright auto-dismisses
 		// dialogs, but the handler is explicit so the prompt is part of the record.
 		const dialogs: string[] = [];
 		page.on('dialog', (dialog) => {
@@ -360,6 +360,14 @@ test.describe('app', () => {
 		await frame.fill('input#background', '#336699');
 		await frame.getByRole('button', { name: 'Reverse Colours' }).click();
 		await frame.getByRole('button', { name: 'Save colours' }).click();
+		// Both copy buttons too. `copy-to-clipboard` 4.x tried `navigator.clipboard`
+		// first, and Chrome logged a permissions-policy `console.error` on every
+		// click (13 September 2026) — invisible here while this test never copied.
+		await frame.getByRole('button', { name: 'Generate share URL' }).click();
+		await frame
+			.getByRole('button', { name: /^Copy #[0-9a-f]{6} to clipboard$/i })
+			.first()
+			.click();
 		await page.waitForTimeout(300);
 		expect(errors).toEqual([]);
 	});

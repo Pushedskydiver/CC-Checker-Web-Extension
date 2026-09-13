@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import copy from 'copy-to-clipboard';
 
 import { useColourContrast } from '~/context';
+import { copyText } from '~/utils/copy-text';
 import { ActionCta } from '../action-cta/action-cta';
 import { Clipboard, Share } from '../icon/icon';
 import { Text } from '../text/text';
@@ -28,7 +28,7 @@ export const CopyCta = ({
 	const [copied, setCopied] = useState(false);
 	const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-	const copyText = isUrl
+	const copyLabel = isUrl
 		? 'Generate share URL'
 		: `Copy ${value} to clipboard`;
 	const copiedText = isUrl ? 'URL added to clipboard' : 'Copied';
@@ -45,23 +45,13 @@ export const CopyCta = ({
 		// what shipped until 12 September 2026: `react-copy-to-clipboard` called
 		// `onCopy(text, result)` whatever `result` was, and this handler took no
 		// arguments, so a failed copy still announced "URL added to clipboard" to a
-		// screen reader. `copy` returns false when `document.execCommand('copy')`
+		// screen reader. `copyText` returns false when `document.execCommand('copy')`
 		// is refused — an enterprise clipboard policy, or a browser that does not
 		// implement it, which is a live question for the Safari port. Not
 		// `Permissions-Policy`: that governs `navigator.clipboard`, and the
 		// `execCommand` path works in this iframe with no `allow` attribute at all
 		// (`docs/ARCHITECTURE.md` §Deliberately not changed).
-		//
-		// `copied` is annotated rather than inlined into the `if`, and the
-		// annotation is the gate. `copy-to-clipboard` 4.x returns
-		// `Promise<boolean>`, on which `!copy(value)` is always false — the guard
-		// would vanish silently, and since 4.x also defaults its `window.prompt`
-		// fallback off, the failure path would go silent with it. The annotation
-		// turns that major bump into a `TS2322` in `lint:ts` instead
-		// (`docs/GIT.md` §Dependabot).
-		const copied: boolean = copy(value);
-
-		if (!copied) return;
+		if (!copyText(value)) return;
 
 		if (resetTimer.current) clearTimeout(resetTimer.current);
 
@@ -95,7 +85,7 @@ export const CopyCta = ({
 			</Text>
 
 			<ActionCta
-				label={copyText}
+				label={copyLabel}
 				onClick={handleCopy}
 				icon={
 					icon === 'clipboard' ? <Clipboard size={20} /> : <Share />

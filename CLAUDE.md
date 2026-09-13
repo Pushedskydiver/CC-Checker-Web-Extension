@@ -95,9 +95,11 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
 - **Copying runs through `document.execCommand('copy')`, and `allow="clipboard-write"` is not a way
   off it.** `navigator.clipboard.writeText` is blocked in this cross-origin iframe with or without
   that attribute, and any host page can revoke the async API even when it is granted. Do not swap to
-  it; keep `execCommand` as the path that works. `copy-to-clipboard` is called directly for it since
-  12 September 2026 — the `react-copy-to-clipboard` wrapper is gone, and with it the last class
-  component. Mechanism and measurements:
+  it, not even inside a `try`; keep `execCommand` as the path that works. Since 13 September 2026 it
+  is `copyText` in `src/utils/copy-text.ts`, a port of the `copy-to-clipboard` 3.3.3 path: that
+  library's 4.x tried `writeText` first, and the attempt alone made Chrome log a permissions-policy
+  `console.error` on every copy click. (`react-copy-to-clipboard` went on 12 September 2026, and
+  with it the last class component.) Mechanism and measurements:
   `docs/ARCHITECTURE.md` §Deliberately not changed.
 - **A case-sensitive checkout is the real build target.** The Git index carried `01-Atoms/`, `Icon/`
   and friends while every import was lowercase; macOS hid it and a Linux clone could not build (21

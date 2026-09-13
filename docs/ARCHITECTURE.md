@@ -30,7 +30,8 @@ follows from that:
    `allow="clipboard-write"`, because a bare feature name delegates the permission to the frame's
    `src` origin and `use_dynamic_url: true` makes that a per-session GUID that never matches the
    static origin the document loads with. `document.execCommand('copy')` does work there, which is
-   why the copy buttons go through it, calling `copy-to-clipboard` directly since 12 September 2026.
+   why the copy buttons go through it — through `copyText` (`src/utils/copy-text.ts`) since
+   13 September 2026, and `copy-to-clipboard` 3.3.3 before that.
    What a swap to the
    async API would actually require, and why it could only ever be an enhancement, is under
    [§Deliberately not changed](#deliberately-not-changed-and-what-was-not-ported).
@@ -389,6 +390,15 @@ Kept on purpose during the Vite migration, each with the condition that would re
   that retains the `execCommand` path. Do not feature-detect it with
   `navigator.permissions.query({ name: 'clipboard-write' })`: that reported `granted` in all eight
   runs, including every blocked one. Use `featurePolicy.allowsFeature` or a `try`/`catch`.
+  **A `try`/`catch` turned out not to be free.** On 13 September 2026 that exact enhancement arrived
+  unasked as `copy-to-clipboard` 4.x, which wraps `writeText` in a `try` and falls back to
+  `execCommand`. Copying still worked — in the suite's Chromium, throwaway specs (not kept) saw
+  `writeText` throw `NotAllowedError` and `execCommand('copy')` return `true` — but the attempt made
+  Chrome log `Permissions policy violation: The Clipboard API has been blocked…` as a
+  `console.error` in the panel on every copy click, which the host page's DevTools show. So the
+  path 3.3.3 used was ported into `src/utils/copy-text.ts`, which never touches
+  `navigator.clipboard`, and the dependency was removed. An async attempt now needs
+  `featurePolicy.allowsFeature('clipboard-write')` checked first, not a `try`.
 - `activeTab`-only permissions — until a feature genuinely needs `tabs`, `storage` or host
   permissions; each widens the install warning.
 - The fixed 475px panel — until a resizable or dockable panel is designed; the host body padding and
