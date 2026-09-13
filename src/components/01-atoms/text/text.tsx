@@ -2,10 +2,10 @@ import { clsx } from 'clsx';
 
 import styles from './text.module.css';
 
-export type TextSizes =
+export type TTextSize =
 	'horizon' | 'landmark' | 'pinnacle' | 'script' | 'whisper' | 'pulse';
 
-export type TextWeights =
+export type TTextWeight =
 	'light' | 'thin' | 'regular' | 'medium' | 'semiBold' | 'bold';
 
 export type TTextTag =
@@ -22,18 +22,18 @@ export type TTextTag =
 
 export type TText = {
 	tag?: TTextTag;
-	size?: TextSizes;
-	weight?: TextWeights;
+	size?: TTextSize;
+	weight?: TTextWeight;
 } & React.HTMLAttributes<HTMLElement>;
 
-export const Text: React.FC<TText> = ({
+export const Text = ({
 	tag: Tag = 'span',
 	size = 'pulse',
 	weight = 'regular',
 	className,
 	children,
 	...rest
-}) => (
+}: TText) => (
 	<Tag
 		className={clsx(
 			styles.base,

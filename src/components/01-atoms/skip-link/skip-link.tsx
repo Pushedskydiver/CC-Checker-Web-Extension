@@ -8,7 +8,7 @@ export type TSkipLink = {
 	bodyText: string;
 };
 
-export const SkipLink: React.FC<TSkipLink> = ({ href, bodyText }) => {
+export const SkipLink = ({ href, bodyText }: TSkipLink) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

@@ -11,10 +11,7 @@ export type TColorSwatch = {
 	foreground: string;
 };
 
-export const ColorSwatch: React.FC<TColorSwatch> = ({
-	background,
-	foreground,
-}) => {
+export const ColorSwatch = ({ background, foreground }: TColorSwatch) => {
 	const { isPoorContrast, isBackgroundDark, updateView } =
 		useColourContrast();
 
