@@ -68,8 +68,9 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   before/after render count on the slider path if it is worth the instrumentation. A compiler that changes
   nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
 - **`React.FC` in 25 files** — ~~`docs/CONVENTIONS.md` §TypeScript and React currently mandates it.~~ PR 5
-  (#50, 13 September 2026) replaces that rule with plain typed arrows. Decide once: keep, or
-  move to plain typed functions (the React docs' current default). A convention change is a doc PR first.
+  (#50, 13 September 2026) replaces that rule with plain typed arrows. ~~Decide once: keep, or
+  move to plain typed functions (the React docs' current default).~~ Decided in #50, pending Alex's merge.
+  A convention change is a doc PR first.
 - **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
   `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
   in the repo, `docs/TESTING.md` §Future), then the component is a form.
@@ -205,8 +206,8 @@ guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
   branch (`docs/GIT.md`: two unrelated changes are two PRs). `copilot-surrogate` found one MATERIAL — the row
   said Session 1 "finished and proved" a migration it left uncommitted and unpushed — and two Low; a fresh
   confirm round reached nit-floor. Alex merged it the same afternoon.
-- **#50, open — PR 5.** `docs/CONVENTIONS.md` §TypeScript and React now says components are plain typed
-  arrows, `export const Name = ({ … }: TName) => …`, and `docs/DA-REVIEW.md`'s checklist line follows it.
+- **#50, open — PR 5.** On its branch, not yet on `main`, `docs/CONVENTIONS.md` §TypeScript and React says
+  components are plain typed arrows, `export const Name = ({ … }: TName) => …`, and `docs/DA-REVIEW.md`'s checklist line follows it.
   `copilot-surrogate` found one MATERIAL and four Low; the confirm round reached nit-floor with nothing
   falsified. **Arrows rather than `function` declarations was decided in-session**, not by Alex — it is the
   form `App` and `ColourContrastProvider` already use — and the PR body says it is his to flip.
@@ -398,10 +399,11 @@ cites `fixtures.ts` by line number, which will drift.
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]'` gives 5 at this
-   handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires `docs/DEVELOPMENT.md` §Session
-   handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first, in its own PR as Session 1
-   was (#49). This block is deliberately not named `## Session …` so it does not inflate that count, and it
+2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5
+   at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
+   `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
+   in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
+   file, and the band (the `## Session` entries) is about 18 KB, roughly 4.6k tokens, inside a ~39 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `d56f6a4` or later), `gh pr list` — expect #50 (PR 5) unless Alex has merged it, #48 red, and
