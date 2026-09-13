@@ -45,6 +45,22 @@ export default tseslint.config(
 			],
 			'no-unused-expressions': 'off',
 			'@typescript-eslint/no-unused-expressions': 'error',
+			// 13 September 2026 (CC-004): docs/CONVENTIONS.md replaced the React.FC mandate with
+			// typed parameters and 31 signatures were converted at once; this keeps a 32nd out.
+			'@typescript-eslint/no-restricted-types': [
+				'error',
+				{
+					types: {
+						'React.FC':
+							'Type props on the parameter (docs/CONVENTIONS.md).',
+						FC: 'Type props on the parameter (docs/CONVENTIONS.md).',
+						'React.FunctionComponent':
+							'Type props on the parameter (docs/CONVENTIONS.md).',
+						FunctionComponent:
+							'Type props on the parameter (docs/CONVENTIONS.md).',
+					},
+				},
+			],
 		},
 	},
 	{

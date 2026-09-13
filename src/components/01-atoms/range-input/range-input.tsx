@@ -15,7 +15,7 @@ export type TRangeInput = {
 	'min' | 'max' | 'name' | 'step' | 'value' | 'onChange'
 >;
 
-export const RangeInput: React.FC<TRangeInput> = ({
+export const RangeInput = ({
 	id,
 	labelText,
 	channel,
@@ -27,7 +27,7 @@ export const RangeInput: React.FC<TRangeInput> = ({
 	step,
 	value,
 	onChange,
-}) => {
+}: TRangeInput) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

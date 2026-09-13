@@ -3,7 +3,7 @@ import { useColourContrast } from '~/context';
 
 import styles from './bmc-cta.module.css';
 
-export const BuyMeACoffeeCTA: React.FC = () => {
+export const BuyMeACoffeeCTA = () => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

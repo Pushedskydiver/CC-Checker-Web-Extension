@@ -18,7 +18,7 @@ export type TTab = {
 	) => void;
 };
 
-export const Tab: React.FC<TTab> = ({
+export const Tab = ({
 	id,
 	index,
 	name,
@@ -26,7 +26,7 @@ export const Tab: React.FC<TTab> = ({
 	tabRef,
 	handleTabClick,
 	handleTabKeyDown,
-}) => {
+}: TTab) => {
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
 		handleTabClick(e, index);
 	};

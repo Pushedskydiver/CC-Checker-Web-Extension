@@ -12,14 +12,14 @@ export type TActionCta = {
 	onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-export const ActionCta: React.FC<TActionCta> = ({
+export const ActionCta = ({
 	label,
 	icon,
 	withBackground = false,
 	className,
 	children,
 	onClick,
-}) => {
+}: TActionCta) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (
