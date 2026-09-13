@@ -409,16 +409,16 @@ load time, and the store does at upload.
       Skip-link targets carry `tabIndex={-1}`.
 - [ ] Every new visual element has its poor-contrast variant (`isPoorContrast` with
       `isBackgroundDark`), or the reviewer can say why not.
-- [ ] Copying still goes through `document.execCommand('copy')`:
-      `navigator.clipboard.writeText` is blocked in this iframe with or without
-      `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session GUID —
-      `docs/ARCHITECTURE.md` §Deliberately not changed), and a host page can revoke the async API
-      anyway. The suite asserts what the share button puts on the clipboard, by reading it back
-      from the host page after a real click, and asserts that a refused copy announces nothing,
-      by stubbing `document.execCommand` (both 12 September 2026). The guard on `copy()`'s return
-      value in `copy-cta.tsx` annotates its result as `boolean` on purpose: `copy-to-clipboard` 4.x
-      returns a promise, on which the guard would be a no-op — do not inline it back into the
-      `if`.
+- [ ] Copying still goes through `document.execCommand('copy')`, via `copyText` in
+      `src/utils/copy-text.ts`: `navigator.clipboard.writeText` is blocked in this iframe with or
+      without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session
+      GUID — `docs/ARCHITECTURE.md` §Deliberately not changed), a host page can revoke the async API
+      anyway, and merely attempting it logs a Chrome `console.error` on every click
+      (`copy-to-clipboard` 4.x, 13 September 2026). Nothing on the copy path may call
+      `navigator.clipboard`, even inside a `try`. The suite asserts what the share button puts on
+      the clipboard, by reading it back from the host page after a real click, and asserts that a
+      refused copy announces nothing, by stubbing `document.execCommand` (both 12 September 2026);
+      the no-console-errors test clicks both copy buttons since 13 September 2026.
 - [ ] Prop types are `T`-prefixed, components are plain typed functions
       (`({ … }: TName) =>`, no `React.FC`, `FC` or `FunctionComponent` — changed 13 September
       2026, `docs/CONVENTIONS.md`
