@@ -339,7 +339,7 @@ byte-equal to `DEFAULT_FOREGROUND`; `playwright.config.ts` added to the "both" r
 table so the table and `copilot-surrogate.md` agree. Pre-push suite re-run after both: lint (tsc ×2, ESLint,
 stylelint, prettier) green, build green, e2e 18/18.
 
-**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`)**:** nothing is committed or pushed; the commit sequence above still applies.
+**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`; Session 1's own text archived out 13 September 2026 and survives in `git log -p PROGRESS.md`)**:** nothing is committed or pushed; the commit sequence above still applies.
 Two loose ends the cross-check left for Alex: `copilot-surrogate.md`'s own trigger also names comment-block edits
 in `public/app/*.js` (a path table cannot express that — leave as a superset or drop it), and `docs/TESTING.md`
 cites `fixtures.ts` by line number, which will drift.
@@ -357,9 +357,12 @@ cites `fixtures.ts` by line number, which will drift.
    deliberately not named `## Session …` so it does not inflate that count, and it sits outside the
    session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `9156ff2` or later), `gh pr list` (expected empty — PRs 1 to 4 all merged 12 September 2026
+   (expect `9156ff2` or later), `gh pr list` (~~expected empty — PRs 1 to 4 all merged 12 September 2026
    and their branches are deleted; only `main` and the untouched `feat/CC-003-apca-3` remain on the
-   remote). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
+   remote~~ corrected 13 September 2026: PRs 1 to 4 merged and their branches are gone, but Dependabot
+   opened #47 and #48 overnight — #47 was green and merged as `346c4b0`; #48 carries the
+   `copy-to-clipboard` 4.x major, went red on `TS2322` exactly as designed, and is Alex's to decide).
+   Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
    written down under `docs/GIT.md` §Dependabot, `copy-to-clipboard` majors, which must go red on
    `lint:ts` and must not be merged without re-reading the guard in `copy-cta.tsx`.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
