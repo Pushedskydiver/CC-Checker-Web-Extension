@@ -339,53 +339,30 @@ byte-equal to `DEFAULT_FOREGROUND`; `playwright.config.ts` added to the "both" r
 table so the table and `copilot-surrogate.md` agree. Pre-push suite re-run after both: lint (tsc ×2, ESLint,
 stylelint, prettier) green, build green, e2e 18/18.
 
-**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`)**:** nothing is committed or pushed; the commit sequence above still applies.
+**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`; Session 1's own text archived out 13 September 2026 and survives in `git log -p PROGRESS.md`)**:** nothing is committed or pushed; the commit sequence above still applies.
 Two loose ends the cross-check left for Alex: `copilot-surrogate.md`'s own trigger also names comment-block edits
 in `public/app/*.js` (a path table cannot express that — leave as a superset or drop it), and `docs/TESTING.md`
 cites `fixtures.ts` by line number, which will drift.
-
-## Session 1 — 4 September 2026 (with a break at the session limit; 3–4 September)
-
-**Ask:** work out how far the Vite migration had got, finish it, prove the extension still works, then bring over
-the Claude docs/agents/protocols from moe, chief-clancy and nas-stacks.
-
-**Found:** the migration was functionally complete (build, tsc, stylelint green) but not finished: no ESLint
-(CRA's was lost), a stale `.nvmrc`, an unpushed branch, and — the important one — the git index still tracked
-`src/components/01-Atoms/…` while the disk and every import were lowercase, so any case-sensitive checkout failed
-to build. A 139-agent audit workflow was overkill for this repo and hit the session limit twice; five finders plus
-hands-on reproduction in a headless Chromium found everything that mattered.
-
-**Fixed (all verified by the new e2e suite, 18/18, plus lint/build):** index casing; the media-query sort
-comparator that reversed the mobile-first cascade (desktop was stuck on two columns); NaN hue on greys; range
-inputs that could not reach 0/1; the panel injecting into every child iframe; picker listeners outliving the
-panel; every pick handled twice; the copy/share confirmation hidden from screen readers; `<ul>` of buttons without
-`<li>`; tabs without `aria-controls`/wrap-around; `showErrorPopup` able to strand `error.html` as the popup; plus
-the hygiene list in `docs/REVIEW-PATTERNS.md`.
-
-**Decided:** TypeScript 7 native `tsc` stays, with `typescript` aliased to `@typescript/typescript6` for
-typescript-eslint (the TS team's documented layout); ESLint 9 (jsx-a11y does not declare 10 — nor, found in Session 3, does eslint-plugin-react); versions bumped to
-1.7.0 in both files (superseded by 2.1.0 in Session 4); `react-copy-to-clipboard` kept ~~(no `clipboard-write` in the iframe)~~ (reason corrected 12 September 2026 — the absent attribute was never the cause; §Session 5 pattern 2); AGENTS.md is a symlink;
-`PROGRESS.md` + `docs/history/SESSIONS.md` adopted from chief-clancy/moe; `docs/INDEX.md`, changesets and
-copilot-instructions deliberately not adopted (re-entry conditions in `docs/DEVELOPMENT.md` §Not ported).
-
-**Open, for Alex:** merge strategy per PR (history has merge commits); the published Web Store version (unknown
-from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: on.)
 
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Archive Session 1 before writing anything.** Neither trigger in `docs/DEVELOPMENT.md` §Session
+2. ~~**Archive Session 1 before writing anything.** Neither trigger in `docs/DEVELOPMENT.md` §Session
    handoff had fired at this handoff: five session entries against "more than five", and roughly 4.5k
    tokens of detail band inside a 9k file against "past roughly 10k". Adding a Session 6 entry makes six,
    which does fire it. Compress Session 1 to a one-line row in `docs/history/SESSIONS.md`, which is still
-   empty. Count entries with `grep -c '^## Session [0-9]'` — this block is deliberately not named
-   `## Session …` so it does not inflate that count, and it sits outside the session entries so
-   compressing one cannot take it.
+   empty.~~ Done 13 September 2026, Session 6, in its own PR ahead of PR 5: Session 1 is row 1 of
+   `docs/history/SESSIONS.md`. Count entries with `grep -c '^## Session [0-9]'` — this block is
+   deliberately not named `## Session …` so it does not inflate that count, and it sits outside the
+   session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `9156ff2` or later), `gh pr list` (expected empty — PRs 1 to 4 all merged 12 September 2026
+   (expect `9156ff2` or later), `gh pr list` (~~expected empty — PRs 1 to 4 all merged 12 September 2026
    and their branches are deleted; only `main` and the untouched `feat/CC-003-apca-3` remain on the
-   remote). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
+   remote~~ corrected 13 September 2026: PRs 1 to 4 merged and their branches are gone, but Dependabot
+   opened #47 and #48 overnight — #47 was green and merged as `346c4b0`; #48 carries the
+   `copy-to-clipboard` 4.x major, went red on `TS2322` exactly as designed, and is Alex's to decide).
+   Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — with one exception now
    written down under `docs/GIT.md` §Dependabot, `copy-to-clipboard` majors, which must go red on
    `lint:ts` and must not be merged without re-reading the guard in `copy-cta.tsx`.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
@@ -410,4 +387,5 @@ from here); Safari timing. (`delete_branch_on_merge` was resolved in Session 3: 
 
 ## Session archive
 
-See `docs/history/SESSIONS.md` (empty until Session 1 archives out).
+Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026). Full
+retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
