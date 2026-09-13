@@ -112,11 +112,22 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 
 ## TypeScript and React
 
-- **Components are `export const Name: React.FC<TName>`** with a `T`-prefixed prop type declared
-  above them in the same file (`TBadge`, `TRangeInput`, `TCopyCta`). Named exports only, except
-  `App` (`src/app.tsx`) and `ColourContrastProvider` (`src/context.tsx`), which are default
-  exports. `WcagProps`, `TextSizes` and `TextWeights` predate the prefix and are drift: rename
-  them when their file is next touched, not in a drive-by.
+- **Components are plain typed functions, `export const Name = ({ … }: TName) => …`**, with a
+  `T`-prefixed prop type declared above them in the same file (`TBadge`, `TRangeInput`,
+  `TCopyCta`). No `React.FC`, `FC` or `FunctionComponent`; a component with no props takes no
+  parameter, and one that renders `children` gets it from its prop type — spelled out as
+  `children: React.ReactNode` in `TBadge`, or inherited from `React.PropsWithChildren` (`TButton`)
+  or `React.HTMLAttributes` (`TText`). Named exports only, except `App` (`src/app.tsx`) and
+  `ColourContrastProvider` (`src/context.tsx`), which are default exports. Not enforced.
+  **Changed 13 September 2026 from a `React.FC<TName>` mandate** (CC-004), for three reasons
+  checked that day: in the installed `@types/react` 19.2, `FC<P>` is only
+  `(props: P) => ReactNode | Promise<ReactNode>` — no implicit `children`, so it adds nothing
+  these components use; the two default exports above were already plain typed arrows, so
+  the mandate described a form the entry points did not follow; and react.dev's TypeScript guide
+  types props on the parameter and never mentions `React.FC`. The 31 `React.FC` signatures in 25
+  files that predate the change are drift: convert them in one pass, not file by file, so the tree
+  never carries both forms longer than one PR. `WcagProps`, `TextSizes` and `TextWeights` predate
+  the prefix and are drift too: rename them when their file is next touched, not in a drive-by.
 - **`type` for props; `interface` only where it already is** (`src/context.tsx` and `WcagProps` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
 - **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
