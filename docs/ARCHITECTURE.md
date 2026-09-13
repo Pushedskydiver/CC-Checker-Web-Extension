@@ -30,7 +30,10 @@ follows from that:
    `allow="clipboard-write"`, because a bare feature name delegates the permission to the frame's
    `src` origin and `use_dynamic_url: true` makes that a per-session GUID that never matches the
    static origin the document loads with. `document.execCommand('copy')` does work there, which is
-   why the copy buttons go through it, calling `copy-to-clipboard` directly since 12 September 2026.
+   why the copy buttons end on it, calling `copy-to-clipboard` directly since 12 September 2026. Its
+   4.x, taken 13 September 2026, tries `writeText` first and falls back when it throws — observed in
+   the suite's panel that day as `writeText` → `NotAllowedError`, then `execCommand('copy')` → `true`,
+   with `featurePolicy.allowsFeature('clipboard-write')` false and `isSecureContext` true.
    What a swap to the
    async API would actually require, and why it could only ever be an enhancement, is under
    [§Deliberately not changed](#deliberately-not-changed-and-what-was-not-ported).

@@ -142,7 +142,11 @@ of them:
   test reaches its case by stubbing `document.execCommand` — a real refusal cause would be an
   enterprise clipboard policy or a browser that does not implement the command (Safari, the stated
   next target). **Not** `Permissions-Policy`: that governs `navigator.clipboard`, and the
-  `execCommand` path works in this iframe with no `allow` attribute at all.
+  `execCommand` path works in this iframe with no `allow` attribute at all. Since
+  `copy-to-clipboard` 4.x (13 September 2026) the click tries `navigator.clipboard.writeText`
+  first; it throws `NotAllowedError` in the panel, so the stubbed `execCommand` is still what the
+  test reaches, and the `prompt` it counts is there because `copy-cta.tsx` passes
+  `fallbackToPrompt: true`.
 - **The Web Store package.** `npm run package` and what the store accepts are checked by hand.
 - **Safari.** Nothing has been adapted for it and nothing runs it.
 - **Unit-level colour maths.** `getLevel`, `roundTo`, `toHslTuple` and the chroma wrappers are only

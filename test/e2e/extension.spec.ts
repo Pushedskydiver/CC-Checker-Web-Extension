@@ -285,9 +285,11 @@ test.describe('app', () => {
 	});
 
 	test('a refused copy announces nothing', async ({ page, openChecker }) => {
-		// The failure path: `copy-to-clipboard` falls back to `window.prompt` when
-		// the copy command is refused, then returns false. Playwright auto-dismisses
-		// dialogs, but the handler is explicit so the prompt is part of the record.
+		// The failure path: `copy-to-clipboard` 4.x tries `navigator.clipboard` (it
+		// throws in the panel), then the copy command, then — because `copy-cta.tsx`
+		// passes `fallbackToPrompt: true` — `window.prompt`, and resolves false.
+		// Playwright auto-dismisses dialogs, but the handler is explicit so the
+		// prompt is part of the record.
 		const dialogs: string[] = [];
 		page.on('dialog', (dialog) => {
 			dialogs.push(dialog.type());

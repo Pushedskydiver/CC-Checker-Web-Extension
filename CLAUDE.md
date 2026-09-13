@@ -92,12 +92,14 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
   tried and rejected on 4 September 2026 because `eslint-plugin-jsx-a11y` does not declare it as a
   peer, and `eslint-plugin-react` 7.37 does not either (found 11 September 2026 behind the first
   wall). `dependabot.yml` ignores major `eslint` / `@eslint/js` bumps until both do.
-- **Copying runs through `document.execCommand('copy')`, and `allow="clipboard-write"` is not a way
+- **Copying ends in `document.execCommand('copy')`, and `allow="clipboard-write"` is not a way
   off it.** `navigator.clipboard.writeText` is blocked in this cross-origin iframe with or without
   that attribute, and any host page can revoke the async API even when it is granted. Do not swap to
   it; keep `execCommand` as the path that works. `copy-to-clipboard` is called directly for it since
   12 September 2026 — the `react-copy-to-clipboard` wrapper is gone, and with it the last class
-  component. Mechanism and measurements:
+  component. Since 13 September 2026 it is 4.x, which tries `writeText` first, catches the
+  `NotAllowedError` and falls back to `execCommand`; `copy()` returns a promise, so it is awaited,
+  and `fallbackToPrompt: true` keeps the last-resort prompt. Mechanism and measurements:
   `docs/ARCHITECTURE.md` §Deliberately not changed.
 - **A case-sensitive checkout is the real build target.** The Git index carried `01-Atoms/`, `Icon/`
   and friends while every import was lowercase; macOS hid it and a Linux clone could not build (21

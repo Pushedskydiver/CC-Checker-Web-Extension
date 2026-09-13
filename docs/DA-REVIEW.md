@@ -409,16 +409,18 @@ load time, and the store does at upload.
       Skip-link targets carry `tabIndex={-1}`.
 - [ ] Every new visual element has its poor-contrast variant (`isPoorContrast` with
       `isBackgroundDark`), or the reviewer can say why not.
-- [ ] Copying still goes through `document.execCommand('copy')`:
+- [ ] Copying still ends in `document.execCommand('copy')`:
       `navigator.clipboard.writeText` is blocked in this iframe with or without
       `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session GUID —
       `docs/ARCHITECTURE.md` §Deliberately not changed), and a host page can revoke the async API
-      anyway. The suite asserts what the share button puts on the clipboard, by reading it back
-      from the host page after a real click, and asserts that a refused copy announces nothing,
-      by stubbing `document.execCommand` (both 12 September 2026). The guard on `copy()`'s return
-      value in `copy-cta.tsx` annotates its result as `boolean` on purpose: `copy-to-clipboard` 4.x
-      returns a promise, on which the guard would be a no-op — do not inline it back into the
-      `if`.
+      anyway. `copy-to-clipboard` 4.x (13 September 2026) tries `writeText` first and must keep
+      falling back to `execCommand`; anything that replaces it must too. The suite asserts what the
+      share button puts on the clipboard, by reading it back from the host page after a real click,
+      and asserts that a refused copy announces nothing, by stubbing `document.execCommand` (both
+      12 September 2026). The guard in `copy-cta.tsx` awaits `copy()` and annotates the result as
+      `boolean` on purpose: an un-awaited call is a promise, on which the guard is a no-op — that is
+      how the 4.x bump arrived (#48, `TS2322`). Do not inline it into the `if`, drop the `await`,
+      or drop `fallbackToPrompt: true`, which the refused-copy test's `prompt` depends on.
 - [ ] Prop types are `T`-prefixed, components are plain typed functions
       (`({ … }: TName) =>`, no `React.FC`, `FC` or `FunctionComponent` — changed 13 September
       2026, `docs/CONVENTIONS.md`

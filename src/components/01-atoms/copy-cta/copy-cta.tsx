@@ -39,27 +39,30 @@ export const CopyCta = ({
 		};
 	}, []);
 
-	const handleCopy = (): void => {
+	const handleCopy = async (): Promise<void> => {
 		// Announcing when the copy failed would put the confirmation into the
 		// `role="status"` region below while nothing reached the clipboard. That is
 		// what shipped until 12 September 2026: `react-copy-to-clipboard` called
 		// `onCopy(text, result)` whatever `result` was, and this handler took no
 		// arguments, so a failed copy still announced "URL added to clipboard" to a
-		// screen reader. `copy` returns false when `document.execCommand('copy')`
+		// screen reader. `copy` resolves false when `document.execCommand('copy')`
 		// is refused — an enterprise clipboard policy, or a browser that does not
-		// implement it, which is a live question for the Safari port. Not
-		// `Permissions-Policy`: that governs `navigator.clipboard`, and the
-		// `execCommand` path works in this iframe with no `allow` attribute at all
-		// (`docs/ARCHITECTURE.md` §Deliberately not changed).
+		// implement it, which is a live question for the Safari port.
+		//
+		// Since 13 September 2026 (`copy-to-clipboard` 4.x) `copy` tries
+		// `navigator.clipboard.writeText` first and falls back to `execCommand`
+		// when it throws. In this iframe it throws — `use_dynamic_url` means no
+		// `allow` attribute can grant `clipboard-write`, and a host page's
+		// `Permissions-Policy` can revoke it anyway (`docs/ARCHITECTURE.md`
+		// §Deliberately not changed) — so `execCommand` is still the path that
+		// works. `fallbackToPrompt` keeps the 3.x last resort, which 4.x turned off.
 		//
 		// `copied` is annotated rather than inlined into the `if`, and the
-		// annotation is the gate. `copy-to-clipboard` 4.x returns
-		// `Promise<boolean>`, on which `!copy(value)` is always false — the guard
-		// would vanish silently, and since 4.x also defaults its `window.prompt`
-		// fallback off, the failure path would go silent with it. The annotation
-		// turns that major bump into a `TS2322` in `lint:ts` instead
-		// (`docs/GIT.md` §Dependabot).
-		const copied: boolean = copy(value);
+		// annotation is the gate. Without the `await`, `copy(value)` is a
+		// `Promise`, on which `!copied` is always false: the guard would vanish
+		// silently. That is how the 4.x bump arrived (#48, a `TS2322` in
+		// `lint:ts`), and it is what the annotation still catches.
+		const copied: boolean = await copy(value, { fallbackToPrompt: true });
 
 		if (!copied) return;
 

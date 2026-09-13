@@ -295,7 +295,12 @@ In 4.x `copy()` returns `Promise<boolean>`, its `window.prompt` fallback default
 `src/components/01-atoms/copy-cta/copy-cta.tsx`. There is deliberately no `ignore` entry: the
 result is annotated `boolean` there, so the bump fails `lint:ts` with `TS2322` and the PR goes red
 rather than being merged as a green one under [Who merges](#who-merges). Verified 12 September 2026
-by pointing the type declaration at a promise-returning signature.
+by pointing the type declaration at a promise-returning signature, and again for real on
+13 September 2026: Dependabot's #48 (4.0.2, grouped with React 19.3.0) failed on exactly that line.
+4.x was then taken by hand in a PR of its own — `await copy(value, { fallbackToPrompt: true })` —
+rather than by committing to the bot's branch, and #48 was asked to `@dependabot recreate` for the
+rest of its group. The gate stays: the annotation still turns an un-awaited call, or a later
+return-type change, into `TS2322`, so the next major is no more delegable than this one was.
 
 **PRs #18–#25 were obsolete** — 2024 security bumps (postcss 7→8, webpack, micromatch, express,
 rollup) against the CRA/webpack tree the migration deleted — and were closed, not merged, on
