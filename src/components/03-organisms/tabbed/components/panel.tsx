@@ -8,13 +8,7 @@ export type TPanel = {
 	panelRef: React.RefObject<{ [key: number]: HTMLElement | null }>;
 };
 
-export const Panel: React.FC<TPanel> = ({
-	id,
-	index,
-	activeTab,
-	panelRef,
-	children,
-}) => (
+export const Panel = ({ id, index, activeTab, panelRef, children }: TPanel) => (
 	<section
 		id={`panel-${id}`}
 		role="tabpanel"

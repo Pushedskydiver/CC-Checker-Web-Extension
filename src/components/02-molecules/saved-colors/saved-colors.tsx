@@ -6,7 +6,7 @@ import styles from './saved-colors.module.css';
 
 import type { TColors } from '~/global-types';
 
-export const SavedColors: React.FC = () => {
+export const SavedColors = () => {
 	const { colors, saveColors } = useColourContrast();
 
 	const renderSwatch = (swatch: TColors, i: number): React.JSX.Element => (

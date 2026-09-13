@@ -6,7 +6,7 @@ import { Cross, Swap } from '~/components/01-atoms/icon/icon';
 
 import styles from './actions.module.css';
 
-export const Actions: React.FC = () => {
+export const Actions = () => {
 	const { background, foreground, reverseColors } = useColourContrast();
 	const bg = hslToHex(background).split('#');
 	const fg = hslToHex(foreground).split('#');

@@ -7,7 +7,7 @@ import { Actions } from '../actions/actions';
 
 import styles from './header.module.css';
 
-export const Header: React.FC = () => {
+export const Header = () => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

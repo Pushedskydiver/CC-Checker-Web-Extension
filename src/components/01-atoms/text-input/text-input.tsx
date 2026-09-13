@@ -15,7 +15,7 @@ export type TTextInput = {
 	'minLength' | 'name' | 'onChange' | 'onBlur'
 >;
 
-export const TextInput: React.FC<TTextInput> = ({
+export const TextInput = ({
 	id,
 	labelText,
 	minLength,
@@ -23,7 +23,7 @@ export const TextInput: React.FC<TTextInput> = ({
 	value,
 	onChange,
 	onBlur,
-}) => {
+}: TTextInput) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

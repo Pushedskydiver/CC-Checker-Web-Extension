@@ -4,19 +4,20 @@ import { Text } from '../text/text';
 
 import styles from './cta.module.css';
 
-export type TButton = React.ButtonHTMLAttributes<HTMLButtonElement> & CtaShared;
+export type TButton = React.ButtonHTMLAttributes<HTMLButtonElement> &
+	TCtaShared;
 
-type CtaShared = React.PropsWithChildren<{
+type TCtaShared = React.PropsWithChildren<{
 	className?: string;
 }>;
 
-export const Button: React.FC<TButton> = ({
+export const Button = ({
 	children,
 	type = 'button',
 	className,
 	onClick,
 	...buttonAttributes
-}) => {
+}: TButton) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -51,7 +52,7 @@ type TCtaText = {
 	className?: string;
 };
 
-const CtaText: React.FC<TCtaText> = ({ children, className }) => (
+const CtaText = ({ children, className }: TCtaText) => (
 	<Text
 		role="presentation"
 		weight="medium"
