@@ -70,7 +70,7 @@ undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` unde
   nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
 - **`React.FC` in 25 files** — ~~`docs/CONVENTIONS.md` §TypeScript and React currently mandates it.~~ PR 5
   (#50, 13 September 2026) replaces that rule with plain typed arrows. ~~Decide once: keep, or
-  move to plain typed functions (the React docs' current default).~~ Decided in #50, pending Alex's merge.
+  move to plain typed functions (the React docs' current default).~~ Decided in #50, merged 13 September 2026 as `bbb822b`.
   A convention change is a doc PR first.
 - **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
   `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
