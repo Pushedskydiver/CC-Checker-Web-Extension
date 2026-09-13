@@ -5,16 +5,17 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 6)
 
-Updated 13 September 2026, end of Session 6 — **CC-004 PR 5 is open as #50, reviewed to nit-floor and waiting
-on Alex; PRs 1 to 4 merged in Session 5** (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`). Session 6 also merged
-the Session 1 archive (#49, `d56f6a4`) and one green Dependabot patch (#47, `346c4b0`), and left #48 — the
+Updated 13 September 2026, end of Session 6 — **CC-004 PRs 1 to 5 have merged and PR 6 is open as #52,
+reviewed to nit-floor and waiting on Alex.** PRs 1 to 4 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`,
+`9156ff2`); PR 5 merged in Session 6 (#50, `bbb822b`). Session 6 also merged the Session 1 archive (#49,
+`d56f6a4`), its own first handoff (#51, `4b46b53`) and one green Dependabot patch (#47, `346c4b0`), and left #48 — the
 `copy-to-clipboard` 4.x major, red on `TS2322` as designed — for Alex. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 4 merged; PR 5 is #50 on `docs/CC-004-plain-function-components`, not merged.
-   Resume at PR 6, the 31-signature conversion, once #50 has merged — it follows whatever form #50
-   lands with. One PR at a time, `da-review` on every `src/**` change, both reviews wherever the
+   plan below. PRs 1 to 5 merged; PR 6 is #52 on `refactor/CC-004-plain-function-components`, not merged.
+   Resume at PR 7, Vitest and the first colour-utility tests, once #52 has merged — PR 7 has no dependency,
+   but one change is in flight until then. One PR at a time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
    submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
@@ -111,20 +112,20 @@ lines and fired both — 232 at the time that was measured, 305 by the time it m
 in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
-| #   | PR                                                                                  | Reviews            | After |
-| --- | ----------------------------------------------------------------------------------- | ------------------ | ----- |
-| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)    | both               | —     |
-| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)      | both               | —     |
-| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)     | da-review          | —     |
-| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)    | both               | 2     |
-| 5   | Replace the `React.FC` rule with plain typed functions (docs) — #50, open           | surrogate          | —     |
-| 6   | Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence   | both ~~da-review~~ | 5     |
-| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep | both               | —     |
-| 8   | Extract the hex-input parser to `src/utils/`, with tests                            | da-review          | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail              | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms       | da/both            | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation           | da-review          | —     |
-| 12  | Deferred: context reducer or external store, justified by its own unit tests        | da-review          | 7, 11 |
+| #   | PR                                                                                            | Reviews            | After |
+| --- | --------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)              | both               | —     |
+| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                | both               | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)               | da-review          | —     |
+| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)              | both               | 2     |
+| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)             | surrogate          | —     |
+| 6   | Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence — #52, open | both ~~da-review~~ | 5     |
+| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep           | both               | —     |
+| 8   | Extract the hex-input parser to `src/utils/`, with tests                                      | da-review          | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail                        | both               | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                 | da/both            | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation                     | da-review          | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests                  | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
 
@@ -186,7 +187,7 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
 
-## Session 6 — 13 September 2026 (CC-004: Session 1 archive, PR 5 to review)
+## Session 6 — 13 September 2026 (CC-004: Session 1 archive, PRs 5 and 6)
 
 **Setup:** the loading block said to set Opus 5 at `high` before anything else. The session-management tools
 refuse to change their own session's model or effort, so it was checked instead: `get_session self` reported
@@ -200,24 +201,43 @@ under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9)
 'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
 guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
 
-**Done.** Merged: #49. Not merged: #50. Uploaded to the Web Store: nothing; users are on 2.1.0.
+**Done.** Merged: #49, #50, #51. Not merged: #52. Uploaded to the Web Store: nothing; users are on 2.1.0.
 
 - **#49, `d56f6a4` — Session 1 archived** to `docs/history/SESSIONS.md`, in its own PR rather than on PR 5's
   branch (`docs/GIT.md`: two unrelated changes are two PRs). `copilot-surrogate` found one MATERIAL — the row
   said Session 1 "finished and proved" a migration it left uncommitted and unpushed — and two Low; a fresh
   confirm round reached nit-floor. Alex merged it the same afternoon.
-- **#50, open — PR 5.** On its branch, not yet on `main`, `docs/CONVENTIONS.md` §TypeScript and React says
-  components are plain typed arrows, `export const Name = ({ … }: TName) => …`, and `docs/DA-REVIEW.md`'s checklist line follows it.
+- **#50, `bbb822b` — PR 5.** `docs/CONVENTIONS.md` §TypeScript and React says components are plain typed
+  arrows, `export const Name = ({ … }: TName) => …`, and `docs/DA-REVIEW.md`'s checklist line follows it.
   `copilot-surrogate` found one MATERIAL and four Low; the confirm round reached nit-floor with nothing
   falsified. **Arrows rather than `function` declarations was decided in-session**, not by Alex — it is the
-  form `App` and `ColourContrastProvider` already use — and the PR body says it is his to flip.
+  form `App` and `ColourContrastProvider` already use — and the PR body said it was his to flip. He merged
+  it as written.
+- **#51, `4b46b53` — the first Session 6 handoff**, written while #50 was still open; this entry and the
+  loading block were updated again once #50 merged and #52 opened.
+- **#52, open — PR 6.** 31 `React.FC` signatures in 25 files converted by a script that touched only the
+  declaration line and the closing `}) =>`; four types renamed (`TWcag`, `TCtaShared`, `TTextSize`,
+  `TTextWeight`); `@typescript-eslint/no-restricted-types` now rejects `React.FC`, `FC`,
+  `React.FunctionComponent` and `FunctionComponent`. **Type-only is proved, not argued:** `main` and the
+  branch each built in a scratch worktree give a byte-identical `build/`. The rule was watched failing — 31
+  errors on the unconverted tree, 2 on a planted file. `da-review` approved and `copilot-surrogate` reached
+  nit-floor; the commit body's "nine props-less components" is eight, corrected in the PR body rather than
+  amended.
+
+**#50 and #51 were rebase-merged, #49 got a merge commit.** `docs/GIT.md` §Merge strategy still says rebase
+is "enabled and unused. Do not start"; that is Alex's call per PR, so it was flagged as a separate task
+rather than edited here. Two consequences hit this session: commit bodies on `main` cite branch hashes that
+were rewritten by the merge (`326029c`, `113e6cd`), and `git branch -d` refused both merged branches —
+content was diffed against `origin/main` first, then `-D`.
 
 **Carried into PR 6 by the #50 review, and why row 6 of the plan changed:** PR 6 must rewrite the
 "31 signatures" sentence in `docs/CONVENTIONS.md`, so it touches `docs/**` and fires both reviews, not the
 `da-review` the table predicted. It carries four drift renames, not three — `CtaShared` in `cta.tsx` joins
 `WcagProps`, `TextSizes` and `TextWeights`, because PR 6 touches those files. `ProviderProps` waits until
-`src/context.tsx` is next touched; `ColourContrastContextTypes` is un-prefixed too but is a context value, not
-a prop type, so the rule as worded does not reach it.
+`src/context.tsx` is next touched; ~~`ColourContrastContextTypes` is un-prefixed too but is a context value, not
+a prop type, so the rule as worded does not reach it~~ — superseded by #52: two of its renames were unions, so
+the prefix covers every declared type, and `docs/CONVENTIONS.md` now names three left as drift
+(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`).
 
 **Major novel patterns Session 6:**
 
@@ -232,6 +252,14 @@ a prop type, so the rule as worded does not reach it.
 3. **A loading step that cannot be done as written should be checked, not skipped.** "Set the model and
    effort" is impossible from inside the session — the session tools only change other sessions — but
    `get_session self` shows both, which is what the step was protecting.
+4. **A type-only refactor is proved by the build output, not by `tsc`.** A green type-check says the types
+   agree; it cannot say the runtime did not move. Building `main` and the branch in two scratch worktrees
+   and running `diff -rq` on `build/` answers the question every reviewer would otherwise argue about —
+   `children`, default parameters, return types — in one command. `da-review` and the author reached it
+   independently.
+5. **A merge button can rewrite the hashes your prose cites.** A rebase merge re-hashes every commit, so a
+   commit body naming a branch hash points at nothing on `main`, and `git branch -d` refuses. Cite PR numbers
+   in prose that outlives the branch; before `-D`, prove the branch's files equal `origin/main`.
 
 ## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
 
@@ -403,21 +431,21 @@ cites `fixtures.ts` by line number, which will drift.
    at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
    `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
    in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 18 KB, roughly 4.6k tokens, inside a ~39 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   file, and the band (the `## Session` entries) is about 21 KB, roughly 5.2k tokens, inside a ~42 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `d56f6a4` or later), `gh pr list` — expect #50 (PR 5) unless Alex has merged it, #48 red, and
+   (expect `4b46b53` or later), `gh pr list` — expect #52 (PR 6) unless Alex has merged it, #48 red, and
    this handoff's own PR unless merged. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges);
    `copy-to-clipboard` majors are not (`docs/GIT.md` §Dependabot), and #48 is one.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 20 passing tests until PR 7 adds unit tests and a fourth command.
-5. **Resume at PR 6 once #50 has merged.** Convert the 31 signatures to the form #50 landed with, rename
-   the four drift types in the files it touches, rewrite the "31 signatures" sentence in
-   `docs/CONVENTIONS.md`, and run **both** reviews. If `@typescript-eslint/no-restricted-types` is proposed
-   to hold the rule, check it matches a qualified `React.FC` before saying it does. If #50 is still open,
-   PR 6 waits; PR 7 has no dependency, but one change is in flight, so ask Alex before starting it. Cut the
-   branch as the literal first action; do not re-grill the plan or reorder it without saying why.
+5. **Resume at PR 7 once #52 has merged** — ~~PR 6 once #50 has merged~~, done in Session 6 as #52. PR 7
+   adds Vitest, the first colour-utility tests, a `ci.yml` step and the ten-file documentation sweep; it
+   fires **both** reviews, `.github/workflows/**` puts it on the "needs Alex's attention" list in
+   `docs/DEVELOPMENT.md`, and decision branch (a) below applies. If #52 is still open, ask Alex before
+   starting PR 7 rather than stacking two changes. Cut the branch as the literal first action; do not
+   re-grill the plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
    at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out). A session cannot set its own model or
@@ -427,10 +455,12 @@ cites `fixtures.ts` by line number, which will drift.
 7. Decision branches carried in: **(a)** the pre-push suite gains a fourth command, `test:unit`, running
    second — decided, open only in that Alex may revisit it once he sees PR 7's ten-file documentation sweep
    (PR #42's merged body calls that PR "PR 8"; the plan's numbering is the authority); **(b)** whether
-   workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; **(c)** arrows
+   workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; ~~**(c)** arrows
    or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
-   converts anything; **(d)** #48 — take `copy-to-clipboard` 4.x (what that needs is in `docs/GIT.md`
-   §Dependabot) or hold it; React 19.3.0 rides in the same group PR either way. The store published 2.1.0
+   converts anything~~ — settled: Alex merged #50 with arrows; **(d)** #48 — take `copy-to-clipboard` 4.x
+   (what that needs is in `docs/GIT.md` §Dependabot) or hold it; React 19.3.0 rides in the same group PR
+   either way; **(e)** whether rebase merges are now accepted — `docs/GIT.md` §Merge strategy says "unused.
+   Do not start" and #50 and #51 used it; a separate task asks Alex before changing the doc. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL).
 
