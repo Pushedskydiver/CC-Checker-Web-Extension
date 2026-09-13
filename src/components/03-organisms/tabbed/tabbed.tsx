@@ -19,12 +19,12 @@ export type TTabbed = {
 	orientation?: 'horizontal' | 'vertical';
 };
 
-export const Tabbed: React.FC<TTabbed> = ({
+export const Tabbed = ({
 	id,
 	items,
 	ariaLabel,
 	orientation = 'horizontal',
-}) => {
+}: TTabbed) => {
 	const { isBackgroundDark, isPoorContrast } = useColourContrast();
 	const {
 		activeTab,

@@ -4,7 +4,7 @@ import { Text } from '../text/text';
 
 import styles from './ratio.module.css';
 
-export const Ratio: React.FC = () => {
+export const Ratio = () => {
 	const { contrast, isPoorContrast, isBackgroundDark } = useColourContrast();
 
 	return (

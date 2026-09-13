@@ -3,8 +3,7 @@
 Four tools have opinions about this repo and `npm run lint` runs all of them in order: `tsc` over
 both tsconfigs, `eslint .`, `stylelint "src/**/*.css"` and `prettier --check`. Everything they
 enforce is marked as enforced below. Everything else holds because it is written down here and
-because the files already follow it (bar the `React.FC` signatures that §TypeScript and React marks
-as drift) — read `src/components/01-atoms/badge/badge.tsx`,
+because the files already follow it — read `src/components/01-atoms/badge/badge.tsx`,
 `src/context.tsx`, `src/utils/color-utils.ts` and `public/app/content.js` before writing anything.
 
 Adapted from the `docs/CONVENTIONS.md` in tamaclaude, moe and nas-stacks. Kept: what a comment is
@@ -118,10 +117,12 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `T`-prefixed prop type declared above them in the same file (`TBadge`, `TRangeInput`,
   `TCopyCta`). No `React.FC`, `FC` or `FunctionComponent`; a component with no props takes no
   parameter, and one that renders `children` gets it from its prop type — spelled out as
-  `children: React.ReactNode` in `TBadge`, or inherited, as `TButton` does through `CtaShared` (a
+  `children: React.ReactNode` in `TBadge`, or inherited, as `TButton` does through `TCtaShared` (a
   `React.PropsWithChildren`) and `TText` through `React.HTMLAttributes`. Named exports only, except
   `App` (`src/app.tsx`) and `ColourContrastProvider` (`src/context.tsx`), which are default
-  exports. Not enforced.
+  exports. **Enforced** for the component type: `@typescript-eslint/no-restricted-types` in
+  `eslint.config.mjs` rejects `React.FC`, `FC`, `React.FunctionComponent` and `FunctionComponent`;
+  the arrow shape, the `T` prefix and named exports are not linted.
   **Changed 13 September 2026 from a `React.FC<TName>` mandate** (CC-004). The incident: the
   mandate did not describe the tree — `App` and `ColourContrastProvider` were already plain typed
   arrows, so the two entry points sat outside a rule that said every component used `React.FC`.
@@ -130,11 +131,13 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `displayName` that nothing in `src/` sets — no implicit `children` — so it gives these
   components nothing a typed parameter does not; and react.dev's TypeScript guide types props on
   the parameter and never mentions `React.FC`. The 31 `React.FC` signatures in 25 files that
-  predate the change are drift: convert them in one pass, not file by file, so the tree never
-  carries both forms longer than one PR. `WcagProps`, `ProviderProps`, `CtaShared`, `TextSizes`
-  and `TextWeights` predate the prefix and are drift too: rename them when their file is next
-  touched, not in a drive-by.
-- **`type` for props; `interface` only where it already is** (`src/context.tsx` and `WcagProps` in
+  predated the change were converted in one pass the same day, with the lint rule added so a 32nd
+  cannot come back, and the four un-prefixed types in files that pass touched were renamed
+  (`TWcag`, `TCtaShared`, `TTextSize`, `TTextWeight` — two of them unions, not prop types, so the
+  prefix is for every declared type, not only props). Three still predate it and are drift:
+  `ProviderProps` and `ColourContrastContextTypes` in `src/context.tsx`, and `ColorTuple` in
+  `src/global-types.ts`. Rename each when its file is next touched, not in a drive-by.
+- **`type` for props; `interface` only where it already is** (`src/context.tsx` and `TWcag` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
 - **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
   camelCase filename in `src/` (verified 4 September 2026), deliberately, because the file is the
@@ -342,7 +345,11 @@ reconfiguring one, plant a violation, watch it fail, then remove it — in a scr
 working tree. Done on 4 September 2026 for the rules this document leans on: a planted
 `margin-left` and `!important` produced two stylelint errors (`csstools/use-logical`,
 `declaration-no-important`); a planted `setN(1)` inside `useEffect` produced
-`react-hooks/set-state-in-effect`; Prettier with `--no-editorconfig` produced double quotes.
+`react-hooks/set-state-in-effect`; Prettier with `--no-editorconfig` produced double quotes. On
+13 September 2026, for `@typescript-eslint/no-restricted-types`: before the conversion it reported
+31 errors against the 31 `React.FC` signatures then in `src/`, and afterwards a planted
+`src/zz-fc-gate-probe.tsx` — in the working tree, against the scratch-file advice above, deleted at
+once — with `import type { FC }`, one `React.FC` and one bare `FC` produced exactly two.
 
 The counter-example is the media-query comparator: it passed `tsc`, ESLint, stylelint, Prettier
 and `vite build` while emitting the wrong cascade, because no gate reads emitted CSS order. Where a

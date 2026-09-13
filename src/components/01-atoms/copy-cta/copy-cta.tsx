@@ -18,12 +18,12 @@ export type TCopyCta = {
 
 const COPIED_VISIBLE_MS = 2000;
 
-export const CopyCta: React.FC<TCopyCta> = ({
+export const CopyCta = ({
 	value,
 	icon = 'clipboard',
 	tooltipPosition = 'top',
 	withBackground = false,
-}) => {
+}: TCopyCta) => {
 	const isUrl = value.includes('http');
 	const [copied, setCopied] = useState(false);
 	const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

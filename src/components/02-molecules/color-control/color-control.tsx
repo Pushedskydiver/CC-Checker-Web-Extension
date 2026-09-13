@@ -13,7 +13,7 @@ export type TColourControl = {
 
 const HSL_STEP = 1 / 256;
 
-export const ColourControl: React.FC<TColourControl> = ({ id, type }) => {
+export const ColourControl = ({ id, type }: TColourControl) => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
 
 	const isRgb = type === 'rgb';

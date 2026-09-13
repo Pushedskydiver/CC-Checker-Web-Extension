@@ -11,7 +11,7 @@ export type TBadge = {
 	children: React.ReactNode;
 };
 
-export const Badge: React.FC<TBadge> = ({ grade, type, children }) => {
+export const Badge = ({ grade, type, children }: TBadge) => {
 	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 	const isPass = grade === 'Pass';
 

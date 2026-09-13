@@ -3,11 +3,11 @@ import { Badge } from '~/components/01-atoms/badge/badge';
 
 import styles from './wcag.module.css';
 
-export interface WcagProps {
+export interface TWcag {
 	id: string;
 }
 
-export const Wcag: React.FC<WcagProps> = ({ id }) => {
+export const Wcag = ({ id }: TWcag) => {
 	const { level } = useColourContrast();
 	const { AALarge, AAALarge, AA, AAA } = level;
 	return (

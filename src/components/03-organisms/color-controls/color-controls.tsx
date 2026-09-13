@@ -28,7 +28,7 @@ const toCompleteHex = (raw: string): string | null => {
 	return withHash;
 };
 
-export const ColorControls: React.FC = () => {
+export const ColorControls = () => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();
 
 	// While the user is typing, the input shows their draft; otherwise it shows

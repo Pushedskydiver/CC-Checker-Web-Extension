@@ -7,7 +7,7 @@ export type TIcon = {
 	className?: string;
 };
 
-export const Clipboard: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Clipboard = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
@@ -26,7 +26,7 @@ export const Clipboard: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
-export const Tick: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Tick = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
@@ -44,7 +44,7 @@ export const Tick: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
-export const Cross: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Cross = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
@@ -62,7 +62,7 @@ export const Cross: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
-export const Eyedropper: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Eyedropper = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
@@ -80,7 +80,7 @@ export const Eyedropper: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
-export const Swap: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Swap = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
@@ -98,7 +98,7 @@ export const Swap: React.FC<TIcon> = ({ className, size = 24 }) => (
 	</svg>
 );
 
-export const Share: React.FC<TIcon> = ({ className, size = 24 }) => (
+export const Share = ({ className, size = 24 }: TIcon) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}

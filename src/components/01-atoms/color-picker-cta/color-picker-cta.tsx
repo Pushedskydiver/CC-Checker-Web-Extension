@@ -7,7 +7,7 @@ export type TColorPickerCta = {
 	id: 'background' | 'foreground';
 };
 
-export const ColorPickerCta: React.FC<TColorPickerCta> = ({ id }) => {
+export const ColorPickerCta = ({ id }: TColorPickerCta) => {
 	// One Escape listener at a time, removed on Escape, the next pick, or unmount.
 	const escapeListener = useRef<AbortController | null>(null);
 
