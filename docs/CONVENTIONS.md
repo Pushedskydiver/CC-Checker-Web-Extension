@@ -133,8 +133,10 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   the parameter and never mentions `React.FC`. The 31 `React.FC` signatures in 25 files that
   predated the change were converted in one pass the same day, with the lint rule added so a 32nd
   cannot come back, and the four un-prefixed types in files that pass touched were renamed
-  (`TWcag`, `TCtaShared`, `TTextSize`, `TTextWeight`). `ProviderProps` in `src/context.tsx` still
-  predates the prefix and is drift: rename it when that file is next touched, not in a drive-by.
+  (`TWcag`, `TCtaShared`, `TTextSize`, `TTextWeight` — two of them unions, not prop types, so the
+  prefix is for every declared type, not only props). Three still predate it and are drift:
+  `ProviderProps` and `ColourContrastContextTypes` in `src/context.tsx`, and `ColorTuple` in
+  `src/global-types.ts`. Rename each when its file is next touched, not in a drive-by.
 - **`type` for props; `interface` only where it already is** (`src/context.tsx` and `TWcag` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
 - **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
@@ -343,7 +345,11 @@ reconfiguring one, plant a violation, watch it fail, then remove it — in a scr
 working tree. Done on 4 September 2026 for the rules this document leans on: a planted
 `margin-left` and `!important` produced two stylelint errors (`csstools/use-logical`,
 `declaration-no-important`); a planted `setN(1)` inside `useEffect` produced
-`react-hooks/set-state-in-effect`; Prettier with `--no-editorconfig` produced double quotes.
+`react-hooks/set-state-in-effect`; Prettier with `--no-editorconfig` produced double quotes. On
+13 September 2026, for `@typescript-eslint/no-restricted-types`: before the conversion it reported
+31 errors against the 31 `React.FC` signatures then in `src/`, and afterwards a planted
+`src/zz-fc-gate-probe.tsx` — in the working tree, against the scratch-file advice above, deleted at
+once — with `import type { FC }`, one `React.FC` and one bare `FC` produced exactly two.
 
 The counter-example is the media-query comparator: it passed `tsc`, ESLint, stylelint, Prettier
 and `vite build` while emitting the wrong cascade, because no gate reads emitted CSS order. Where a
