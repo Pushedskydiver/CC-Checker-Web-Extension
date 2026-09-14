@@ -132,7 +132,11 @@ directives and is the source of truth; in words, dispatch when any of these hold
   inside the iframe under `use_dynamic_url`; a `postcss-sort-media-queries` comparator returning
   NaN is a silent no-op; `document.execCommand('copy')` works in the cross-origin iframe without
   `allow="clipboard-write"`; `colorPicked` arrives twice (broadcast plus relay); a missing
-  `openPopup` threw before the reset timer. Anything else — `activeTab` semantics in Safari, what
+  `openPopup` threw before the reset timer. The later dated clipboard observations in
+  `docs/ARCHITECTURE.md` §Deliberately not changed are citeable the same way: 12 September 2026,
+  `writeText` throwing `NotAllowedError` with `allowsFeature('clipboard-write')` false across five
+  iframe variants; 13 September 2026, `copy-to-clipboard` 4.x's attempt logging a permissions-policy
+  `console.error` on every copy click in the suite's Chromium. Anything else — `activeTab` semantics in Safari, what
   `captureVisibleTab` does in incognito, what the store's reviewer flags — is UNCHECKED, and a
   sentence that states it as fact is a finding.
 - **Verification claim.** "verified", "tested", "green", "passes", "works". Each needs the command

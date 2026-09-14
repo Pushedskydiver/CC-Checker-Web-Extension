@@ -299,8 +299,8 @@ test.describe('app', () => {
 
 		const frame = await openChecker();
 
-		// The only way in: no-user-activation still copies successfully in this
-		// Chromium, so refusal has to come from the command itself.
+		// The only way in: without user activation `execCommand('copy')` still
+		// returns true in this Chromium, so refusal has to come from the command itself.
 		await frame.evaluate(() => {
 			document.execCommand = () => false;
 		});
@@ -361,7 +361,7 @@ test.describe('app', () => {
 		await frame.getByRole('button', { name: 'Reverse Colours' }).click();
 		await frame.getByRole('button', { name: 'Save colours' }).click();
 		// Both copy buttons too. `copy-to-clipboard` 4.x tried `navigator.clipboard`
-		// first, and Chrome logged a permissions-policy `console.error` on every
+		// first, and Chromium logged a permissions-policy `console.error` on every
 		// click (13 September 2026) — invisible here while this test never copied.
 		await frame.getByRole('button', { name: 'Generate share URL' }).click();
 		await frame

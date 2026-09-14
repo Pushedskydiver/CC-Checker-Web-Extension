@@ -386,19 +386,21 @@ Kept on purpose during the Vite migration, each with the condition that would re
   `allow="clipboard-write chrome-extension://${chrome.runtime.id}"` grant it. Even then a host page
   sending `Permissions-Policy: clipboard-write=()` revokes it, while `execCommand('copy')` kept
   working on that same page in the same run — so on `<all_urls>`, with no rollback between a bad
-  upload and the next store review, the async API can only be an enhancement behind a `try`/`catch`
-  that retains the `execCommand` path. Do not feature-detect it with
+  upload and the next store review, the async API could only ever be an enhancement that keeps the
+  `execCommand` path. Do not feature-detect it with
   `navigator.permissions.query({ name: 'clipboard-write' })`: that reported `granted` in all eight
-  runs, including every blocked one. Use `featurePolicy.allowsFeature` or a `try`/`catch`.
-  **A `try`/`catch` turned out not to be free.** On 13 September 2026 that exact enhancement arrived
-  unasked as `copy-to-clipboard` 4.x, which wraps `writeText` in a `try` and falls back to
-  `execCommand`. Copying still worked — in the suite's Chromium, throwaway specs (not kept) saw
-  `writeText` throw `NotAllowedError` and `execCommand('copy')` return `true` — but the attempt made
-  Chrome log `Permissions policy violation: The Clipboard API has been blocked…` as a
-  `console.error` in the panel on every copy click, which the host page's DevTools show. So the
-  path 3.3.3 used was ported into `src/utils/copy-text.ts`, which never touches
-  `navigator.clipboard`, and the dependency was removed. An async attempt now needs
-  `featurePolicy.allowsFeature('clipboard-write')` checked first, not a `try`.
+  runs, including every blocked one.
+  **Nor behind a `try`/`catch`.** On 13 September 2026 that enhancement arrived unasked as
+  `copy-to-clipboard` 4.x, which wraps `writeText` in a `try` and falls back to `execCommand`.
+  Copying still worked — in the suite's Chromium, throwaway specs (not kept) saw `writeText` throw
+  `NotAllowedError` and `execCommand('copy')` return `true` — but the attempt alone made that
+  Chromium log `Permissions policy violation: The Clipboard API has been blocked…` as a
+  `console.error` in the panel on every copy click, received by the suite's `console` listener on
+  the host page. (Whether real Chrome's DevTools show it against the host page was not checked.) So
+  the path 3.3.3 used was ported into `src/utils/copy-text.ts`, the dependency was removed, and
+  nothing on the copy path calls `navigator.clipboard`, not even inside a `try`. Re-entry, untested:
+  an attempt gated by `document.featurePolicy.allowsFeature('clipboard-write')` and observed to log
+  nothing — Chromium-only, since Safari has no `featurePolicy`.
 - `activeTab`-only permissions — until a feature genuinely needs `tabs`, `storage` or host
   permissions; each widens the install warning.
 - The fixed 475px panel — until a resizable or dockable panel is designed; the host body padding and

@@ -97,7 +97,7 @@ names, sequences and the Safari gap list: `docs/ARCHITECTURE.md`.
   that attribute, and any host page can revoke the async API even when it is granted. Do not swap to
   it, not even inside a `try`; keep `execCommand` as the path that works. Since 13 September 2026 it
   is `copyText` in `src/utils/copy-text.ts`, a port of the `copy-to-clipboard` 3.3.3 path: that
-  library's 4.x tried `writeText` first, and the attempt alone made Chrome log a permissions-policy
+  library's 4.x tried `writeText` first, and the attempt alone made Chromium log a permissions-policy
   `console.error` on every copy click. (`react-copy-to-clipboard` went on 12 September 2026, and
   with it the last class component.) Mechanism and measurements:
   `docs/ARCHITECTURE.md` §Deliberately not changed.

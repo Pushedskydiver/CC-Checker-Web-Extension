@@ -5,14 +5,16 @@
  * `execCommand` is the only clipboard path that works in this panel: `navigator.clipboard` is
  * blocked by the iframe's permissions policy (`docs/ARCHITECTURE.md` §Deliberately not changed).
  * This used to be `copy-to-clipboard` 3.3.3. Its 4.x tries `navigator.clipboard.writeText` first
- * and only then falls back, and on 13 September 2026 that attempt made Chrome log "Permissions
- * policy violation: The Clipboard API has been blocked" as a `console.error` on every copy click,
- * with no option to skip it — so the part of 3.3.3 this app used is ported here instead.
+ * and only then falls back, and on 13 September 2026 that attempt made the e2e suite's Chromium log
+ * "Permissions policy violation: The Clipboard API has been blocked…" as a `console.error` on every
+ * copy click, with no option to skip it — so the part of 3.3.3 this app used is ported here instead.
  *
- * Ported from `copy-to-clipboard` 3.3.3 and `toggle-selection` 1.0.6 (both MIT, sudodoki). Dropped
- * because nothing here uses them: the `format`, `onCopy`, `message` and `debug` options, and the
- * IE11 `window.clipboardData` fallback. One deliberate difference: the prompt opens after the
- * hidden span and the previous selection are cleaned up, not while they are still in place.
+ * Ported from `copy-to-clipboard` 3.3.3 and `toggle-selection` 1.0.6 (both MIT; licence notices at
+ * the end of this file). Dropped because nothing here needs them: the `format`, `onCopy`, `message`
+ * and `debug` options, the IE11 `window.clipboardData` fallback, the `MozUserSelect` and
+ * `msUserSelect` prefixes, and the `removeAllRanges` fallback for engines without `removeRange`.
+ * Two deliberate differences: the prompt opens after the hidden span and the previous selection are
+ * cleaned up, not while they are still in place; and cleanup cannot throw (see `finally` below).
  */
 export const copyText = (text: string): boolean => {
 	const selection = document.getSelection();
@@ -27,9 +29,15 @@ export const copyText = (text: string): boolean => {
 		selection?.addRange(range);
 		copied = document.execCommand('copy');
 	} catch {
+		// An engine that throws instead of returning false — the open question for the Safari
+		// port — takes the same refusal path, prompt included.
 		copied = false;
 	} finally {
-		selection?.removeRange(range);
+		// `removeAllRanges` behind a count, not 3.3.3's `removeRange(range)`: that throws
+		// `NotFoundError` when the range was never added, which would skip the two lines after it
+		// and leave the span in the page. Only this range can be selected here, because
+		// `clearSelection` emptied the selection first.
+		if (selection?.rangeCount) selection.removeAllRanges();
 		mark.remove();
 		restoreSelection();
 	}
@@ -41,9 +49,12 @@ export const copyText = (text: string): boolean => {
 
 /**
  * Empties the selection so only the hidden span is copied, and returns a function that puts the
- * previous ranges back and refocuses the text field that held them. A focused input or textarea is
- * blurred first, because its own selection would otherwise win over the range added to the span —
- * the hex `CopyCta` sits next to `input#background`.
+ * previous ranges back and refocuses the text field that held them. Blurring a focused input or
+ * textarea first is inherited from `toggle-selection`, not observed to be needed here: on
+ * 14 September 2026 a da-review scratch spec (not kept) copied the span's text in the suite's
+ * Chromium with `input#background` still focused and part of its value selected, and a mouse click
+ * on the button moves focus off the input before this runs anyway. Kept for engines where a field's
+ * own selection does win over the added range — the Safari port is where to check.
  */
 const clearSelection = (selection: Selection | null): (() => void) => {
 	if (!selection || selection.rangeCount === 0) return () => {};
@@ -94,3 +105,35 @@ const createHiddenSpan = (text: string): HTMLSpanElement => {
 
 const promptMessage = (): string =>
 	`Copy to clipboard: ${/mac os x/i.test(navigator.userAgent) ? '⌘' : 'Ctrl'}+C, Enter`;
+
+/*
+ * Licence notices for the code this file is ported from.
+ *
+ * copy-to-clipboard 3.3.3 — its LICENSE file, verbatim:
+ *
+ * MIT License
+ *
+ * Copyright (c) 2017 sudodoki <smd.deluzion@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * toggle-selection 1.0.6 — `"license": "MIT"`, author sudodoki <smd.deluzion@gmail.com>,
+ * contributor Aleksej Shvajka (its package.json). The package ships no LICENSE file and states no
+ * copyright year; the MIT permission notice above is the licence it declares.
+ */

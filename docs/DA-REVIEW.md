@@ -129,7 +129,7 @@ against the wrong input; flag it at the same severity. It must carry:
   (`ci.yml` was in the last category until PR #28's run on 11 September 2026).
 
 Claims unverifiable from the laptop must say so. The e2e suite does not cover a real toolbar click
-and its `activeTab` grant, the error popup UI, incognito, the clipboard's failure path, the Web
+and its `activeTab` grant, the error popup UI, incognito, a real (not stubbed) refusal of the copy command, the Web
 Store package or Safari. "Not verified against a real toolbar click" is worth more than a confident sentence.
 Symmetrically: cite the file and line you read, not your recollection. A fabricated citation costs
 trust in every other finding.
@@ -413,9 +413,10 @@ load time, and the store does at upload.
       `src/utils/copy-text.ts`: `navigator.clipboard.writeText` is blocked in this iframe with or
       without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session
       GUID — `docs/ARCHITECTURE.md` §Deliberately not changed), a host page can revoke the async API
-      anyway, and merely attempting it logs a Chrome `console.error` on every click
+      anyway, and merely attempting it logs a Chromium `console.error` on every click
       (`copy-to-clipboard` 4.x, 13 September 2026). Nothing on the copy path may call
-      `navigator.clipboard`, even inside a `try`. The suite asserts what the share button puts on
+      `navigator.clipboard`, even inside a `try` (untested re-entry condition:
+      `docs/ARCHITECTURE.md` §Deliberately not changed). The suite asserts what the share button puts on
       the clipboard, by reading it back from the host page after a real click, and asserts that a
       refused copy announces nothing, by stubbing `document.execCommand` (both 12 September 2026);
       the no-console-errors test clicks both copy buttons since 13 September 2026.

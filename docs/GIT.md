@@ -205,13 +205,13 @@ confirming.
 `PULL_REQUEST_TEMPLATE.md` at the repo root (GitHub honours root, `docs/` or `.github/`) pre-fills
 five headings. What each one wants here:
 
-| Heading                                     | Answer with                                                                                                                                                                                                                          |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                  |
-| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, the clipboard's failure path and the store package are outside the suite (`docs/TESTING.md`). |
-| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                        |
-| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                             |
-| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).       |
+| Heading                                     | Answer with                                                                                                                                                                                                                                              |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                                      |
+| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, a real (not stubbed) refusal of the copy command and the store package are outside the suite (`docs/TESTING.md`). |
+| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                                            |
+| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                                                 |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).                           |
 
 ### Labels
 
@@ -226,7 +226,7 @@ comments on the PR — review findings come back in chat (`docs/DA-REVIEW.md`), 
 audit trail. **Delegated exception (Alex, 11 September 2026):** Dependabot PRs with a green
 `Lint, build, e2e` run may be merged by Claude — `gh pr merge <n> --merge --admin --delete-branch`
 (the review rule blocks a non-admin merge; `enforce_admins` is off) — and asked to rebuild with a
-`@dependabot recreate` comment. #33 and #35 went in that way. A red run, a conflict Dependabot
+`@dependabot recreate` comment. #33, #35 and #47 went in that way. A red run, a conflict Dependabot
 cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back, not force it.
 
 ## Merge strategy
@@ -292,7 +292,7 @@ production dependency on 12 September 2026, in the weekly `production-dependenci
 result in `copy-cta.tsx` was annotated `boolean` so that 4.x — whose `copy()` returns
 `Promise<boolean>` — would fail `lint:ts` with `TS2322` rather than merge green under
 [Who merges](#who-merges). Dependabot's #48 did exactly that. Taking 4.x then showed that it tries
-`navigator.clipboard` first and that Chrome logs a permissions-policy `console.error` on every copy
+`navigator.clipboard` first and that the e2e suite's Chromium logs a permissions-policy `console.error` on every copy
 click, so the path this app used was ported into `src/utils/copy-text.ts` and the dependency
 removed (`docs/ARCHITECTURE.md` §Deliberately not changed). Once that lands, #48 is to be asked to
 `@dependabot recreate` so only the rest of its group remains. The lesson outlives the package: when
