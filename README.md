@@ -86,7 +86,7 @@ in about seven seconds. The eyedropper tests run against a copy of the manifest 
 toolbar click that Playwright cannot perform.
 
 What it does not prove: a real toolbar click and `activeTab` grant, the error popup as a popup,
-incognito, what happens when a page refuses the copy command, the zip that goes to the Web Store, or
+incognito, a real (rather than stubbed) refusal of the copy command, the zip that goes to the Web Store, or
 anything
 about Safari. There are no unit tests; the pure colour utilities in `src/utils/color-utils.ts` are
 the first candidates. Fixtures, the patched-manifest option, and how to add a test are in
@@ -119,6 +119,7 @@ public/error.html          popup shown when the page cannot host the checker
 src/app.tsx                provider + Header + MainLayout(Score, ColorControls)
 src/context.tsx            ColourContrastProvider / useColourContrast — all colour state
 src/utils/color-utils.ts   chroma-js wrappers, hue normalisation, getLevel, roundTo
+src/utils/copy-text.ts     execCommand copy with selection restore and a prompt on refusal
 src/hooks/useTabbed.ts     WAI-ARIA tabs keyboard logic
 src/components/            01-atoms … 04-layouts; each dir holds <name>.tsx (+ <name>.module.css when styled)
 src/styles/                globals.css and the @value breakpoint/container/typography modules
