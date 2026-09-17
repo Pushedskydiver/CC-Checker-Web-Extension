@@ -42,7 +42,7 @@ covers what you changed, so read the run before merging.
 
 The history shows why it matters. Until 11 September 2026 three PRs had ever merged — #5 (a 2020
 Dependabot bump, landed without a merge commit), #13 and #17 (merge commits) — and every other
-commit on `main` was pushed directly (#28–#31 have since merged the protected way). Branch protection now blocks that path for anyone who is not an admin; this document asks
+commit on `main` was pushed directly (every PR from #28 on has merged the protected way). Branch protection now blocks that path for anyone who is not an admin; this document asks
 Alex to treat it as blocked for him too.
 
 ## Branch strategy
@@ -219,7 +219,7 @@ five headings. What each one wants here:
 
 **No label taxonomy — deliberately.** The repo has eight of GitHub's default labels plus `dependencies`,
 `github_actions` and `javascript`, all created by Dependabot for its own PRs; `dependencies` is also on #13.
-Three human-authored PRs do not need a filter. Re-entry: thirty human PRs.
+21 human-authored PRs of 28 merged (17 September 2026) still do not need a filter. Re-entry: thirty human PRs.
 
 ### Who merges
 
@@ -235,12 +235,13 @@ cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back
 
 All three buttons are enabled. **Rebase is the default since 13 September 2026**, when #50, #51,
 #52 and #53 all went in that way — one parent each, their branch commits replayed onto `main` with
-new hashes. Before that the history was merge commits (`28fe57f Merge pull request #17 …`,
-`cd77ed5 Merge pull request #13 …`), and #49, merged the same day, is one. **Which button is Alex's
+new hashes. Every merged PR from #13 to #49 before them is a merge commit (`28fe57f Merge pull
+request #17 …`, `cd77ed5 Merge pull request #13 …`, and #49 on the same day), with #5 in 2020 the
+one exception noted above. **Which button is Alex's
 call, per PR.** The trade-off, stated once:
 
 - **Rebase**, the default, replays each branch commit onto `main`: every commit body stays in
-  `git log --oneline main`, there is no merge commit, and the PR title and body are not used at
+  `git log main` (`--oneline` shows the subjects), there is no merge commit, and the PR title and body are not used at
   all. It **re-hashes every commit**, which is why `git branch -d` refuses afterwards and why prose
   cites PR numbers rather than branch hashes (both below).
 - **Merge commit** keeps every branch commit and its body reachable from `main` under one commit
@@ -279,11 +280,17 @@ commits are there under different hashes, or collapsed into one. Do not force it
 the PR page alone; prove the content landed, then use `-D`:
 
 ```bash
-gh pr view <n> --json state --jq .state          # MERGED
-git diff <branch> origin/main -- <the files it touched>   # prints nothing
+gh pr view <n> --json state --jq .state   # MERGED
+git cherry origin/main <branch>           # every line starts with "-"
 ```
 
-Both rebase-merged branches on 13 September 2026 needed exactly this.
+`git cherry` compares patch ids: `-` means that commit has an equivalent on `main`, `+` means it
+does not. A `+` line is unlanded work — stop and look before deleting anything. Do **not** use
+`git diff <branch> origin/main -- <paths>` for this: it is empty only until a later PR touches the
+same files, which in this repo is days (checked 17 September 2026 — #50's paths already differ,
+because #52 and #54 edited them after it landed).
+
+The branches behind #50 and #51 needed exactly this on 13 September 2026.
 
 `npm ci` because a merge can move `package-lock.json` underneath you; the suite because `main` is a
 combination that was never checked on any one branch's head. Deliberately not an npm script: it
@@ -380,10 +387,15 @@ Named with a re-entry condition, so a future reader can tell an omission from a 
 
 - **Type and scope labels** — see [Labels](#labels). Re-entry: thirty human PRs.
 - **Squash as the only merge method** (moe, nas-stacks). Re-entry: if `git log --oneline main` stops
-  reading as a list of changes, disable merge commits in the repo settings and rewrite
-  [Merge strategy](#merge-strategy).
-- **A PR-title check workflow** (moe's `pr-title-check.yml`). Re-entry: if titles keep drifting the
-  way #13 and #17 did — since the PR title is now the merge-commit subject, drift lands on `main`.
+  reading as a list of changes, disable merge commits **and rebase** in the repo settings — since
+  13 September 2026 rebase is the default, so turning off merge commits alone would not leave squash
+  — and rewrite [Merge strategy](#merge-strategy).
+- **A PR-title check workflow** (moe's `pr-title-check.yml`). ~~Re-entry: if titles keep drifting
+  the way #13 and #17 did — since the PR title is now the merge-commit subject, drift lands on
+  `main`.~~ Corrected 17 September 2026: under the default button the PR title reaches no commit at
+  all, so title drift lands nowhere. What lands on `main` is the **branch commit subjects**, which
+  nothing checks either. Re-entry: if those keep drifting, a check on them (not on the PR title) is
+  the thing to add.
 - **The direct-to-`main` drift-fix predicate** — see [What needs a PR](#what-needs-a-pr). Re-entry:
   a doc that is appended to constantly; re-read nas-stacks' five clauses before importing it.
 - **Scopes in the subject** (`feat(scope):`). The ticket key occupies that slot; name the execution
