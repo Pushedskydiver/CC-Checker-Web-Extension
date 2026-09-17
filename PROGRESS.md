@@ -5,17 +5,18 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 6)
 
-Updated 13 September 2026, end of Session 6 — **CC-004 PRs 1 to 5 have merged and PR 6 is open as #52,
-reviewed to nit-floor and waiting on Alex.** PRs 1 to 4 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`,
-`9156ff2`); PR 5 merged in Session 6 (#50, `bbb822b`). Session 6 also merged the Session 1 archive (#49,
-`d56f6a4`), its own first handoff (#51, `4b46b53`) and one green Dependabot patch (#47, `346c4b0`), and left #48 — the
-`copy-to-clipboard` 4.x major, red on `TS2322` as designed — for Alex. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
+Updated 17 September 2026, end of Session 6 — **CC-004 PRs 1 to 6 have merged; PR 7 is next.** PRs 1 to 4
+merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
+`170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
+`4b46b53`, #53 `bfbb5ac`), the in-house copy port (#54, `18cfd4a`) and two Dependabot bumps (#47 `346c4b0`,
+#55 `4c4f9d2`). **#48 is closed**: the `copy-to-clipboard` 4.x major was investigated, rejected on evidence,
+and Dependabot recreated the rest of its group as #55 once the dependency was gone. One PR is open at this
+handoff: **#56**, the merge-strategy docs. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 5 merged; PR 6 is #52 on `refactor/CC-004-plain-function-components`, not merged.
-   Resume at PR 7, Vitest and the first colour-utility tests, once #52 has merged — PR 7 has no dependency,
-   but one change is in flight until then. One PR at a time, `da-review` on every `src/**` change, both reviews wherever the
+   plan below. PRs 1 to 6 merged. Resume at PR 7, Vitest and the first colour-utility tests — it has no
+   dependency, and the only thing in flight is #56, which touches no file it will. One PR at a time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
    submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
@@ -112,20 +113,20 @@ lines and fired both — 232 at the time that was measured, 305 by the time it m
 in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
-| #   | PR                                                                                            | Reviews            | After |
-| --- | --------------------------------------------------------------------------------------------- | ------------------ | ----- |
-| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)              | both               | —     |
-| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                | both               | —     |
-| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)               | da-review          | —     |
-| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)              | both               | 2     |
-| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)             | surrogate          | —     |
-| 6   | Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence — #52, open | both ~~da-review~~ | 5     |
-| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep           | both               | —     |
-| 8   | Extract the hex-input parser to `src/utils/`, with tests                                      | da-review          | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail                        | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                 | da/both            | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation                     | da-review          | —     |
-| 12  | Deferred: context reducer or external store, justified by its own unit tests                  | da-review          | 7, 11 |
+| #   | PR                                                                                                    | Reviews            | After |
+| --- | ----------------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)                      | both               | —     |
+| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                        | both               | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)                       | da-review          | —     |
+| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                      | both               | 2     |
+| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                     | surrogate          | —     |
+| 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`) | both ~~da-review~~ | 5     |
+| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep                   | both               | —     |
+| 8   | Extract the hex-input parser to `src/utils/`, with tests                                              | da-review          | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                | both               | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                         | da/both            | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation                             | da-review          | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests                          | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
 
@@ -201,7 +202,8 @@ under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9)
 'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
 guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
 
-**Done.** Merged: #49, #50, #51. Not merged: #52. Uploaded to the Web Store: nothing; users are on 2.1.0.
+**Done, 13 September.** Merged: #49, #50, #51. Not merged that day: #52. Uploaded to the Web Store:
+nothing; users are on 2.1.0. The session then continued on 17 September — see below.
 
 - **#49, `d56f6a4` — Session 1 archived** to `docs/history/SESSIONS.md`, in its own PR rather than on PR 5's
   branch (`docs/GIT.md`: two unrelated changes are two PRs). `copilot-surrogate` found one MATERIAL — the row
@@ -224,10 +226,10 @@ guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
   nit-floor; the commit body's "nine props-less components" is eight, corrected in the PR body rather than
   amended.
 
-**#50 and #51 were rebase-merged, #49 got a merge commit.** `docs/GIT.md` §Merge strategy still says rebase
-is "enabled and unused. Do not start"; that is Alex's call per PR, so it was flagged as a Claude Code task
-chip in the session UI — not a GitHub issue, so nothing in the repo tracks it except decision branch (e)
-below — rather than edited here. Two consequences hit this session: commit bodies on `main` cite branch hashes that
+**#50 to #54 were rebase-merged; #49 and #55 got merge commits.** (Recorded on 13 September as "#50 and
+#51"; #52, #53 and #54 followed the same way.) `docs/GIT.md` §Merge strategy said rebase was "enabled and
+unused. Do not start". Asked on 17 September, Alex confirmed **rebase is the default now**; #56 writes that
+down with its two consequences. Two consequences hit this session: commit bodies on `main` cite branch hashes that
 were rewritten by the merge (`326029c`, `113e6cd`), and `git branch -d` refused both merged branches —
 content was diffed against `origin/main` first, then `-D`.
 
@@ -262,6 +264,44 @@ merges.
 5. **A merge button can rewrite the hashes your prose cites.** A rebase merge re-hashes every commit, so a
    commit body naming a branch hash points at nothing on `main`, and `git branch -d` refuses. Cite PR numbers
    in prose that outlives the branch; before `-D`, prove the branch's files equal `origin/main`.
+
+### Continued, 17 September 2026 — #48 answered, PR 6 landed, rebase written down
+
+**Alex merged #52 and #53**, then asked for #48 — the `copy-to-clipboard` 4.x bump, red on the `TS2322`
+guard — to be investigated and the rebase task chip picked up after it.
+
+- **#48 was tried, not assumed.** Taking 4.x builds and passes: it wraps `navigator.clipboard.writeText` in
+  a `try` and falls back to `execCommand`. `da-review` found, and a probe reproduced on both copy buttons,
+  that the attempt alone makes Chromium log `Permissions policy violation: The Clipboard API has been
+blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no option to skip it. That branch is
+  `chore/CC-004-copy-to-clipboard-4` (`2faf894`, pushed, no PR) as the record.
+- **Alex chose to port the copy in-house** over staying on 3.x or accepting the error. **#54, `18cfd4a`**:
+  `copyText` in `src/utils/copy-text.ts` — the 3.3.3 `execCommand` path, its LICENSE carried verbatim — and
+  `copy-to-clipboard` dropped. Bundle 255,755 → 254,084 bytes. The `no console errors…` e2e test now clicks
+  both copy buttons; against a 4.x build it fails 5/5 with two policy errors.
+- **#48 closed, #55 merged** (`4c4f9d2`): `@dependabot recreate` on #48 made Dependabot close it
+  ("updatable in another way") and open #55 with React 19.3.0 alone, green, merged under the delegation.
+  Same mechanism as #32 → #35 in Session 3.
+- **#56 open**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
+  `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
+  branch hashes" written down.
+
+**Major novel patterns, 17 September:**
+
+6. **A dependency's own bug fix can be the regression.** `copy-to-clipboard` 4.x does exactly what this
+   repo's docs had called the only safe shape — `writeText` inside a `try`, `execCommand` on the throw —
+   and the try is not free: the blocked attempt is itself reported to the console, once per click, in a
+   panel whose users are developers with DevTools open. Measure the side effects of a fix, not only whether
+   the outcome is right. The `try`/`catch` advice in `docs/ARCHITECTURE.md` was rewritten because of it.
+7. **A verification command can decay.** The check written into `docs/GIT.md` for "did this branch land"
+   was `git diff <branch> origin/main -- <paths>`, empty at the time and false days later, because two
+   further PRs touched the same files — it would tell a reader a landed branch had not landed.
+   `git cherry origin/main <branch>` compares patch ids and cannot go stale that way. A command in a rule
+   document is a claim with a shelf life; prefer the one whose answer does not depend on when it is run.
+8. **The 429 that ate Session 5's verification round did it again**, on two agents rather than four
+   (`docs/DEVELOPMENT.md` §Scale the fan-out caps concurrency at two, which was respected). Both died before
+   any work; one left a scratch spec in the tree. Re-dispatching a single agent after the reset worked.
+   n=3 for this failure mode: check the tree for `zz-*` leftovers after any agent dies.
 
 ## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
 
@@ -433,20 +473,19 @@ cites `fixtures.ts` by line number, which will drift.
    at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
    `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
    in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 21 KB, roughly 5.2k tokens, inside a ~42 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   file, and the band (the `## Session` entries) is about 24 KB, roughly 6k tokens, inside a ~45 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `4b46b53` or later), `gh pr list` — expect #52 (PR 6) unless Alex has merged it, #48 red, and
-   this handoff's own PR unless merged. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges);
-   `copy-to-clipboard` majors are not (`docs/GIT.md` §Dependabot), and #48 is one.
+   (expect `4c4f9d2` or later), `gh pr list` — expect #56 (merge-strategy docs) and this handoff's own PR,
+   unless Alex has merged them. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges).
 4. Run the pre-push suite before touching anything: `npm run lint && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 20 passing tests until PR 7 adds unit tests and a fourth command.
-5. **Resume at PR 7 once #52 has merged** — ~~PR 6 once #50 has merged~~, done in Session 6 as #52. PR 7
-   adds Vitest, the first colour-utility tests, a `ci.yml` step and the ten-file documentation sweep; it
-   fires **both** reviews, `.github/workflows/**` puts it on the "needs Alex's attention" list in
-   `docs/DEVELOPMENT.md`, and decision branch (a) below applies. If #52 is still open, ask Alex before
-   starting PR 7 rather than stacking two changes. Cut the branch as the literal first action; do not
+5. **Resume at PR 7** — PRs 1 to 6 are merged. PR 7 adds Vitest, the first colour-utility tests, a
+   `ci.yml` step and the ten-file documentation sweep; it fires **both** reviews, `.github/workflows/**`
+   puts it on the "needs Alex's attention" list in `docs/DEVELOPMENT.md`, and decision branch (a) below
+   applies. It also folds in one cheap measurement the grill asked for: run the new unit tests against a
+   copy of the sibling web app's `color-utils.ts`. Cut the branch as the literal first action; do not
    re-grill the plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
@@ -459,11 +498,11 @@ cites `fixtures.ts` by line number, which will drift.
    (PR #42's merged body calls that PR "PR 8"; the plan's numbering is the authority); **(b)** whether
    workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; ~~**(c)** arrows
    or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
-   converts anything~~ — settled: Alex merged #50 with arrows; **(d)** #48 — take `copy-to-clipboard` 4.x
-   (what that needs is in `docs/GIT.md` §Dependabot) or hold it; React 19.3.0 rides in the same group PR
-   either way; **(e)** whether rebase merges are now accepted — `docs/GIT.md` §Merge strategy says "unused.
-   Do not start" and #50 and #51 used it; Session 6 raised a task chip (not a GitHub issue) that asks Alex
-   before changing the doc — if it was never started, ask him directly. The store published 2.1.0
+   converts anything~~ — settled: Alex merged #50 with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
+   (what that needs is in `docs/GIT.md` §Dependabot) or hold it~~ — settled 17 September 2026: neither. The
+   library was dropped (#54) after 4.x was shown to log a `console.error` on every copy click; #48 closed
+   and Dependabot's #55 brought React 19.3.0 on its own; ~~**(e)** whether rebase merges are now
+   accepted~~ — settled 17 September 2026: Alex confirmed rebase is the default, written down in #56. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL).
 
