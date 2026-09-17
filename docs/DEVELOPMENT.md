@@ -29,7 +29,8 @@ reaches users_; everything keyed to npm publishing or container deploys is named
 4. **Push and open the PR.** CI runs `quality` on Linux — the only case-sensitive checkout in the
    loop. Watch it.
 5. **Alex merges.** Claude never merges a human PR; green Dependabot PRs are delegated
-   (`docs/GIT.md` §Who merges). Merge commit or squash is Alex's call per PR.
+   (`docs/GIT.md` §Who merges). Which button is his call per PR; rebase is the default
+   (`docs/GIT.md` §Merge strategy).
 6. **(Release only) `npm run package`, then upload the zip in the Web Store dashboard.** Merged is
    not published — [§Merged is not published](#merged-is-not-published).
 
@@ -427,9 +428,11 @@ Named rather than silently dropped, so a future reader knows these were consider
 and the three `.claude/agents/` (`da-review`, `copilot-surrogate`, `spec-grill`). **Deferred with a re-entry
 condition, or dropped outright:**
 
-- **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and this repo has
-  seven merged PRs, three of them human-authored. Re-entry: after roughly ten PRs, when there is
-  something to route against.
+- **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and on
+  4 September 2026 this repo had seven merged PRs, three of them human-authored. Re-entry: after
+  roughly ten PRs, when there is something to route against. **That condition has fired** —
+  28 merged, 21 human-authored on 17 September 2026 — so adopting it is now a decision
+  rather than a wait.
 - **Changesets, semver tooling, npm publishing, release workflows.** Nothing here is published to
   npm; the release is a zip and a dashboard. Re-entry: the day a Web Store upload is automated —
   at which point [§Merged is not published](#merged-is-not-published) needs rewriting.
