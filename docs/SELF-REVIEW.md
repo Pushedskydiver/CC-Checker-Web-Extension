@@ -20,8 +20,8 @@ The Red Flags list and the severity labels (BLOCKING / MATERIAL / LOW) live in
 
 **Adapted from the `docs/SELF-REVIEW.md` in chief-clancy, moe, nas-stacks and tamaclaude** — the
 structure and the disciplines, not the subject matter: their shell, Python, compose, monorepo and
-mutation-gate sections have no equivalent in a three-context browser extension with an e2e suite and
-no unit tests. nas-stacks attached a real incident to every rule it could; this checklist does the
+mutation-gate sections have no equivalent in a three-context browser extension whose tests are an
+e2e suite and 19 Vitest cases over the colour utilities. nas-stacks attached a real incident to every rule it could; this checklist does the
 same, and every incident below is from the verification of the Vite migration on 4 September 2026.
 
 This is a **living document**. When something slips past DA + self-review + CI and shows up as a
@@ -214,7 +214,8 @@ string }` under `vite/client`, so `styles.main` with no `.main` in the sibling f
 ## Test accuracy
 
 `test/e2e/` is Playwright against the built `build/`, 18 tests on 4 September 2026, ~7s on 4
-workers. There are no unit tests yet (`docs/TESTING.md`).
+workers. `src/utils/color-utils.test.ts` is 19 Vitest cases since 17 September 2026
+(`docs/TESTING.md`).
 
 - **A new behaviour has a test that failed before the change.** Check out the parent commit, run
   the one test, watch it go red, come back. If it was green before your change, it is decorative.
@@ -313,7 +314,7 @@ workers. There are no unit tests yet (`docs/TESTING.md`).
 - **Pre-push suite green, pasted**, in the PR body:
 
     ```bash
-    npm run lint && npm run build && npm run test:e2e
+    npm run lint && npm run test:unit && npm run build && npm run test:e2e
     ```
 
 - **CI green** on the PR before asking for review — it is the only run on a case-sensitive
@@ -333,8 +334,9 @@ Sections in the source checklists with no equivalent here, and what would bring 
 
 - **Shell, Python, compose and CI-loop accuracy** (nas-stacks) — no scripts, no Python, no compose,
   one CI job with no hardcoded loops. Re-entry: a second workflow or a release script.
-- **Mutation-gate accuracy** (nas-stacks) — no unit tests to mutate. Re-entry: unit tests for
-  `src/utils/color-utils.ts`.
+- **Mutation-gate accuracy** (nas-stacks) — ~~no unit tests to mutate. Re-entry: unit tests for
+  `src/utils/color-utils.ts`.~~ That re-entry fired on 17 September 2026; adopting a mutation gate
+  is a decision, not a consequence (`docs/TESTING.md` §Not ported).
 - **Monorepo, public API surface, TSDoc scope, lint-staged safety, `knip`** (moe, tamaclaude) —
   single package, nothing published to npm, no lint-staged hook, no `knip`. Re-entry: a second
   package or an npm publish.

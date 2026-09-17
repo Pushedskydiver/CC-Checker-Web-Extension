@@ -40,8 +40,8 @@ only looks rigorous.
 
 Your largest surfaces are the ones written and unbuilt: the Safari port (`docs/ARCHITECTURE.md`
 §Safari and other browsers — a stated goal with nothing started and five known gaps), the release
-of 2.1.0 (`PROGRESS.md` — merged is not published), the unit tests for `src/utils/color-utils.ts`
-that are the re-entry condition for mutation testing, and the APCA experiment on
+of 2.1.0 (`PROGRESS.md` — merged is not published), the mutation gate whose re-entry condition the
+colour-utility unit tests fired on 17 September 2026, and the APCA experiment on
 `feat/CC-003-apca-3`.
 
 ## When invoked
