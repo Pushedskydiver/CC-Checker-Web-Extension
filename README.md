@@ -43,15 +43,16 @@ Requirements: Node 24 (`.nvmrc` says `24`; `nvm use` picks it up) and npm. Playw
 is not fetched by `npm ci`, so run `npx playwright install chromium` once per machine (and again after a `@playwright/test` bump) before the
 e2e suite.
 
-| Command            | What it does                                                                                  |
-| ------------------ | --------------------------------------------------------------------------------------------- |
-| `npm run build`    | Vite build to `build/` — one JS file, one CSS file, manifest copied verbatim                  |
-| `npm run watch`    | Same build, rerun on every save                                                               |
-| `npm run lint`     | `lint:ts` (tsc on both tsconfigs), `lint:js` (eslint), `lint:css` (stylelint), `format:check` |
-| `npm run format`   | Prettier `--write` (config comes from `.editorconfig`: tabs, single quotes)                   |
-| `npm run test:e2e` | Playwright against whatever is in `build/`                                                    |
-| `npm test`         | `build` then `test:e2e`                                                                       |
-| `npm run package`  | `build` then zip `build/` to `cc-checker-<version>.zip`, dotfiles excluded                    |
+| Command             | What it does                                                                                  |
+| ------------------- | --------------------------------------------------------------------------------------------- |
+| `npm run build`     | Vite build to `build/` — one JS file, one CSS file, manifest copied verbatim                  |
+| `npm run watch`     | Same build, rerun on every save                                                               |
+| `npm run lint`      | `lint:ts` (tsc on both tsconfigs), `lint:js` (eslint), `lint:css` (stylelint), `format:check` |
+| `npm run format`    | Prettier `--write` (config comes from `.editorconfig`: tabs, single quotes)                   |
+| `npm run test:unit` | Vitest over `src/utils/*.test.ts` — no browser, no build needed                               |
+| `npm run test:e2e`  | Playwright against whatever is in `build/`                                                    |
+| `npm test`          | `build` then `test:e2e`                                                                       |
+| `npm run package`   | `build` then zip `build/` to `cc-checker-<version>.zip`, dotfiles excluded                    |
 
 There is no dev server. The app needs the `chrome.*` APIs, so it is only meaningful loaded as an
 unpacked extension. The loop is:
@@ -63,7 +64,7 @@ unpacked extension. The loop is:
 Before every push, the full suite must be green:
 
 ```bash
-npm run lint && npm run build && npm run test:e2e
+npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
 `.github/workflows/ci.yml` runs the same three steps on Ubuntu for every pull request and every
@@ -88,9 +89,9 @@ toolbar click that Playwright cannot perform.
 What it does not prove: a real toolbar click and `activeTab` grant, the error popup as a popup,
 incognito, a real (rather than stubbed) refusal of the copy command, the zip that goes to the Web Store, or
 anything
-about Safari. There are no unit tests; the pure colour utilities in `src/utils/color-utils.ts` are
-the first candidates. Fixtures, the patched-manifest option, and how to add a test are in
-[docs/TESTING.md](docs/TESTING.md).
+about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 19 Vitest tests as of
+17 September 2026 (`npm run test:unit`). Fixtures, the patched-manifest option, and how to add a
+test are in [docs/TESTING.md](docs/TESTING.md).
 
 ## Releasing
 

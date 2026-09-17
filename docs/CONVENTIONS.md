@@ -315,7 +315,7 @@ sail through `npm run build`; only the e2e suite or a manual reload would report
 The pre-push suite, green before every push:
 
 ```bash
-npm run lint && npm run build && npm run test:e2e
+npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
 `.github/workflows/ci.yml` runs the same three on `ubuntu-latest` (plus `npm ci` and
@@ -378,7 +378,7 @@ rather than implying coverage.
 | tamaclaude     | `knip` dead-export check                      | Dead code found by hand a second time (dead CSS and dangling `styles.*` references went on 4 September 2026). |
 | moe/tamaclaude | Zod at trust boundaries                       | The app parses anything beyond `localStorage` — e.g. a Safari `browser.*` shim.                               |
 | moe            | TSDoc on public API, `Result` union           | Nothing is published and nothing returns an expected failure; none foreseen.                                  |
-| tamaclaude     | Co-located `*.test.ts`                        | Unit tests for `src/utils/color-utils.ts` (next workstream in `PROGRESS.md`).                                 |
+| tamaclaude     | Co-located `*.test.ts`                        | **Adopted 17 September 2026**: `src/utils/color-utils.test.ts` sits beside the module it tests.               |
 | nas-stacks     | Compose, shell, Python and secrets sections   | No equivalent surface: no secrets, no deploy target.                                                          |
 
 ---

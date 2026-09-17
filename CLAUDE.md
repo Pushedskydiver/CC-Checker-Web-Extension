@@ -16,11 +16,12 @@ npx playwright install chromium   # once per machine, and again after a @playwri
 npm run build                     # vite build → build/ (one JS + one CSS file, dotfiles stripped)
 npm run watch                     # rebuild on save, then reload the page the checker is open on
 npm run lint                      # tsc ×2, eslint, stylelint, prettier --check
+npm run test:unit                 # 19 Vitest tests over src/utils/color-utils.ts, ~90ms
 npm run test:e2e                  # 20 Playwright tests against the built extension, ~8s
 npm run package                   # build, then zip build/ → cc-checker-<version>.zip for the store
 
 # Pre-push suite (run before every git push — no exceptions)
-npm run lint && npm run build && npm run test:e2e
+npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
 There is no dev server: the app needs `chrome.*` APIs, so it only means anything loaded as an
@@ -119,8 +120,8 @@ Minimal actionable rules only. Patterns and philosophy live in the on-demand doc
 explicit trigger phrases rather than always-on.
 
 - **TDD: vertical slices.** One test → implement → next test, never all tests first. Today that means
-  one Playwright test in `test/e2e/`; pure colour utils in `src/utils/` are the first candidates for
-  unit tests when they arrive (`docs/TESTING.md`).
+  one Playwright test in `test/e2e/`, or one Vitest case in `src/utils/*.test.ts` — the colour
+  utilities have 19 as of 17 September 2026 (`docs/TESTING.md`).
 - **Review order: architectural → DA (subagent) → self → PR. Never skip or reorder.** Dispatch
   `da-review` from a fresh context — the one that wrote the change cannot see what it assumed. It is
   a grep, not a judgement:

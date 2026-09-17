@@ -1,11 +1,14 @@
 # Testing
 
-One suite, one command. `test/e2e/extension.spec.ts` (20 tests, Playwright Test) loads the built
+Two suites. `test/e2e/extension.spec.ts` (20 tests, Playwright Test) loads the built
 extension from `build/` into a headless Chromium profile and drives it through the real content
 script → service worker → iframe message flow. `test/e2e/fixtures.ts` is the harness and the
 primary source for how it works — read its `Fixtures` type and two doc comments (lines 28–43)
-first; `playwright.config.ts` holds the timings. There are no unit tests. The suite was written
-on 4 September 2026 alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
+first; `playwright.config.ts` holds the timings. The suite was written on 4 September 2026
+alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
+
+`src/utils/color-utils.test.ts` (19 tests, Vitest, `npm run test:unit`, ~90ms) covers the pure
+colour utilities with no browser and no `chrome.*`. Added 17 September 2026 — §Unit tests below.
 
 **Adapted from nas-stacks' and moe's `docs/TESTING.md`.** Dropped wholesale, because this repo has
 no equivalent and inventing one would be dishonest: the mutation gate and its control-run rules,
@@ -41,7 +44,7 @@ npx playwright show-trace test-results/<test-dir>/trace.zip   # replay a failed 
   display name `Lint, build, e2e` has been a required status check on `main` since 11 September
   2026; its first run (PR #28) was green: lint, build, 18/18 e2e in 56 s.
 
-The pre-push gate is `npm run lint && npm run build && npm run test:e2e`, green locally before every
+The pre-push gate is `npm run lint && npm run test:unit && npm run build && npm run test:e2e`, green locally before every
 push. Only CI proves the case-sensitive checkout — on 4 September 2026 the Git index tracked
 `01-Atoms/`, `02-Molecules/`, `Icon/`, `Ratio/` and `Header/` in the wrong case, every build on
 Alex's Mac was green, and a Linux clone could not resolve the imports into them — so a local green
@@ -261,22 +264,47 @@ Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched man
 
 ---
 
+## Unit tests
+
+`src/utils/color-utils.test.ts`, 19 cases, added 17 September 2026 (PR 7 of CC-004). Vitest reads
+`vitest.config.ts`, which is deliberately separate from `vite.config.ts`: the build config exists to
+emit one JS file and one CSS file for the extension page, and none of that helps a test of a pure
+function. `environment: 'node'`, `include: ['src/**/*.test.ts']`, and the `~` alias duplicated from
+the build config.
+
+What they cover, and why these: `getLevel`'s four bands **and its exclusive boundaries** (7 is not
+AAA, 4.5 is not AA, 3 is not AA Large — the `> 3` versus `>= 3` class of bug); `toHslTuple`'s hue
+normalisation through `colorToHsl` and `rgbToHsl`, the 4 September 2026 NaN-hue defect; the visible
+half of it (`#222222` at saturation 0.5 is `#331111`, not `#111111`); `hslToHex(colorToHsl(x)) === x`
+for both defaults; `getContrast` at the 21 ceiling and at the default pair's 12.72, the same number
+the e2e suite asserts in the UI; `isHex` accepting and rejecting; `isDark` splitting the two
+defaults; `roundTo` at the two decimals the ratio display uses.
+
+**The gate was watched failing** (`docs/CONVENTIONS.md` §Verify a gate can fail): with the
+`Number.isFinite` normalisation removed from `toHslTuple`, the hue test failed with
+`expected NaN to be +0`, and passed again when it was restored.
+
+**Measured against the sibling web app, 17 September 2026** — the cheap check `PROGRESS.md` §The
+approved plan asked PR 7 to fold in. `app/utils/color-utils.ts` from
+`Pushedskydiver/Colour-Contrast-Checker` was copied in beside these tests and run against them:
+**15 of 19 passed**. The four failures are real differences, not harness noise: two are the NaN hue
+(the sibling never received the 4 September fix), and two are shape — its `colorToHsl` and
+`rgbToHsl` are annotated `[number, number, number]` but return four elements at runtime, because
+chroma's `.hsl()` includes alpha and nothing strips it. Evidence for workstream 5, not a commitment:
+the copy and the temporary spec were deleted.
+
 ## Future
 
-- **Unit tests for `src/utils/color-utils.ts` with Vitest.** The pure functions — `getLevel`,
-  `roundTo`, `colorToHsl` / `rgbToHsl` (and through them `toHslTuple`), `isDark`, `isHex` — need no
-  browser and no `chrome.*`, and are where a boundary bug (`> 3` vs `>= 3`, a NaN that JSON turns
-  into `null`) would live. This is also the re-entry condition for mutation testing, deliberately
-  not ported from nas-stacks: a mutation gate over a 7s e2e suite is not worth its runtime; one
-  over millisecond unit tests is.
 - **An accessibility scan.** Run axe (`@axe-core/playwright`) inside the app frame once the
   checker is open, as its own test in the `app` group. The a11y fixes of 4 September 2026 (live
   region, `<li>`, `aria-controls`, focusable skip targets) are the kind a scan would have flagged.
 
 ## Not ported from the source documents
 
-- The mutation gate (control runs, two runs per mutant, hung-mutant detection) — re-entry when the
-  colour utils have unit tests. Coverage thresholds and fast-check — same re-entry.
+- The mutation gate (control runs, two runs per mutant, hung-mutant detection). **Its re-entry
+  condition fired on 17 September 2026** — the colour utils have unit tests, and a mutation gate
+  over 90ms of them costs what it used to cost over a 7s e2e suite. Not adopted in the same PR that
+  created the condition; Alex's call. Coverage thresholds and fast-check — same re-entry.
 - The re-implementation incident table — no test here has copied production logic; the discipline
   survives as the revert-and-watch-it-redden self-check above.
 - Sandboxed shell-stub suites — the only shell in this repo is the `package` script.

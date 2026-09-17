@@ -52,7 +52,7 @@ Not "did it build" but "did it build somewhere the bug could show"; not "did I c
 `npm run test:e2e` redden if I revert the fix". Where the answer is a command, run it:
 
 ```bash
-npm run lint && npm run build && npm run test:e2e
+npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
 ---

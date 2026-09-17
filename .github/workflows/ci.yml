@@ -17,6 +17,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      # Second, before the build: the unit tests need no build and fail in milliseconds.
+      # The job's display name stays "Lint, build, e2e" because branch protection requires
+      # that exact string on main — renaming it would leave the required check unmatched.
+      - run: npm run test:unit
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

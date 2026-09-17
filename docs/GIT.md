@@ -213,7 +213,7 @@ five headings. What each one wants here:
 | Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, a real (not stubbed) refusal of the copy command and the store package are outside the suite (`docs/TESTING.md`). |
 | Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                                            |
 | Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                                                 |
-| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).                           |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run test:unit && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).      |
 
 ### Labels
 
@@ -272,7 +272,7 @@ git checkout main && git pull --ff-only && git fetch --prune
 git branch -d <branch>                         # merge commit: deletes cleanly
 git branch -D <branch>                         # rebase or squash: -d refuses; -D once the check below passes
 npm ci
-npm run lint && npm run build && npm run test:e2e
+npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
 `-d` refuses after a rebase or a squash because the branch tip is not an ancestor of `main` — the
