@@ -428,9 +428,11 @@ Named rather than silently dropped, so a future reader knows these were consider
 and the three `.claude/agents/` (`da-review`, `copilot-surrogate`, `spec-grill`). **Deferred with a re-entry
 condition, or dropped outright:**
 
-- **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and this repo has
-  seven merged PRs, three of them human-authored. Re-entry: after roughly ten PRs, when there is
-  something to route against.
+- **`docs/INDEX.md`.** It routes policy-adjacent edits against real PR history, and on
+  4 September 2026 this repo had seven merged PRs, three of them human-authored. Re-entry: after
+  roughly ten PRs, when there is something to route against. **That condition has fired** —
+  28 merged, 21 human-authored on 17 September 2026 — so adopting it is now a decision
+  rather than a wait.
 - **Changesets, semver tooling, npm publishing, release workflows.** Nothing here is published to
   npm; the release is a zip and a dashboard. Re-entry: the day a Web Store upload is automated —
   at which point [§Merged is not published](#merged-is-not-published) needs rewriting.
