@@ -29,7 +29,8 @@ reaches users_; everything keyed to npm publishing or container deploys is named
 4. **Push and open the PR.** CI runs `quality` on Linux — the only case-sensitive checkout in the
    loop. Watch it.
 5. **Alex merges.** Claude never merges a human PR; green Dependabot PRs are delegated
-   (`docs/GIT.md` §Who merges). Merge commit or squash is Alex's call per PR.
+   (`docs/GIT.md` §Who merges). Which button is his call per PR; rebase is the default
+   (`docs/GIT.md` §Merge strategy).
 6. **(Release only) `npm run package`, then upload the zip in the Web Store dashboard.** Merged is
    not published — [§Merged is not published](#merged-is-not-published).
 

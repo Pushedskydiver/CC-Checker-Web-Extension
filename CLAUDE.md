@@ -53,9 +53,11 @@ merged by Claude (`gh pr merge <n> --merge --admin --delete-branch`) and recreat
 (`@dependabot recreate`) when its group needs rebuilding. Branch protection on `main` requires one approving review and a green
 `Lint, build, e2e` status check (the `quality` job in `.github/workflows/ci.yml`: lint, build, e2e
 on Linux — required since 11 September 2026, after its first green run on PR #28), with
-`enforce_admins` off so Alex can merge his own PRs. Squash versus merge commit is his call per PR
-(history has merge commits); either way the repo settings make the PR title the commit subject and
-the PR body its message, and the branch is deleted on merge. Merged is not published:
+`enforce_admins` off so Alex can merge his own PRs. **Rebase is the default merge button since
+13 September 2026**; merge commit and squash stay available and the button is his call per PR
+(`docs/GIT.md` §Merge strategy). A rebase keeps each branch commit's own subject and body but
+re-hashes it, so cite PR numbers rather than branch hashes; a merge commit or squash takes the PR
+title and body instead. The branch is deleted on merge. Merged is not published:
 `npm run package` plus a manual Chrome Web Store upload is a separate, Alex-only step.
 
 ## Architecture

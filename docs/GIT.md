@@ -195,10 +195,12 @@ PRs missed it — #13 was `CC-Dependencies: ⬆️ Update dependencies, add depe
 `Feat/cc 002`; #28 followed it — and #17's merge commit (`Merge pull request #17 from Pushedskydiver/feat/CC-002`)
 records nothing about what it did. Nothing checks the title; that is why it is written here.
 
-Whichever button Alex presses, the title is the commit subject: since 11 September 2026
+A merge commit or a squash takes the title from the PR: since 11 September 2026
 `merge_commit_title` and `squash_merge_commit_title` are `PR_TITLE`, and both `*_message` settings
 are `PR_BODY`. The merge box is still editable and nothing checks it afterwards: read it before
-confirming.
+confirming. A **rebase** uses neither — the branch commits keep their own subjects and bodies — so
+on the default button ([Merge strategy](#merge-strategy)) the commit format is whatever was written
+on the branch, and the PR title is only what the PR page shows.
 
 ### Body
 
@@ -231,20 +233,27 @@ cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back
 
 ## Merge strategy
 
-Merge commits, squash and rebase are all enabled, and the history uses merge commits
-(`28fe57f Merge pull request #17 …`, `cd77ed5 Merge pull request #13 …`). Since 11 September 2026
-the repo settings make the **PR title the commit subject and the PR body the commit message for
-both merge commits and squashes**, so the [Title](#title) format is the commit format and nothing
-needs retyping in the merge box. **Which button is Alex's call, per PR.** The trade-off, stated
-once:
+All three buttons are enabled. **Rebase is the default since 13 September 2026**, when #50, #51,
+#52 and #53 all went in that way — one parent each, their branch commits replayed onto `main` with
+new hashes. Before that the history was merge commits (`28fe57f Merge pull request #17 …`,
+`cd77ed5 Merge pull request #13 …`), and #49, merged the same day, is one. **Which button is Alex's
+call, per PR.** The trade-off, stated once:
 
-- **Merge commit** keeps every branch commit and its body reachable from `main`. For the migration
-  branch, whose bodies are the only record of why several things were done, that is the safer
-  default.
+- **Rebase**, the default, replays each branch commit onto `main`: every commit body stays in
+  `git log --oneline main`, there is no merge commit, and the PR title and body are not used at
+  all. It **re-hashes every commit**, which is why `git branch -d` refuses afterwards and why prose
+  cites PR numbers rather than branch hashes (both below).
+- **Merge commit** keeps every branch commit and its body reachable from `main` under one commit
+  that takes the PR title and body. For the migration branch, whose bodies are the only record of
+  why several things were done, that is the safer choice.
 - **Squash** gives `git log --oneline main` one line per change. It eats the branch commits'
   bodies — the squash commit carries the PR body instead — and it makes `git branch -d` refuse
   afterwards (below).
-- **Rebase** is enabled and unused. Do not start.
+
+**Cite PR numbers, not branch hashes, in anything that outlives the branch.** A rebase rewrites
+every hash, so a commit body or doc naming one points at a commit that is not on `main`: the merged
+bodies of `bbb822b` and `4b46b53` cite `113e6cd` and `326029c`, and
+`git merge-base --is-ancestor` says neither is on `main` (13 September 2026).
 
 Two unrelated changes are two PRs, not two commits on one branch — squash would collapse the second
 change's reasoning, and a merge commit would bury it under one PR title.
@@ -260,10 +269,21 @@ explain one defect, or record something tried and wrong, is a record; say so in 
 gh pr view <n> --json state,mergedAt          # state must be MERGED before anything below
 git checkout main && git pull --ff-only && git fetch --prune
 git branch -d <branch>                         # merge commit: deletes cleanly
-git branch -D <branch>                         # squash: -d refuses; -D is correct once gh says MERGED
+git branch -D <branch>                         # rebase or squash: -d refuses; -D once the check below passes
 npm ci
 npm run lint && npm run build && npm run test:e2e
 ```
+
+`-d` refuses after a rebase or a squash because the branch tip is not an ancestor of `main` — the
+commits are there under different hashes, or collapsed into one. Do not force it on the strength of
+the PR page alone; prove the content landed, then use `-D`:
+
+```bash
+gh pr view <n> --json state --jq .state          # MERGED
+git diff <branch> origin/main -- <the files it touched>   # prints nothing
+```
+
+Both rebase-merged branches on 13 September 2026 needed exactly this.
 
 `npm ci` because a merge can move `package-lock.json` underneath you; the suite because `main` is a
 combination that was never checked on any one branch's head. Deliberately not an npm script: it
