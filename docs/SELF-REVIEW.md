@@ -320,7 +320,8 @@ workers. There are no unit tests yet (`docs/TESTING.md`).
   checkout, and `Lint, build, e2e` has been a required check on `main` since 11 September 2026, so
   a red run blocks the merge button as well as the review.
 - **Alex merges.** Claude never does, and never posts review comments on the PR — findings go in
-  chat. Squash versus merge commit is Alex's call per PR.
+  chat. Which merge button is Alex's call per PR; rebase is the default (`docs/GIT.md`
+  §Merge strategy).
 - **Merged is not published.** If the PR is meant to ship, the version bump is in both files and
   `PROGRESS.md` says the release step is still to do.
 
