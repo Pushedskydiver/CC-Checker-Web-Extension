@@ -62,7 +62,7 @@ takes its config from `.editorconfig`; there is no `.prettierrc`.
 **What the e2e suite does not cover**, so nobody mistakes 20 green tests for a tested release: a
 real toolbar click and the `activeTab` grant behind it (the picker tests run a manifest copy with
 `host_permissions: ["<all_urls>"]` because Playwright cannot click the toolbar), the error popup,
-incognito, the clipboard's failure path, the Web Store package, and Safari — the share button's
+incognito, a real (not stubbed) refusal of the copy command, the Web Store package, and Safari — the share button's
 clipboard value is asserted as of 12 September 2026. Those are checked by hand:
 
 ```bash

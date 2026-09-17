@@ -140,7 +140,7 @@ _after_ the bugs had been found by hand, and is evidence only about the behaviou
 
 **What to do instead.** Say what the suite covers, not that it passes; `docs/TESTING.md` §What is
 not tested, stated rather than implied lists the gaps (the toolbar click and `activeTab` grant, the
-error popup, incognito, the clipboard's failure path, the store package, Safari). For a new fix:
+error popup, incognito, a real (not stubbed) refusal of the copy command, the store package, Safari). For a new fix:
 revert it,
 run `npm run test:e2e`, watch the test go red, restore. Still green means the test does not test it.
 
