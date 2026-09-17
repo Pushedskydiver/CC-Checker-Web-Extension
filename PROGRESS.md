@@ -16,7 +16,9 @@ handoff: **#56**, the merge-strategy docs. **2.1.0 is published**: the public li
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
    plan below. PRs 1 to 6 merged. Resume at PR 7, Vitest and the first colour-utility tests — it has no
-   dependency, and the only thing in flight is #56, which touches no file it will. One PR at a time, `da-review` on every `src/**` change, both reviews wherever the
+   dependency. #56 is in flight and **does overlap it**: PR 7's ten-file sweep changes the pre-push suite
+   line, which lives in ten files, six of them #56's — land #56 first, or rebase PR 7 on it. One PR at a
+   time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
    submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
@@ -167,8 +169,7 @@ pull requests.
   manifest.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
-inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. Unavoidable
-while the library is used; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
 ### Commit sequence as landed on 11 September 2026
 
@@ -217,7 +218,7 @@ nothing; users are on 2.1.0. The session then continued on 17 September — see 
   it as written.
 - **#51, `4b46b53` — the first Session 6 handoff**, written while #50 was still open; this entry and the
   loading block were updated again once #50 merged and #52 opened.
-- **#52, open — PR 6.** 31 `React.FC` signatures in 25 files converted by a script that touched only the
+- **#52, `170ca4e` — PR 6.** 31 `React.FC` signatures in 25 files converted by a script that touched only the
   declaration line and the closing `}) =>`; four types renamed (`TWcag`, `TCtaShared`, `TTextSize`,
   `TTextWeight`); `@typescript-eslint/no-restricted-types` now rejects `React.FC`, `FC`,
   `React.FunctionComponent` and `FunctionComponent`. **Type-only is proved, not argued:** `main` and the
@@ -226,7 +227,7 @@ nothing; users are on 2.1.0. The session then continued on 17 September — see 
   nit-floor; the commit body's "nine props-less components" is eight, corrected in the PR body rather than
   amended.
 
-**#50 to #54 were rebase-merged; #49 and #55 got merge commits.** (Recorded on 13 September as "#50 and
+**#50 to #54 were rebase-merged; #47, #49 and #55 got merge commits.** (Recorded on 13 September as "#50 and
 #51"; #52, #53 and #54 followed the same way.) `docs/GIT.md` §Merge strategy said rebase was "enabled and
 unused. Do not start". Asked on 17 September, Alex confirmed **rebase is the default now**; #56 writes that
 down with its two consequences. Two consequences hit this session: commit bodies on `main` cite branch hashes that
@@ -240,8 +241,7 @@ content was diffed against `origin/main` first, then `-D`.
 `src/context.tsx` is next touched; ~~`ColourContrastContextTypes` is un-prefixed too but is a context value, not
 a prop type, so the rule as worded does not reach it~~ — superseded by #52: two of its renames were unions, so
 the prefix covers every declared type, and on #52's branch `docs/CONVENTIONS.md` names three left as drift
-(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`); `main` still lists the older five until #52
-merges.
+(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`); `main` listed the older five until #52 merged (`170ca4e`, 13 September 2026) and now names the three.
 
 **Major novel patterns Session 6:**
 
@@ -265,10 +265,14 @@ merges.
    commit body naming a branch hash points at nothing on `main`, and `git branch -d` refuses. Cite PR numbers
    in prose that outlives the branch; before `-D`, prove the branch's files equal `origin/main`.
 
-### Continued, 17 September 2026 — #48 answered, PR 6 landed, rebase written down
+### Continued, 13 to 17 September 2026 — #48 answered, PR 6 landed, rebase written down
 
-**Alex merged #52 and #53**, then asked for #48 — the `copy-to-clipboard` 4.x bump, red on the `TS2322`
-guard — to be investigated and the rebase task chip picked up after it.
+**Alex merged #52 and #53** late on 13 September, then asked for #48 — the `copy-to-clipboard` 4.x bump,
+red on the `TS2322` guard — to be investigated and the rebase task chip picked up after it. The
+investigation and the port are dated **13-14 September** (`2faf894` 23:28 on the 13th, the port `bf54b97`
+23:58, its review fold `289e158` 02:32 on the 14th), which is the date `CLAUDE.md`,
+`docs/ARCHITECTURE.md`, `docs/TESTING.md` and the e2e comment carry. The merge, #48's closure, #55 and #56
+are 17 September.
 
 - **#48 was tried, not assumed.** Taking 4.x builds and passes: it wraps `navigator.clipboard.writeText` in
   a `try` and falls back to `execCommand`. `da-review` found, and a probe reproduced on both copy buttons,
@@ -280,7 +284,8 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
   `copy-to-clipboard` dropped. Bundle 255,755 → 254,084 bytes. The `no console errors…` e2e test now clicks
   both copy buttons; against a 4.x build it fails 5/5 with two policy errors.
 - **#48 closed, #55 merged** (`4c4f9d2`): `@dependabot recreate` on #48 made Dependabot close it
-  ("updatable in another way") and open #55 with React 19.3.0 alone, green, merged under the delegation.
+  ("updatable in another way") and open #55 — React and `react-dom` 19.3.0 with their `@types`, plus `scheduler` in the lockfile, and no
+  `copy-to-clipboard` — green, merged under the delegation.
   Same mechanism as #32 → #35 in Session 3.
 - **#56 open**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
   `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
@@ -473,7 +478,7 @@ cites `fixtures.ts` by line number, which will drift.
    at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
    `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
    in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 24 KB, roughly 6k tokens, inside a ~45 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   file, and the band (the `## Session` entries) is about 24 KB, roughly 6k tokens, inside a ~46 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `4c4f9d2` or later), `gh pr list` — expect #56 (merge-strategy docs) and this handoff's own PR,
@@ -495,10 +500,11 @@ cites `fixtures.ts` by line number, which will drift.
    shell command can settle before spending an agent.
 7. Decision branches carried in: **(a)** the pre-push suite gains a fourth command, `test:unit`, running
    second — decided, open only in that Alex may revisit it once he sees PR 7's ten-file documentation sweep
-   (PR #42's merged body calls that PR "PR 8"; the plan's numbering is the authority); **(b)** whether
+   (PR #42's body on GitHub calls that PR "PR 8" — its merge commit `8ac0bdc` carries no body at all; the
+   plan's numbering is the authority); **(b)** whether
    workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; ~~**(c)** arrows
    or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
-   converts anything~~ — settled: Alex merged #50 with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
+   converts anything~~ — settled 13 September 2026: Alex merged #50 (`bbb822b`) with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
    (what that needs is in `docs/GIT.md` §Dependabot) or hold it~~ — settled 17 September 2026: neither. The
    library was dropped (#54) after 4.x was shown to log a `console.error` on every copy click; #48 closed
    and Dependabot's #55 brought React 19.3.0 on its own; ~~**(e)** whether rebase merges are now
