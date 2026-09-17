@@ -50,11 +50,13 @@ export const copyText = (text: string): boolean => {
 /**
  * Empties the selection so only the hidden span is copied, and returns a function that puts the
  * previous ranges back and refocuses the text field that held them. Blurring a focused input or
- * textarea first is inherited from `toggle-selection`, not observed to be needed here: on
- * 14 September 2026 a da-review scratch spec (not kept) copied the span's text in the suite's
- * Chromium with `input#background` still focused and part of its value selected, and a mouse click
- * on the button moves focus off the input before this runs anyway. Kept for engines where a field's
- * own selection does win over the added range — the Safari port is where to check.
+ * textarea first is inherited from `toggle-selection`. It is not what makes the copy work: on
+ * 14 September 2026 a scratch spec (not kept) copied the span's text in the suite's Chromium with
+ * `input#background` still focused and part of its value selected. It is what makes the restore
+ * faithful — a probe on 17 September 2026 found the field's own selection comes back collapsed
+ * without it — and it is the part that may matter on engines where a field's own selection wins
+ * over the added range, which the Safari port is where to check. Both effects are reachable only
+ * through a programmatic click; a real mouse click moves focus to the button before this runs.
  */
 const clearSelection = (selection: Selection | null): (() => void) => {
 	if (!selection || selection.rangeCount === 0) return () => {};
