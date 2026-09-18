@@ -141,7 +141,8 @@ pull requests.
   does `await import('oxc-transform-react')` — the Rust port — and errors without it
   (`dist/index.js:201-208`); `babel-plugin-react-compiler` is reached only through the plugin's exported
   `reactCompilerPreset` (`dist/index.js:46`) plus `@rolldown/plugin-babel`. All three are optional peers and
-  **none is installed or in `package-lock.json`**. The cost, measured on the Babel route in a scratch clone
+  **none is installed** — they appear in `package-lock.json` only as `@vitejs/plugin-react`'s optional peer
+  declarations, never resolved. The cost, measured on the Babel route in a scratch clone
   on 12 September 2026, is 13,145 bytes (259,741 → 272,886, +5.06%); `panicThreshold` is a
   `babel-plugin-react-compiler` option, it defaults to `'none'`, React's docs say production must always use
   `'none'`, and at that setting a planted conditional hook built green and silent. Whether
@@ -193,7 +194,7 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
 
-## Session 6 — 13 September 2026 (CC-004: Session 1 archive, PRs 5 and 6)
+## Session 6 — 13 to 18 September 2026 (CC-004: Session 1 archive, PRs 5 to 7, #48, rebase)
 
 **Setup:** the loading block said to set Opus 5 at `high` before anything else. The session-management tools
 refuse to change their own session's model or effort, so it was checked instead: `get_session self` reported
@@ -488,34 +489,23 @@ title with the PR body as the message; secret scanning and push protection on (p
 casing fix (e.g. `feat/CC-003-apca-3`) collides with the lowercase files; fast-forward refs without checkout, or
 work from a fresh clone.
 
-## Session 2 — 11 September 2026 (continuation after the session limit)
-
-**Done:** the docs fact-check that the limit interrupted on 4 September finished — every one of the 15 prose files
-(CLAUDE.md, README.md, ten `docs/*.md`, three `.claude/agents/*.md`) was claim-checked at HEAD and cross-checked
-for links, shared facts and duplicate passages; 40-odd wording corrections landed in the files themselves.
-Follow-ups from that pass: `--foreground-color` in `src/styles/globals.css` normalised to `#222222` so it is
-byte-equal to `DEFAULT_FOREGROUND`; `playwright.config.ts` added to the "both" row of the CLAUDE.md review-trigger
-table so the table and `copilot-surrogate.md` agree. Pre-push suite re-run after both: lint (tsc ×2, ESLint,
-stylelint, prettier) green, build green, e2e 18/18.
-
-**Still open, unchanged from Session 1** (superseded in Session 3 — merged as `08542e6`; Session 1's own text archived out 13 September 2026 and survives in `git log -p PROGRESS.md`)**:** nothing is committed or pushed; the commit sequence above still applies.
-Two loose ends the cross-check left for Alex: `copilot-surrogate.md`'s own trigger also names comment-block edits
-in `public/app/*.js` (a path table cannot express that — leave as a superset or drop it), and `docs/TESTING.md`
-cites `fixtures.ts` by line number, which will drift.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5
-   at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
-   `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
-   in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 27 KB, roughly 6.8k tokens, inside a ~49 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 4
+   at this handoff (Sessions 3 to 6): Session 2 was archived at the Session 6 close, one entry before the
+   count half of `docs/DEVELOPMENT.md` §Session handoff would have fired, so that a Session 7 entry makes
+   five and **no archive PR stands between the next session and PR 8**. At the Session 7 close, check
+   again — a Session 8 entry would make six. The size half does not fire: it measures the detail band,
+   not the file, and the band is about 25 KB, roughly 6.5k tokens, inside a ~49 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `4799394` or later), `gh pr list` — expect only this handoff's own PR, unless Alex has merged
-   it. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges).
+   (expect `6121a98` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
+   not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched, with a stash) and
+   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record `docs/`
+   cites; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
+   decision (h) on which merge button.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 25 Vitest cases and 20 Playwright tests; `test:unit` is the second command.
@@ -545,11 +535,19 @@ cites `fixtures.ts` by line number, which will drift.
    (what that needs is in `docs/GIT.md` §Dependabot) or hold it~~ — settled 17 September 2026: neither. The
    library was dropped (#54) after 4.x was shown to log a `console.error` on every copy click; #48 closed
    and Dependabot's #55 brought React 19.3.0 on its own; ~~**(e)** whether rebase merges are now
-   accepted~~ — settled 17 September 2026: Alex confirmed rebase is the default, written down in #56. The store published 2.1.0
+   accepted~~ — settled 17 September 2026: Alex confirmed rebase is the default, written down in #56;
+   **(h)** which button a _delegated Dependabot_ merge uses: `CLAUDE.md` §PR workflow and `docs/GIT.md`
+   §Who merges both prescribe `gh pr merge <n> --merge --admin --delete-branch`, written before rebase became
+   the default. #55 was merged that way because that is what they say. Not changed without Alex; **(i)** two
+   carry-overs from Session 2, still open — `copilot-surrogate.md`'s trigger names comment-block edits in
+   `public/app/*.js`, which the `CLAUDE.md` path table cannot express (leave as a superset, or drop it), and
+   `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (28, 43, 87 — still landing on
+   18 September 2026), which will drift the first time the fixture file changes. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL).
 
 ## Session archive
 
-Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026). Full
+Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
+18 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
