@@ -7,7 +7,7 @@ primary source for how it works — read its `Fixtures` type and two doc comment
 first; `playwright.config.ts` holds the timings. The suite was written on 4 September 2026
 alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
 
-`src/utils/color-utils.test.ts` (19 tests, Vitest, `npm run test:unit`, ~90ms) covers the pure
+`src/utils/color-utils.test.ts` (22 tests, Vitest, `npm run test:unit`, ~100ms) covers the pure
 colour utilities with no browser and no `chrome.*`. Added 17 September 2026 — §Unit tests below.
 
 **Adapted from nas-stacks' and moe's `docs/TESTING.md`.** Dropped wholesale, because this repo has
@@ -266,28 +266,39 @@ Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched man
 
 ## Unit tests
 
-`src/utils/color-utils.test.ts`, 19 cases, added 17 September 2026 (PR 7 of CC-004). Vitest reads
+`src/utils/color-utils.test.ts`, 22 cases, added 17 September 2026 (PR 7 of CC-004). Vitest reads
 `vitest.config.ts`, which is deliberately separate from `vite.config.ts`: the build config exists to
 emit one JS file and one CSS file for the extension page, and none of that helps a test of a pure
 function. `environment: 'node'`, `include: ['src/**/*.test.ts']`, and the `~` alias duplicated from
 the build config.
 
-What they cover, and why these: `getLevel`'s four bands **and its exclusive boundaries** (7 is not
-AAA, 4.5 is not AA, 3 is not AA Large — the `> 3` versus `>= 3` class of bug); `toHslTuple`'s hue
-normalisation through `colorToHsl` and `rgbToHsl`, the 4 September 2026 NaN-hue defect; the visible
-half of it (`#222222` at saturation 0.5 is `#331111`, not `#111111`); `hslToHex(colorToHsl(x)) === x`
-for both defaults; `getContrast` at the 21 ceiling and at the default pair's 12.72, the same number
-the e2e suite asserts in the UI; `isHex` accepting and rejecting; `isDark` splitting the two
-defaults; `roundTo` at the two decimals the ratio display uses.
+What they cover, and why these: each of `getLevel`'s four bands asserted as a whole object;
+`toHslTuple`'s hue normalisation through `colorToHsl` and `rgbToHsl`, the 4 September 2026 NaN-hue
+defect; the visible half of it (`#222222` at saturation 0.5 is `#331111`, not `#111111`);
+`hslToHex(colorToHsl(x)) === x` for both defaults; `getContrast` at the 21 ceiling and at the
+default pair's 12.72, the same number the e2e suite asserts in the UI; `isHex` accepting and
+rejecting; `isDark` at the two defaults **and one 8-bit step either side of its lab.l 60 threshold**
+(`#909090` is 59.789, `#919191` is 60.172); `roundTo` at the two decimals the ratio display uses.
+
+**`getLevel`'s boundaries are pinned, not endorsed.** WCAG 1.4.3 and 1.4.6 say "a contrast ratio of
+at least" 4.5:1, 3:1 and 7:1 — `>=`. This tree uses `>`, so a ratio of exactly 4.5 is AA to WCAG and
+Fail here, and the sibling web app's `getLevel` is byte-identical. Probed 18 September 2026: every
+8-bit colour against black and against white, and every grey pair, produces no ratio of exactly 3,
+4.5 or 7 (nearest 4.49295), so no input the app accepts can tell the two apart; arbitrary non-grey
+pairs were not probed. Three cases pin the current behaviour so that changing it is a decision
+rather than a drift.
 
 **The gate was watched failing** (`docs/CONVENTIONS.md` §Verify a gate can fail): with the
 `Number.isFinite` normalisation removed from `toHslTuple`, the hue test failed with
-`expected NaN to be +0`, and passed again when it was restored.
+`expected NaN to be +0`, and passed again when it was restored. The first draft of this suite passed
+six mutations it should have caught — three `Pass` verdicts in the `> 4.5` band, one in the `> 3`
+band, and `isDark`'s threshold moved to 30 and to 85 — all found by a `da-review` mutation run on
+18 September 2026 and each now killed by a named case.
 
 **Measured against the sibling web app, 17 September 2026** — the cheap check `PROGRESS.md` §The
 approved plan asked PR 7 to fold in. `app/utils/color-utils.ts` from
 `Pushedskydiver/Colour-Contrast-Checker` was copied in beside these tests and run against them:
-**15 of 19 passed**. The four failures are real differences, not harness noise: two are the NaN hue
+**15 of the 19 cases that existed that day passed**. The four failures are real differences, not harness noise: two are the NaN hue
 (the sibling never received the 4 September fix), and two are shape — its `colorToHsl` and
 `rgbToHsl` are annotated `[number, number, number]` but return four elements at runtime, because
 chroma's `.hsl()` includes alpha and nothing strips it. Evidence for workstream 5, not a commitment:

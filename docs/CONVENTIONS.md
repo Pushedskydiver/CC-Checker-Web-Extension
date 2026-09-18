@@ -318,7 +318,7 @@ The pre-push suite, green before every push:
 npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
-`.github/workflows/ci.yml` runs the same three on `ubuntu-latest` (plus `npm ci` and
+`.github/workflows/ci.yml` runs the same four on `ubuntu-latest` (plus `npm ci` and
 `npx playwright install --with-deps chromium`) on every PR and push to `main`. Its display name,
 `Lint, build, e2e`, has been a required status check on `main` since 11 September 2026 (first green
 run: PR #28), alongside Alex's approval.
@@ -329,13 +329,15 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **The e2e suite is the only test.** 20 Playwright tests in `test/e2e/`, loading `build/` into a
+- **Two suites.** `src/utils/color-utils.test.ts` is 22 Vitest cases over the pure colour
+  utilities (17 September 2026), and the e2e suite is everything else: 20 Playwright tests in
+  `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content script
   → service worker → iframe flow; the picker tests use the patched-manifest fixture (`test.use({
 patched: true })`). Not covered: a real toolbar click / `activeTab` grant, the error popup UI,
   incognito, a real (not stubbed) refusal of the copy command, the Web Store package, Safari —
-  though the share button's clipboard value is asserted since 12 September 2026. There are no unit
-  tests; see `docs/TESTING.md`.
+  though the share button's clipboard value is asserted since 12 September 2026. See
+  `docs/TESTING.md` for both suites.
 - **`npm test` is build + e2e**; `test:e2e` alone assumes `build/` is current.
 
 ### Verify a gate can fail

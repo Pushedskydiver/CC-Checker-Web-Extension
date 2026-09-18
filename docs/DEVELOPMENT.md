@@ -44,7 +44,7 @@ runner and no dev server: the app needs `chrome.*` APIs, so it only runs loaded 
 | Command             | What it proves                                                                                                                                | Cost           |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass | ~4s            |
-| `npm run test:unit` | the 19 Vitest cases over `src/utils/color-utils.ts` pass; no browser, no build                                                                | ~0.1s          |
+| `npm run test:unit` | the 22 Vitest cases over `src/utils/color-utils.ts` pass; no browser, no build                                                                | ~0.1s          |
 | `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                   | under 1s       |
 | `npm run test:e2e`  | the built extension loads in headless Chromium and the 20 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included             | ~8s, 4 workers |
 | `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                               | ~8s            |
@@ -446,7 +446,7 @@ condition, or dropped outright:**
   [§The review gate](#the-review-gate--architectural--da--self--pr).
 - **Mutation testing.** ~~There are no unit tests to mutate; the suite is end-to-end. Re-entry: when
   the pure colour utilities in `src/utils/color-utils.ts` get unit tests, and not before.~~ They got
-  them on 17 September 2026 (19 Vitest cases), so the condition is met and the decision is open.
+  them on 17 September 2026 (22 Vitest cases), so the condition is met and the decision is open.
 - **Phase Validation Protocol, auto-merge criteria, HITL trigger taxonomy.** Chief-clancy's
   autonomous-merge apparatus. Here Alex merges — there is no autonomy to gate.
 - **`AGENTS.md` generation and sync tables.** `AGENTS.md` is a symlink to `CLAUDE.md`: no
