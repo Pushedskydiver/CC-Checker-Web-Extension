@@ -29,12 +29,12 @@ rewritten.
 
 Checked against the live repo with `gh api` on 11 September 2026, not inferred from the sources:
 
-| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                     |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                                                      |
-| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge. |
-| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                        |
-| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                          |
+| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                           |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                                                            |
+| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, unit, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge. |
+| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                              |
+| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                                |
 
 So, apart from the review requirement and the CI check, this file is instructions, knowingly — the
 weaker instrument. One thing follows: a required check proves the job passed, not that the job
@@ -121,18 +121,18 @@ subject of the shape `Update <thing>` tells `git log` nothing — say what broke
 
 ### Types
 
-| Type       | Gitmoji | Use for                                               |
-| ---------- | ------- | ----------------------------------------------------- |
-| `feat`     | ✨      | New capability                                        |
-| `fix`      | 🐛      | Bug fix                                               |
-| `chore`    | 📦      | Maintenance, config, dependency work                  |
-| `refactor` | ♻️      | Restructuring, no behaviour change                    |
-| `docs`     | 📝      | Documentation only                                    |
-| `style`    | 💄      | Formatting, cosmetic, no behaviour change             |
-| `test`     | ✅      | Adding or changing tests (`test/e2e/**`)              |
-| `ci`       | 👷      | `.github/workflows/**`, `.github/dependabot.yml` only |
-| `build`    | 🔧      | `vite.config.ts`, `tsconfig*.json`, lint tooling      |
-| `perf`     | ⚡️      | Performance                                           |
+| Type       | Gitmoji | Use for                                                      |
+| ---------- | ------- | ------------------------------------------------------------ |
+| `feat`     | ✨      | New capability                                               |
+| `fix`      | 🐛      | Bug fix                                                      |
+| `chore`    | 📦      | Maintenance, config, dependency work                         |
+| `refactor` | ♻️      | Restructuring, no behaviour change                           |
+| `docs`     | 📝      | Documentation only                                           |
+| `style`    | 💄      | Formatting, cosmetic, no behaviour change                    |
+| `test`     | ✅      | Adding or changing tests (`test/e2e/**`, `src/**/*.test.ts`) |
+| `ci`       | 👷      | `.github/workflows/**`, `.github/dependabot.yml` only        |
+| `build`    | 🔧      | `vite.config.ts`, `tsconfig*.json`, lint tooling             |
+| `perf`     | ⚡️      | Performance                                                  |
 
 Ten types. `feat`, `fix`, `chore`, `refactor` and `style` are already in the history; `docs`,
 `test`, `ci`, `build` and `perf` are added because the repo now has docs, an e2e suite, a workflow
@@ -207,13 +207,13 @@ on the branch, and the PR title is only what the PR page shows.
 `PULL_REQUEST_TEMPLATE.md` at the repo root (GitHub honours root, `docs/` or `.github/`) pre-fills
 five headings. What each one wants here:
 
-| Heading                                     | Answer with                                                                                                                                                                                                                                              |
-| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                                      |
-| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, a real (not stubbed) refusal of the copy command and the store package are outside the suite (`docs/TESTING.md`). |
-| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                                            |
-| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                                                 |
-| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run test:unit && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).      |
+| Heading                                     | Answer with                                                                                                                                                                                                                                                                    |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What kind of change does this PR introduce? | The commit type and the ticket key.                                                                                                                                                                                                                                            |
+| Did you add tests for your changes?         | Which cases in `test/e2e/extension.spec.ts` or `src/**/*.test.ts` were added or changed. If none, say why: a real toolbar click, the error popup, incognito, a real (not stubbed) refusal of the copy command and the store package are outside the suite (`docs/TESTING.md`). |
+| Summary                                     | Why this shape and not the obvious alternative; what was tried and was wrong.                                                                                                                                                                                                  |
+| Does this PR introduce a breaking change?   | Anything a user of the installed extension would notice — a manifest permission, a `minimum_chrome_version`, a change to the `localStorage` keys `background`, `foreground` or `colors`.                                                                                       |
+| Other information                           | Node and Chrome versions, and the result of `npm run lint && npm run test:unit && npm run build && npm run test:e2e` locally — which suite, not "tests pass". Plus what the merge does **not** do: a merge never publishes ([Releases](#releases)).                            |
 
 ### Labels
 

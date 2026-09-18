@@ -105,7 +105,8 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 - `strict`, `noUncheckedIndexedAccess`, `erasableSyntaxOnly` and `noUnusedLocals/Parameters` are
   on. Destructure with defaults rather than index and assert: `const [h, s = 0, l = 0] = hsl`.
 - Two tsconfigs: `tsconfig.json` covers `src/**` with `types: ["chrome", "vite/client"]`;
-  `tsconfig.node.json` extends it for `vite.config.ts`, `playwright.config.ts` and `test/**` with
+  `tsconfig.node.json` extends it for `vite.config.ts`, `vitest.config.ts`, `playwright.config.ts`
+  and `test/**` with
   `types: ["node", "chrome"]`. A new root-level `.ts` file goes in the second one's `include`.
 - The browser target is the `browserslist` field, `chrome >= 111`. PostCSS reads it; nothing else.
 
@@ -179,6 +180,9 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 
 - **kebab-case** directories and files: `color-control/color-control.tsx`,
   `saved-colors.module.css`. Exception: hook files, above.
+- **A unit test sits beside the module it tests**, `<name>.test.ts` — `src/utils/color-utils.test.ts`
+  (17 September 2026). `vitest.config.ts`'s `include` is `src/**/*.test.ts`, so co-location is what
+  the runner enforces; a component directory still holds only `<name>.tsx` and `<name>.module.css`.
 - **Atomic tiers are numbered**: `01-atoms`, `02-molecules`, `03-organisms`, `04-layouts`. Imports
   point down or sideways, never up — no atom imports a molecule (verified 4 September 2026).
   Sub-components of an organism sit in its `components/` directory (`tabbed/components/tab.tsx`).
@@ -380,7 +384,7 @@ rather than implying coverage.
 | tamaclaude     | `knip` dead-export check                      | Dead code found by hand a second time (dead CSS and dangling `styles.*` references went on 4 September 2026). |
 | moe/tamaclaude | Zod at trust boundaries                       | The app parses anything beyond `localStorage` — e.g. a Safari `browser.*` shim.                               |
 | moe            | TSDoc on public API, `Result` union           | Nothing is published and nothing returns an expected failure; none foreseen.                                  |
-| tamaclaude     | Co-located `*.test.ts`                        | **Adopted 17 September 2026**: `src/utils/color-utils.test.ts` sits beside the module it tests.               |
+| tamaclaude     | Co-located `*.test.ts`                        | **Adopted 17 September 2026** — the rule now lives in §Files and naming.                                      |
 | nas-stacks     | Compose, shell, Python and secrets sections   | No equivalent surface: no secrets, no deploy target.                                                          |
 
 ---

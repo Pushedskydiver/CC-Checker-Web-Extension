@@ -150,7 +150,8 @@ describe('getLevel', () => {
 	// uses `>`. So a ratio of exactly 4.5 is AA per WCAG and Fail here. Unreachable as
 	// far as anyone has probed: on 18 September 2026 every 8-bit colour against black
 	// and against white, plus every grey pair, produced no ratio of exactly 3, 4.5 or 7
-	// (nearest: 4.49295 for #747474 on black). Arbitrary non-grey pairs were not probed.
+	// (nearest overall: #458301 on black, 4.4999999323). Arbitrary non-grey pairs were
+	// not probed.
 	// These cases pin the behaviour so a change to it is deliberate, not a claim that
 	// exclusive is correct; the sibling web app's getLevel is byte-identical.
 	it.each([
@@ -166,7 +167,7 @@ describe('getLevel', () => {
 });
 
 describe('roundTo', () => {
-	it('rounds to the decimals the ratio display uses', () => {
+	it('rounds to the decimals the slider labels use', () => {
 		expect(roundTo(12.7234, 2)).toBe(12.72);
 		expect(roundTo(12.7254, 2)).toBe(12.73);
 	});

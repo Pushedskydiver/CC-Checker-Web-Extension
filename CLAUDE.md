@@ -120,19 +120,19 @@ Minimal actionable rules only. Patterns and philosophy live in the on-demand doc
 explicit trigger phrases rather than always-on.
 
 - **TDD: vertical slices.** One test → implement → next test, never all tests first. Today that means
-  one Playwright test in `test/e2e/`, or one Vitest case in `src/utils/*.test.ts` — the colour
-  utilities have 19 as of 17 September 2026 (`docs/TESTING.md`).
+  one Playwright test in `test/e2e/`, or one Vitest case in `src/**/*.test.ts` — the colour
+  utilities have 22 as of 18 September 2026 (`docs/TESTING.md`).
 - **Review order: architectural → DA (subagent) → self → PR. Never skip or reorder.** Dispatch
   `da-review` from a fresh context — the one that wrote the change cannot see what it assumed. It is
   a grep, not a judgement:
 
-    | Trigger                                                                                                                  | Review                         |
-    | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
-    | `src/**`, `public/app/**`                                                                                                | `da-review`, mandatory         |
-    | `docs/**`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                                                 | `copilot-surrogate`, mandatory |
-    | `public/manifest.json`, `vite.config.ts`, `playwright.config.ts`, `package.json` deps, `.github/workflows/**`, `test/**` | both                           |
-    | Diff over 200 lines excluding `package-lock.json`                                                                        | both                           |
-    | A spec or plan, before code moves against it                                                                             | `spec-grill`                   |
+    | Trigger                                                                                                                                                          | Review                         |
+    | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+    | `src/**`, `public/app/**`                                                                                                                                        | `da-review`, mandatory         |
+    | `docs/**`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                                                                                         | `copilot-surrogate`, mandatory |
+    | `public/manifest.json`, `vite.config.ts`, `playwright.config.ts`, `vitest.config.ts`, `package.json` deps, `.github/workflows/**`, `test/**`, `src/**/*.test.ts` | both                           |
+    | Diff over 200 lines excluding `package-lock.json`                                                                                                                | both                           |
+    | A spec or plan, before code moves against it                                                                                                                     | `spec-grill`                   |
 
     `copilot-surrogate` reads touched files at HEAD in full, not the diff. Reviews return findings
     in-chat and never post PR comments — Alex owns the PR audit trail.

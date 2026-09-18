@@ -257,8 +257,9 @@ workers. `src/utils/color-utils.test.ts` is 22 Vitest cases since 17 September 2
   `renders with defaults, real font, and consistent first-run colours` compares the input value with
   the custom property.
 - **Docs name real scripts.** `npm run lint`, `lint:ts`, `lint:js`, `lint:css`, `format`,
-  `format:check`, `build`, `watch`, `package`, `test`, `test:e2e` — and nothing else. There is no
-  `dev`, `start` or `typecheck`. `grep '"scripts"' -A 12 package.json` is the source.
+  `format:check`, `build`, `watch`, `package`, `test`, `test:unit`, `test:e2e` — and nothing else.
+  There is no `dev`, `start` or `typecheck`.
+  `node -e "console.log(Object.keys(require('./package.json').scripts))"` is the source.
 - **Docs name real files.** `_config/eslint.json`, `types/postcss-sort-media-queries.d.ts` and
   `postcss.config.js` are gone; a reference to any of them is stale. Every path in prose resolves
   from the repo root, with the same prefix throughout a document.
