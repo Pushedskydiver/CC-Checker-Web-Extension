@@ -282,19 +282,21 @@ rejecting; `isDark` at the two defaults **and one 8-bit step either side of its 
 (`#909090` is 59.789, `#919191` is 60.172); `roundTo` at the two decimals the slider labels use (`color-control.tsx`; the ratio display is
 `toFixed(2)` in `ratio.tsx`).
 
-**`getLevel`'s boundaries are pinned, not endorsed.** WCAG 1.4.3 and 1.4.6 say "a contrast ratio of
-at least" 4.5:1, 3:1 and 7:1 — `>=`. This tree uses `>`, so a ratio of exactly 4.5 is AA to WCAG and
-Fail here, and the sibling web app's `getLevel` is byte-identical. Probed 18 September 2026: every
-8-bit colour against black and against white, and every grey pair, produces no ratio of exactly 3,
-4.5 or 7 — nearest overall `#458301` on black at 4.4999999323 — so no input the app accepts can
-tell the two apart; arbitrary non-grey pairs were not probed. The ratio _display_ is a separate
-question: `toFixed(2)` shows that pair as `4.50` while the grade is Fail, under either operator. Three cases pin the current behaviour so that changing it is a decision
-rather than a drift.
+**`getLevel`'s boundaries are inclusive, and three cases hold them there.** WCAG 1.4.3 and 1.4.6 say
+"a contrast ratio of at least" 7:1, 4.5:1 and 3:1 — `>=`. This tree used `>` until 18 September
+2026, so a ratio of exactly 4.5 was AA to the spec and Fail here; Alex took the one-character fix in
+the same PR as these tests. Probed that day before changing it: every 8-bit colour against black and
+against white, and every grey pair, produces no ratio of exactly 3, 4.5 or 7 — nearest overall
+`#458301` on black at 4.4999999323 — so no input the app accepts can tell the operators apart, and
+these three cases are the only thing that can. Arbitrary non-grey pairs were not probed. The ratio
+_display_ is a separate question: `toFixed(2)` renders that pair as `4.50` while the grade is Fail,
+under either operator. **The sibling web app still uses `>`** — one more item for workstream 5,
+alongside the NaN hue.
 
 **The gate was watched failing** (`docs/CONVENTIONS.md` §Verify a gate can fail): with the
 `Number.isFinite` normalisation removed from `toHslTuple`, both hue tests (`colorToHsl` and
 `rgbToHsl`) failed with `expected NaN to be +0`, and passed again when it was restored. The first draft of this suite passed
-six mutations it should have caught — three `Pass` verdicts in the `> 4.5` band, one in the `> 3`
+six mutations it should have caught — three `Pass` verdicts in the `>= 4.5` band, one in the `>= 3`
 band, and `isDark`'s threshold moved to 30 and to 85 — all found by a `da-review` mutation run on
 18 September 2026 and each now killed by a named case.
 

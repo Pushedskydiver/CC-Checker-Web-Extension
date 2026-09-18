@@ -214,8 +214,10 @@ paint uses the CSS values until the provider's effect writes the current hex pai
 `document.body.style`, so a mismatch shows as a flash. The e2e test "renders with defaults, real font,
 and consistent first-run colours" checks the background input and the computed custom property agree.
 
-**Grades.** `getLevel` grades strictly: AAA at `> 7`, AA and AAA Large at `> 4.5`, AA Large at `> 3`.
-A ratio of exactly 3.0 therefore fails AA Large, where WCAG's threshold is `≥ 3`. Known and unchanged.
+**Grades.** `getLevel` grades AAA at `>= 7`, AA and AAA Large at `>= 4.5`, AA Large at `>= 3`,
+matching WCAG's "at least". It used `>` until 18 September 2026, so a ratio of exactly 3.0 failed
+AA Large where the spec passes it; no 8-bit colour pair reaches an exact boundary, so the fix
+changed nothing the panel can display.
 
 ## Build pipeline
 

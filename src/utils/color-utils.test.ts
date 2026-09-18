@@ -136,8 +136,8 @@ describe('getLevel', () => {
 		});
 	});
 
-	it('fails everything at or below 3', () => {
-		expect(getLevel(3)).toEqual({
+	it('fails everything below 3', () => {
+		expect(getLevel(2.9)).toEqual({
 			AALarge: 'Fail',
 			AA: 'Fail',
 			AAALarge: 'Fail',
@@ -145,21 +145,18 @@ describe('getLevel', () => {
 		});
 	});
 
-	// Current behaviour, and it disagrees with the spec: WCAG 1.4.3 and 1.4.6 say "a
-	// contrast ratio of at least 4.5:1" (and 3:1, 7:1), which is `>=`, while `getLevel`
-	// uses `>`. So a ratio of exactly 4.5 is AA per WCAG and Fail here. Unreachable as
-	// far as anyone has probed: on 18 September 2026 every 8-bit colour against black
-	// and against white, plus every grey pair, produced no ratio of exactly 3, 4.5 or 7
-	// (nearest overall: #458301 on black, 4.4999999323). Arbitrary non-grey pairs were
-	// not probed.
-	// These cases pin the behaviour so a change to it is deliberate, not a claim that
-	// exclusive is correct; the sibling web app's getLevel is byte-identical.
+	// WCAG's thresholds are inclusive — "at least" 7:1, 4.5:1, 3:1 — so a ratio sitting
+	// exactly on one passes. `getLevel` used `>` until 18 September 2026 and these cases
+	// asserted the Fail that produced; they now assert the spec. No 8-bit pair reaches an
+	// exact boundary anyway (probed against black, white and every grey pair that day),
+	// so the change is invisible to the panel and these cases are the only thing that
+	// can tell the two operators apart. The sibling web app still uses `>`.
 	it.each([
-		[7, 'AAA', 'Fail'],
-		[4.5, 'AA', 'Fail'],
-		[3, 'AALarge', 'Fail'],
+		[7, 'AAA', 'Pass'],
+		[4.5, 'AA', 'Pass'],
+		[3, 'AALarge', 'Pass'],
 	] as const)(
-		'treats %d as below its own band (%s), unlike WCAG',
+		'treats %d as inside its own band (%s), as WCAG requires',
 		(contrast, grade, verdict) => {
 			expect(getLevel(contrast)[grade]).toBe(verdict);
 		},
