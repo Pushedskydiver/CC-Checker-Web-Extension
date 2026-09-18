@@ -22,7 +22,7 @@ reaches users_; everything keyed to npm publishing or container deploys is named
 1. **Make the change.** One thing at a time — [§One change in flight](#one-change-in-flight).
    Branch `<type>/CC-<n>[-short-slug]`, commits `<type>: CC-<n> - <gitmoji> Description`
    (`docs/GIT.md`).
-2. **Run the gates** — [§The commands](#the-commands). All three, not just the one that covers
+2. **Run the gates** — [§The commands](#the-commands). All four, not just the one that covers
    the file you touched.
 3. **Review gate** — architectural → DA subagent → self-review → PR. Never reordered, never
    skipped. [§The review gate](#the-review-gate--architectural--da--self--pr).
@@ -91,7 +91,7 @@ local gates  ───────── npm run lint && npm run test:unit && np
   ↓
 review gate  ───────── architectural → DA subagent → self-review
   ↓
-push + PR    ───────── CI: the `quality` job on ubuntu-latest (lint, build, e2e)
+push + PR    ───────── CI: the `quality` job on ubuntu-latest (lint, unit, build, e2e)
   ↓
 Alex merges to main
   ↓
@@ -131,8 +131,9 @@ version is claiming a release it cannot perform.
 ### CI, and what it can and cannot do
 
 `.github/workflows/ci.yml` runs one job, `quality`, on every pull request and every push to `main`:
-`npm ci`, `npm run lint`, `npm run build`, `npx playwright install --with-deps chromium`,
-`npm run test:e2e`, with `test-results/` kept for seven days on failure. In CI Playwright runs 2
+`npm ci`, `npm run lint`, `npm run test:unit`, `npm run build`,
+`npx playwright install --with-deps chromium`, `npm run test:e2e`, with `test-results/` kept for
+seven days on failure. In CI Playwright runs 2
 workers with 1 retry (`playwright.config.ts`).
 
 **CI is the only case-sensitive checkout in the loop, and that is the main thing it is for.** On
@@ -191,7 +192,7 @@ Four steps, in that order, never reordered.
    `git diff main...HEAD` yourself. It runs last because DA-driven fixes introduce fresh line-level
    slips, and a self-review completed before them is stale.
 4. **Push and open the PR.** Fill in `PULL_REQUEST_TEMPLATE.md` honestly — "did you add tests"
-   means e2e tests here; there are no others. If the PR is the sort described in
+   means the Playwright suite, a Vitest case in `src/**/*.test.ts`, or both. If the PR is the sort described in
    `.claude/agents/copilot-surrogate.md` — prose making factual claims about the repo, a manifest
    or config change, or a diff over 200 lines — dispatch the surrogate; it reads every touched
    file at HEAD in full and grep-falsifies the claims. **Findings from every review agent stay
@@ -220,7 +221,8 @@ the one delegated exception — `docs/GIT.md` §Who merges). The criteria below 
 checklist, not a permission grant. All must hold before the handover; if one does not, fix it
 rather than raising it as a caveat:
 
-- `npm run lint`, `npm run build` and `npm run test:e2e` green **locally and in CI**. CI is a
+- `npm run lint`, `npm run test:unit`, `npm run build` and `npm run test:e2e` green **locally and
+  in CI**. CI is a
   required check, but a green tick proves the job ran, not that it exercises your change — go and
   look at the `quality` job's log.
 - DA review and self-review both completed, on this PR's HEAD, not on an earlier commit.

@@ -76,7 +76,8 @@ clone could not build. A green build on the author's Mac is not evidence for CI.
 
 ## Testing
 
-The suite is end-to-end only, in `test/e2e/`, with `playwright.config.ts` at the root. Each test
+The end-to-end suite is in `test/e2e/`, with `playwright.config.ts` at the root; the unit tests are
+beside their module (`src/utils/color-utils.test.ts`, `npm run test:unit`). Each test
 loads the built extension from `build/` into a headless Chromium profile (`channel: 'chromium'`,
 `--load-extension`) and drives the real content script → service worker → iframe message flow:
 the service worker classifies restricted URLs, the content script injects exactly one iframe into

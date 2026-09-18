@@ -265,7 +265,7 @@ build/
   under the alias `@typescript/native`; `typescript` resolves to `npm:@typescript/typescript6` (bin
   `tsc6`) purely so typescript-eslint has a JS API — the TypeScript team's documented side-by-side
   layout. `tsconfig.json` covers `src/**` with `types: ["chrome", "vite/client"]`; `tsconfig.node.json`
-  extends it for `vite.config.ts`, `playwright.config.ts` and `test/**` with `types: ["node", "chrome"]`.
+  extends it for `vite.config.ts`, `vitest.config.ts`, `playwright.config.ts` and `test/**` with `types: ["node", "chrome"]`.
   Vite strips types without checking them, so `npm run lint:ts` (both configs, `--noEmit`) is the only
   type gate; `erasableSyntaxOnly` and `verbatimModuleSyntax` keep the source strippable.
 - **A green build on a Mac is not evidence.** On 4 September 2026 the Git index tracked `01-Atoms/`,

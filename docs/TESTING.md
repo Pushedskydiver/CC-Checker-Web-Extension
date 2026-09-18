@@ -39,8 +39,9 @@ npx playwright show-trace test-results/<test-dir>/trace.zip   # replay a failed 
   `headless: true` to `chromium.launchPersistentContext` (`test/e2e/fixtures.ts` line 87), and
   the flag only reaches Playwright's built-in fixtures. To watch a run, flip that literal locally
   and do not commit it.
-- CI (`.github/workflows/ci.yml`, job `quality`) runs `npm ci`, `npm run lint`, `npm run build`,
-  `npx playwright install --with-deps chromium`, `npm run test:e2e` on `ubuntu-latest`. Its
+- CI (`.github/workflows/ci.yml`, job `quality`) runs `npm ci`, `npm run lint`,
+  `npm run test:unit`, `npm run build`, `npx playwright install --with-deps chromium`,
+  `npm run test:e2e` on `ubuntu-latest`. Its
   display name `Lint, build, e2e` has been a required status check on `main` since 11 September
   2026; its first run (PR #28) was green: lint, build, 18/18 e2e in 56 s.
 
@@ -148,9 +149,6 @@ of them:
   `execCommand` path works in this iframe with no `allow` attribute at all.
 - **The Web Store package.** `npm run package` and what the store accepts are checked by hand.
 - **Safari.** Nothing has been adapted for it and nothing runs it.
-- **Unit-level colour maths.** `getLevel`, `roundTo`, `toHslTuple` and the chroma wrappers are only
-  exercised through the UI at the handful of values the spec types in; a boundary such as
-  `getLevel`'s strict `> 3` for AA Large has no test of its own.
 - **Visual regression.** No screenshots are compared; layout — including the 3-column desktop grid
   whose media-query order broke on this branch — is only proven not to throw.
 
@@ -173,7 +171,7 @@ that passes on its first run against the unfixed code has not reproduced anythin
 
 The hand version of a mutation check is the self-check: revert the line the test names, run
 `npx playwright test -g "<title>"`, watch it redden, restore. If it stays green the test is
-hollow. There is no mechanical gate for this here — see Future.
+hollow. There is no mechanical gate for this here — see §Not ported.
 
 ### Drive the real DOM through the frame
 
@@ -256,9 +254,10 @@ make test order a hidden input. Never share a context across tests to save time.
 Bump these in the same commit as the intentional growth. A drop without an intentional change is
 a red flag.
 
-| Suite                        | Count    | Time                                                                    | Command                                    | Measured          |
-| ---------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
-| `test/e2e/extension.spec.ts` | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
+| Suite                           | Count    | Time                                                                    | Command                                    | Measured          |
+| ------------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
+| `test/e2e/extension.spec.ts`    | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
+| `src/utils/color-utils.test.ts` | 22 cases | ~100ms locally                                                          | `npm run test:unit`                        | 18 September 2026 |
 
 Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched manifest).
 
@@ -266,7 +265,8 @@ Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched man
 
 ## Unit tests
 
-`src/utils/color-utils.test.ts`, 22 cases, added 17 September 2026 (PR 7 of CC-004). Vitest reads
+`src/utils/color-utils.test.ts`, added 17 September 2026 with 19 cases and 22 after the review
+fold on the 18th (PR 7 of CC-004). Vitest reads
 `vitest.config.ts`, which is deliberately separate from `vite.config.ts`: the build config exists to
 emit one JS file and one CSS file for the extension page, and none of that helps a test of a pure
 function. `environment: 'node'`, `include: ['src/**/*.test.ts']`, and the `~` alias duplicated from
@@ -278,26 +278,29 @@ defect; the visible half of it (`#222222` at saturation 0.5 is `#331111`, not `#
 `hslToHex(colorToHsl(x)) === x` for both defaults; `getContrast` at the 21 ceiling and at the
 default pair's 12.72, the same number the e2e suite asserts in the UI; `isHex` accepting and
 rejecting; `isDark` at the two defaults **and one 8-bit step either side of its lab.l 60 threshold**
-(`#909090` is 59.789, `#919191` is 60.172); `roundTo` at the two decimals the ratio display uses.
+(`#909090` is 59.789, `#919191` is 60.172); `roundTo` at the two decimals the slider labels use (`color-control.tsx`; the ratio display is
+`toFixed(2)` in `ratio.tsx`).
 
 **`getLevel`'s boundaries are pinned, not endorsed.** WCAG 1.4.3 and 1.4.6 say "a contrast ratio of
 at least" 4.5:1, 3:1 and 7:1 — `>=`. This tree uses `>`, so a ratio of exactly 4.5 is AA to WCAG and
 Fail here, and the sibling web app's `getLevel` is byte-identical. Probed 18 September 2026: every
 8-bit colour against black and against white, and every grey pair, produces no ratio of exactly 3,
-4.5 or 7 (nearest 4.49295), so no input the app accepts can tell the two apart; arbitrary non-grey
-pairs were not probed. Three cases pin the current behaviour so that changing it is a decision
+4.5 or 7 — nearest overall `#458301` on black at 4.4999999323 — so no input the app accepts can
+tell the two apart; arbitrary non-grey pairs were not probed. The ratio _display_ is a separate
+question: `toFixed(2)` shows that pair as `4.50` while the grade is Fail, under either operator. Three cases pin the current behaviour so that changing it is a decision
 rather than a drift.
 
 **The gate was watched failing** (`docs/CONVENTIONS.md` §Verify a gate can fail): with the
-`Number.isFinite` normalisation removed from `toHslTuple`, the hue test failed with
-`expected NaN to be +0`, and passed again when it was restored. The first draft of this suite passed
+`Number.isFinite` normalisation removed from `toHslTuple`, both hue tests (`colorToHsl` and
+`rgbToHsl`) failed with `expected NaN to be +0`, and passed again when it was restored. The first draft of this suite passed
 six mutations it should have caught — three `Pass` verdicts in the `> 4.5` band, one in the `> 3`
 band, and `isDark`'s threshold moved to 30 and to 85 — all found by a `da-review` mutation run on
 18 September 2026 and each now killed by a named case.
 
 **Measured against the sibling web app, 17 September 2026** — the cheap check `PROGRESS.md` §The
 approved plan asked PR 7 to fold in. `app/utils/color-utils.ts` from
-`Pushedskydiver/Colour-Contrast-Checker` was copied in beside these tests and run against them:
+`Pushedskydiver/Colour-Contrast-Checker` was copied in beside these tests and run against them, with `roundTo` still imported from this
+tree because the sibling has none:
 **15 of the 19 cases that existed that day passed**. The four failures are real differences, not harness noise: two are the NaN hue
 (the sibling never received the 4 September fix), and two are shape — its `colorToHsl` and
 `rgbToHsl` are annotated `[number, number, number]` but return four elements at runtime, because
