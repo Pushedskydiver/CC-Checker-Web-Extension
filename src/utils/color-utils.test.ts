@@ -145,22 +145,24 @@ describe('getLevel', () => {
 		});
 	});
 
-	// WCAG's thresholds are inclusive — "at least" 7:1, 4.5:1, 3:1 — so a ratio sitting
-	// exactly on one passes. `getLevel` used `>` until 18 September 2026 and these cases
-	// asserted the Fail that produced; they now assert the spec. No 8-bit pair reaches an
-	// exact boundary anyway (probed against black, white and every grey pair that day),
-	// so the change is invisible to the panel and these cases are the only thing that
-	// can tell the two operators apart. The sibling web app still uses `>`.
+	// Both sides of each threshold, because each side catches a different mistake.
+	// On the boundary: WCAG is inclusive — "at least" 7:1, 4.5:1, 3:1 — so a ratio
+	// sitting exactly on one passes. `getLevel` used `>` until 18 September 2026, and
+	// these three rows asserted the Fail that produced. Just below it: a threshold
+	// drifting *down* would grade a failing pair as passing, and with only the Pass rows
+	// a planted `>= 6.5`, `>= 4.4` or `>= 2.95` ran green (da-review, 18 September 2026).
+	// No 8-bit pair reaches an exact boundary, so these six rows are the only thing in
+	// the suite that can tell the operators apart. The sibling web app still uses `>`.
 	it.each([
 		[7, 'AAA', 'Pass'],
 		[4.5, 'AA', 'Pass'],
 		[3, 'AALarge', 'Pass'],
-	] as const)(
-		'treats %d as inside its own band (%s), as WCAG requires',
-		(contrast, grade, verdict) => {
-			expect(getLevel(contrast)[grade]).toBe(verdict);
-		},
-	);
+		[6.99, 'AAA', 'Fail'],
+		[4.49, 'AA', 'Fail'],
+		[2.99, 'AALarge', 'Fail'],
+	] as const)('grades %d as %s %s', (contrast, grade, verdict) => {
+		expect(getLevel(contrast)[grade]).toBe(verdict);
+	});
 });
 
 describe('roundTo', () => {

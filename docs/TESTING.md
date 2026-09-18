@@ -282,13 +282,17 @@ rejecting; `isDark` at the two defaults **and one 8-bit step either side of its 
 (`#909090` is 59.789, `#919191` is 60.172); `roundTo` at the two decimals the slider labels use (`color-control.tsx`; the ratio display is
 `toFixed(2)` in `ratio.tsx`).
 
-**`getLevel`'s boundaries are inclusive, and three cases hold them there.** WCAG 1.4.3 and 1.4.6 say
+**`getLevel`'s boundaries are inclusive, and six cases hold them there.** WCAG 1.4.3 and 1.4.6 say
 "a contrast ratio of at least" 7:1, 4.5:1 and 3:1 — `>=`. This tree used `>` until 18 September
 2026, so a ratio of exactly 4.5 was AA to the spec and Fail here; Alex took the one-character fix in
 the same PR as these tests. Probed that day before changing it: every 8-bit colour against black and
-against white, and every grey pair, produces no ratio of exactly 3, 4.5 or 7 — nearest overall
-`#458301` on black at 4.4999999323 — so no input the app accepts can tell the operators apart, and
-these three cases are the only thing that can. Arbitrary non-grey pairs were not probed. The ratio
+against white, and every grey pair, produces no such ratio; `da-review` then searched every ordered
+pair of 8-bit colours exhaustively and found none either, the closest within ~1e-13
+(`#480b1d`/`#be64db` at 4.500000000000079). So no input the app accepts can tell the operators
+apart, and these cases are the only thing that can. Three of them sit on the boundary and three just
+below it: with only the Pass side, a threshold drifting _down_ — the direction that passes a failing
+pair — went undetected (planted `>= 6.5`, `>= 4.4`, `>= 2.95`, all green). The margins belong to
+chroma-js 3.2.0; re-measure on a major bump. Arbitrary non-grey pairs were not probed. The ratio
 _display_ is a separate question: `toFixed(2)` renders that pair as `4.50` while the grade is Fail,
 under either operator. **The sibling web app still uses `>`** — one more item for workstream 5,
 alongside the NaN hue.

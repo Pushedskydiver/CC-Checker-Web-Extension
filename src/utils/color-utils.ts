@@ -50,12 +50,15 @@ export const getContrast = (bg: string, fg: string): number => {
 };
 
 /**
- * WCAG 1.4.3 and 1.4.6 say "a contrast ratio of at least" 7:1, 4.5:1 and 3:1, and 1.4.3 spells
- * out that the comparison is against the unrounded ratio. "At least" is `>=`. Until
- * 18 September 2026 this used `>`, so a ratio of exactly 4.5 was AA to the spec and Fail here.
- * Nothing observable changed with it: probed that day, no 8-bit colour against black or white and
- * no grey pair produces a ratio of exactly 3, 4.5 or 7 (nearest #458301 on black, 4.4999999323).
- * The operator now matches the spec this tool exists to report.
+ * WCAG 1.4.3 and 1.4.6 say "a contrast ratio of at least" 7:1, 4.5:1 and 3:1; Understanding 1.4.3
+ * adds that the comparison uses the unrounded ratio. "At least" is `>=`. Until 18 September 2026
+ * this used `>`, so a ratio of exactly 4.5 was AA to the spec and Fail here.
+ * Nothing observable changed with it. Probed exhaustively that day — every ordered pair of 8-bit
+ * colours, which is every input the panel can produce — no pair gives a ratio of exactly 3, 4.5 or
+ * 7. The closest come within ~1e-13: #8212db/#89bb09 at 2.9999999999999387, #480b1d/#be64db at
+ * 4.500000000000079, #184646/#47ef91 at 7.000000000000078. That margin is a property of
+ * chroma-js 3.2.0's luminance; a bump that changes the sRGB cut-over could land one on a
+ * boundary, which is when this comment wants re-measuring.
  */
 export const getLevel = (contrast: number): TLevels => {
 	if (contrast >= 7) {
