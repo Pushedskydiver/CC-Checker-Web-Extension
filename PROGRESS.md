@@ -496,15 +496,17 @@ work from a fresh clone.
 2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 4
    at this handoff (Sessions 3 to 6): Session 2 was archived at the Session 6 close, one entry before the
    count half of `docs/DEVELOPMENT.md` §Session handoff would have fired, so that a Session 7 entry makes
-   five and **no archive PR stands between the next session and PR 8**. At the Session 7 close, check
-   again — a Session 8 entry would make six. The size half does not fire: it measures the detail band,
-   not the file, and the band is about 25 KB, roughly 6.5k tokens, inside a ~49 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   five and **no archive PR stands between the next session and PR 8**. At the Session 7 close, check both
+   halves again: a Session 8 entry would make six, but **the size half is likelier to fire first** —
+   Session 6 alone is ~13 KB of the band, and a Session 7 entry that size would put it near 10k
+   tokens. Re-measure the band, not only the count. The size half does not fire: it measures the detail band,
+   not the file, and the band is about 26 KB (26,001 bytes), roughly 6.5k tokens, inside a ~50 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `6121a98` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
-   not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched, with a stash) and
-   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record `docs/`
-   cites; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
+   not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
+   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6 above cites — the `docs/` pages describe
+   the 4.x measurement but not the branch; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
    decision (h) on which merge button.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
