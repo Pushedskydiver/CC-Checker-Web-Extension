@@ -16,7 +16,7 @@ npx playwright install chromium   # once per machine, and again after a @playwri
 npm run build                     # vite build → build/ (one JS + one CSS file, dotfiles stripped)
 npm run watch                     # rebuild on save, then reload the page the checker is open on
 npm run lint                      # tsc ×2, eslint, stylelint, prettier --check
-npm run test:unit                 # 22 Vitest tests over src/utils/color-utils.ts, ~100ms
+npm run test:unit                 # 25 Vitest tests over src/utils/color-utils.ts, ~100ms
 npm run test:e2e                  # 20 Playwright tests against the built extension, ~8s
 npm run package                   # build, then zip build/ → cc-checker-<version>.zip for the store
 
@@ -121,7 +121,7 @@ explicit trigger phrases rather than always-on.
 
 - **TDD: vertical slices.** One test → implement → next test, never all tests first. Today that means
   one Playwright test in `test/e2e/`, or one Vitest case in `src/**/*.test.ts` — the colour
-  utilities have 22 as of 18 September 2026 (`docs/TESTING.md`).
+  utilities have 25 as of 18 September 2026 (`docs/TESTING.md`).
 - **Review order: architectural → DA (subagent) → self → PR. Never skip or reorder.** Dispatch
   `da-review` from a fresh context — the one that wrote the change cannot see what it assumed. It is
   a grep, not a judgement:

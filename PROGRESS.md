@@ -10,7 +10,7 @@ is open.** PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
 `4b46b53`, #53 `bfbb5ac`), the in-house copy port (#54, `18cfd4a`) and two Dependabot bumps (#47 `346c4b0`,
-#55 `4c4f9d2`), the merge-strategy docs (#56, `2c86064`), two more handoffs (#53, #57 `0b53e62`) and
+#55 `4c4f9d2`), the merge-strategy docs (#56, `2c86064`), one more handoff (#57, `0b53e62`) and
 PR 7 with the WCAG boundary fix (#58, `4799394`). **#48 is closed**: the `copy-to-clipboard` 4.x major was
 investigated, rejected on evidence, and Dependabot recreated the rest of its group as #55 once the
 dependency was gone. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
@@ -26,7 +26,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
    anyone watching. Users are on it. Nothing further; the next release repeats `docs/GIT.md` §Releases.
 3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
-   it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a ten-file
+   it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a twelve-file
    documentation sweep with it.
 4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari. It is now also the
    re-entry condition for giving `public/app/*.js` a build and a shared `messages.ts`.
@@ -119,20 +119,20 @@ lines and fired both — 232 at the time that was measured, 305 by the time it m
 in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
-| #   | PR                                                                                                    | Reviews            | After |
-| --- | ----------------------------------------------------------------------------------------------------- | ------------------ | ----- |
-| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)                      | both               | —     |
-| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                        | both               | —     |
-| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)                       | da-review          | —     |
-| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                      | both               | 2     |
-| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                     | surrogate          | —     |
-| 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`) | both ~~da-review~~ | 5     |
-| 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)              | both               | —     |
-| 8   | Extract the hex-input parser to `src/utils/`, with tests                                              | da-review          | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                         | da/both            | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation                             | da-review          | —     |
-| 12  | Deferred: context reducer or external store, justified by its own unit tests                          | da-review          | 7, 11 |
+| #   | PR                                                                                                             | Reviews            | After |
+| --- | -------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)                               | both               | —     |
+| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                                 | both               | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)                                | da-review          | —     |
+| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                               | both               | 2     |
+| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                              | surrogate          | —     |
+| 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`)          | both ~~da-review~~ | 5     |
+| 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                       | both               | —     |
+| 8   | Extract the hex-input parser to `src/utils/`, with tests (both, since #58 put `src/**/*.test.ts` in the table) | da-review          | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                         | both               | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                                  | da/both            | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation                                      | da-review          | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8)      | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
 
@@ -207,7 +207,7 @@ under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9)
 'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
 guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
 
-**Done, 13 September.** Merged: #49, #50, #51. Not merged that day: #52. Uploaded to the Web Store:
+**Done, 13 September.** Merged: #49, #50, #51, and #52 late that evening (22:18Z). Uploaded to the Web Store:
 nothing; users are on 2.1.0. The session then continued on 17 September — see below.
 
 - **#49, `d56f6a4` — Session 1 archived** to `docs/history/SESSIONS.md`, in its own PR rather than on PR 5's
@@ -291,7 +291,7 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
   ("updatable in another way") and open #55 — React and `react-dom` 19.3.0 with their `@types`, plus `scheduler` in the lockfile, and no
   `copy-to-clipboard` — green, merged under the delegation.
   Same mechanism as #32 → #35 in Session 3.
-- **#56 open**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
+- **#56, `2c86064`**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
   `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
   branch hashes" written down.
 
@@ -331,13 +331,14 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
    (`da-review`, 18 September 2026). A case that changes sides is two changes — the assertion it stops
    making and the one it starts — and the one it stops making may be the load-bearing one. Both sides are
    pinned now, one step either side, the way `isDark` already was.
-10. **`git checkout -- <file>` restores HEAD, not the state before the probe.** Planting the old operator
+10. **`git checkout -- <file>` restores the index — HEAD when nothing is staged — not the state before
+    the probe.** Planting the old operator
     over an uncommitted fix and then "restoring" reverted the fix and left the mutation. The boundary tests
     failed on the next run, so the tests written for that fix are what caught its silent removal. Restore a
-    probe with the inverse edit, or commit before probing.
+    probe with the inverse edit, `git add` the work first, or commit before probing.
 11. **A number measured on a subset, stated as global.** "Nearest overall `#458301` at 4.4999999323" was
-    the nearest within black, white and the greys — the set actually searched — and it went into three
-    files as a claim about every colour. The exhaustive search found different pairs, ~1e-13 out. Name the
+    the nearest within the set actually searched — every 8-bit colour against black and against white,
+    plus every grey pair — and it went into two files and a PR body as a claim about every colour. The exhaustive search found different pairs, ~1e-13 out. Name the
     set that was searched in the same sentence as the number.
 
 ## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
@@ -510,7 +511,7 @@ cites `fixtures.ts` by line number, which will drift.
    at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
    `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
    in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 27 KB, roughly 6.7k tokens, inside a ~48 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   file, and the band (the `## Session` entries) is about 27 KB, roughly 6.8k tokens, inside a ~49 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
    (expect `4799394` or later), `gh pr list` — expect only this handoff's own PR, unless Alex has merged
@@ -519,9 +520,10 @@ cites `fixtures.ts` by line number, which will drift.
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 25 Vitest cases and 20 Playwright tests; `test:unit` is the second command.
 5. **Resume at PR 8** — PRs 1 to 7 are merged and nothing is in flight. PR 8 extracts the hex-input
-   parser from `color-controls.tsx` into `src/utils/` with its own unit tests; `da-review` fires on
-   `src/**`, and `src/**/*.test.ts` is now in both trigger tables, so the test-permissiveness audit is
-   routed too. Write the test beside the module (`docs/CONVENTIONS.md` §Files and naming) and watch it
+   parser from `color-controls.tsx` into `src/utils/` with its own unit tests; it fires **both** reviews, not the
+   `da-review` its row still predicts: #58 put `src/**/*.test.ts` in the "both" row of `CLAUDE.md`'s
+   table and in `docs/DA-REVIEW.md`'s test-permissiveness trigger, so a PR adding a test file gets the
+   surrogate and the audit that asks whether the test can fail. Write the test beside the module (`docs/CONVENTIONS.md` §Files and naming) and watch it
    fail before the extraction, not after. Cut the branch as the literal first action; do not re-grill the
    plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
@@ -536,7 +538,8 @@ cites `fixtures.ts` by line number, which will drift.
    **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
    unit tests — recorded as fired in six files, adopted nowhere; **(g)** whether to adopt `docs/INDEX.md`,
    whose "after roughly ten PRs" condition fired at 28 merged / 21 human-authored; **(b)** whether
-   workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; ~~**(c)** arrows
+   workstream 5, now five sibling fixes rather than three (§Next workstreams item 5), starts before or
+   after CC-004 finishes; ~~**(c)** arrows
    or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
    converts anything~~ — settled 13 September 2026: Alex merged #50 (`bbb822b`) with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
    (what that needs is in `docs/GIT.md` §Dependabot) or hold it~~ — settled 17 September 2026: neither. The

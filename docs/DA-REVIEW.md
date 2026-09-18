@@ -17,7 +17,7 @@ review is the gate for everything the suite does not cover.
 ported is the disciplines, the severity vocabulary, and the habit of treating a checklist item as
 unrun until you can say what you ran. Not ported: nas-stacks' watchdog-signal and
 deploy-reachability audits (nothing here pings a watchdog; the deploy path is one manual upload),
-its mutation gate (that re-entry fired on 17 September 2026 — the colour utils have 22 Vitest
+its mutation gate (that re-entry fired on 17 September 2026 — the colour utils have 25 Vitest
 cases; adopting the gate is still a decision), and moe's per-line
 convention list (ESLint, Stylelint and Prettier enforce it here) — the full list with re-entry
 conditions is in [DEVELOPMENT.md](DEVELOPMENT.md) §Not ported. Every citation below is a CC Checker

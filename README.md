@@ -90,7 +90,7 @@ toolbar click that Playwright cannot perform.
 What it does not prove: a real toolbar click and `activeTab` grant, the error popup as a popup,
 incognito, a real (rather than stubbed) refusal of the copy command, the zip that goes to the Web Store, or
 anything
-about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 22 Vitest tests as of
+about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 25 Vitest tests as of
 17 September 2026 (`npm run test:unit`). Fixtures, the patched-manifest option, and how to add a
 test are in [docs/TESTING.md](docs/TESTING.md).
 
