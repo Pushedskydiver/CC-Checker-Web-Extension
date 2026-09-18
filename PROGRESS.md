@@ -5,19 +5,21 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 6)
 
-Updated 17 September 2026, end of Session 6 — **CC-004 PRs 1 to 6 have merged; PR 7 is next.** PRs 1 to 4
+Updated 18 September 2026, end of Session 6 — **CC-004 PRs 1 to 7 have merged; PR 8 is next, and no PR
+is open.** PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
 `4b46b53`, #53 `bfbb5ac`), the in-house copy port (#54, `18cfd4a`) and two Dependabot bumps (#47 `346c4b0`,
-#55 `4c4f9d2`). **#48 is closed**: the `copy-to-clipboard` 4.x major was investigated, rejected on evidence,
-and Dependabot recreated the rest of its group as #55 once the dependency was gone. One PR is open at this
-handoff: **#56**, the merge-strategy docs. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
+#55 `4c4f9d2`), the merge-strategy docs (#56, `2c86064`), two more handoffs (#53, #57 `0b53e62`) and
+PR 7 with the WCAG boundary fix (#58, `4799394`). **#48 is closed**: the `copy-to-clipboard` 4.x major was
+investigated, rejected on evidence, and Dependabot recreated the rest of its group as #55 once the
+dependency was gone. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 6 merged. Resume at PR 7, Vitest and the first colour-utility tests — it has no
-   dependency. #56 is in flight and **does overlap it**: PR 7's ten-file sweep changes the pre-push suite
-   line, which lives in ten files, six of them #56's — land #56 first, or rebase PR 7 on it. One PR at a
+   plan below. PRs 1 to 7 merged; nothing is in flight. Resume at PR 8, extracting the hex-input parser
+   from `color-controls.tsx` into `src/utils/` with unit tests — the runner and the co-location rule PR 7
+   added are what it depends on. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -31,9 +33,11 @@ handoff: **#56**, the merge-strategy docs. **2.1.0 is published**: the public li
 5. **Wake the sibling web app.** Not started. Alex answered a six-question list "yes to all six" on
    12 September 2026, which accepts the premise that the sibling's missing fixes are worth making; **that it
    is a workstream of its own rather than part of CC-004 was decided in-session, not by Alex** — his answer
-   could not settle an either/or (see §Session 5). Confirm the shape with him before starting. `Pushedskydiver/Colour-Contrast-Checker` carries three fixes this repo made on 4 September — the
-   grey-hue defect, range inputs that cannot take a `min`, and the tab keyboard handling. Three small commits
-   there, not an API here. Nothing in CC-004 depends on it, so it is scheduled whenever Alex wants it.
+   could not settle an either/or (see §Session 5). Confirm the shape with him before starting. `Pushedskydiver/Colour-Contrast-Checker` is now **five** items behind, not three: the three fixes this
+   repo made on 4 September — the grey-hue defect, range inputs that cannot take a `min`, the tab keyboard
+   handling — plus two found by running PR 7's unit tests against its `color-utils.ts` on 17 and
+   18 September: `colorToHsl`/`rgbToHsl` return four elements against a three-tuple annotation, and
+   `getLevel` still uses the strict `>` this repo fixed in #58. Five small commits there, not an API here. Nothing in CC-004 depends on it, so it is scheduled whenever Alex wants it.
 
 ### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
 
@@ -123,7 +127,7 @@ pull requests.
 | 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                      | both               | 2     |
 | 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                     | surrogate          | —     |
 | 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`) | both ~~da-review~~ | 5     |
-| 7   | Add Vitest, the first colour-utility tests, a `ci.yml` step, the ten-file doc sweep                   | both               | —     |
+| 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)              | both               | —     |
 | 8   | Extract the hex-input parser to `src/utils/`, with tests                                              | da-review          | 7     |
 | 9   | Pin the poor-contrast colour switch with a test that can actually fail                                | both               | —     |
 | 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                         | da/both            | 9     |
@@ -291,7 +295,20 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
   `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
   branch hashes" written down.
 
-**Major novel patterns, 17 September:**
+**18 September — PR 7, and a boundary fix that was not in the plan.** #58 landed Vitest, 25 cases over
+`src/utils/color-utils.ts`, a `test:unit` step CI has now been observed running (step 6 of 9, `22 passed`
+at the time, 175ms), and the twelve-file documentation sweep. Two review rounds ran on it, then a third on
+the fix: `da-review` found four surviving mutants (AA `Pass` at 5:1 was never asserted), `copilot-surrogate`
+found nine MATERIAL prose slips of one kind — the sweep corrected a sentence and left its neighbour — and a
+second `da-review` on the fix found the sharpest one of the session, below.
+
+**The fix Alex asked for mid-PR:** WCAG 1.4.3 and 1.4.6 say "at least" 7:1, 4.5:1 and 3:1, and `getLevel`
+used `>`, so a ratio of exactly 4.5 was AA to the spec and `Fail` in this tool. Now `>=`. Nothing observable
+changed — an exhaustive search of every ordered pair of 8-bit colours finds no ratio of exactly 3, 4.5 or 7,
+the closest within ~1e-13 — and it closed a latent gap: `isPoorContrast` is `contrast < 3`, so under `>` a
+ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (workstream 5 above).
+
+**Major novel patterns, 17 and 18 September:**
 
 6. **A dependency's own bug fix can be the regression.** `copy-to-clipboard` 4.x does exactly what this
    repo's docs had called the only safe shape — `writeText` inside a `try`, `execCommand` on the throw —
@@ -307,6 +324,21 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
    (`docs/DEVELOPMENT.md` §Scale the fan-out caps concurrency at two, which was respected). Both died before
    any work; one left a scratch spec in the tree. Re-dispatching a single agent after the reset worked.
    n=3 for this failure mode: check the tree for `zz-*` leftovers after any agent dies.
+9. **Flipping an assertion can delete a guard you did not mean to touch.** The three boundary cases
+   asserted `Fail` at exactly 7, 4.5 and 3. Fixing `getLevel` to `>=` flipped them to `Pass` — correct, and
+   it removed the only thing catching a threshold drifting _down_, which is the direction that grades a
+   failing pair as passing. Planted `>= 6.5`, `>= 4.4` and `>= 2.95`: all three ran green
+   (`da-review`, 18 September 2026). A case that changes sides is two changes — the assertion it stops
+   making and the one it starts — and the one it stops making may be the load-bearing one. Both sides are
+   pinned now, one step either side, the way `isDark` already was.
+10. **`git checkout -- <file>` restores HEAD, not the state before the probe.** Planting the old operator
+    over an uncommitted fix and then "restoring" reverted the fix and left the mutation. The boundary tests
+    failed on the next run, so the tests written for that fix are what caught its silent removal. Restore a
+    probe with the inverse edit, or commit before probing.
+11. **A number measured on a subset, stated as global.** "Nearest overall `#458301` at 4.4999999323" was
+    the nearest within black, white and the greys — the set actually searched — and it went into three
+    files as a claim about every colour. The exhaustive search found different pairs, ~1e-13 out. Name the
+    set that was searched in the same sentence as the number.
 
 ## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
 
@@ -478,30 +510,32 @@ cites `fixtures.ts` by line number, which will drift.
    at this handoff (Sessions 2 to 6); a Session 7 entry makes six, which fires the count half of
    `docs/DEVELOPMENT.md` §Session handoff — compress Session 2 to row 2 of `docs/history/SESSIONS.md` first,
    in its own PR as Session 1 was (#49). The size half does not fire: it measures the detail band, not the
-   file, and the band (the `## Session` entries) is about 24 KB, roughly 6k tokens, inside a ~46 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+   file, and the band (the `## Session` entries) is about 27 KB, roughly 6.7k tokens, inside a ~48 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `4c4f9d2` or later), `gh pr list` — expect #56 (merge-strategy docs) and this handoff's own PR,
-   unless Alex has merged them. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges).
+   (expect `4799394` or later), `gh pr list` — expect only this handoff's own PR, unless Alex has merged
+   it. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges).
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 22 Vitest cases and 20 Playwright tests: PR 7 added `test:unit` as the second command.
-5. **Resume at PR 7** — PRs 1 to 6 are merged. PR 7 adds Vitest, the first colour-utility tests, a
-   `ci.yml` step and the ten-file documentation sweep; it fires **both** reviews, `.github/workflows/**`
-   puts it on the "needs Alex's attention" list in `docs/DEVELOPMENT.md`, and decision branch (a) below
-   applies. It also folds in one cheap measurement the grill asked for: run the new unit tests against a
-   copy of the sibling web app's `color-utils.ts`. Cut the branch as the literal first action; do not
-   re-grill the plan or reorder it without saying why.
+   Expect 25 Vitest cases and 20 Playwright tests; `test:unit` is the second command.
+5. **Resume at PR 8** — PRs 1 to 7 are merged and nothing is in flight. PR 8 extracts the hex-input
+   parser from `color-controls.tsx` into `src/utils/` with its own unit tests; `da-review` fires on
+   `src/**`, and `src/**/*.test.ts` is now in both trigger tables, so the test-permissiveness audit is
+   routed too. Write the test beside the module (`docs/CONVENTIONS.md` §Files and naming) and watch it
+   fail before the extraction, not after. Cut the branch as the literal first action; do not re-grill the
+   plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
    at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out). A session cannot set its own model or
    effort with the session tools: check with `get_session self`, and if it is wrong ask Alex to pick it in
    the model menu. `~/.claude/settings.json` still carries `"effortLevel": "xhigh"` globally. Settle what a
    shell command can settle before spending an agent.
-7. Decision branches carried in: **(a)** the pre-push suite gains a fourth command, `test:unit`, running
-   second — decided, open only in that Alex may revisit it once he sees PR 7's ten-file documentation sweep
-   (PR #42's body on GitHub calls that PR "PR 8" — its merge commit `8ac0bdc` carries no body at all; the
-   plan's numbering is the authority); **(b)** whether
+7. Decision branches carried in: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
+   running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
+   its merge commit `8ac0bdc` carries no body at all; the plan's numbering is the authority);
+   **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
+   unit tests — recorded as fired in six files, adopted nowhere; **(g)** whether to adopt `docs/INDEX.md`,
+   whose "after roughly ten PRs" condition fired at 28 merged / 21 human-authored; **(b)** whether
    workstream 5, the sibling's three missing fixes, starts before or after CC-004 finishes; ~~**(c)** arrows
    or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
    converts anything~~ — settled 13 September 2026: Alex merged #50 (`bbb822b`) with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
