@@ -485,7 +485,7 @@ cites `fixtures.ts` by line number, which will drift.
    unless Alex has merged them. Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges).
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 19 Vitest cases and 20 Playwright tests: PR 7 added `test:unit` as the second command.
+   Expect 22 Vitest cases and 20 Playwright tests: PR 7 added `test:unit` as the second command.
 5. **Resume at PR 7** — PRs 1 to 6 are merged. PR 7 adds Vitest, the first colour-utility tests, a
    `ci.yml` step and the ten-file documentation sweep; it fires **both** reviews, `.github/workflows/**`
    puts it on the "needs Alex's attention" list in `docs/DEVELOPMENT.md`, and decision branch (a) below

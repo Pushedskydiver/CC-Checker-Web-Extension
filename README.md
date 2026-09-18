@@ -67,7 +67,7 @@ Before every push, the full suite must be green:
 npm run lint && npm run test:unit && npm run build && npm run test:e2e
 ```
 
-`.github/workflows/ci.yml` runs the same three steps on Ubuntu for every pull request and every
+`.github/workflows/ci.yml` runs the same four steps on Ubuntu for every pull request and every
 push to `main`. It has been a required status check on `main` since 11 September 2026, after its
 first green run on PR #28. It matters because it is the only Linux checkout in the loop: on 4 September 2026 the
 Git index still tracked `01-Atoms/`, `02-Molecules/`, `Icon/`, `Ratio/` and `Header/` in their old
@@ -89,7 +89,7 @@ toolbar click that Playwright cannot perform.
 What it does not prove: a real toolbar click and `activeTab` grant, the error popup as a popup,
 incognito, a real (rather than stubbed) refusal of the copy command, the zip that goes to the Web Store, or
 anything
-about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 19 Vitest tests as of
+about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 22 Vitest tests as of
 17 September 2026 (`npm run test:unit`). Fixtures, the patched-manifest option, and how to add a
 test are in [docs/TESTING.md](docs/TESTING.md).
 
