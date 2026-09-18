@@ -41,7 +41,8 @@ npx playwright show-trace test-results/<test-dir>/trace.zip   # replay a failed 
   and do not commit it.
 - CI (`.github/workflows/ci.yml`, job `quality`) runs `npm ci`, `npm run lint`,
   `npm run test:unit`, `npm run build`, `npx playwright install --with-deps chromium`,
-  `npm run test:e2e` on `ubuntu-latest`. Its
+  `npm run test:e2e` on `ubuntu-latest`. The `test:unit` step first ran on 18 September 2026 in
+  PR #58 — step 6 of 9, `22 passed`, 175ms — so that gate is observed, not inferred. Its
   display name `Lint, build, e2e` has been a required status check on `main` since 11 September
   2026; its first run (PR #28) was green: lint, build, 18/18 e2e in 56 s.
 
@@ -257,7 +258,7 @@ a red flag.
 | Suite                           | Count    | Time                                                                    | Command                                    | Measured          |
 | ------------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
 | `test/e2e/extension.spec.ts`    | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
-| `src/utils/color-utils.test.ts` | 22 cases | ~100ms locally                                                          | `npm run test:unit`                        | 18 September 2026 |
+| `src/utils/color-utils.test.ts` | 22 cases | ~100ms locally; 175ms on `ubuntu-latest`                                | `npm run test:unit`                        | 18 September 2026 |
 
 Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched manifest).
 
