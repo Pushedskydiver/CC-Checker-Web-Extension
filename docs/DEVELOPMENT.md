@@ -61,7 +61,7 @@ Playwright's Chromium is installed once per machine, and again after a `@playwri
 build changes with the package): `npx playwright install chromium`. Prettier
 takes its config from `.editorconfig`; there is no `.prettierrc`.
 
-**What the e2e suite does not cover**, so nobody mistakes 20 green tests for a tested release: a
+**What the e2e suite does not cover**, so nobody mistakes 21 green tests for a tested release: a
 real toolbar click and the `activeTab` grant behind it (the picker tests run a manifest copy with
 `host_permissions: ["<all_urls>"]` because Playwright cannot click the toolbar), the error popup,
 incognito, a real (not stubbed) refusal of the copy command, the Web Store package, and Safari — the share button's

@@ -309,7 +309,8 @@ build/
   `.tooltipDark`/`.tooltipLight` in `copy-cta.module.css`, and their equivalents in the CTAs, inputs,
   swatches, ratio, tabs, skip link and header. All fifteen sites (thirty branches) are pinned by one e2e test since
   22 September 2026 (`docs/TESTING.md`, "poor contrast turns every themed control…"), which reads the
-  resolved custom properties rather than class names so it survives the variant moving into CSS.
+  resolved colour of each overridden custom property rather than class names or spellings, so it
+  survives the variant moving into CSS.
 - **Type.** Avenir Next as a variable font, declared with `font-weight: 100 900` and
   `font-display: swap` in an inline `<style>` in `index.html` (and again in `public/error.html`), and
   weighted through `font-variation-settings: 'wght'`. `html { font-size: 10px }` makes the rem scale
