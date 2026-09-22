@@ -242,8 +242,8 @@ test.describe('app', () => {
 							name,
 							// A custom property reads back as written (`#000`,
 							// `black`), so paint it on a probe to compare colours
-							// rather than spellings. Unset stays '' rather than
-							// letting the probe inherit a colour.
+							// rather than spellings. Unset or unparsable values are
+							// returned as written, so the probe never inherits one.
 							await locator.evaluate((el, p) => {
 								const value = getComputedStyle(el)
 									.getPropertyValue(p)
@@ -251,6 +251,7 @@ test.describe('app', () => {
 								if (!value) return '';
 								const probe = document.createElement('span');
 								probe.style.color = value;
+								if (!probe.style.color) return value;
 								document.body.append(probe);
 								const { color } = getComputedStyle(probe);
 								probe.remove();
