@@ -307,7 +307,9 @@ build/
   background, so twelve components read `isPoorContrast` and `isBackgroundDark` and swap to a
   black-or-white variant — `.badgeDark`/`.badgeLight` in `badge.module.css`,
   `.tooltipDark`/`.tooltipLight` in `copy-cta.module.css`, and their equivalents in the CTAs, inputs,
-  swatches, ratio, tabs, skip link and header.
+  swatches, ratio, tabs, skip link and header. All fifteen sites (thirty branches) are pinned by one e2e test since
+  22 September 2026 (`docs/TESTING.md`, "poor contrast turns every themed control…"), which reads the
+  resolved custom properties rather than class names so it survives the variant moving into CSS.
 - **Type.** Avenir Next as a variable font, declared with `font-weight: 100 900` and
   `font-display: swap` in an inline `<style>` in `index.html` (and again in `public/error.html`), and
   weighted through `font-variation-settings: 'wght'`. `html { font-size: 10px }` makes the rem scale
@@ -315,9 +317,10 @@ build/
 
 ## Testing seam
 
-The only automated tests are Playwright end-to-end tests in `test/e2e/` (`fixtures.ts`,
-`extension.spec.ts`), configured by `playwright.config.ts`: 20 tests, 4 workers locally and 2 in CI,
-one retry in CI, traces kept on failure.
+Everything that needs a browser or `chrome.*` is a Playwright end-to-end test in `test/e2e/`
+(`fixtures.ts`, `extension.spec.ts`), configured by `playwright.config.ts`: 21 tests, 4 workers
+locally and 2 in CI, one retry in CI, traces kept on failure. The pure functions in `src/utils/` have
+Vitest unit tests instead (`docs/TESTING.md` §Unit tests).
 
 ```bash
 npm run build && npm run test:e2e   # or: npm test

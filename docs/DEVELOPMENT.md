@@ -46,7 +46,7 @@ runner and no dev server: the app needs `chrome.*` APIs, so it only runs loaded 
 | `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass | ~4s            |
 | `npm run test:unit` | the 36 Vitest cases over `src/utils/color-utils.ts` and `src/utils/parse-color-input.ts` pass; no browser, no build                           | ~0.1s          |
 | `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                   | under 1s       |
-| `npm run test:e2e`  | the built extension loads in headless Chromium and the 20 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included             | ~8s, 4 workers |
+| `npm run test:e2e`  | the built extension loads in headless Chromium and the 21 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included             | ~8s, 4 workers |
 | `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                               | ~8s            |
 | `npm run watch`     | rebuilds `build/` on save for manual testing                                                                                                  | continuous     |
 | `npm run package`   | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                  | seconds        |
