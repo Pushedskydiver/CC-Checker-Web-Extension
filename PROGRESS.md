@@ -5,21 +5,24 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 6)
 
-Updated 18 September 2026, end of Session 6 — **CC-004 PRs 1 to 7 have merged; PR 8 is next, and no PR
-is open.** PRs 1 to 4
+Updated 22 September 2026, during Session 7 — **CC-004 PRs 1 to 8 have merged; PR 9 is next, and no
+CC-004 PR is open.** PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
 `4b46b53`, #53 `bfbb5ac`), the in-house copy port (#54, `18cfd4a`) and two Dependabot bumps (#47 `346c4b0`,
 #55 `4c4f9d2`), the merge-strategy docs (#56, `2c86064`), one more handoff (#57, `0b53e62`) and
-PR 7 with the WCAG boundary fix (#58, `4799394`). **#48 is closed**: the `copy-to-clipboard` 4.x major was
+PR 7 with the WCAG boundary fix (#58, `4799394`). PR 8 (#62, `f046ccf`, a merge commit — not the
+rebase default, Alex's call per PR) merged in Session 7, extracting the hex-input parser to
+`src/utils/parse-color-input.ts` with 11 unit tests (36 total, up from 25); a Dependabot
+dev-dependencies bump (#61, `678252f`) merged the same session under the standing delegation.
+**#48 is closed**: the `copy-to-clipboard` 4.x major was
 investigated, rejected on evidence, and Dependabot recreated the rest of its group as #55 once the
 dependency was gone. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 7 merged; nothing is in flight. Resume at PR 8, extracting the hex-input parser
-   from `color-controls.tsx` into `src/utils/` with unit tests — the runner and the co-location rule PR 7
-   added are what it depends on. One PR at a
+   plan below. PRs 1 to 8 merged; nothing is in flight. Resume at PR 9, pinning the poor-contrast
+   colour switch with a test that can actually fail — row 9 of the approved plan. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -119,20 +122,20 @@ lines and fired both — 232 at the time that was measured, 305 by the time it m
 in two PRs, so the plan is twelve numbered items in thirteen
 pull requests.
 
-| #   | PR                                                                                                             | Reviews            | After |
-| --- | -------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
-| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)                               | both               | —     |
-| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                                 | both               | —     |
-| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)                                | da-review          | —     |
-| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                               | both               | 2     |
-| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                              | surrogate          | —     |
-| 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`)          | both ~~da-review~~ | 5     |
-| 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                       | both               | —     |
-| 8   | Extract the hex-input parser to `src/utils/`, with tests (both, since #58 put `src/**/*.test.ts` in the table) | da-review          | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                         | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                                  | da/both            | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation                                      | da-review          | —     |
-| 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8)      | da-review          | 7, 11 |
+| #   | PR                                                                                                        | Reviews            | After |
+| --- | --------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| 1   | ✅ Stop a missing output directory masking the real build error (#42, `8ac0bdc`)                          | both               | —     |
+| 2   | ✅ Correct the documented route off `react-copy-to-clipboard` (#43, `83dec25`)                            | both               | —     |
+| 3   | ✅ Delete the dead `LinkButton`, `TLinkButton` and `TIconName` (#44, `e62b069`)                           | da-review          | —     |
+| 4   | ✅ Stop announcing a failed copy as a success; drop the wrapper (#45, `9156ff2`)                          | both               | 2     |
+| 5   | ✅ Replace the `React.FC` rule with plain typed functions (docs) (#50, `bbb822b`)                         | surrogate          | —     |
+| 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`)     | both ~~da-review~~ | 5     |
+| 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                  | both               | —     |
+| 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
+| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                    | both               | —     |
+| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                             | da/both            | 9     |
+| 11  | Typed action API, message bridge as its own hook, real payload validation                                 | da-review          | —     |
+| 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
 
@@ -496,28 +499,33 @@ work from a fresh clone.
 2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 4
    at this handoff (Sessions 3 to 6): Session 2 was archived at the Session 6 close, one entry before the
    count half of `docs/DEVELOPMENT.md` §Session handoff would have fired, so that a Session 7 entry makes
-   five and **no archive PR stands between the next session and PR 8**. At the Session 7 close, check both
+   five and **no archive PR stands between the next session and PR 9**. At the Session 7 close, check both
    halves again: a Session 8 entry would make six, but **the size half is likelier to fire first** —
    Session 6 alone is ~13 KB of the band, and a Session 7 entry that size would put it near 10k
    tokens. Re-measure the band, not only the count. The size half does not fire: it measures the detail band,
    not the file, and the band is about 26 KB (26,001 bytes), roughly 6.5k tokens, inside a ~50 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `6121a98` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
+   (expect `f046ccf` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
    not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
    `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6 above cites — the `docs/` pages describe
    the 4.x measurement but not the branch; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
    decision (h) on which merge button.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 25 Vitest cases and 20 Playwright tests; `test:unit` is the second command.
-5. **Resume at PR 8** — PRs 1 to 7 are merged and nothing is in flight. PR 8 extracts the hex-input
-   parser from `color-controls.tsx` into `src/utils/` with its own unit tests; it fires **both** reviews, not the
-   `da-review` its row still predicts: #58 put `src/**/*.test.ts` in the "both" row of `CLAUDE.md`'s
-   table and in `docs/DA-REVIEW.md`'s test-permissiveness trigger, so a PR adding a test file gets the
-   surrogate and the audit that asks whether the test can fail. Write the test beside the module (`docs/CONVENTIONS.md` §Files and naming) and watch it
-   fail before the extraction, not after. Cut the branch as the literal first action; do not re-grill the
-   plan or reorder it without saying why.
+   Expect 36 Vitest cases (25 in `color-utils.test.ts`, 11 in `parse-color-input.test.ts`) and
+   20 Playwright tests; `test:unit` is the second command.
+5. **Resume at PR 9** — PRs 1 to 8 are merged and nothing is in flight. PR 9 pins the poor-contrast
+   colour switch (`isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` and its `Light`
+   twin, copied across the tree — §Next workstreams brief above) with a test that can actually fail.
+   Session 5 pattern 1 is why this is its own PR before row 10: no assertion in
+   `test/e2e/extension.spec.ts` touches a variant class or any control's resolved colour today, so
+   every branch could be deleted with the suite still green. Write the e2e assertion, confirm it
+   passes against the tree as it stands, then run the mutation self-check — plant a wrong branch,
+   watch the test go red, restore (`docs/CONVENTIONS.md` §Verify a gate can fail) — before trusting
+   it. Touches `test/e2e/**`, so it fires **both** reviews per the trigger table, matching row 9. Row
+   10 (moving the switch into CSS) depends on this landing first. Cut the branch as the literal first
+   action; do not re-grill the plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
    at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out). A session cannot set its own model or
