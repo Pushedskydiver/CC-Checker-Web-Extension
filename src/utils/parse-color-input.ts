@@ -1,4 +1,4 @@
-import { isHex } from '~/utils/color-utils';
+import { isHex } from './color-utils';
 
 /**
  * A hex is applied once it is a complete 6-digit colour. Shorthand (3–5 digit)
