@@ -166,6 +166,101 @@ test.describe('app', () => {
 		expect(state.cssForeground).toBe('#ffffff');
 	});
 
+	test('poor contrast turns every themed control black on a light background and white on a dark one', async ({
+		openChecker,
+	}) => {
+		const frame = await openChecker();
+		await frame.getByRole('button', { name: 'Save colours' }).click();
+
+		// One element per poor-contrast site in src/, and the custom property its
+		// Dark and Light branches override. Read as resolved values rather than
+		// class names, so the test holds however the variant is applied.
+		const sites = {
+			skipLink: [
+				frame.getByRole('link', { name: /^Skip to/ }).first(),
+				'--link-outline-color',
+			],
+			title: [frame.locator('#app h1'), '--title-color'],
+			buyMeACoffee: [
+				frame.getByRole('link', { name: 'Buy me a coffee' }),
+				'--badge-outline-color',
+			],
+			actionCta: [
+				frame.getByRole('button', { name: 'Pick background colour' }),
+				'--cta-outline-color',
+			],
+			copyTooltip: [
+				frame.locator('[role="status"]').first(),
+				'--tooltip-bg-color',
+			],
+			cta: [
+				frame.getByRole('button', { name: 'Save colours' }),
+				'--cta-bg-color',
+			],
+			swatch: [
+				frame.getByRole('button', { name: /^Background = / }),
+				'--swatch-outline-color',
+			],
+			ratio: [frame.locator('#ratio'), '--badge-bg-color'],
+			badge: [
+				frame.locator('#grades li:first-child > :first-child'),
+				'--badge-bg-color',
+			],
+			badgeText: [
+				frame.locator('#grades li:first-child > :last-child'),
+				'--badge-text-color',
+			],
+			textInputLabel: [
+				frame.locator('label[for="background"]'),
+				'--label-color',
+			],
+			textInput: [frame.locator('input#background'), '--input-color'],
+			rangeInputLabel: [
+				frame.locator('label[for="backgroundRed"]'),
+				'--label-color',
+			],
+			rangeInput: [
+				frame.locator('input#backgroundRed'),
+				'--input-thumb-color',
+			],
+			tabs: [
+				frame.locator('#background-tabs [role="tab"]').first(),
+				'--tabs-foreground-color',
+			],
+		} as const;
+
+		const read = async () =>
+			Object.fromEntries(
+				await Promise.all(
+					Object.entries(sites).map(
+						async ([name, [locator, prop]]) => [
+							name,
+							await locator.evaluate(
+								(el, p) =>
+									getComputedStyle(el)
+										.getPropertyValue(p)
+										.trim(),
+								prop,
+							),
+						],
+					),
+				),
+			);
+		const every = (value: string) =>
+			Object.fromEntries(Object.keys(sites).map((name) => [name, value]));
+
+		// The default pair (12.72) is not poor: every site follows the foreground.
+		await expect.poll(read).toEqual(every('#222222'));
+
+		await frame.fill('input#background', '#ffffff');
+		await frame.fill('input#foreground', '#eeeeee');
+		await expect.poll(read).toEqual(every('#000'));
+
+		await frame.fill('input#background', '#000000');
+		await frame.fill('input#foreground', '#111111');
+		await expect.poll(read).toEqual(every('#fff'));
+	});
+
 	test('tabs follow the WAI-ARIA pattern: selection, aria-controls, arrow keys wrap', async ({
 		openChecker,
 	}) => {
