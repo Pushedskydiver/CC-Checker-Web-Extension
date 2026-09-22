@@ -623,7 +623,7 @@ work from a fresh clone.
    re-archive. The size half also does not fire: re-measure the detail band (from `## Session 8`
    through the end of `## Session 4`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line
    numbers from `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md`
-   rather than trusting any written here) — 33,071 bytes, ~8.3k tokens, when this was written. **At the
+   rather than trusting any written here) — 33,224 bytes, ~8.3k tokens, once both close-out PRs are in. **At the
    Session 9 close the count half fires again**: a Session 9 entry makes six, so archive Session 4 in
    its own PR (`docs/**`, `copilot-surrogate` mandatory). This block is deliberately not named
    `## Session …` so it does not inflate that count, and it sits outside the session entries so
@@ -700,7 +700,7 @@ work from a fresh clone.
    Whether that becomes "derive the count from script/CI output instead of restating it in up to
    seven files" or stays accepted drift is Alex's call, not made this session. **Session 8 made it three**: PR 9's
    e2e count (20 → 21) went stale in seven files, and the sweep's own grep missed two of them
-   ("20 green tests", "20-test"); **(m)** a fifth date drift, found in PR 9's review and left
+   ("20 green tests", "20-test"); **(m)** a date drift, found in PR 9's review and left
    untouched there: five files say the colour-utility unit tests reached 25 cases on **17** September,
    when the history shows the 18th (`4799394`) — `README.md`, `docs/CONVENTIONS.md`,
    `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`CLAUDE.md` and `docs/TESTING.md`'s
