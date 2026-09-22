@@ -214,15 +214,17 @@ reads one element per poor-contrast site (fifteen across twelve components) plus
 filled variant, in three states: the default pair, `#ffffff`/`#eeeeee` and `#000000`/`#111111`.
 It compares resolved colours through a probe element, not class names or spellings, so row 10 can
 move the switch into CSS under it. Watched failing: all 30 Dark/Light branches set to `false` one
-at a time, 30 red. The doc sweep moved the e2e count to 21 in seven files and corrected
+at a time, 30 red. The doc sweep moved the e2e count to 21 in six files (the seventh, this file's
+loading block, is this handoff's) and corrected
 `docs/ARCHITECTURE.md`'s "the only automated tests are Playwright", false since #58.
 
 **Reviews:** two rounds, the cap. `da-review` round one: one MATERIAL (the filled Reverse, Close and
 share buttons were never read — deleting their `.ctaWithBackground` rule left the test green) and
-two Low (the assertion pinned the minifier's spelling, `black` failed where `#000` passed; unread
+two Low (the assertion compared the value as written, so `black` failed where `#000` passed; unread
 companion properties undocumented). `copilot-surrogate` round one: two MATERIAL (two more stale
-"20"s) and two Low. The confirm round verified every fix with its own red runs and reached
-nit-floor, with one new Low from `da-review` (below), fixed before the PR opened.
+"20"s) and two Low. In the confirm round `da-review` re-verified its fixes with its own red runs and
+`copilot-surrogate` re-checked the docs; both reached nit-floor, with one new Low from `da-review`
+(below), fixed before the PR opened.
 
 **Post-merge:** branch an ancestor of `main`, deleted with `-d`; pre-push suite green on `25cf7ab`
 (36 unit, 21 e2e). Session 3 archived in its own PR (`docs/CC-004-archive-session-3`).
@@ -688,9 +690,10 @@ work from a fresh clone.
    Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
    another way; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
-   `PROGRESS.md` updates is contradicted by this repo's own history — five handoff PRs now (#46,
-   #49, #51, #53, #57) plus this session's #63, every one its own small PR opened after the feature
-   PR merged. Worth rewriting that line to match observed practice, or leaving it and continuing to
+   `PROGRESS.md` updates is contradicted by this repo's own history — seven handoff PRs now (#46, #49,
+   #51, #53, #57, Session 7's #63 and #64), every one its own small PR opened after the feature PR
+   merged, and Session 8's close-out follows the same shape. Worth rewriting that line to match observed
+   practice, or leaving it and continuing to
    disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"
    doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
    (25 → 36) — meeting `docs/CONVENTIONS.md` §Authoring's two-incident bar for promoting a rule.
@@ -700,8 +703,11 @@ work from a fresh clone.
    ("20 green tests", "20-test"); **(m)** a fifth date drift, found in PR 9's review and left
    untouched there: five files say the colour-utility unit tests reached 25 cases on **17** September,
    when the history shows the 18th (`4799394`) — `README.md`, `docs/CONVENTIONS.md`,
-   `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`docs/TESTING.md` and `CLAUDE.md`
-   are right). Every count is correct; only the date is wrong. A one-commit docs PR whenever it suits.
+   `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`CLAUDE.md` and `docs/TESTING.md`'s
+   baseline row are right). Two more put 25 beside 17 September in a sentence that is literally true —
+   `docs/DA-REVIEW.md:20` (the re-entry "fired" that day) and `docs/TESTING.md:11` (the file was "added"
+   that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
+   correct; only the date is wrong. A one-commit docs PR whenever it suits.
 
 ## Session archive
 
