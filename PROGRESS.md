@@ -3,9 +3,9 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 6)
+## Next workstreams (after Session 7)
 
-Updated 22 September 2026, during Session 7 — **CC-004 PRs 1 to 8 have merged; PR 9 is next, and no
+Updated 22 September 2026, end of Session 7 — **CC-004 PRs 1 to 8 have merged; PR 9 is next, and no
 CC-004 PR is open.** PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
@@ -196,6 +196,72 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 7 — 22 September 2026 (CC-004: PR 8 merged, hex-input parser extracted)
+
+**Setup:** loading instructions followed in order. Archive trigger checked first —
+`grep -c '^## Session [0-9]' PROGRESS.md` gave 4 (Sessions 3–6), so no archive PR stood between
+this session and PR 8, as predicted. State confirmed clean, `origin/main` at `6121a98` or later
+(it was `b432028`), `gh pr list` showed one item not predicted by the handoff: Dependabot's #61
+(dev-dependencies group, green). Merged it under the standing delegation
+(`gh pr merge 61 --merge --admin --delete-branch`) — the first attempt was refused by the
+Claude Code auto-mode classifier ("Merge Without Review"), which does not automatically honour a
+written, dated delegation in `CLAUDE.md`; the user changed a permission rule and the retry
+succeeded (`678252f`). Pre-push suite re-verified green before starting PR 8.
+
+**Done:** PR 8 of the approved plan — `toCompleteHex` extracted from
+`color-controls.tsx` into `src/utils/parse-color-input.ts`, unchanged, with the first unit tests
+for it. TDD as `CLAUDE.md` asks: the test file was written against the not-yet-existing module
+first and watched fail on module resolution, then the move, then green. Full review gate:
+`da-review` found two MATERIAL (no test pinned the length guard against an 8-digit `#rrggbbaa` hex,
+which chroma accepts and silently truncates — added and watched red with the guard removed; a
+`~/utils/color-utils` import that should have been `./color-utils`, same directory); self-review
+clean; `copilot-surrogate` on the resulting doc-sweep commit found seven MATERIAL, all the same
+shape — CLAUDE.md, README.md, `docs/CONVENTIONS.md`, `docs/DEVELOPMENT.md`, `docs/GLOSSARY.md`,
+`docs/SELF-REVIEW.md` (two spots) and `docs/TESTING.md` all stated the unit suite as "25 Vitest
+cases over `color-utils.ts`", stale the moment the second file landed (36 total). A confirm round
+on that fix reached nit-floor — two discovery rounds plus one confirm, the cap `CLAUDE.md`
+prescribes. Merged as **#62, `f046ccf`**, three commits (`0d87535`, `7642bbe`, `8b00ae7`). Then a
+small follow-up PR, **#63, `d0db204`/`36fe364`**, updated `PROGRESS.md` itself — deliberately not
+bundled into #62 (below).
+
+**Post-merge:** both PRs merged with a **merge commit**, not the rebase default (Alex's call per
+PR) — the branch commits kept their original hashes and `git merge-base --is-ancestor` confirmed
+each branch was an ancestor of `main` before `git branch -d` (not `-D`; nothing to force). Pre-push
+suite re-verified green on `main`'s new tip after each merge.
+
+**Major novel patterns Session 7:**
+
+1. **A written, dated delegation in `CLAUDE.md` does not automatically clear the runtime's own
+   safety classifier.** The Dependabot merge delegation (`docs/GIT.md` §Who merges, granted
+   11 September 2026) is explicit and durable, but `gh pr merge --admin` was refused outright on
+   first attempt with reason "Merge Without Review" — the classifier does not read `CLAUDE.md` to
+   know the merge is pre-authorized. It took the user changing a permission rule, not a stronger
+   citation of the delegation, to get past it. Record this as a limit on what "pre-authorized in a
+   durable instruction file" can mean in practice: it authorizes the _action_, not the _tool call_
+   against a runtime gate that has no visibility into repo-level policy.
+2. **An equivalent mutant looks like a real gap until you run it.** The DA-fold commit's own
+   self-check mutated the `isShortHand` regex bound (`{3,5}` → `{3,4}`) and found it made no
+   difference to any test — correctly diagnosed as equivalent, because every 3–5 digit candidate is
+   already rejected by the `length !== 7` check regardless of the regex. The same session, `da-review`
+   found a real gap one line down: removing the length check (not the regex) let an 8-digit
+   `#rrggbbaa` hex through, because chroma parses and silently truncates it. Two mutants one line
+   apart, one dead and one live — the distinction only shows up by running both, not by inspection.
+3. **This repo's own git history contradicts a generic line in `docs/SELF-REVIEW.md`.** §Claims and
+   consistency says a change to next-session loading instructions "edits `PROGRESS.md` in the same
+   PR" — adapted from other repos. Every actual `PROGRESS.md` handoff update in this repo's history
+   (#46, #49, #51, #53, #57 and now #63) is its own small PR opened _after_ the feature PR merges,
+   because the count or state the loading instructions cite is still true on `main` until the
+   feature PR lands. Followed the specific, observed practice over the generic line rather than
+   bundling #63 into #62; not fixed here (scope), carried to Session 8 below.
+4. **One new test file made the same doc claim stale in seven places at once.** `parse-color-input.test.ts`
+   landing meant every file that had ever restated "the unit suite is N Vitest cases" went wrong
+   together — CLAUDE.md, README.md and five files under `docs/`. PR 7 (18 September 2026) hit a
+   milder version of the same thing when the WCAG boundary fix moved the count from 22 to 25. Twice
+   now; `docs/CONVENTIONS.md` §Authoring says a rule needs two incidents before promotion — this is
+   at two, so it is at least worth naming as a candidate: derive the count from `npm run test:unit`
+   in scripts/CI output rather than hand-copying it into seven files, or accept the drift as the
+   cost of prose that names concrete numbers. Not decided; carried to Session 8.
 
 ## Session 6 — 13 to 18 September 2026 (CC-004: Session 1 archive, PRs 5 to 7, #48, rebase)
 
@@ -496,17 +562,19 @@ work from a fresh clone.
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 4
-   at this handoff (Sessions 3 to 6): Session 2 was archived at the Session 6 close, one entry before the
-   count half of `docs/DEVELOPMENT.md` §Session handoff would have fired, so that a Session 7 entry makes
-   five and **no archive PR stands between the next session and PR 9**. At the Session 7 close, check both
-   halves again: a Session 8 entry would make six, but **the size half is likelier to fire first** —
-   Session 6 alone is ~13 KB of the band, and a Session 7 entry that size would put it near 10k
-   tokens. Re-measure the band, not only the count. The size half does not fire: it measures the detail band,
-   not the file, and the band is about 26 KB (26,001 bytes), roughly 6.5k tokens, inside a ~50 KB file. This block is deliberately not named `## Session …` so it does not inflate that count, and it
+2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5
+   at this handoff (Sessions 3 to 7), which does not exceed five, so **no archive PR stands between the
+   next session and PR 9**. The size half also does not fire: the detail band (from `## Session 7` through
+   the end of `## Session 3`, i.e. `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c` — re-find the
+   line numbers with `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md`
+   rather than trusting these) is 31,536 bytes, ~7.9k tokens, inside a ~56 KB file (56,430 bytes). **At the Session 8
+   close, check both halves again — the count half will fire**: adding a Session 8 entry makes six,
+   which is more than five, so archive Session 3 (the oldest) to `docs/history/SESSIONS.md` as part of
+   that close, in its own PR (`docs/**`, so `copilot-surrogate` is mandatory per `CLAUDE.md`'s trigger
+   table). This block is deliberately not named `## Session …` so it does not inflate that count, and it
    sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `f046ccf` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
+   (expect `36fe364` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
    not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
    `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6 above cites — the `docs/` pages describe
    the 4.x measurement but not the branch; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
@@ -554,7 +622,21 @@ work from a fresh clone.
    `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (28, 43, 87 — still landing on
    18 September 2026), which will drift the first time the fixture file changes. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
-   (`docs/GIT.md` §Releases has the URL).
+   (`docs/GIT.md` §Releases has the URL); **(j)** the Claude Code auto-mode classifier refused
+   `gh pr merge 61 --merge --admin --delete-branch` on first attempt ("Merge Without Review") despite
+   the standing delegation in `docs/GIT.md` §Who merges — a written, dated delegation does not by
+   itself clear the runtime's own safety gate. Alex added a permission rule and the retry succeeded.
+   Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
+   refused again, surface it and ask rather than assuming the rule is gone or working around it
+   another way; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
+   `PROGRESS.md` updates is contradicted by this repo's own history — five handoff PRs now (#46,
+   #49, #51, #53, #57) plus this session's #63, every one its own small PR opened after the feature
+   PR merged. Worth rewriting that line to match observed practice, or leaving it and continuing to
+   disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"
+   doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
+   (25 → 36) — meeting `docs/CONVENTIONS.md` §Authoring's two-incident bar for promoting a rule.
+   Whether that becomes "derive the count from script/CI output instead of restating it in up to
+   seven files" or stays accepted drift is Alex's call, not made this session.
 
 ## Session archive
 
