@@ -360,7 +360,7 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
 - **#48 closed, #55 merged** (`4c4f9d2`): `@dependabot recreate` on #48 made Dependabot close it
   ("updatable in another way") and open #55 — React and `react-dom` 19.3.0 with their `@types`, plus `scheduler` in the lockfile, and no
   `copy-to-clipboard` — green, merged under the delegation.
-  Same mechanism as #32 → #35 in Session 3.
+  Same mechanism as #32 → #35 in Session 3 (`docs/history/SESSIONS.md`).
 - **#56, `2c86064`**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
   `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
   branch hashes" written down.
