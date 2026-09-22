@@ -414,7 +414,7 @@ blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no optio
 - **#48 closed, #55 merged** (`4c4f9d2`): `@dependabot recreate` on #48 made Dependabot close it
   ("updatable in another way") and open #55 — React and `react-dom` 19.3.0 with their `@types`, plus `scheduler` in the lockfile, and no
   `copy-to-clipboard` — green, merged under the delegation.
-  Same mechanism as #32 → #35 in Session 3.
+  Same mechanism as #32 → #35 in Session 3 (`docs/history/SESSIONS.md`).
 - **#56, `2c86064`**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
   `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
   branch hashes" written down.
@@ -584,34 +584,6 @@ until then 2.0.1 is what they run.
 fixed in the follow-up PR. Lesson, now in `docs/DA-REVIEW.md` §Permission audit: when the published build is not in
 git, write "unknown" — do not infer it from the nearest branch.
 
-## Session 3 — 11 September 2026 (landing)
-
-**Done:** PR #28 pushed, CI green on its first Linux run (lint, build, 18/18 e2e in 56s), merged by Alex as
-`08542e6`. The eight 2024 Dependabot PRs (#18–#25) closed with their branches. Dependabot woke up once its config
-was on the default branch: #29 (`actions/checkout` 7) and #30 (`actions/upload-artifact` 7) merged, as did #31
-(`actions/setup-node` 7) once Dependabot had rebased it; #33 (`fast-uri` 3.1.7, a security bump closing the
-audit's one high finding) merged as `6b05529`; #32 (the grouped dev-dependency bump) failed `npm ci` because it
-lifted ESLint to 10 while the peer ranges of `eslint-plugin-jsx-a11y` 6.10 and `eslint-plugin-react` 7.37 stop at
-9 (the DA review's simulation showed react blocks it too once jsx-a11y is out of the way). `dependabot.yml` now
-ignores major bumps of `eslint` and `@eslint/js` (PR #34); once that was on `main`, `@dependabot recreate` on #32
-made Dependabot close it ("updatable in another way") and open #35 — six packages, `eslint` and `@eslint/js`
-absent, CI green — merged as `cb1c325`. Alex delegated the Dependabot handling ("I will let you do the rest").
-`main` at `cb1c325` re-verified locally after `npm ci`: lint, build, e2e 18/18. Zero open PRs.
-
-**Gotcha found on the way:** the `@playwright/test` bump in #35 (1.62 → 1.63) wants a newer Chromium build than
-the local cache had, so every e2e test failed with "Executable doesn't exist" until `npx playwright install
-chromium` was rerun. CI never sees this because it installs fresh. The "once per machine" wording in the docs
-now says "and again after a `@playwright/test` bump".
-
-**Repo settings changed, all via `gh api` and re-read afterwards:** `Lint, build, e2e` required on `main`
-(`strict` off; review rule, stale-review dismissal, no force-push/deletion unchanged; `enforce_admins` still off);
-`delete_branch_on_merge` on; auto-merge and "update branch" allowed; merge-commit and squash titles set to the PR
-title with the PR body as the message; secret scanning and push protection on (public repo, free).
-
-**Local note:** with `core.ignorecase=false` on a case-insensitive disk, checking out any commit older than the
-casing fix (e.g. `feat/CC-003-apca-3`) collides with the lowercase files; fast-forward refs without checkout, or
-work from a fresh clone.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
@@ -712,5 +684,5 @@ work from a fresh clone.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026). Full
+18 September 2026; Session 3, 22 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
