@@ -3,9 +3,9 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 7)
+## Next workstreams (after Session 8)
 
-Updated 22 September 2026, end of Session 7 — **CC-004 PRs 1 to 8 have merged; PR 9 is next, and no
+Updated 22 September 2026, end of Session 8 — **CC-004 PRs 1 to 9 have merged; PR 10 is next, and no
 CC-004 PR is open.** PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
@@ -14,15 +14,18 @@ merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bb
 PR 7 with the WCAG boundary fix (#58, `4799394`). PR 8 (#62, `f046ccf`, a merge commit — not the
 rebase default, Alex's call per PR) merged in Session 7, extracting the hex-input parser to
 `src/utils/parse-color-input.ts` with 11 unit tests (36 total, up from 25); a Dependabot
-dev-dependencies bump (#61, `678252f`) merged the same session under the standing delegation.
+dev-dependencies bump (#61, `678252f`) merged the same session under the standing delegation, and
+the Session 7 close (#64, `8af89df`) after it. PR 9 (#65, `25cf7ab`, a merge commit) merged in
+Session 8: one e2e test pinning the poor-contrast colour switch at all fifteen sites (21 e2e tests,
+up from 20).
 **#48 is closed**: the `copy-to-clipboard` 4.x major was
 investigated, rejected on evidence, and Dependabot recreated the rest of its group as #55 once the
 dependency was gone. **2.1.0 is published**: the public listing read `Version 2.1.0`, `Updated September 12, 2026`,
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 8 merged; nothing is in flight. Resume at PR 9, pinning the poor-contrast
-   colour switch with a test that can actually fail — row 9 of the approved plan. One PR at a
+   plan below. PRs 1 to 9 merged; nothing is in flight. Resume at PR 10, moving the poor-contrast
+   variant into CSS — row 10 of the approved plan, now that row 9's test can see it. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -132,7 +135,7 @@ pull requests.
 | 6   | ✅ Convert 31 signatures in 25 files, four drift renames, rewrite the drift sentence (#52, `170ca4e`)     | both ~~da-review~~ | 5     |
 | 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                  | both               | —     |
 | 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
-| 9   | Pin the poor-contrast colour switch with a test that can actually fail                                    | both               | —     |
+| 9   | ✅ Pin the poor-contrast colour switch with a test that can actually fail (#65, `25cf7ab`)                | both               | —     |
 | 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                             | da/both            | 9     |
 | 11  | Typed action API, message bridge as its own hook, real payload validation                                 | da-review          | —     |
 | 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
@@ -196,6 +199,55 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 8 — 22 September 2026 (CC-004: PR 9 merged, poor-contrast switch pinned)
+
+**Setup:** loading instructions followed in order. Archive trigger 5, did not fire; tree clean;
+`origin/main` at `8af89df` (the Session 7 close, #64, one later than the block predicted); no open
+PRs; pre-push suite green (36 unit, 20 e2e). **Step 6 did not match:** `get_session self` reported
+Sonnet 5 at `xhigh`, and ultracode was on. The session cannot change its own model, so it asked;
+Alex chose Opus 5 at `high` and ultracode off, and switched both himself before PR 9's design work.
+
+**Done:** PR 9 — **#65, `25cf7ab`**, five commits, merged by Alex with a merge commit. One e2e test,
+_poor contrast turns every themed control black on a light background and white on a dark one_,
+reads one element per poor-contrast site (fifteen across twelve components) plus `ActionCta`'s
+filled variant, in three states: the default pair, `#ffffff`/`#eeeeee` and `#000000`/`#111111`.
+It compares resolved colours through a probe element, not class names or spellings, so row 10 can
+move the switch into CSS under it. Watched failing: all 30 Dark/Light branches set to `false` one
+at a time, 30 red. The doc sweep moved the e2e count to 21 in seven files and corrected
+`docs/ARCHITECTURE.md`'s "the only automated tests are Playwright", false since #58.
+
+**Reviews:** two rounds, the cap. `da-review` round one: one MATERIAL (the filled Reverse, Close and
+share buttons were never read — deleting their `.ctaWithBackground` rule left the test green) and
+two Low (the assertion pinned the minifier's spelling, `black` failed where `#000` passed; unread
+companion properties undocumented). `copilot-surrogate` round one: two MATERIAL (two more stale
+"20"s) and two Low. The confirm round verified every fix with its own red runs and reached
+nit-floor, with one new Low from `da-review` (below), fixed before the PR opened.
+
+**Post-merge:** branch an ancestor of `main`, deleted with `-d`; pre-push suite green on `25cf7ab`
+(36 unit, 21 e2e). Session 3 archived in its own PR (`docs/CC-004-archive-session-3`).
+
+**Major novel patterns Session 8:**
+
+1. **Killing every branch mutant is not killing every mutant.** The author's sweep set all 30 JS
+   branches to `false` and every one went red, and the test still missed a whole rule: the JS
+   branch was covered, the CSS it switches on was not read for one variant. `da-review` found it by
+   mutating the stylesheet, not the component. For a test that pins a visible outcome, mutate the
+   layer that produces the outcome as well as the one that decides it.
+2. **A fix to a test's permissiveness opened a new one, and only the confirm round saw it.** Painting
+   the value onto a probe made the test compare colours, not spellings — and an unparsable value
+   made the probe silently inherit the body's colour, which at the default pair is exactly the
+   expected foreground (`notacolor` passed). The confirm round exists for this: re-attack the fix,
+   not just re-check the finding.
+3. **The count-sweep grep had the same hole the count had.** The sweep searched for `20 tests`,
+   `20 Playwright` and similar, and missed "20 green tests" and "20-test" — `copilot-surrogate`
+   found both. A third instance of decision (l)'s pattern (22 → 25, 25 → 36, now 20 → 21 e2e).
+4. **A session's recorded model decision is not self-enforcing.** The loading block said Opus 5 at
+   `high`, ultracode off; the session arrived on Sonnet 5 at `xhigh` with ultracode on. The check in
+   step 6 caught it before any design work — that step is the enforcement, so keep it.
+5. **Two reviewers and a drafting session can share one repo without stepping on each other.** The
+   archive branch stayed checked out for its reviewer while the handoff was drafted in a separate
+   `git worktree`, so no agent read a tree that changed under it.
 
 ## Session 7 — 22 September 2026 (CC-004: PR 8 merged, hex-input parser extracted)
 
@@ -562,43 +614,50 @@ work from a fresh clone.
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5
-   at this handoff (Sessions 3 to 7), which does not exceed five, so **no archive PR stands between the
-   next session and PR 9**. The size half also does not fire: the detail band (from `## Session 7` through
-   the end of `## Session 3`, i.e. `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c` — re-find the
-   line numbers with `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md`
-   rather than trusting these) is 31,536 bytes, ~7.9k tokens, inside a ~56 KB file (56,430 bytes). **At the Session 8
-   close, check both halves again — the count half will fire**: adding a Session 8 entry makes six,
-   which is more than five, so archive Session 3 (the oldest) to `docs/history/SESSIONS.md` as part of
-   that close, in its own PR (`docs/**`, so `copilot-surrogate` is mandatory per `CLAUDE.md`'s trigger
-   table). This block is deliberately not named `## Session …` so it does not inflate that count, and it
-   sits outside the session entries so compressing one cannot take it.
+2. **Check the archive trigger before writing anything.** Once this handoff and the Session 3 archive
+   PR (`docs/CC-004-archive-session-3`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
+   gives 5 (Sessions 4 to 8), which does not exceed five, so **no archive PR stands between the next
+   session and PR 10**. If it gives 6, the archive PR has not merged: say so and ask Alex, do not
+   re-archive. The size half also does not fire: re-measure the detail band (from `## Session 8`
+   through the end of `## Session 4`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line
+   numbers from `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md`
+   rather than trusting any written here) — 33,071 bytes, ~8.3k tokens, when this was written. **At the
+   Session 9 close the count half fires again**: a Session 9 entry makes six, so archive Session 4 in
+   its own PR (`docs/**`, `copilot-surrogate` mandatory). This block is deliberately not named
+   `## Session …` so it does not inflate that count, and it sits outside the session entries so
+   compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `36fe364` or later), `gh pr list` — expect nothing, or only this handoff's own PR if Alex has
-   not merged it yet. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
-   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6 above cites — the `docs/` pages describe
-   the 4.x measurement but not the branch; no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) — see
-   decision (h) on which merge button.
+   (expect `25cf7ab` or later — both close-out PRs on top if Alex has merged them), `gh pr list` —
+   expect nothing, or only this handoff and the archive PR if they are still open. Remote branches:
+   `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
+   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6
+   above cites — no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) —
+   see decisions (h) and (j).
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
    (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
    Expect 36 Vitest cases (25 in `color-utils.test.ts`, 11 in `parse-color-input.test.ts`) and
-   20 Playwright tests; `test:unit` is the second command.
-5. **Resume at PR 9** — PRs 1 to 8 are merged and nothing is in flight. PR 9 pins the poor-contrast
-   colour switch (`isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` and its `Light`
-   twin, copied across the tree — §Next workstreams brief above) with a test that can actually fail.
-   Session 5 pattern 1 is why this is its own PR before row 10: no assertion in
-   `test/e2e/extension.spec.ts` touches a variant class or any control's resolved colour today, so
-   every branch could be deleted with the suite still green. Write the e2e assertion, confirm it
-   passes against the tree as it stands, then run the mutation self-check — plant a wrong branch,
-   watch the test go red, restore (`docs/CONVENTIONS.md` §Verify a gate can fail) — before trusting
-   it. Touches `test/e2e/**`, so it fires **both** reviews per the trigger table, matching row 9. Row
-   10 (moving the switch into CSS) depends on this landing first. Cut the branch as the literal first
-   action; do not re-grill the plan or reorder it without saying why.
+   21 Playwright tests; `test:unit` is the second command.
+5. **Resume at PR 10** — PRs 1 to 9 are merged and nothing is in flight. Row 10 moves the poor-contrast
+   variant out of the fifteen `isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` sites
+   (and their `Light` twins) into CSS. The brief's favoured shape was the provider setting a data
+   attribute (`data-contrast="poor"`, `data-scheme="dark"`) on `document.body` once and the CSS modules
+   selecting on it; weigh it against a `useThemeClass(styles)` hook before cutting code. It is **one
+   concern in two PRs**: atoms first, then molecules and organisms. Row 9's test
+   (_poor contrast turns every themed control…_) is the gate: it reads resolved colours through a probe
+   element, so it should stay green across a correct refactor and go red on a broken one. Run it
+   before and after each site moves, not only at the end. What it does not pin (`docs/TESTING.md`,
+   that row) is what a CSS move could break silently: the other properties the same classes set
+   (`--cta-fg-color`, `--badge-fg-color`, `--tooltip-fg-color`, `--input-bg-color`,
+   `--input-outline-color`), every element after the first of each kind, and the `contrast < 3`
+   threshold. Either extend the test first or check those by hand and say which. Touches `src/**`, so
+   `da-review` is mandatory; the atoms PR will likely cross 200 lines and fire both. Cut the branch as
+   the literal first action; do not re-grill the plan or reorder it without saying why.
 6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
    `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
    at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out). A session cannot set its own model or
    effort with the session tools: check with `get_session self`, and if it is wrong ask Alex to pick it in
-   the model menu. `~/.claude/settings.json` still carries `"effortLevel": "xhigh"` globally. Settle what a
+   the model menu; ultracode is a session toggle too, and Session 8 arrived with it on. `~/.claude/settings.json`
+   still carries `"effortLevel": "xhigh"` globally. Settle what a
    shell command can settle before spending an agent.
 7. Decision branches carried in: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
    running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
@@ -636,7 +695,13 @@ work from a fresh clone.
    doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
    (25 → 36) — meeting `docs/CONVENTIONS.md` §Authoring's two-incident bar for promoting a rule.
    Whether that becomes "derive the count from script/CI output instead of restating it in up to
-   seven files" or stays accepted drift is Alex's call, not made this session.
+   seven files" or stays accepted drift is Alex's call, not made this session. **Session 8 made it three**: PR 9's
+   e2e count (20 → 21) went stale in seven files, and the sweep's own grep missed two of them
+   ("20 green tests", "20-test"); **(m)** a fifth date drift, found in PR 9's review and left
+   untouched there: five files say the colour-utility unit tests reached 25 cases on **17** September,
+   when the history shows the 18th (`4799394`) — `README.md`, `docs/CONVENTIONS.md`,
+   `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`docs/TESTING.md` and `CLAUDE.md`
+   are right). Every count is correct; only the date is wrong. A one-commit docs PR whenever it suits.
 
 ## Session archive
 
