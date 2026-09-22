@@ -335,7 +335,7 @@ Worth knowing about the members:
   plugins and not something to "fix" in `vite.config.ts`.
 - **Two runners.** Vitest is 36 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026)
   and `src/utils/parse-color-input.test.ts` (11, 22 September 2026); the e2e suite covers the rest:
-  20 Playwright tests in
+  21 Playwright tests in
   `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content script
   → service worker → iframe flow; the picker tests use the patched-manifest fixture (`test.use({
