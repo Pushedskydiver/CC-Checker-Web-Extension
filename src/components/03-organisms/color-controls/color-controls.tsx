@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 import { useColourContrast } from '~/context';
-import { colorToHsl, hslToHex, isHex } from '~/utils/color-utils';
+import { colorToHsl, hslToHex } from '~/utils/color-utils';
+import { toCompleteHex } from '~/utils/parse-color-input';
 import { TextInput } from '~/components/01-atoms/text-input/text-input';
 import { ColourControl } from '~/components/02-molecules/color-control/color-control';
 import { Tabbed } from '../tabbed/tabbed';
@@ -9,24 +10,6 @@ import { Tabbed } from '../tabbed/tabbed';
 import styles from './color-controls.module.css';
 
 type TColorName = 'background' | 'foreground';
-
-/**
- * A hex is applied once it is a complete 6-digit colour. Shorthand (3–5 digit)
- * values are left alone while the user is still typing: auto-expanding them
- * used to hijack the input mid-entry.
- */
-const toCompleteHex = (raw: string): string | null => {
-	const value = raw.trim();
-	const isShortHand = /^#?[0-9a-f]{3,5}$/i.test(value);
-
-	if (isShortHand) return null;
-
-	const withHash = value.startsWith('#') ? value : `#${value}`;
-
-	if (withHash.length !== 7 || !isHex(withHash)) return null;
-
-	return withHash;
-};
 
 export const ColorControls = () => {
 	const { background, foreground, handleContrastCheck } = useColourContrast();

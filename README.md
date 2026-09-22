@@ -77,7 +77,7 @@ clone could not build. A green build on the author's Mac is not evidence for CI.
 ## Testing
 
 The end-to-end suite is in `test/e2e/`, with `playwright.config.ts` at the root; the unit tests are
-beside their module (`src/utils/color-utils.test.ts`, `npm run test:unit`). Each test
+beside their module (`src/utils/*.test.ts`, `npm run test:unit`). Each test
 loads the built extension from `build/` into a headless Chromium profile (`channel: 'chromium'`,
 `--load-extension`) and drives the real content script → service worker → iframe message flow:
 the service worker classifies restricted URLs, the content script injects exactly one iframe into
@@ -91,8 +91,9 @@ What it does not prove: a real toolbar click and `activeTab` grant, the error po
 incognito, a real (rather than stubbed) refusal of the copy command, the zip that goes to the Web Store, or
 anything
 about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 25 Vitest tests as of
-17 September 2026 (`npm run test:unit`). Fixtures, the patched-manifest option, and how to add a
-test are in [docs/TESTING.md](docs/TESTING.md).
+17 September 2026, and the hex-input parser in `src/utils/parse-color-input.ts` has 11 more as of
+22 September 2026 (`npm run test:unit`, 36 total). Fixtures, the patched-manifest option, and how to
+add a test are in [docs/TESTING.md](docs/TESTING.md).
 
 ## Releasing
 
@@ -113,20 +114,21 @@ merged is not published.
 ## Project layout
 
 ```
-index.html                 Vite entry for the extension page (loaded inside the injected iframe)
-public/manifest.json       MV3 manifest, copied verbatim to build/
-public/app/background.js   service worker — toolbar click, screenshot relay, error popup
-public/app/content.js      content script — injects the iframe, runs the eyedropper loupe
-public/error.html          popup shown when the page cannot host the checker
-src/app.tsx                provider + Header + MainLayout(Score, ColorControls)
-src/context.tsx            ColourContrastProvider / useColourContrast — all colour state
-src/utils/color-utils.ts   chroma-js wrappers, hue normalisation, getLevel, roundTo
-src/utils/copy-text.ts     execCommand copy with selection restore and a prompt on refusal
-src/hooks/useTabbed.ts     WAI-ARIA tabs keyboard logic
-src/components/            01-atoms … 04-layouts; each dir holds <name>.tsx (+ <name>.module.css when styled)
-src/styles/                globals.css and the @value breakpoint/container/typography modules
-test/e2e/                  Playwright fixtures + spec
-build/                     gitignored output; what gets loaded unpacked and zipped for the store
+index.html                        Vite entry for the extension page (loaded inside the injected iframe)
+public/manifest.json              MV3 manifest, copied verbatim to build/
+public/app/background.js          service worker — toolbar click, screenshot relay, error popup
+public/app/content.js             content script — injects the iframe, runs the eyedropper loupe
+public/error.html                 popup shown when the page cannot host the checker
+src/app.tsx                       provider + Header + MainLayout(Score, ColorControls)
+src/context.tsx                   ColourContrastProvider / useColourContrast — all colour state
+src/utils/color-utils.ts          chroma-js wrappers, hue normalisation, getLevel, roundTo
+src/utils/parse-color-input.ts    the hex text-input parser, toCompleteHex
+src/utils/copy-text.ts            execCommand copy with selection restore and a prompt on refusal
+src/hooks/useTabbed.ts            WAI-ARIA tabs keyboard logic
+src/components/                   01-atoms … 04-layouts; each dir holds <name>.tsx (+ <name>.module.css when styled)
+src/styles/                       globals.css and the @value breakpoint/container/typography modules
+test/e2e/                         Playwright fixtures + spec
+build/                            gitignored output; what gets loaded unpacked and zipped for the store
 ```
 
 Three execution contexts talk over `chrome.runtime` messages: the content script owns the DOM of

@@ -7,8 +7,9 @@ primary source for how it works — read its `Fixtures` type and two doc comment
 first; `playwright.config.ts` holds the timings. The suite was written on 4 September 2026
 alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
 
-`src/utils/color-utils.test.ts` (22 tests, Vitest, `npm run test:unit`, ~100ms) covers the pure
-colour utilities with no browser and no `chrome.*`. Added 17 September 2026 — §Unit tests below.
+`src/utils/*.test.ts` (36 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
+browser and no `chrome.*`: `color-utils.test.ts` (25, added 17 September 2026) and
+`parse-color-input.test.ts` (11, added 22 September 2026) — §Unit tests below.
 
 **Adapted from nas-stacks' and moe's `docs/TESTING.md`.** Dropped wholesale, because this repo has
 no equivalent and inventing one would be dishonest: the mutation gate and its control-run rules,
@@ -256,10 +257,11 @@ make test order a hidden input. Never share a context across tests to save time.
 Bump these in the same commit as the intentional growth. A drop without an intentional change is
 a red flag.
 
-| Suite                           | Count    | Time                                                                    | Command                                    | Measured          |
-| ------------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
-| `test/e2e/extension.spec.ts`    | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
-| `src/utils/color-utils.test.ts` | 25 cases | ~100ms locally; 175ms on `ubuntu-latest`                                | `npm run test:unit`                        | 18 September 2026 |
+| Suite                                 | Count    | Time                                                                    | Command                                    | Measured          |
+| ------------------------------------- | -------- | ----------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
+| `test/e2e/extension.spec.ts`          | 20 tests | 8.2s locally, 4 workers (ten runs); 18.1s on `ubuntu-latest`, 2 workers | `npm run test:e2e` (after `npm run build`) | 12 September 2026 |
+| `src/utils/color-utils.test.ts`       | 25 cases | ~100ms locally; 175ms on `ubuntu-latest`                                | `npm run test:unit`                        | 18 September 2026 |
+| `src/utils/parse-color-input.test.ts` | 11 cases | ~100ms locally, shared with the row above (one Vitest run)              | `npm run test:unit`                        | 22 September 2026 |
 
 Groups: 1 service worker, 3 content script, 13 app, 3 colour picker (patched manifest).
 
@@ -314,6 +316,14 @@ tree because the sibling has none:
 `rgbToHsl` are annotated `[number, number, number]` but return four elements at runtime, because
 chroma's `.hsl()` includes alpha and nothing strips it. Evidence for workstream 5, not a commitment:
 the copy and the temporary spec were deleted.
+
+`src/utils/parse-color-input.test.ts`, added 22 September 2026 (PR 8 of CC-004), is 11 cases over
+`toCompleteHex` — extracted from `color-controls.tsx` unchanged. What they cover: both complete-hex
+shapes (with and without a leading `#`), trimming, that typed case is preserved rather than
+normalised, all three shorthand lengths (3, 4, 5 digits) left alone, a 6-digit value with a
+character chroma cannot parse, an 8-digit `#rrggbbaa` value (chroma accepts it and drops the alpha,
+so the length check has to reject it explicitly — this case was added during `da-review`, the
+gate watched failing with the length check removed), and the empty string.
 
 ## Future
 
