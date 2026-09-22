@@ -333,8 +333,9 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **Two suites.** `src/utils/color-utils.test.ts` is 25 Vitest cases over the pure colour
-  utilities (17 September 2026), and the e2e suite is everything else: 20 Playwright tests in
+- **Two runners.** Vitest is 36 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026)
+  and `src/utils/parse-color-input.test.ts` (11, 22 September 2026); the e2e suite covers the rest:
+  20 Playwright tests in
   `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content script
   → service worker → iframe flow; the picker tests use the patched-manifest fixture (`test.use({

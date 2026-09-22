@@ -21,7 +21,7 @@ The Red Flags list and the severity labels (BLOCKING / MATERIAL / LOW) live in
 **Adapted from the `docs/SELF-REVIEW.md` in chief-clancy, moe, nas-stacks and tamaclaude** — the
 structure and the disciplines, not the subject matter: their shell, Python, compose, monorepo and
 mutation-gate sections have no equivalent in a three-context browser extension whose tests are an
-e2e suite and 25 Vitest cases over the colour utilities. nas-stacks attached a real incident to every rule it could; this checklist does the
+e2e suite and 36 Vitest cases over the colour utilities and the hex-input parser. nas-stacks attached a real incident to every rule it could; this checklist does the
 same, and every incident below is from the verification of the Vite migration on 4 September 2026.
 
 This is a **living document**. When something slips past DA + self-review + CI and shows up as a
@@ -214,7 +214,8 @@ string }` under `vite/client`, so `styles.main` with no `.main` in the sibling f
 ## Test accuracy
 
 `test/e2e/` is Playwright against the built `build/`, 18 tests on 4 September 2026, ~7s on 4
-workers. `src/utils/color-utils.test.ts` is 25 Vitest cases since 17 September 2026
+workers. `src/utils/color-utils.test.ts` is 25 Vitest cases since 17 September 2026 and
+`src/utils/parse-color-input.test.ts` is 11 more since 22 September 2026, 36 total
 (`docs/TESTING.md`).
 
 - **A new behaviour has a test that failed before the change.** Check out the parent commit, run
