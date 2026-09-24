@@ -172,108 +172,230 @@ test.describe('app', () => {
 		const frame = await openChecker();
 		await frame.getByRole('button', { name: 'Save colours' }).click();
 
-		// One element per poor-contrast site in src/, and one custom property its
-		// Dark and Light branches override — two for ActionCta, whose filled
-		// variant is a separate rule. Read as resolved values rather than class
-		// names, so the test holds however the variant is applied.
-		const sites = {
-			skipLink: [
-				frame.getByRole('link', { name: /^Skip to/ }).first(),
-				'--link-outline-color',
-			],
-			title: [frame.locator('#app h1'), '--title-color'],
-			buyMeACoffee: [
-				frame.getByRole('link', { name: 'Buy me a coffee' }),
-				'--badge-outline-color',
-			],
-			actionCta: [
-				frame.getByRole('button', { name: 'Pick background colour' }),
-				'--cta-outline-color',
-			],
-			actionCtaWithBackground: [
-				frame.getByRole('button', { name: 'Reverse Colours' }),
-				'--cta-bg-color',
-			],
-			copyTooltip: [
-				frame.locator('[role="status"]').first(),
-				'--tooltip-bg-color',
-			],
-			cta: [
-				frame.getByRole('button', { name: 'Save colours' }),
-				'--cta-bg-color',
-			],
-			swatch: [
-				frame.getByRole('button', { name: /^Background = / }),
-				'--swatch-outline-color',
-			],
-			ratio: [frame.locator('#ratio'), '--badge-bg-color'],
-			badge: [
-				frame.locator('#grades li:first-child > :first-child'),
-				'--badge-bg-color',
-			],
-			badgeText: [
-				frame.locator('#grades li:first-child > :last-child'),
-				'--badge-text-color',
-			],
-			textInputLabel: [
-				frame.locator('label[for="background"]'),
-				'--label-color',
-			],
-			textInput: [frame.locator('input#background'), '--input-color'],
-			rangeInputLabel: [
-				frame.locator('label[for="backgroundRed"]'),
-				'--label-color',
-			],
-			rangeInput: [
-				frame.locator('input#backgroundRed'),
-				'--input-thumb-color',
-			],
-			tabs: [
-				frame.locator('#background-tabs [role="tab"]').first(),
-				'--tabs-foreground-color',
-			],
-		} as const;
+		// Every element of each poor-contrast site in src/, with every custom
+		// property its Dark and Light branches override. Each property follows a
+		// role: `fg` (foreground by default, black or white under poor contrast),
+		// `bg` (its inverse) or `track` (the range input's 30% tint). `count` is
+		// the number of elements the locator must match, so a site that loses an
+		// element fails rather than shrinks. Read as resolved values rather than
+		// class names, so the test holds however the variant is applied.
+		type Role = 'fg' | 'bg' | 'track';
+		const sites: Record<
+			string,
+			{
+				locator: ReturnType<typeof frame.locator>;
+				count: number;
+				props: Record<string, Role>;
+			}
+		> = {
+			skipLink: {
+				locator: frame.getByRole('link', { name: /^Skip to/ }),
+				count: 4,
+				props: { '--link-outline-color': 'fg' },
+			},
+			title: {
+				locator: frame.locator('#app h1'),
+				count: 1,
+				props: { '--title-color': 'fg' },
+			},
+			buyMeACoffee: {
+				locator: frame.getByRole('link', { name: 'Buy me a coffee' }),
+				count: 1,
+				props: { '--badge-outline-color': 'fg' },
+			},
+			actionCta: {
+				locator: frame.getByRole('button', { name: /^(Pick|Copy) / }),
+				count: 4,
+				props: { '--cta-outline-color': 'fg', '--cta-fg-color': 'fg' },
+			},
+			actionCtaWithBackground: {
+				locator: frame
+					.getByRole('list', { name: 'Actions', exact: true })
+					.getByRole('button'),
+				count: 3,
+				props: {
+					'--cta-outline-color': 'fg',
+					'--cta-bg-color': 'fg',
+					'--cta-fg-color': 'bg',
+				},
+			},
+			copyTooltip: {
+				locator: frame.locator('[role="status"]'),
+				count: 3,
+				props: {
+					'--tooltip-bg-color': 'fg',
+					'--tooltip-fg-color': 'bg',
+				},
+			},
+			cta: {
+				locator: frame.getByRole('button', { name: 'Save colours' }),
+				count: 1,
+				props: { '--cta-bg-color': 'fg', '--cta-fg-color': 'bg' },
+			},
+			swatch: {
+				locator: frame.getByRole('button', { name: /^Background = / }),
+				count: 1,
+				props: { '--swatch-outline-color': 'fg' },
+			},
+			ratio: {
+				locator: frame.locator('#ratio'),
+				count: 1,
+				props: { '--badge-bg-color': 'fg' },
+			},
+			badge: {
+				locator: frame.locator('#grades li > :first-child'),
+				count: 4,
+				props: { '--badge-bg-color': 'fg', '--badge-fg-color': 'bg' },
+			},
+			badgeText: {
+				locator: frame.locator('#grades li > :last-child'),
+				count: 4,
+				props: { '--badge-text-color': 'fg' },
+			},
+			textInputLabel: {
+				locator: frame.locator('label:has(+ * > input[type="text"])'),
+				count: 2,
+				props: { '--label-color': 'fg' },
+			},
+			textInput: {
+				locator: frame.locator('input[type="text"]'),
+				count: 2,
+				props: { '--input-color': 'fg', '--input-outline-color': 'fg' },
+			},
+			rangeInputLabel: {
+				locator: frame.locator('label:has(+ input[type="range"])'),
+				count: 12,
+				props: { '--label-color': 'fg' },
+			},
+			rangeInput: {
+				locator: frame.locator('input[type="range"]'),
+				count: 12,
+				props: {
+					'--input-thumb-color': 'fg',
+					'--input-outline-color': 'fg',
+					'--input-bg-color': 'track',
+				},
+			},
+			tabs: {
+				locator: frame.locator('[role="tab"]'),
+				count: 4,
+				props: { '--tabs-foreground-color': 'fg' },
+			},
+		};
 
 		const read = async () =>
 			Object.fromEntries(
 				await Promise.all(
 					Object.entries(sites).map(
-						async ([name, [locator, prop]]) => [
+						async ([name, { locator, props }]) => [
 							name,
 							// A custom property reads back as written (`#000`,
 							// `black`), so paint it on a probe to compare colours
 							// rather than spellings. Unset or unparsable values are
 							// returned as written, so the probe never inherits one.
-							await locator.evaluate((el, p) => {
-								const value = getComputedStyle(el)
-									.getPropertyValue(p)
-									.trim();
-								if (!value) return '';
-								const probe = document.createElement('span');
-								probe.style.color = value;
-								if (!probe.style.color) return value;
-								document.body.append(probe);
-								const { color } = getComputedStyle(probe);
-								probe.remove();
-								return color;
-							}, prop),
+							await locator.evaluateAll(
+								(els, names) =>
+									els.map((el) =>
+										Object.fromEntries(
+											names.map((p) => {
+												const value = getComputedStyle(
+													el,
+												)
+													.getPropertyValue(p)
+													.trim();
+												if (!value) return [p, ''];
+												const probe =
+													document.createElement(
+														'span',
+													);
+												probe.style.color = value;
+												if (!probe.style.color)
+													return [p, value];
+												document.body.append(probe);
+												const { color } =
+													getComputedStyle(probe);
+												probe.remove();
+												return [p, color];
+											}),
+										),
+									),
+								Object.keys(props),
+							),
 						],
 					),
 				),
 			);
-		const every = (value: string) =>
-			Object.fromEntries(Object.keys(sites).map((name) => [name, value]));
+		const every = (colors: Record<Role, string>) =>
+			Object.fromEntries(
+				Object.entries(sites).map(([name, { count, props }]) => [
+					name,
+					Array.from({ length: count }, () =>
+						Object.fromEntries(
+							Object.entries(props).map(([p, role]) => [
+								p,
+								colors[role],
+							]),
+						),
+					),
+				]),
+			);
+		const black = {
+			fg: 'rgb(0, 0, 0)',
+			bg: 'rgb(255, 255, 255)',
+			track: 'rgba(0, 0, 0, 0.3)',
+		};
+		const white = {
+			fg: 'rgb(255, 255, 255)',
+			bg: 'rgb(0, 0, 0)',
+			track: 'rgba(255, 255, 255, 0.3)',
+		};
+		const pair = async (background: string, foreground: string) => {
+			await frame.fill('input#background', background);
+			await frame.fill('input#foreground', foreground);
+		};
 
-		// The default pair (12.72) is not poor: every site follows the foreground.
-		await expect.poll(read).toEqual(every('rgb(34, 34, 34)'));
+		// The default pair (12.72) is not poor: every site follows the pair.
+		await expect.poll(read).toEqual(
+			every({
+				fg: 'rgb(34, 34, 34)',
+				bg: 'rgb(255, 230, 109)',
+				track: 'rgb(34, 34, 34)',
+			}),
+		);
 
-		await frame.fill('input#background', '#ffffff');
-		await frame.fill('input#foreground', '#eeeeee');
-		await expect.poll(read).toEqual(every('rgb(0, 0, 0)'));
+		// Backgrounds that are neither white nor black, so a `bg` property left
+		// on `--background-color` cannot pass for the white or black it should be.
+		await pair('#eeeeee', '#ffffff'); // 1.16
+		await expect.poll(read).toEqual(every(black));
 
-		await frame.fill('input#background', '#000000');
-		await frame.fill('input#foreground', '#111111');
-		await expect.poll(read).toEqual(every('rgb(255, 255, 255)'));
+		await pair('#111111', '#000000'); // 1.11
+		await expect.poll(read).toEqual(every(white));
+
+		// Either side of `contrast < 3`, unrounded: 2.995 and 2.998 are poor
+		// (though #ratio shows them as 3.00), 3.033 and 3.045 are not.
+		await pair('#ffffff', '#959595');
+		await expect.poll(read).toEqual(every(black));
+
+		await pair('#ffffff', '#949494');
+		await expect.poll(read).toEqual(
+			every({
+				fg: 'rgb(148, 148, 148)',
+				bg: 'rgb(255, 255, 255)',
+				track: 'rgb(148, 148, 148)',
+			}),
+		);
+
+		await pair('#000000', '#595959');
+		await expect.poll(read).toEqual(every(white));
+
+		await pair('#000000', '#5a5a5a');
+		await expect.poll(read).toEqual(
+			every({
+				fg: 'rgb(90, 90, 90)',
+				bg: 'rgb(0, 0, 0)',
+				track: 'rgb(90, 90, 90)',
+			}),
+		);
 	});
 
 	test('tabs follow the WAI-ARIA pattern: selection, aria-controls, arrow keys wrap', async ({
