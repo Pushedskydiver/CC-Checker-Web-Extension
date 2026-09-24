@@ -368,6 +368,14 @@ test.describe('app', () => {
 		await pair('#eeeeee', '#ffffff'); // 1.16
 		await expect.poll(read).toEqual(every(black));
 
+		// Light to dark while staying poor: every other step passes through a
+		// good pair, which would hide a variant that only re-derives the
+		// background when the contrast flips.
+		await frame.fill('input#foreground', '#919191'); // 2.72 on #eeeeee
+		await expect.poll(read).toEqual(every(black));
+		await frame.fill('input#background', '#808080'); // 1.25, dark
+		await expect.poll(read).toEqual(every(white));
+
 		await pair('#111111', '#000000'); // 1.11
 		await expect.poll(read).toEqual(every(white));
 
