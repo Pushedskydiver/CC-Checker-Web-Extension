@@ -19,10 +19,10 @@
 	}
 }
 
-.ctaDark {
+:global(body[data-contrast='poor'][data-background='light']) .cta {
 	--badge-outline-color: #000;
 }
 
-.ctaLight {
+:global(body[data-contrast='poor'][data-background='dark']) .cta {
 	--badge-outline-color: #fff;
 }

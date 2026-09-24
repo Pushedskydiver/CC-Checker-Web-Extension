@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 
 import styles from './action-cta.module.css';
 
@@ -20,8 +19,6 @@ export const ActionCta = ({
 	children,
 	onClick,
 }: TActionCta) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	return (
 		<button
 			type="button"
@@ -29,12 +26,6 @@ export const ActionCta = ({
 			onClick={onClick}
 			className={clsx(
 				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
 				withBackground ? styles.ctaWithBackground : undefined,
 				className,
 			)}

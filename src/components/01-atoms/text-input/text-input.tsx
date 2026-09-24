@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 import { ColorPickerCta } from '../color-picker-cta/color-picker-cta';
 import { CopyCta } from '../copy-cta/copy-cta';
 import { Text } from '../text/text';
@@ -24,22 +22,9 @@ export const TextInput = ({
 	onChange,
 	onBlur,
 }: TTextInput) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	return (
 		<div className={styles.field}>
-			<label
-				htmlFor={id}
-				className={clsx(
-					styles.label,
-					isPoorContrast && !isBackgroundDark
-						? styles.labelDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.labelLight
-						: undefined,
-				)}
-			>
+			<label htmlFor={id} className={styles.label}>
 				<Text size="pulse" weight="medium" role="presentation">
 					{labelText}
 				</Text>
@@ -60,15 +45,7 @@ export const TextInput = ({
 					value={value}
 					onChange={onChange}
 					onBlur={onBlur}
-					className={clsx(
-						styles.input,
-						isPoorContrast && !isBackgroundDark
-							? styles.inputDark
-							: undefined,
-						isPoorContrast && isBackgroundDark
-							? styles.inputLight
-							: undefined,
-					)}
+					className={styles.input}
 				/>
 
 				<ul className={styles.list} aria-label={`${id} colour actions`}>

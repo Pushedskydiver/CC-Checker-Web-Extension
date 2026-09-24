@@ -60,12 +60,12 @@
 	}
 }
 
-.tooltipDark {
+:global(body[data-contrast='poor'][data-background='light']) .tooltip {
 	--tooltip-bg-color: #000;
 	--tooltip-fg-color: #fff;
 }
 
-.tooltipLight {
+:global(body[data-contrast='poor'][data-background='dark']) .tooltip {
 	--tooltip-bg-color: #fff;
 	--tooltip-fg-color: #000;
 }
