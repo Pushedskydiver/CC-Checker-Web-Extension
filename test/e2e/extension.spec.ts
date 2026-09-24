@@ -173,7 +173,7 @@ test.describe('app', () => {
 		await frame.getByRole('button', { name: 'Save colours' }).click();
 
 		// Every element of each poor-contrast site in src/, with every custom
-		// property its Dark and Light branches override. Each property follows a
+		// property its Dark and Light variants override. Each property follows a
 		// role: `fg` (foreground by default, black or white under poor contrast),
 		// `bg` (its inverse) or `track` (the range input's 30% tint). `count` is
 		// the number of elements the locator must match, so a site that loses an

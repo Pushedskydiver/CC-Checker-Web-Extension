@@ -310,7 +310,7 @@ build/
   `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black, the `dark` twin to white — so the atoms read
   nothing from context for it. The header title and the tabs still read `isPoorContrast` and
   `isBackgroundDark` and add a `.titleDark`/`.tabsDark`-style class until CC-004 row 10's second PR
-  moves them the same way. All fifteen sites (thirty branches) are pinned by one e2e test since
+  moves them the same way. All fifteen sites (thirty Dark and Light rules or branches) are pinned by one e2e test since
   22 September 2026 (`docs/TESTING.md`, "poor contrast turns every themed control…"), which reads the
   resolved colour of each overridden custom property rather than class names or spellings — which
   is how it held across the atoms' move into CSS on 24 September 2026, widened first to every

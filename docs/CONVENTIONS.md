@@ -135,9 +135,10 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   predated the change were converted in one pass the same day, with the lint rule added so a 32nd
   cannot come back, and the four un-prefixed types in files that pass touched were renamed
   (`TWcag`, `TCtaShared`, `TTextSize`, `TTextWeight` — two of them unions, not prop types, so the
-  prefix is for every declared type, not only props). Three still predate it and are drift:
-  `ProviderProps` and `ColourContrastContextTypes` in `src/context.tsx`, and `ColorTuple` in
-  `src/global-types.ts`. Rename each when its file is next touched, not in a drive-by.
+  prefix is for every declared type, not only props). Three predated it; `src/context.tsx`'s two
+  became `TColourContrastProvider` and `TColourContrastContext` when CC-004 row 10 next touched that
+  file (24 September 2026). `ColorTuple` in `src/global-types.ts` is the one left: rename it when
+  that file is next touched, not in a drive-by.
 - **`type` for props; `interface` only where it already is** (`src/context.tsx` and `TWcag` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
 - **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
@@ -148,9 +149,11 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   shape: copy into a fresh `ColorTuple`, change one channel, hand it to `handleContrastCheck`.
 - **No `setState` inside an effect.** `react-hooks/set-state-in-effect` (in
   `eslint-plugin-react-hooks` 7's recommended set) rejects it; a planted `setN(1)` in a `useEffect`
-  was confirmed to fail on 4 September 2026. The effects in the tree do four things only:
+  was confirmed to fail on 4 September 2026. The effects in the tree do five things only:
   subscribe to `chrome.runtime.onMessage`, write the two CSS custom properties onto
-  `document.body`, clear a timer on unmount, and abort the picker's Escape listener on unmount.
+  `document.body`, write the `data-contrast` and `data-background` attributes the poor-contrast
+  CSS selects on onto `document.body`, clear a timer on unmount, and abort the picker's Escape
+  listener on unmount.
   The picked-colour handler is a `useEffectEvent`
   so the listener registers once and still sees current state.
 - **Derive, don't store.** `contrast`, `level`, `isPoorContrast`, `isBackgroundDark` and both hex
