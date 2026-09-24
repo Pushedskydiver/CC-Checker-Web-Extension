@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 import { Cross, Tick } from '../icon/icon';
 import { Text } from '../text/text';
 
@@ -12,7 +10,6 @@ export type TBadge = {
 };
 
 export const Badge = ({ grade, type, children }: TBadge) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 	const isPass = grade === 'Pass';
 
 	return (
@@ -21,15 +18,7 @@ export const Badge = ({ grade, type, children }: TBadge) => {
 				size="pulse"
 				weight="medium"
 				role="presentation"
-				className={clsx(
-					styles.badge,
-					isPoorContrast && !isBackgroundDark
-						? styles.badgeDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.badgeLight
-						: undefined,
-				)}
+				className={styles.badge}
 			>
 				<span role="presentation">{children}</span>
 
@@ -40,15 +29,7 @@ export const Badge = ({ grade, type, children }: TBadge) => {
 				size="whisper"
 				weight="medium"
 				role="presentation"
-				className={clsx(
-					styles.badgeText,
-					isPoorContrast && !isBackgroundDark
-						? styles.badgeTextDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.badgeTextLight
-						: undefined,
-				)}
+				className={styles.badgeText}
 			>
 				{type}
 			</Text>

@@ -183,6 +183,14 @@ const ColourContrastProvider = (props: ProviderProps) => {
 		document.body.style.setProperty('--foreground-color', foregroundHex);
 	}, [backgroundHex, foregroundHex]);
 
+	// The poor-contrast variant is selected in CSS from these two attributes,
+	// e.g. `:global(body[data-contrast='poor'][data-background='light']) .cta`
+	// turns a control black when it would vanish against a light background.
+	useEffect(() => {
+		document.body.dataset.contrast = isPoorContrast ? 'poor' : 'ok';
+		document.body.dataset.background = isBackgroundDark ? 'dark' : 'light';
+	}, [isPoorContrast, isBackgroundDark]);
+
 	return (
 		<ColourContrastContext
 			value={{

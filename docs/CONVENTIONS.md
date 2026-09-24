@@ -170,8 +170,12 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 - **Message types are strings shared by three files that cannot import each other**
   (`src/context.tsx`, `public/app/background.js`, `public/app/content.js`). Adding or renaming
   one means grepping all three; there is no enum to lean on.
-- **Conditional classes go through `clsx`**, and the poor-contrast pair is always the same shape:
-  `isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` next to its `Light` twin.
+- **Conditional classes go through `clsx`.** The poor-contrast variant is not one of them: it is
+  CSS, a rule per theme on the component's own class, selecting on the attributes the provider
+  writes to `body` — `:global(body[data-contrast='poor'][data-background='light']) .x` (black) and
+  the `dark` twin (white). The header title and the tabs still use the older JavaScript pair,
+  `isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` next to its `Light` twin, until
+  CC-004 row 10's second PR; do not add a new one.
 - `react/prop-types` is off (TypeScript does that job); `_`-prefixed unused parameters are allowed.
 
 ---
@@ -193,7 +197,7 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `Icon/`, `Ratio/` and `Header/` while the disk and every import were lowercase; macOS hid it and a Linux
   clone failed with 21 `TS2307` errors. `core.ignorecase=false` is set locally; rename by case
   with `git mv`, and treat a green build on a Mac as no evidence for a case-sensitive checkout.
-- **CSS Modules classes are camelCase** (`.badgeDark`, `.tooltipFadeInOut`).
+- **CSS Modules classes are camelCase** (`.ctaWithBackground`, `.tooltipFadeInOut`).
   `selector-class-pattern` is off in stylelint, so this is convention; keep it, because
   `styles[`${size}Text`]` in `text.tsx` builds names from it.
 - **`~/` for anything that crosses a directory; relative for the same directory or a sibling in
@@ -237,8 +241,8 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 - **Nesting is allowed** (`&`, `@media` inside a rule) to `max-nesting-depth: 4`;
   `postcss-preset-env` (`nesting-rules: true`, stage 3) flattens it for `chrome >= 111`.
 - **Theme through custom properties.** Context writes `--background-color` / `--foreground-color`
-  onto `body`; a component declares its own locals (`--badge-bg-color`) from those and a modifier
-  class swaps them (`.badgeDark`). `custom-properties: false` in preset-env leaves them as runtime
+  onto `body`; a component declares its own locals (`--badge-bg-color`) from those and a
+  `:global(body[data-contrast='poor'][…])` rule swaps them under poor contrast. `custom-properties: false` in preset-env leaves them as runtime
   variables — do not expect them to be inlined.
 - **No `!important`** (`declaration-no-important`, confirmed failing on a planted one). The only
   `!important`s in the repo (three) are inside the CSS string `public/app/content.js` injects into

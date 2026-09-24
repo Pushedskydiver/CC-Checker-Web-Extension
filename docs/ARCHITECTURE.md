@@ -279,7 +279,7 @@ build/
 
 ## Styling
 
-- **CSS Modules**, one `<name>.module.css` beside each `<name>.tsx`, camelCase classes (`.badgeDark`).
+- **CSS Modules**, one `<name>.module.css` beside each `<name>.tsx`, camelCase classes (`.ctaWithBackground`).
   Cross-file `composes` appears three times (`composes: container from containers` in the main layout
   and header, `typography from type` in `text`).
 - **Breakpoints are `@value` tokens** in `src/styles/modules/breakpoints.module.css` — `--bp-tiny`
@@ -304,13 +304,17 @@ build/
   `::selection` and every component that paints a colour read them; there is no theme object in JavaScript. Changing the
   colours is the theme. The `body` transition runs only under `prefers-reduced-motion: no-preference`.
 - **The poor-contrast switch.** Below a ratio of 3 the panel's own controls would vanish against its
-  background, so twelve components read `isPoorContrast` and `isBackgroundDark` and swap to a
-  black-or-white variant — `.badgeDark`/`.badgeLight` in `badge.module.css`,
-  `.tooltipDark`/`.tooltipLight` in `copy-cta.module.css`, and their equivalents in the CTAs, inputs,
-  swatches, ratio, tabs, skip link and header. All fifteen sites (thirty branches) are pinned by one e2e test since
+  background, so they swap to black or white. The provider writes `data-contrast` (`poor` or `ok`)
+  and `data-background` (`dark` or `light`) onto `document.body` in the same kind of effect as the
+  two colours, and each atom's stylesheet selects on them —
+  `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black, the `dark` twin to white — so the atoms read
+  nothing from context for it. The header title and the tabs still read `isPoorContrast` and
+  `isBackgroundDark` and add a `.titleDark`/`.tabsDark`-style class until CC-004 row 10's second PR
+  moves them the same way. All fifteen sites (thirty branches) are pinned by one e2e test since
   22 September 2026 (`docs/TESTING.md`, "poor contrast turns every themed control…"), which reads the
-  resolved colour of each overridden custom property rather than class names or spellings, so it
-  survives the variant moving into CSS.
+  resolved colour of each overridden custom property rather than class names or spellings — which
+  is how it held across the atoms' move into CSS on 24 September 2026, widened first to every
+  element, every overridden property and both sides of the threshold.
 - **Type.** Avenir Next as a variable font, declared with `font-weight: 100 900` and
   `font-display: swap` in an inline `<style>` in `index.html` (and again in `public/error.html`), and
   weighted through `font-variation-settings: 'wght'`. `html { font-size: 10px }` makes the rem scale

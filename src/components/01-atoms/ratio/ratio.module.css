@@ -13,10 +13,10 @@
 	}
 }
 
-.ratioDark {
+:global(body[data-contrast='poor'][data-background='light']) .ratio {
 	--badge-bg-color: #000;
 }
 
-.ratioLight {
+:global(body[data-contrast='poor'][data-background='dark']) .ratio {
 	--badge-bg-color: #fff;
 }

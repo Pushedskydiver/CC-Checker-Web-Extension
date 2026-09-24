@@ -24,10 +24,10 @@
 	}
 }
 
-.swatchDark {
+:global(body[data-contrast='poor'][data-background='light']) .swatch {
 	--swatch-outline-color: #000;
 }
 
-.swatchLight {
+:global(body[data-contrast='poor'][data-background='dark']) .swatch {
 	--swatch-outline-color: #fff;
 }

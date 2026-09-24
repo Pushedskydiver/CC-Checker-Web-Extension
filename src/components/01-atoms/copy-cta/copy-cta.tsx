@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useColourContrast } from '~/context';
 import { copyText } from '~/utils/copy-text';
 import { ActionCta } from '../action-cta/action-cta';
 import { Clipboard, Share } from '../icon/icon';
@@ -27,7 +26,6 @@ export const CopyCta = ({
 	const isUrl = value.includes('http');
 	const [copied, setCopied] = useState(false);
 	const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
 	const copyLabel = isUrl
 		? 'Generate share URL'
 		: `Copy ${value} to clipboard`;
@@ -72,12 +70,6 @@ export const CopyCta = ({
 				className={clsx(
 					styles.tooltip,
 					styles[`${tooltipPosition}Tooltip`],
-					isPoorContrast && !isBackgroundDark
-						? styles.tooltipDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.tooltipLight
-						: undefined,
 					copied ? styles.tooltipFadeInOut : undefined,
 				)}
 			>
