@@ -307,7 +307,7 @@ build/
   background, so they swap to black or white. The provider writes `data-contrast` (`poor` or `ok`)
   and `data-background` (`dark` or `light`) onto `document.body` in the same kind of effect as the
   two colours, and each atom's stylesheet selects on them —
-  `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black, the `dark` twin to white — so the atoms read
+  `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black-on-white, the `dark` twin to white-on-black — so the atoms read
   nothing from context for it. The header title and the tabs still read `isPoorContrast` and
   `isBackgroundDark` and add a `.titleDark`/`.tabsDark`-style class until CC-004 row 10's second PR
   moves them the same way. All fifteen sites (thirty Dark and Light rules or branches) are pinned by one e2e test since
