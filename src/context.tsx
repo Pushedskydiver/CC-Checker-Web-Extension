@@ -28,11 +28,11 @@ export const DEFAULT_BACKGROUND = '#ffe66d';
 export const DEFAULT_FOREGROUND = '#222222';
 export const MAX_SAVED_COLORS = 5;
 
-export interface ProviderProps {
+export interface TColourContrastProvider {
 	children: React.ReactNode;
 }
 
-export interface ColourContrastContextTypes {
+export interface TColourContrastContext {
 	colors: TColors[];
 	background: ColorTuple;
 	foreground: ColorTuple;
@@ -46,9 +46,9 @@ export interface ColourContrastContextTypes {
 	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
 }
 
-const ColourContrastContext = createContext<
-	ColourContrastContextTypes | undefined
->(undefined);
+const ColourContrastContext = createContext<TColourContrastContext | undefined>(
+	undefined,
+);
 
 const isNumberOrNull = (value: unknown): value is number | null =>
 	value === null || typeof value === 'number';
@@ -97,7 +97,7 @@ function readStoredColors(): TColors[] {
 	}
 }
 
-const ColourContrastProvider = (props: ProviderProps) => {
+const ColourContrastProvider = (props: TColourContrastProvider) => {
 	const [colors, setColors] = useState<TColors[]>(readStoredColors);
 	const [background, setBackground] = useState<ColorTuple>(() =>
 		readStoredColor('background', DEFAULT_BACKGROUND),
