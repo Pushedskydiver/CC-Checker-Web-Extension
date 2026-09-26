@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-
 import { useColourContrast } from '~/context';
 import { colorToHsl } from '~/utils/color-utils';
 import { Text } from '../text/text';
@@ -12,8 +10,7 @@ export type TColorSwatch = {
 };
 
 export const ColorSwatch = ({ background, foreground }: TColorSwatch) => {
-	const { isPoorContrast, isBackgroundDark, updateView } =
-		useColourContrast();
+	const { updateView } = useColourContrast();
 
 	const applyColors = (): void => {
 		updateView(colorToHsl(background), colorToHsl(foreground));
@@ -29,15 +26,7 @@ export const ColorSwatch = ({ background, foreground }: TColorSwatch) => {
 				color: foreground,
 				border: `2px solid ${foreground}`,
 			}}
-			className={clsx(
-				styles.swatch,
-				isPoorContrast && !isBackgroundDark
-					? styles.swatchDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.swatchLight
-					: undefined,
-			)}
+			className={styles.swatch}
 		>
 			<Text size="script" weight="semiBold" role="presentation">
 				Aa

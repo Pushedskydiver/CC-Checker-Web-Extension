@@ -1,6 +1,3 @@
-import clsx from 'clsx';
-
-import { useColourContrast } from '~/context';
 import { Text } from '../text/text';
 
 import styles from './range-input.module.css';
@@ -28,22 +25,9 @@ export const RangeInput = ({
 	value,
 	onChange,
 }: TRangeInput) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	return (
 		<div className={styles.field}>
-			<label
-				htmlFor={id}
-				className={clsx(
-					styles.label,
-					isPoorContrast && !isBackgroundDark
-						? styles.labelDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.labelLight
-						: undefined,
-				)}
-			>
+			<label htmlFor={id} className={styles.label}>
 				<Text size="pulse" weight="medium" role="presentation">
 					{labelText}
 				</Text>
@@ -59,15 +43,7 @@ export const RangeInput = ({
 				step={step}
 				value={value}
 				onChange={onChange}
-				className={clsx(
-					styles.input,
-					isPoorContrast && !isBackgroundDark
-						? styles.inputDark
-						: undefined,
-					isPoorContrast && isBackgroundDark
-						? styles.inputLight
-						: undefined,
-				)}
+				className={styles.input}
 			/>
 		</div>
 	);

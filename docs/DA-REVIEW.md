@@ -408,8 +408,9 @@ load time, and the store does at upload.
       swatches were `<button>`s directly inside a `<ul>`; tabs had no `aria-controls`, no wrap, and
       swallowed every key (`useTabbed` now handles arrows, Home and End and prevents only those).
       Skip-link targets carry `tabIndex={-1}`.
-- [ ] Every new visual element has its poor-contrast variant (`isPoorContrast` with
-      `isBackgroundDark`), or the reviewer can say why not.
+- [ ] Every new visual element has its poor-contrast variant — a pair of
+      `:global(body[data-contrast='poor'][data-background='light' | 'dark'])` rules in its own
+      stylesheet, not a new `isPoorContrast` class branch — or the reviewer can say why not.
 - [ ] Copying still goes through `document.execCommand('copy')`, via `copyText` in
       `src/utils/copy-text.ts`: `navigator.clipboard.writeText` is blocked in this iframe with or
       without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session
@@ -437,7 +438,7 @@ load time, and the store does at upload.
 - [ ] Logical properties (`stylelint-use-logical`), `max-nesting-depth: 4`, no `!important`.
 - [ ] Cross-file `composes` is fine; the `A PostCSS plugin did not pass the 'from' option` warning
       it triggers is benign and is not "fixed" by touching the PostCSS block.
-- [ ] Classes are camelCase (`.badgeDark`); files are `<name>.module.css` beside `<name>.tsx`.
+- [ ] Classes are camelCase (`.ctaWithBackground`); files are `<name>.module.css` beside `<name>.tsx`.
 
 ## Config, tooling and CI
 

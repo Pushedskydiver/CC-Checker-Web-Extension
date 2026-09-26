@@ -1,11 +1,10 @@
-import clsx from 'clsx';
 import { useColourContrast } from '~/context';
 import { Text } from '../text/text';
 
 import styles from './ratio.module.css';
 
 export const Ratio = () => {
-	const { contrast, isPoorContrast, isBackgroundDark } = useColourContrast();
+	const { contrast } = useColourContrast();
 
 	return (
 		<Text
@@ -13,15 +12,7 @@ export const Ratio = () => {
 			tabIndex={-1}
 			size="landmark"
 			weight="semiBold"
-			className={clsx(
-				styles.ratio,
-				isPoorContrast && !isBackgroundDark
-					? styles.ratioDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ratioLight
-					: undefined,
-			)}
+			className={styles.ratio}
 		>
 			{contrast.toFixed(2)}
 		</Text>

@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 import { Text } from '../text/text';
 
 import styles from './cta.module.css';
@@ -18,8 +17,6 @@ export const Button = ({
 	onClick,
 	...buttonAttributes
 }: TButton) => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
 		if (onClick) {
 			onClick(e);
@@ -30,16 +27,7 @@ export const Button = ({
 		<button
 			type={type}
 			onClick={handleClick}
-			className={clsx(
-				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
-				className,
-			)}
+			className={clsx(styles.cta, className)}
 			{...buttonAttributes}
 		>
 			{children}

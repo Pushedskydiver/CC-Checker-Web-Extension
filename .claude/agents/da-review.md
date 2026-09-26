@@ -110,8 +110,8 @@ authoritative; this list is what to look for while walking the diff. Every incid
   tooltip; now a `role="status"` live region with a stable button label); saved swatches were
   `<button>`s directly inside a `<ul>` with no `<li>`; tabs had no `aria-controls`, no wrap-around,
   and swallowed every key. Any ARIA attribute added or removed names the WAI-ARIA pattern it
-  implements, and every new visual element has its poor-contrast variant (`isPoorContrast` with
-  `isBackgroundDark`) or the reviewer says why not.
+  implements, and every new visual element has its poor-contrast variant (a
+  `:global(body[data-contrast='poor'][…])` rule pair in its stylesheet) or the reviewer says why not.
 - **Untrusted page content.** The content script runs inside arbitrary pages, which can restyle,
   cover or remove the iframe and the loupe, and the eyedropper reads pixels of whatever those
   pages render. Anything in `content.js` that trusts the host DOM — a selector that assumes the

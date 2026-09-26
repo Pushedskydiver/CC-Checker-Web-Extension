@@ -9,11 +9,11 @@
 	color: var(--label-color);
 }
 
-.labelDark {
+:global(body[data-contrast='poor'][data-background='light']) .label {
 	--label-color: #000;
 }
 
-.labelLight {
+:global(body[data-contrast='poor'][data-background='dark']) .label {
 	--label-color: #fff;
 }
 
@@ -42,13 +42,13 @@
 	}
 }
 
-.inputDark {
+:global(body[data-contrast='poor'][data-background='light']) .input {
 	--input-thumb-color: #000;
 	--input-bg-color: rgb(0 0 0 / 30%);
 	--input-outline-color: #000;
 }
 
-.inputLight {
+:global(body[data-contrast='poor'][data-background='dark']) .input {
 	--input-thumb-color: #fff;
 	--input-bg-color: rgb(255 255 255 / 30%);
 	--input-outline-color: #fff;

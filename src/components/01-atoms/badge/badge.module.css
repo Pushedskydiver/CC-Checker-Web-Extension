@@ -24,12 +24,12 @@
 	}
 }
 
-.badgeDark {
+:global(body[data-contrast='poor'][data-background='light']) .badge {
 	--badge-bg-color: #000;
 	--badge-fg-color: #fff;
 }
 
-.badgeLight {
+:global(body[data-contrast='poor'][data-background='dark']) .badge {
 	--badge-bg-color: #fff;
 	--badge-fg-color: #000;
 }
@@ -40,10 +40,10 @@
 	color: var(--badge-text-color);
 }
 
-.badgeTextDark {
+:global(body[data-contrast='poor'][data-background='light']) .badgeText {
 	--badge-text-color: #000;
 }
 
-.badgeTextLight {
+:global(body[data-contrast='poor'][data-background='dark']) .badgeText {
 	--badge-text-color: #fff;
 }

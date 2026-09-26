@@ -1,26 +1,13 @@
-import clsx from 'clsx';
-import { useColourContrast } from '~/context';
-
 import styles from './bmc-cta.module.css';
 
 export const BuyMeACoffeeCTA = () => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	return (
 		<a
 			href="https://buymeacoffee.com/alexclapperton"
 			aria-label="Buy me a coffee"
 			rel="external noopener noreferrer"
 			target="_blank"
-			className={clsx(
-				styles.cta,
-				isPoorContrast && !isBackgroundDark
-					? styles.ctaDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.ctaLight
-					: undefined,
-			)}
+			className={styles.cta}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

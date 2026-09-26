@@ -32,12 +32,12 @@
 	}
 }
 
-.ctaDark {
+:global(body[data-contrast='poor'][data-background='light']) .cta {
 	--cta-bg-color: #000;
 	--cta-fg-color: #fff;
 }
 
-.ctaLight {
+:global(body[data-contrast='poor'][data-background='dark']) .cta {
 	--cta-bg-color: #fff;
 	--cta-fg-color: #000;
 }

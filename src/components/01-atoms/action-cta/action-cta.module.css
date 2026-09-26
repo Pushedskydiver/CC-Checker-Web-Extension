@@ -28,7 +28,7 @@
 	--cta-fg-color: var(--background-color);
 }
 
-.ctaDark {
+:global(body[data-contrast='poor'][data-background='light']) .cta {
 	--cta-outline-color: #000;
 
 	&:not(.ctaWithBackground) {
@@ -41,7 +41,7 @@
 	}
 }
 
-.ctaLight {
+:global(body[data-contrast='poor'][data-background='dark']) .cta {
 	--cta-outline-color: #fff;
 
 	&:not(.ctaWithBackground) {

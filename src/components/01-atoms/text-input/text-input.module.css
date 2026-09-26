@@ -9,11 +9,11 @@
 	color: var(--label-color);
 }
 
-.labelDark {
+:global(body[data-contrast='poor'][data-background='light']) .label {
 	--label-color: #000;
 }
 
-.labelLight {
+:global(body[data-contrast='poor'][data-background='dark']) .label {
 	--label-color: #fff;
 }
 
@@ -44,12 +44,12 @@
 	}
 }
 
-.inputDark {
+:global(body[data-contrast='poor'][data-background='light']) .input {
 	--input-color: #000;
 	--input-outline-color: #000;
 }
 
-.inputLight {
+:global(body[data-contrast='poor'][data-background='dark']) .input {
 	--input-color: #fff;
 	--input-outline-color: #fff;
 }

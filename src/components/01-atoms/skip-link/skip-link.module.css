@@ -18,10 +18,10 @@
 	}
 }
 
-.linkDark {
+:global(body[data-contrast='poor'][data-background='light']) .link {
 	--link-outline-color: #000;
 }
 
-.linkLight {
+:global(body[data-contrast='poor'][data-background='dark']) .link {
 	--link-outline-color: #fff;
 }
