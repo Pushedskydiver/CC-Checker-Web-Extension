@@ -235,7 +235,7 @@ nit-floor with three prose LOWs, folded before the PR opened.
 **Post-merge:** branch deleted with `-d`; #69 merged under the delegation, the classifier allowing
 `gh pr merge 69 --merge --admin --delete-branch` first time; `npm ci`, then the pre-push suite green
 on `fadd8a8` (36 unit, 21 e2e). `git fetch --prune` cleared three merged branches Session 8
-left — stale tracking refs only; GitHub had already deleted the branches on merge. Session 4 archived in its own PR (`docs/CC-004-archive-session-4`).
+left — stale tracking refs only; GitHub had already deleted the branches on merge. Session 4 is archived in its own PR (`docs/CC-004-archive-session-4`), opened beside this handoff.
 
 **Major novel patterns Session 9:**
 
@@ -371,7 +371,7 @@ suite re-verified green on `main`'s new tip after each merge.
    landing meant every file that had ever restated "the unit suite is N Vitest cases" went wrong
    together — CLAUDE.md, README.md and five files under `docs/`. PR 7 (18 September 2026) hit a
    milder version of the same thing when the WCAG boundary fix moved the count from 22 to 25. Twice
-   now; `docs/CONVENTIONS.md` §Authoring says a rule needs two incidents before promotion — this is
+   now; `docs/DEVELOPMENT.md` §Process-rule promotion says a rule needs two incidents before promotion — this is
    at two, so it is at least worth naming as a candidate: derive the count from `npm run test:unit`
    in scripts/CI output rather than hand-copying it into seven files, or accept the drift as the
    cost of prose that names concrete numbers. Not decided; carried to Session 8.
@@ -680,7 +680,7 @@ git, write "unknown" — do not infer it from the nearest branch.
    test (_poor contrast turns every themed control…_): it already reads both sites (`title`, `tabs`),
    so it should stay green across the move — run it before and after each site, and mutate the new
    rules to watch it go red. Three docs carry the transitional wording that this PR ends:
-   `docs/ARCHITECTURE.md` §The poor-contrast switch, `docs/CONVENTIONS.md`'s `clsx` bullet (the JS pair
+   `docs/ARCHITECTURE.md` §Styling's poor-contrast switch bullet, `docs/CONVENTIONS.md`'s `clsx` bullet (the JS pair
    is then gone entirely) and `docs/TESTING.md`'s row for that test ("a class branch in the header and
    tabs"); grep for `second PR` and `header and tabs` as well. `docs/GLOSSARY.md` and
    `docs/ARCHITECTURE.md` §State describe the booleans as context values — check them when the
@@ -726,13 +726,13 @@ git, write "unknown" — do not infer it from the nearest branch.
    Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
    another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
-   `PROGRESS.md` updates is contradicted by this repo's own history — seven handoff PRs now (#46, #49,
-   #51, #53, #57, Session 7's #63 and #64), every one its own small PR opened after the feature PR
-   merged, and Session 8's close-out follows the same shape. Worth rewriting that line to match observed
+   `PROGRESS.md` updates is contradicted by this repo's own history — eleven close-out PRs by Session 8 (#46, #49, #51, #53, #57, #59, #60, #63, #64, #66, #67 — handoffs and
+   archives), every one its own small PR opened after the feature PR merged, and Session 9's two follow the
+   same shape. Worth rewriting that line to match observed
    practice, or leaving it and continuing to
    disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"
    doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
-   (25 → 36) — meeting `docs/CONVENTIONS.md` §Authoring's two-incident bar for promoting a rule.
+   (25 → 36) — meeting `docs/DEVELOPMENT.md` §Process-rule promotion's two-incident bar for promoting a rule.
    Whether that becomes "derive the count from script/CI output instead of restating it in up to
    seven files" or stays accepted drift is Alex's call, not made this session. **Session 8 made it three**: PR 9's
    e2e count (20 → 21) went stale in seven files, and the sweep's own grep missed two of them
@@ -753,6 +753,10 @@ git, write "unknown" — do not infer it from the nearest branch.
    **(o)** `f91c844` reached `main` with 🏷️ as a `refactor` gitmoji, where `docs/GIT.md`'s table pins ♻️.
    History is not rewritten; the only open question is whether the table should admit 🏷️ for
    type-only renames or the slip stays a slip. Default: a slip.
+   **(p)** whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
+   the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, Session 9
+   pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
+   edit, so `copilot-surrogate`; Alex's call whether it rides with row 10 part two or goes alone.
 
 ## Session archive
 
