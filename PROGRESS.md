@@ -654,7 +654,8 @@ git, write "unknown" — do not infer it from the nearest branch.
    not re-archive. Re-measure the detail band too (from `## Session 9` through the end of
    `## Session 5`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line numbers from
    `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md` rather than
-   trusting any written here); the roughly-10k-token half of the rule applies as well as the count.
+   trusting any written here) — 34,243 bytes, ~8.6k tokens, once both close-out PRs are in, so the
+   roughly-10k-token half does not fire either.
    **At the Session 10 close the count half fires again**: archive Session 5 in its own PR (`docs/**`,
    `copilot-surrogate` mandatory). This block is deliberately not named `## Session …` so it does not
    inflate that count, and it sits outside the session entries so compressing one cannot take it.
