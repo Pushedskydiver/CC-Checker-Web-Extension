@@ -230,7 +230,8 @@ pins ♻️ for `refactor`**, flagged in the PR body, and the merge commit kept 
 passed through a good pair, so dropping `isBackgroundDark` from the effect's deps stayed green —
 and so did `npm run lint`); `copilot-surrogate` round one: one MATERIAL (`docs/CONVENTIONS.md`'s
 "effects do four things" missed the new fifth) and five LOWs. The confirm round of both reached
-nit-floor with three prose LOWs, folded before the PR opened.
+nit-floor with three LOWs: two prose, folded before the PR opened, and one process, deferred as
+decision (n). (#68's body says "three prose LOWs"; two is right.)
 
 **Post-merge:** branch deleted with `-d`; #69 merged under the delegation, the classifier allowing
 `gh pr merge 69 --merge --admin --delete-branch` first time; `npm ci`, then the pre-push suite green
@@ -726,9 +727,10 @@ git, write "unknown" — do not infer it from the nearest branch.
    Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
    another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
-   `PROGRESS.md` updates is contradicted by this repo's own history — eleven close-out PRs by Session 8 (#46, #49, #51, #53, #57, #59, #60, #63, #64, #66, #67 — handoffs and
-   archives), every one its own small PR opened after the feature PR merged, and Session 9's two follow the
-   same shape. Worth rewriting that line to match observed
+   `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
+   #59, #60, #63, #64, #66 and #67 — handoffs and archives), every one its own small PR, and all but #51
+   (written while #50 was still open, as §Session 6 records) opened after the feature PR merged; Session 9's
+   two follow the same shape. Worth rewriting that line to match observed
    practice, or leaving it and continuing to
    disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"
    doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
