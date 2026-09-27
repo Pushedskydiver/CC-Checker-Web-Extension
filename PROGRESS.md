@@ -3,10 +3,12 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 8)
+## Next workstreams (after Session 9)
 
-Updated 22 September 2026, end of Session 8 — **CC-004 PRs 1 to 9 have merged; PR 10 is next, and no
-CC-004 PR is open.** PRs 1 to 4
+Updated 27 September 2026, end of Session 9 — **CC-004 PRs 1 to 9 and row 10's first half have merged; row 10's
+second half is next, and no CC-004 PR is open.** Row 10 part one (#68, `41e36c4`, a merge commit) merged in
+Session 9, moving the atoms' poor-contrast variant into CSS, and a Dependabot dev-dependencies bump (#69,
+`fadd8a8`) merged under the standing delegation after it. PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
 `170ca4e`) in Session 6, which also merged the Session 1 archive (#49, `d56f6a4`), two handoffs (#51
 `4b46b53`, #53 `bfbb5ac`), the in-house copy port (#54, `18cfd4a`) and two Dependabot bumps (#47 `346c4b0`,
@@ -24,8 +26,9 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 9 merged; nothing is in flight. Resume at PR 10, moving the poor-contrast
-   variant into CSS — row 10 of the approved plan, now that row 9's test can see it. One PR at a
+   plan below. PRs 1 to 9 and row 10's first half (the atoms, #68) merged; nothing is in flight.
+   Resume at row 10's second half: the header title and the tabs, then the two booleans out of the
+   context value. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -136,7 +139,7 @@ pull requests.
 | 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                  | both               | —     |
 | 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
 | 9   | ✅ Pin the poor-contrast colour switch with a test that can actually fail (#65, `25cf7ab`)                | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — atoms, then molecules and organisms                             | da/both            | 9     |
+| 10  | Move the poor-contrast variant into CSS — ✅ atoms (#68, `41e36c4`), then molecules and organisms         | da/both            | 9     |
 | 11  | Typed action API, message bridge as its own hook, real payload validation                                 | da-review          | —     |
 | 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
 
@@ -199,6 +202,62 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 9 — 24 to 27 September 2026 (CC-004: row 10 part one merged, atoms' variant in CSS)
+
+**Setup:** loading instructions followed in order. Archive trigger 5, did not fire; detail band
+33,224 bytes as predicted; tree clean; `origin/main` at `aa6297b`; no open PRs; pre-push suite green
+(36 unit, 21 e2e). **Step 6 did not match again:** `get_session self` reported Opus 5.5 at `medium`.
+Asked, Alex raised effort to `high` and kept Opus 5.5; the session confirmed it with `get_session`
+before any design work.
+
+**Done:** row 10 part one — **#68, `41e36c4`**, six commits, merged by Alex with a merge commit.
+The data-attribute shape won over a `useThemeClass(styles)` hook because it removes the JavaScript
+branch rather than moving it: the provider writes `data-contrast` (`poor` | `ok`) and
+`data-background` (`dark` | `light`) onto `document.body` in an effect beside the two colour
+properties, and each atom's `.xDark` / `.xLight` became
+`:global(body[data-contrast='poor'][data-background='light' | 'dark']) .x` with its values
+unchanged. Ten atoms, thirteen of the fifteen sites; eight atoms no longer read context at all
+(`5384cf8`'s body says seven — corrected in the PR body, not amended). The test went first
+(`6028b7a`): every element (59, counts fixed), every overridden property by role, non-white and
+non-black backgrounds for the near-1:1 pairs, both sides of `contrast < 3`, and — after
+`da-review` — a light-to-dark crossing that stays poor. `f91c844` renamed `ProviderProps` /
+`ColourContrastContextTypes` to `TColourContrastProvider` / `TColourContrastContext`, as
+`docs/CONVENTIONS.md` asked once `src/context.tsx` was touched; **it carries 🏷️ where `docs/GIT.md`
+pins ♻️ for `refactor`**, flagged in the PR body, and the merge commit kept it on `main`.
+
+**Reviews:** two rounds each, the cap. `da-review` round one: one MATERIAL (every light↔dark step
+passed through a good pair, so dropping `isBackgroundDark` from the effect's deps stayed green —
+and so did `npm run lint`); `copilot-surrogate` round one: one MATERIAL (`docs/CONVENTIONS.md`'s
+"effects do four things" missed the new fifth) and five LOWs. The confirm round of both reached
+nit-floor with three prose LOWs, folded before the PR opened.
+
+**Post-merge:** branch deleted with `-d`; #69 merged under the delegation, the classifier allowing
+`gh pr merge 69 --merge --admin --delete-branch` first time; `npm ci`, then the pre-push suite green
+on `fadd8a8` (36 unit, 21 e2e). `git fetch --prune` cleared three merged branches Session 8
+left — stale tracking refs only; GitHub had already deleted the branches on merge. Session 4 archived in its own PR (`docs/CC-004-archive-session-4`).
+
+**Major novel patterns Session 9:**
+
+1. **A test value that equals the fallback hides the fallback.** The widened test's first draft used
+   `#ffffff` / `#000000` as the poor-pair backgrounds, so a `bg`-role property that fell back to
+   `--background-color` read exactly the white or black it should have been. Two of eleven mutants
+   passed until the backgrounds became `#eeeeee` / `#111111`. Pick values that differ from every
+   plausible wrong answer, not just the right one.
+2. **A path through a good state masks a dependency bug.** Filling background then foreground always
+   crossed a good pair, re-running the effect for the wrong reason. The mutant also passed lint:
+   `react-hooks/exhaustive-deps` is a warning and `lint:js` sets no `--max-warnings` — decision (n).
+3. **Concurrent reviewers need their own worktree, in the dispatch prompt.** Both round-one agents
+   were sent to build and mutate the main checkout at once; a follow-up message moved each into a
+   `git worktree` before they collided. The confirm round's prompts carried the worktree step from
+   the start.
+4. **A grep that cuts a selector can manufacture a defect.** `grep -o 'body\[…'` on the emitted CSS
+   showed `._cta_…):not(…)` with a stray `)`, which looked invalid; the line started
+   `:is(body…`, which postcss-nesting adds around a complex parent. Read emitted CSS with its left
+   context before calling it broken.
+5. **The author's own count is a claim too.** "Seven" atoms in a commit body was eight, and the
+   gitmoji was off-table; both were caught only after commit, where the never-amend rule makes them
+   permanent. Count and check the type table before `git commit`, not after.
 
 ## Session 8 — 22 September 2026 (CC-004: PR 9 merged, poor-contrast switch pinned)
 
@@ -588,51 +647,55 @@ git, write "unknown" — do not infer it from the nearest branch.
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
    brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** Once this handoff and the Session 3 archive
-   PR (`docs/CC-004-archive-session-3`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
-   gives 5 (Sessions 4 to 8), which does not exceed five, so **no archive PR stands between the next
-   session and PR 10**. If it gives 6, the archive PR has not merged: say so and ask Alex, do not
-   re-archive. The size half also does not fire: re-measure the detail band (from `## Session 8`
-   through the end of `## Session 4`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line
-   numbers from `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md`
-   rather than trusting any written here) — 33,224 bytes, ~8.3k tokens, once both close-out PRs are in. **At the
-   Session 9 close the count half fires again**: a Session 9 entry makes six, so archive Session 4 in
-   its own PR (`docs/**`, `copilot-surrogate` mandatory). This block is deliberately not named
-   `## Session …` so it does not inflate that count, and it sits outside the session entries so
-   compressing one cannot take it.
+2. **Check the archive trigger before writing anything.** Once this handoff and the Session 4 archive
+   PR (`docs/CC-004-archive-session-4`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
+   gives 5 (Sessions 5 to 9), which does not exceed five, so **no archive PR stands between the next
+   session and row 10 part two**. If it gives 6, the archive PR has not merged: say so and ask Alex, do
+   not re-archive. Re-measure the detail band too (from `## Session 9` through the end of
+   `## Session 5`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line numbers from
+   `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md` rather than
+   trusting any written here); the roughly-10k-token half of the rule applies as well as the count.
+   **At the Session 10 close the count half fires again**: archive Session 5 in its own PR (`docs/**`,
+   `copilot-surrogate` mandatory). This block is deliberately not named `## Session …` so it does not
+   inflate that count, and it sits outside the session entries so compressing one cannot take it.
 3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `25cf7ab` or later — both close-out PRs on top if Alex has merged them), `gh pr list` —
-   expect nothing, or only this handoff and the archive PR if they are still open. Remote branches:
-   `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine, not on the remote) and
-   `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt, kept as the record §Session 6
-   above cites — no PR, do not delete). Green Dependabot PRs are delegated (`docs/GIT.md` §Who merges) —
-   see decisions (h) and (j).
+   (expect `fadd8a8` or later — both close-out PRs on top if Alex has merged them), `gh pr list` —
+   expect nothing, or only this handoff and the archive PR if they are still open, or a new Dependabot
+   PR. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine,
+   not on the remote) and `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt,
+   kept as the record §Session 6 above cites — no PR, do not delete). Green Dependabot PRs are
+   delegated (`docs/GIT.md` §Who merges) — see decisions (h) and (j).
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
-   (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump).
-   Expect 36 Vitest cases (25 in `color-utils.test.ts`, 11 in `parse-color-input.test.ts`) and
-   21 Playwright tests; `test:unit` is the second command.
-5. **Resume at PR 10** — PRs 1 to 9 are merged and nothing is in flight. Row 10 moves the poor-contrast
-   variant out of the fifteen `isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` sites
-   (and their `Light` twins) into CSS. The brief's favoured shape was the provider setting a data
-   attribute (`data-contrast="poor"`, `data-scheme="dark"`) on `document.body` once and the CSS modules
-   selecting on it; weigh it against a `useThemeClass(styles)` hook before cutting code. It is **one
-   concern in two PRs**: atoms first, then molecules and organisms. Row 9's test
-   (_poor contrast turns every themed control…_) is the gate: it reads resolved colours through a probe
-   element, so it should stay green across a correct refactor and go red on a broken one. Run it
-   before and after each site moves, not only at the end. What it does not pin (`docs/TESTING.md`,
-   that row) is what a CSS move could break silently: the other properties the same classes set
-   (`--cta-fg-color`, `--badge-fg-color`, `--tooltip-fg-color`, `--input-bg-color`,
-   `--input-outline-color`), every element after the first of each kind, and the `contrast < 3`
-   threshold. Either extend the test first or check those by hand and say which. Touches `src/**`, so
-   `da-review` is mandatory; the atoms PR will likely cross 200 lines and fire both. Cut the branch as
-   the literal first action; do not re-grill the plan or reorder it without saying why.
-6. Model and agents: Opus 5 at effort `high`, ultracode off; `spec-grill`, `da-review` and
-   `copilot-surrogate` on Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` —
-   at most two at a time (`docs/DEVELOPMENT.md` §Scale the fan-out). A session cannot set its own model or
-   effort with the session tools: check with `get_session self`, and if it is wrong ask Alex to pick it in
-   the model menu; ultracode is a session toggle too, and Session 8 arrived with it on. `~/.claude/settings.json`
-   still carries `"effortLevel": "xhigh"` globally. Settle what a
-   shell command can settle before spending an agent.
+   (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump;
+   `npm ci` after any Dependabot merge). Expect 36 Vitest cases (25 in `color-utils.test.ts`, 11 in
+   `parse-color-input.test.ts`) and 21 Playwright tests; `test:unit` is the second command.
+5. **Resume at row 10 part two** — nothing is in flight. Move the last two poor-contrast sites the way
+   #68 moved the atoms: the header title (`src/components/02-molecules/header/`, `.titleDark` /
+   `.titleLight`) and the tabs (`src/components/03-organisms/tabbed/`, `.tabsDark` / `.tabsLight`)
+   become `:global(body[data-contrast='poor'][data-background=…])` rules. Then nothing outside
+   `src/context.tsx` reads `isPoorContrast` or `isBackgroundDark` (check with
+   `grep -rn 'isPoorContrast\|isBackgroundDark' src`), so drop both from `TColourContrastContext` and
+   the context value; the provider still derives them for the attribute effect. The gate is the widened
+   test (_poor contrast turns every themed control…_): it already reads both sites (`title`, `tabs`),
+   so it should stay green across the move — run it before and after each site, and mutate the new
+   rules to watch it go red. Three docs carry the transitional wording that this PR ends:
+   `docs/ARCHITECTURE.md` §The poor-contrast switch, `docs/CONVENTIONS.md`'s `clsx` bullet (the JS pair
+   is then gone entirely) and `docs/TESTING.md`'s row for that test ("a class branch in the header and
+   tabs"); grep for `second PR` and `header and tabs` as well. `docs/GLOSSARY.md` and
+   `docs/ARCHITECTURE.md` §State describe the booleans as context values — check them when the
+   context type changes. Touches `src/**`, so `da-review` is mandatory; the docs make `copilot-surrogate`
+   mandatory too. Cut the branch as the literal first action; do not re-grill the plan or reorder it
+   without saying why. Row 11 (typed action API, message bridge hook, payload validation) is next after.
+6. Model and agents: Opus at effort `high`, ultracode off — Session 9 ran on Opus 5.5 at `high` with
+   Alex's agreement, after arriving at `medium`; `spec-grill`, `da-review` and `copilot-surrogate` on
+   Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` — at most two at a
+   time (`docs/DEVELOPMENT.md` §Scale the fan-out), **and each in its own worktree, written into the
+   dispatch prompt** (`git worktree add ../cc-<name>-wt <branch> --detach && npm ci`, removed at the
+   end), because two reviewers building and mutating one checkout will corrupt each other's runs. A
+   session cannot set its own model or effort with the session tools: check with `get_session self`,
+   and if it is wrong ask Alex to pick it in the model menu; ultracode is a session toggle too.
+   `~/.claude/settings.json` still carries `"effortLevel": "xhigh"` globally. Settle what a shell
+   command can settle before spending an agent.
 7. Decision branches carried in: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
    running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
    its merge commit `8ac0bdc` carries no body at all; the plan's numbering is the authority);
@@ -661,7 +724,7 @@ git, write "unknown" — do not infer it from the nearest branch.
    itself clear the runtime's own safety gate. Alex added a permission rule and the retry succeeded.
    Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
-   another way; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
+   another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — seven handoff PRs now (#46, #49,
    #51, #53, #57, Session 7's #63 and #64), every one its own small PR opened after the feature PR
    merged, and Session 8's close-out follows the same shape. Worth rewriting that line to match observed
@@ -679,7 +742,16 @@ git, write "unknown" — do not infer it from the nearest branch.
    baseline row are right). Two more put 25 beside 17 September in a sentence that is literally true —
    `docs/DA-REVIEW.md:20` (the re-entry "fired" that day) and `docs/TESTING.md:11` (the file was "added"
    that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
-   correct; only the date is wrong. A one-commit docs PR whenever it suits.
+   correct; only the date is wrong. A one-commit docs PR whenever it suits. Session 9's surrogate found two of those files
+   (`docs/GLOSSARY.md`, `docs/CONVENTIONS.md`) touched by #68 and still carrying it — still untouched;
+   **(n)** whether `lint:js` gains `--max-warnings 0`. In #68's round one, dropping `isBackgroundDark` from
+   an effect's dependencies passed `npm run lint`, because `react-hooks/exhaustive-deps` is a warning in
+   `eslint-plugin-react-hooks`' recommended set and `lint:js` is plain `eslint .`. `npx eslint . --max-warnings 0`
+   exited 0 on the #68 branch, so the flag costs nothing today. A `package.json` change, so both
+   reviews; Alex's call whether it is its own small PR or waits;
+   **(o)** `f91c844` reached `main` with 🏷️ as a `refactor` gitmoji, where `docs/GIT.md`'s table pins ♻️.
+   History is not rewritten; the only open question is whether the table should admit 🏷️ for
+   type-only renames or the slip stays a slip. Default: a slip.
 
 ## Session archive
 
