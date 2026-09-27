@@ -605,45 +605,6 @@ not part of CC-004, since nothing here depends on it.
    would have caught it is not provable after the fact; the habit is the finding. Check
    `git status --untracked-files=all` before staging.
 
-## Session 4 — 11 September 2026 (release)
-
-**Done:** the pre-release check the docs prescribe — read the published version before uploading — was done
-against the public listing (https://chromewebstore.google.com/detail/colour-contrast-checker/nmmjeclfkgjdomacpcflgdkgpphpmnfe), which showed
-**2.0.1 with 40,000 users**. `main` had never been above 1.7.0 and no commit in git carries 2.0.1, so 1.7.0
-would have been rejected; the release ships from `main` as **2.1.0**. Where the store's 2.0.1 build came from is
-**not recorded in git** — the only 2.x manifest is 2.0.0 on `feat/CC-003-apca-3`, and this session first wrote
-that up as "the store ships the APCA branch". **Alex corrected it: APCA was never released**, and he is not
-adding it. The provenance of 2.0.1 stays unknown; the docs now say so rather than name a branch. Both version files bumped in this
-session's release PR; the docs that said "1.7.0 was chosen safely above anything uploaded" now say what happened.
-`npm run package` gives `cc-checker-2.1.0.zip` (dotfile-free, e2e 18/18 against the unzipped artefact).
-
-**Upload rejected first:** the store reported `favicons/favicon-48x48.png` and `favicon-72x72.png` "missing from the
-uploaded package". The files were byte-identical to the ones inside the store's published 2.0.1 CRX (downloaded and
-diffed), whose manifest used the same `./favicons/…` paths. A first theory — the two files were the only entries `zip`
-had left _stored_ uncompressed — was disproved: Chrome's own `--pack-extension` stores them too, and a fully deflated
-zip was rejected identically. `scripts/package.mjs` (fflate, PR #39) stays because it removes the system `zip`
-dependency and makes the artefact reproducible, not because it fixed this.
-
-**Upload accepted:** the zip built from the tree in `c5da9fc` (manifest paths without `./`, plus 16/32/96/128 icons — the
-store documents 128 as mandatory and the manifest had lacked one since 1.5.0) was accepted by the dashboard on
-11 September 2026 and **submitted for store review** the same day. The two changes went in together, so the store's
-exact trigger is not isolated; what is known is that the container was not it (an unchanged-manifest zip was rejected
-from Info-ZIP, Python and fflate alike) and the manifest was. `v2.1.0` is tagged on `c5da9fc`, the packaged commit,
-per `docs/GIT.md` §Releases. **Published is a further step:** the store's review has to pass before users get 2.1.0;
-until then 2.0.1 is what they run.
-
-**Not done, deliberately:** nothing beyond the tag until the store publishes the reviewed build. The
-`feat/CC-003-apca-3` branch and its stash are untouched.
-
-**Later the same day:** #40 merged (`0accd3b`); 2.1.0 submitted for store review with a corrected listing description
-(saved colours are capped at 5, not 20) and test instructions. Alex's Dependabot delegation is now written down
-(`docs/GIT.md` §Who merges). Handoff for the code-quality workstream written above.
-
-**Corrected in this session:** the APCA attribution above went into six docs, a commit message (`2f50beb`) and PR
-#37's body before Alex read it. The commit and PR text stand as written (history is not rewritten); the docs are
-fixed in the follow-up PR. Lesson, now in `docs/DA-REVIEW.md` §Permission audit: when the published build is not in
-git, write "unknown" — do not infer it from the nearest branch.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
@@ -763,5 +724,5 @@ git, write "unknown" — do not infer it from the nearest branch.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
