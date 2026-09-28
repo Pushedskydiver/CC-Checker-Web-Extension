@@ -4,8 +4,8 @@ _A record, not instructions. Once PRs A to G merge, the docs they change are the
 
 Session 11, 29 September 2026. `main` at `2fd018b`. Ticket `CC-005`.
 
-Status: **approved by Alex with the decisions at the end; `spec-grill` next.** Nothing in the repo has
-changed. Per the loading instructions, `spec-grill` runs on the approved proposal before any file moves.
+Status: **approved by Alex with the decisions at the end; `spec-grill` R1 and R2 folded (the closing
+sections).** Nothing else in the repo changed in this PR. Line citations are against `main` at `2fd018b`.
 
 ## Plain-English answer
 
@@ -24,13 +24,13 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
    swap is what he meant (Decision 1).
 5. **Aim the token pass at what is read repeatedly, not at `CLAUDE.md`.** `CLAUDE.md` is small (4.8k
    tokens with memory). The recurring costs are:
-    - `PROGRESS.md`, about 30k tokens at every session start, and read in full by `copilot-surrogate`
+    - `PROGRESS.md`, about 25–30k tokens at every session start, and read in full by `copilot-surrogate`
       on every handoff PR;
     - `docs/TESTING.md`, whose one table is 69% whitespace padding by bytes;
     - an archive trigger that has been under-firing, because it converted bytes to tokens at the wrong
       ratio.
-6. **Port one hook, not two.** `guard-destructive-git` should come across, plus a hard **deny on
-   `git commit --amend`**, which this repo forbids and nothing enforces. `post-edit-check` should wait.
+6. **Port one hook, not two.** `guard-destructive-git` should come across, plus an **`ask` on
+   `git commit --amend`**, which this repo forbids and nothing enforces (only Alex can answer it). `post-edit-check` should wait.
 
 ## How this was researched
 
@@ -313,7 +313,7 @@ law.
         - Byte budgets on this file measure padding.
     - **Fix:** turn the table into a `###` per test with the same fields as short labelled lines. No
       content changes, and a reviewer can diff old against new by collapsing whitespace.
-    - `docs/GLOSSARY.md` has the same problem at 30% (36,395 → 25,258 bytes). Same fix, lower priority.
+    - `docs/GLOSSARY.md` has the same problem at 30% (36,395 → 25,368 bytes with `tr -s ' '`). Same fix, lower priority.
 4. **`copilot-surrogate`'s ceiling line is stale.** It says the whole tracked text is "about 100 KB"; it is
    661,247 bytes (lockfile and binaries excluded), of which 131,885 is not Markdown. Its 400 KB
    post-filter ceiling is still a sane cap. The sentence justifying it is wrong.
@@ -374,7 +374,7 @@ Ticket `CC-005` (Decision 5). Order revised after spec-grill R1 (M5): **H, E, A,
 | A   | Pin `model`/`effort` on the three agents; trim `copilot-surrogate`'s description; correct its size sentence (L2); add the recompute discipline; add `CC-005` to `docs/GIT.md`'s key list (L9). Four ideas in one agents PR, said so in the body (L10)                                                                                                 | `.claude/agents/**`, `docs/GIT.md`                                       | surrogate               |
 | B   | Add `implementer.md` (`model: sonnet`, **`effort: high` pinned**, M7), dry-run on #72's diff first                                                                                                                                                                                                                                                    | `.claude/agents/**`                                                      | surrogate               |
 | D   | `docs/SESSION-HANDOFF.md`; `DEVELOPMENT.md` §Session handoff and §`PROGRESS.md` structure become pointers, **explicitly reversing `DEVELOPMENT.md:360-363`** (M2); worktree rule promoted (p); archive trigger restated in bytes, with `docs/history/SESSIONS.md:6-7` as a sibling (L9); the "Handoff facts" line added to the `PROGRESS.md` template | `docs/**`, and the instruction file (`CLAUDE.md` today)                  | both (M4)               |
-| C   | Swap `AGENTS.md` / `CLAUDE.md`; state the budget; siblings `CONVENTIONS.md:39`, `DEVELOPMENT.md:454-455`, `GIT.md:372`, `copilot-surrogate.md:35`, `CLAUDE.md:152-153` (L4)                                                                                                                                                                           | `CLAUDE.md`, `AGENTS.md`, siblings                                       | surrogate; both if >200 |
+| C   | Swap `AGENTS.md` / `CLAUDE.md`; state the budget; siblings `CONVENTIONS.md:39`, `DEVELOPMENT.md:454-455`, `GIT.md:372`, `copilot-surrogate.md:35`, `CLAUDE.md:152-153`, `DEVELOPMENT.md:408`, `GLOSSARY.md:97` (L4, R2)                                                                                                                               | `CLAUDE.md`, `AGENTS.md`, siblings                                       | surrogate; both if >200 |
 | E   | `PROGRESS.md` archive: Session 6 (the standing Session 11 instruction) **plus** the pre-grill Brief and the 11 September commit sequence, compressed the way sessions already are (a row or pointer in `docs/history/SESSIONS.md`, full text in `git log -p`), and the struck decision branches (a), (c), (d), (e) (M3)                               | `PROGRESS.md`, `docs/history/SESSIONS.md`                                | surrogate; both if >200 |
 | F   | `docs/TESTING.md` table → sections (then `GLOSSARY.md` separately if wanted)                                                                                                                                                                                                                                                                          | `docs/**`; >200 lines                                                    | both                    |
 | G   | `guard-destructive-git.mjs` + `.claude/settings.json` **+ `.gitignore` gains `!.claude/settings.json`** (B1) + a protected-branch list (M8) + `ask` on `--amend` (M9) + tests, and the unit-count sweep (L5)                                                                                                                                          | `scripts/`, `.claude/`, `.gitignore`, `vitest.config.ts`, count siblings | both                    |
@@ -400,8 +400,8 @@ in-session and are his to flip. Spec-grill R1 revised 2 and 3.
     - `docs/DEVELOPMENT.md` §Process-rule promotion needs two incidents. Session 10 is one, and
       Session 8 pattern 2 ("only the confirm round saw it") is a counter-case.
     - The rule touches seven files: `CLAUDE.md:140-141`, `DEVELOPMENT.md:266`,
-      `RATIONALIZATIONS.md:182-184`, `REVIEW-PATTERNS.md:204`, `GLOSSARY.md:94-95` and
-      `spec-grill.md:3,143`.
+      `RATIONALIZATIONS.md:182-184`, `REVIEW-PATTERNS.md:204`, `GLOSSARY.md:94-95`,
+      `spec-grill.md:3,143` and `da-review.md:170`.
     - D records PCR's stopping rule as a candidate, with its promotion point: a second no-news confirm
       round after a Low-only fold, or the Session 20 review.
 4. **Triggers 5 and 6 are kept** (in-session). Trigger 6 is desktop-only: the terminal statusline has
@@ -415,7 +415,7 @@ in-session and are his to flip. Spec-grill R1 revised 2 and 3.
 
 Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
 
-- **B1**, `.claude/settings.json` is gitignored (`.gitignore:33-35`): PR G un-ignores it.
+- **B1**, `.claude/settings.json` is gitignored (`.gitignore:32-34`): PR G un-ignores it.
 - **M1**, the bytes-per-token ratio: **measured directly after R1.** Reading the 31,138-byte detail
   band with the Read tool raised this session's context by ~15.4k tokens. That includes one small tool
   preview and the coordinator's own turn, so the band is ~12.5–14k tokens, about 2.2–2.5 bytes per
@@ -423,7 +423,8 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
     - R1's 3.06 came from `get_usage`'s "Memory files" category, which evidently counts differently.
     - D restates the trigger in bytes at **~22–25k**. D's author settles the exact figure against that
       range.
-    - Session-start `PROGRESS.md` cost is ~25–29k tokens at that range, not the "~30k" stated in §5.
+    - Session-start `PROGRESS.md` cost is ~25–29k tokens at that range, and ~30k at §5's 2.1 bytes per
+      token: say ~25–30k.
 - **M2**, the reversal of `DEVELOPMENT.md:360-363`: D says it reverses that line, and why. Session 10
   already recorded readings, and PCR's 40-session record backs the numbers. Session 20 is the
   re-exit.
@@ -436,9 +437,9 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
 - **L1**: `worktree.baseRef: "head"` makes `isolation: worktree` start from the current HEAD. The
   remaining reasons for manual worktrees are `npm ci` (Session 10 pattern 2) and B1. Trial it in D.
 - **L2**: the size sentence in `copilot-surrogate.md:63` is "~100 KB code and config, ~350 KB prose
-  (11 Sep)". Today it is 125,947 and 529,362 bytes; A corrects it.
+  (11 Sep)". Today it is 131,885 and 529,362 bytes (§5's figures); A corrects it, stating the command it measured with.
 - **L3**: subagents load `CLAUDE.md`, not auto memory, so the per-subagent cost is the 12,752-byte file.
-- **L6, L9, L10, L4, L5**: folded above and in §8.
+- **L6, L10, L4, L5**: folded above and in §8. **L9** (siblings): the `CC-005` key list in A, `SESSIONS.md:6-7` in D.
 - **L7**: 171k was **over** the soft line, not "fits". "Finish the unit in hand" includes that unit's
   own review round, which is why this session dispatched R1 after trigger 2. D writes that definition
   down.
@@ -447,5 +448,23 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
 - **L11**: inherits M1; the §5 token figures are superseded by the M1 bullet above.
 
 **R2, the confirm round, is Session 12's first job.** It needs fresh verifiers, run on this file as
-committed in PR H. §1 to §7 above keep their R1 wording where this fold supersedes it. Where they
+committed in PR H. §1 to §7 above keep their R1 wording where this fold supersedes it (the Plain-English answer
+was corrected in R2's fold). Where they
 disagree, the fold and §8 are the authority.
+
+## spec-grill R2 (29 September 2026): 0 BLOCKING, 0 MATERIAL, 6 LOW — nit-floor
+
+Fable 5.1, confirm-or-disprove round, a fresh verifier, ~89k tokens. 18 of R1's 22 IDs confirmed outright;
+L2, L4, L9 and M6's file list were partial on detail. The six LOWs, each re-run by the coordinator before
+folding:
+
+- **N1**: the Plain-English answer sat outside the authority sentence. Items 5 and 6 and the status line
+  are corrected in place.
+- **N2**: Decision 3 said seven files and listed six; `da-review.md:170` added.
+- **N3**: PR C's siblings gain `DEVELOPMENT.md:408` and `GLOSSARY.md:97`, which also call `AGENTS.md` a
+  symlink.
+- **N4**: L2's 125,947 did not reproduce; 131,885 is §5's own figure.
+- **N5**: session-start `PROGRESS.md` is ~25–30k tokens, not "~25–29k, not ~30k".
+- **N6**: `GLOSSARY.md` collapses to 25,368 bytes, not 25,258. The `.gitignore` citation is 32–34.
+
+No further round: the fold is wording and single numbers, each already reproduced.
