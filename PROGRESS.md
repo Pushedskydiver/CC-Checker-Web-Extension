@@ -3,7 +3,14 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 10)
+## Next workstreams (after Session 11)
+
+Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
+by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
+`docs/research/01-pcr-workflow-port.md` (§8 and the closing fold section). That file is on the draft
+[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until `spec-grill` R2 and
+both reviews pass. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
+still holds for CC-004.
 
 Updated 28 September 2026, end of Session 10 — **CC-004 rows 1 to 10 have merged — row 10's second half as
 #72 (`61b5d43`, a merge commit); the next session researches porting the PCR Formulation workflow (item 6),
@@ -53,7 +60,8 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    them, a session-handoff protocol that reads the 5-hour, weekly and context usage, soft and hard token
    lines, `AGENTS.md` as the primary file with frontmatter-carrying agents imported from `CLAUDE.md`, and a
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
-   repo differs. The brief is step 5 of the loading instructions below.
+   repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
+   proposal approved, `spec-grill` R1 folded, R2 next (§Session 11).
 
 ### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
 
@@ -209,6 +217,66 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 11 — 29 September 2026 (CC-005: PCR workflow port researched, approved, spec-grill R1 folded)
+
+**Alex approved the PCR workflow port as `CC-005`, eight PRs with H first. `spec-grill` R1 found 1 BLOCKING and 10
+MATERIAL findings, all folded into the plan; the confirm round (R2) is Session 12's first job.**
+
+**Setup:** every loading check matched. Archive count 5, detail band 31,138 bytes, tree clean, #73 and #74
+merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (36 unit, 21 e2e).
+`get_session self` reported Opus 5.5 at `high`.
+
+**Done:** the research and proposal, as `docs/research/01-pcr-workflow-port.md` on the draft
+[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75)
+(`docs/CC-005-pcr-workflow-proposal`, `7ff2dcf`).
+
+- **Sources:** PCR, read-only. The Claude Code docs were checked live by a Sonnet `claude-code-guide`
+  agent, and a Sonnet `Explore` agent swept PCR's research and history.
+- **Alex's answers**, 29 September 2026:
+    - "AGENTS.md becomes the real file";
+    - all eight PRs before row 11;
+    - the rest was delegated. The in-session calls are recorded as Decisions 2–5 in the file: implementer
+      commits, (r) left as an observation, triggers 5–6 kept, `CC-005`.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Reviews:** `spec-grill` R1 on Fable 5.1, ~175k tokens: 1 BLOCKING, 10 MATERIAL, 11 LOW, all folded.
+
+- The BLOCKING finding: `.claude/settings.json` is gitignored here, so a hook port would not ship.
+- R2 was not run: the session reached the proposal's own 250k hard line.
+
+**Handoff facts:**
+
+- **Context:** 247k at the decision to hand off (trigger 3, hard line). The soft line was passed at ~165k,
+  before the fan-out. The grill ran afterwards as the proposal's own review round.
+- **Plan usage:** 5-hour 76% (resets 00:40Z on 29 September), weekly 61%, Fable weekly 11%.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment             | 5-hour | Weekly | Fable weekly | Context |
+    | ------------------ | ------ | ------ | ------------ | ------- |
+    | Start              | 61%    | 59%    | 9%           | 91k     |
+    | Before the fan-out | 64%    | 59%    | 9%           | 165k    |
+    | After the digest   | 67%    | 60%    | 9%           | 195k    |
+    | Proposal delivered | 68%    | 60%    | 9%           | 214k    |
+    | After R1           | 76%    | 61%    | 11%          | 232k    |
+
+- **Warning signs:** one deliberate re-read (the detail band, as a token measurement).
+- **Clarifying question:** none was needed that Session 10's entry should have answered.
+
+**Major novel patterns Session 11:**
+
+1. **`claude -p` input-token deltas are not a token meter.** The same file gave −2,859, 10,081 and
+   15,715 tokens on three runs. What worked was a `get_usage` context reading before and after one
+   Read.
+2. **The archive trigger's bytes-to-tokens conversion was low.** Measured that way, the 31,138-byte
+   band is ~12.5–14k tokens, not "under 10k". The token half of the trigger has been firing unseen.
+3. **Prettier pads every Markdown table row to its widest cell.** `docs/TESTING.md` is 69% whitespace
+   by bytes, from one table.
+4. **`.claude/` is gitignored here except `agents/`.** Any settings or hook port must un-ignore
+   `settings.json`. A plan written from another repo's layout carries that repo's `.gitignore`
+   assumptions.
+5. **One Fable grill round moved the 5-hour window eight points** (68% → 76%, ~175k tokens). Budget a
+   grill and its confirm round before starting either.
 
 ## Session 10 — 28 September 2026 (CC-004: row 10 part two merged as #72, a PCR-style implementer, Session 5 archived)
 
@@ -587,70 +655,42 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
 
 ## Next session loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is CC-004; the brief
-   above it is the pre-grill record — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** Once this handoff and the Session 5 archive
-   PR (#74, `docs/CC-004-archive-session-5`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
-   gives 5 (Sessions 6 to 10). If it gives 6, the archive PR has not merged: say so and ask Alex, do not
-   re-archive. Re-measure the detail band as before (from the first `## Session` line to the line before
-   `## Next session loading instructions`, `sed -n '<a>,<b>p' PROGRESS.md | wc -c`, line numbers from
-   `grep -n`) — it should sit near 30k bytes, under the roughly-10k-token half. **At the Session 11 close
-   the count half fires again**: archive Session 6 in its own PR.
-3. **Then confirm the state, live, since this entry is a snapshot.** `git status --short` (expect clean),
-   `git log --oneline -5 origin/main`, `gh pr list` — expect this handoff (#73) and the Session 5 archive (#74), either of
-   which Alex may already have merged, and perhaps a Dependabot PR (delegated,
-   `docs/GIT.md` §Who merges; decisions (h), (j)). `origin/main` is at `61b5d43` (#72) or later. Remote branches as before: `main`, `feat/CC-003-apca-3`,
-   `chore/CC-004-copy-to-clipboard-4` (do not delete), plus either close-out branch still open.
-   Leftover local worktrees from Session 10: `git worktree list` — remove `../cc-archive-wt` and
-   `../cc-handoff-wt` once their PRs merge.
-4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
-   (`npx playwright install chromium` first on a new machine or after a `@playwright/test` bump). Expect 36
-   Vitest cases and 21 Playwright tests.
-5. **Primary work: research porting the PCR Formulation workflow (§Next workstreams item 6).** Output is a
-   research write-up and a proposal for Alex to approve, then `spec-grill` on the proposal before anything
-   in this repo moves (`CLAUDE.md` trigger table: "A spec or plan, before code moves against it"). Not
-   CC-004 — which ticket key it goes under is Alex's (decision (q)). The five things Alex named:
-    - **Agents and their models.** Source:
-      `/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/` — nine agents, each pinning `model:`
-      (e.g. `implementer` → `sonnet`, `da-reviewer` → `opus` with `effort: high`). Here the three agents say
-      `model: inherit` and every dispatch passes `model` by hand (step 6). Session 10 trialled the
-      `implementer` pattern inline (§Session 10); decide whether this repo gets an `implementer.md`, and
-      which PCR agents (`chunk-briefer`, `doc-checker`, `doc-fixer`, `code-reader`, `lint-fixer`) map onto
-      anything here.
-    - **Session handoff that reads usage.** Source: `docs/SESSION-HANDOFF.md` there — handoff triggers on
-      a phase boundary, a 150k soft and 250k hard context line, the 5-hour window at 85%, structural warning
-      signs, plus a next-session model table. The measuring tool exists: the desktop app's
-      `mcp__ccd_session_mgmt__get_usage` returns 5-hour, weekly-all-models and per-model weekly percentages
-      with reset times, and this session's context tokens (§Session 10 records two readings, at start and before the handoff). Compare with this
-      repo's `docs/DEVELOPMENT.md` §Session handoff, whose trigger is qualitative.
-    - **Soft and hard token lines.** PCR's are absolute tokens, not percentages, because the window is 1M.
-      Decide the numbers for this repo, and what each line obliges.
-    - **`AGENTS.md` primary, imported from `CLAUDE.md`.** PCR's `CLAUDE.md` is 222 bytes and imports
-      `@AGENTS.md` (10,989 bytes); here `AGENTS.md` is a symlink to a 12,752-byte `CLAUDE.md`. Alex also
-      asked about agent frontmatter imported through `CLAUDE.md` — confirm with him what shape he means
-      before proposing one. Check what Claude Code actually supports (`@` imports, agent frontmatter keys
-      such as `model` and `effort`) against its docs, not memory: the `claude-code-guide` agent exists for
-      that.
-    - **A token-cost pass over every doc, quality kept.** Measured 28 September 2026 with `wc -c`:
-      `docs/TESTING.md` 117,068 bytes (the poor-contrast row alone is ~4k), `PROGRESS.md` 64,870,
-      `docs/DA-REVIEW.md` 37,387, `docs/GLOSSARY.md` 36,395, `docs/ARCHITECTURE.md` 34,636,
-      `docs/DEVELOPMENT.md` 31,002, the three agents 42,403 together; ~509k bytes in all. PCR has
-      `scripts/docs-budget.ts` and `scripts/check-claude-docs.ts`, and `.claude/rules/` for path-scoped
-      loading — look at what they enforce before proposing a budget. Measure what a session actually loads
-      (the always-on `CLAUDE.md` versus on-demand docs) before cutting anything.
-      Also in PCR and worth a look for the same proposal: `.claude/settings.json` hooks
-      (`guard-destructive-git.ts`, `post-edit-check.ts`). Research reports there live in `research/NN`; this
-      repo has no research directory — where the write-up lives is part of the proposal. Read-only in the PCR
-      repo: nothing there is edited. CC-004 row 11 waits until Alex has seen the proposal.
-6. Model and agents: **Opus at effort `high`** — the work is orchestrating research and writing a proposal,
-   which PCR's own table (`docs/SESSION-HANDOFF.md` §5) puts on Opus `high`; Opus 5.5 defaults to `medium`,
-   so check `get_session self` and ask Alex to pick it in the model menu if it is wrong. Ultracode off.
-   Reviewers and `spec-grill` on Fable 5.1, passing `model` on each dispatch, at most two at a time, each
-   in its own worktree when it builds or mutates (`git worktree add ../cc-<name>-wt <ref> --detach && npm ci`,
-   removed at the end). Research subagents that only read need no worktree. Call `get_usage` at each
-   checkpoint — after digesting a large result, before a fan-out, before a new topic — and record the
-   readings.
-7. Decision branches carried in: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
+1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
+   `docs/research/01-pcr-workflow-port.md` from #75's branch (`docs/CC-005-pcr-workflow-proposal`), or
+   from `main` if Alex has merged it.
+    - Its §8 table and closing fold section are the plan. §1 to §7 keep R1-era wording where the fold
+      supersedes it.
+    - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
+2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 6 to 11). That is
+   expected, not a missed archive.
+    - `CC-005` PR E archives Session 6, the pre-grill Brief and the 11 September commit sequence together.
+      It runs second, right after H.
+    - Do not open a separate Session 6 archive PR.
+3. **Confirm the state, live.**
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main` (expect `2fd018b` or later),
+      `gh pr list`. Expect draft #75 and this handoff, and perhaps a Dependabot PR (delegated).
+    - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
+      plus the two `CC-005` branches.
+4. Run the pre-push suite before touching anything:
+   `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
+   Playwright tests.
+5. **Primary work: finish PR H, then build E.**
+    - Run `spec-grill` R2, a confirm-or-disprove round with a fresh verifier on Fable 5.1, on
+      `docs/research/01-pcr-workflow-port.md` at #75's head.
+    - Fold what it finds on #75's branch as new commits. Never amend.
+    - Then run `da-review` and `copilot-surrogate` on #75: the file is in `docs/**` and over 200 lines.
+    - Mark #75 ready. Alex merges.
+    - Then PR E, following the fold's M3 line.
+6. **Model and usage.**
+    - Opus 5.5 at `high`. Check `get_session self`, and ask Alex to change it in the model menu if it is
+      wrong.
+    - Reviewers on Fable 5.1, passed per call until PR A pins them. At most two at a time.
+    - **Trial the proposal's handoff lines now:** soft 150k, hard 250k, 5-hour 85%, weekly 90%, Fable
+      weekly 85%. Read them with `get_usage` at start, after each digest, before each fan-out and at
+      handoff, and record a Handoff facts block like Session 11's.
+    - Session 11 ended with the 5-hour window at 76%. Read it before dispatching R2: one grill round cost
+      eight points.
+7. Decision branches carried in. **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The rest is Session 10's text, unchanged: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
    running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
    its merge commit `8ac0bdc` carries no body at all; the plan's numbering is the authority);
    **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
