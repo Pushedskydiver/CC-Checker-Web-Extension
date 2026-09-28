@@ -3,10 +3,11 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 9)
+## Next workstreams (after Session 10)
 
-Updated 27 September 2026, end of Session 9 — **CC-004 PRs 1 to 9 and row 10's first half have merged; row 10's
-second half is next, and no CC-004 PR is open.** Row 10 part one (#68, `41e36c4`, a merge commit) merged in
+Updated 28 September 2026, end of Session 10 — **CC-004 rows 1 to 10 have merged — row 10's second half as
+#72 (`61b5d43`, a merge commit); the next session researches porting the PCR Formulation workflow (item 6),
+at Alex's request, before CC-004 row 11.** Row 10 part one (#68, `41e36c4`, a merge commit) merged in
 Session 9, moving the atoms' poor-contrast variant into CSS, and a Dependabot dev-dependencies bump (#69,
 `fadd8a8`) merged under the standing delegation after it. PRs 1 to 4
 merged in Session 5 (`8ac0bdc`, `83dec25`, `e62b069`, `9156ff2`); PR 5 (#50, `bbb822b`) and PR 6 (#52,
@@ -26,9 +27,9 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 `40,000 users` when checked that day. The release is `v2.1.0` on `c5da9fc`.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
-   plan below. PRs 1 to 9 and row 10's first half (the atoms, #68) merged; nothing is in flight.
-   Resume at row 10's second half: the header title and the tabs, then the two booleans out of the
-   context value. One PR at a
+   plan below. PRs 1 to 9 and row 10's first half (the atoms, #68) merged, and row 10's second half as
+   [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72) (`61b5d43`). Row 11 comes after
+   the PCR research (item 6) has reported — Alex's order, 28 September 2026. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `CLAUDE.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -47,6 +48,12 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    handling — plus two found by running PR 7's unit tests against its `color-utils.ts` on 17 and
    18 September: `colorToHsl`/`rgbToHsl` return four elements against a three-tuple annotation, and
    `getLevel` still uses the strict `>` this repo fixed in #58. Five small commits there, not an API here. Nothing in CC-004 depends on it, so it is scheduled whenever Alex wants it.
+6. **Research porting the PCR Formulation AI workflow — the next session's primary work** (Alex,
+   28 September 2026). Research and a proposal for Alex, not a change: agents and the models pinned on
+   them, a session-handoff protocol that reads the 5-hour, weekly and context usage, soft and hard token
+   lines, `AGENTS.md` as the primary file with frontmatter-carrying agents imported from `CLAUDE.md`, and a
+   token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
+   repo differs. The brief is step 5 of the loading instructions below.
 
 ### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
 
@@ -139,7 +146,7 @@ pull requests.
 | 7   | ✅ Add Vitest, the colour-utility tests, a `ci.yml` step, the doc sweep (#58, `4799394`)                  | both               | —     |
 | 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
 | 9   | ✅ Pin the poor-contrast colour switch with a test that can actually fail (#65, `25cf7ab`)                | both               | —     |
-| 10  | Move the poor-contrast variant into CSS — ✅ atoms (#68, `41e36c4`), then molecules and organisms         | da/both            | 9     |
+| 10  | ✅ Move the poor-contrast variant into CSS — atoms (#68, `41e36c4`), header and tabs (#72, `61b5d43`)     | da/both            | 9     |
 | 11  | Typed action API, message bridge as its own hook, real payload validation                                 | da-review          | —     |
 | 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
 
@@ -202,6 +209,56 @@ editor colours in history — and a seventh (`963659a`) updating this file. Seve
 4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
 5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
    symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
+
+## Session 10 — 28 September 2026 (CC-004: row 10 part two merged as #72, a PCR-style implementer, Session 5 archived)
+
+**Row 10 part two merged as #72 (`61b5d43`), both reviews confirmed at nit-floor, and the next session researches
+porting the PCR Formulation workflow here before CC-004 goes any further — Alex's instruction for this
+handoff.**
+
+**Setup:** loading instructions followed in order and every check matched: archive count 5, detail band
+34,387 bytes, tree clean, `origin/main` at `9ca4d2b` with #70 and #71 merged, no open PRs, pre-push suite
+green (36 unit, 21 e2e), `get_session self` reported Opus 5.5 at `high`.
+
+**Done:** [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72),
+`refactor/CC-004-poor-contrast-css-part-two`, five commits to `d2a305d`. The header title and the tabs
+became `:global(body[data-contrast='poor'][…])` rule pairs; `isPoorContrast` and `isBackgroundDark` left
+`TColourContrastContext` and the value (the provider still derives them for the attributes); six docs
+lost their transitional wording. All fifteen sites are now rule pairs. The PR body carries the mutant
+table and the pasted suite. **Merged: yes** — by Alex on 28 September 2026 with a merge
+commit, `61b5d43`; branch deleted, pre-push suite green on `main` after it (36 unit, 21 e2e). **Uploaded to
+the Web Store: no** (not a release).
+
+**How it was built — the PCR `implementer` pattern, trialled at Alex's suggestion.** The code and docs were
+written by a Sonnet 5.5 subagent from a brief modelled on
+`/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/implementer.md`: work one planned item, list
+every choice the brief left open, write the mutation table, never open a PR or merge. It took about three
+and a half minutes and ~103k subagent tokens, and every claim in its report survived four reviewers. The
+coordinator read the diff before dispatching reviewers. This repo has no `implementer.md` yet; the brief
+was inline.
+
+**Reviews:** `da-review` and `copilot-surrogate` on Fable 5.1, each in its own worktree. Round one: both
+at nit-floor, one shared LOW (a date without its year), folded in `d2a305d`. Confirm round with fresh
+verifiers: every conclusion CONFIRMED, no new finding above LOW.
+
+**Also:** Session 5 archived in its own PR, `docs/CC-004-archive-session-5` (`1fb8bf2`), with
+`copilot-surrogate` on it; opened beside this handoff. The two PRs both edit `PROGRESS.md` in hunks that do
+not touch, so whichever merges second should merge cleanly — but check.
+
+**Usage, read with `get_usage` (the tool the next session's research is about):** at start 5-hour 30%,
+weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%, 171k.
+
+**Major novel patterns Session 10:**
+
+1. **A confirm round after a nit-floor round one confirmed nothing new, at ~120k Fable tokens.** The rule
+   (`docs/DEVELOPMENT.md` §Verification rounds) requires it; whether a round one with zero BLOCKING and
+   MATERIAL and a one-word fold should still require it is decision (r), not changed here.
+2. **`npx prettier` in a fresh worktree without `node_modules` downloads the latest Prettier** (3.9.9 on the
+   day), not the pinned one. Check formatting with the main checkout's `node_modules/.bin/prettier` or run
+   `npm ci` first.
+3. **The implementer's report is the thing to read, not its diff alone.** Its "choices the brief left
+   open" list surfaced the Prettier table re-pad, the date convention and a stray file it had created and
+   deleted — each of which a reviewer would otherwise have had to discover.
 
 ## Session 9 — 24 to 27 September 2026 (CC-004: row 10 part one merged, atoms' variant in CSS)
 
@@ -607,58 +664,69 @@ not part of CC-004, since nothing here depends on it.
 
 ## Next session loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is the workstream; the
-   brief above it is the pre-grill record and several of its items are dead — trust the plan, not the brief.
-2. **Check the archive trigger before writing anything.** Once this handoff and the Session 4 archive
-   PR (`docs/CC-004-archive-session-4`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
-   gives 5 (Sessions 5 to 9), which does not exceed five, so **no archive PR stands between the next
-   session and row 10 part two**. If it gives 6, the archive PR has not merged: say so and ask Alex, do
-   not re-archive. Re-measure the detail band too (from `## Session 9` through the end of
-   `## Session 5`: `sed -n '<first-line>,<last-line>p' PROGRESS.md | wc -c`, line numbers from
-   `grep -n '^## Session [0-9]\|^## Next session loading instructions' PROGRESS.md` rather than
-   trusting any written here) — 34,387 bytes, ~8.6k tokens, once both close-out PRs are in, so the
-   roughly-10k-token half does not fire either.
-   **At the Session 10 close the count half fires again**: archive Session 5 in its own PR (`docs/**`,
-   `copilot-surrogate` mandatory). This block is deliberately not named `## Session …` so it does not
-   inflate that count, and it sits outside the session entries so compressing one cannot take it.
-3. **Then confirm the state.** `git status --short` (expect clean), `git log --oneline -5 origin/main`
-   (expect `fadd8a8` or later — both close-out PRs on top if Alex has merged them), `gh pr list` —
-   expect nothing, or only this handoff and the archive PR if they are still open, or a new Dependabot
-   PR. Remote branches: `main`, `feat/CC-003-apca-3` (untouched; its stash is local to this machine,
-   not on the remote) and `chore/CC-004-copy-to-clipboard-4` (`2faf894`, the rejected 4.x attempt,
-   kept as the record §Session 6 above cites — no PR, do not delete). Green Dependabot PRs are
-   delegated (`docs/GIT.md` §Who merges) — see decisions (h) and (j).
+1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is CC-004; the brief
+   above it is the pre-grill record — trust the plan, not the brief.
+2. **Check the archive trigger before writing anything.** Once this handoff and the Session 5 archive
+   PR (`docs/CC-004-archive-session-5`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
+   gives 5 (Sessions 6 to 10). If it gives 6, the archive PR has not merged: say so and ask Alex, do not
+   re-archive. Re-measure the detail band as before (from the first `## Session` line to the line before
+   `## Next session loading instructions`, `sed -n '<a>,<b>p' PROGRESS.md | wc -c`, line numbers from
+   `grep -n`) — it should sit near 30k bytes, under the roughly-10k-token half. **At the Session 11 close
+   the count half fires again**: archive Session 6 in its own PR.
+3. **Then confirm the state, live, since this entry is a snapshot.** `git status --short` (expect clean),
+   `git log --oneline -5 origin/main`, `gh pr list` — expect this handoff and the Session 5 archive, either of
+   which Alex may already have merged, and perhaps a Dependabot PR (delegated,
+   `docs/GIT.md` §Who merges; decisions (h), (j)). `origin/main` is at `61b5d43` (#72) or later. Remote branches as before: `main`, `feat/CC-003-apca-3`,
+   `chore/CC-004-copy-to-clipboard-4` (do not delete), plus either close-out branch still open.
+   Leftover local worktrees from Session 10: `git worktree list` — remove `../cc-archive-wt` and
+   `../cc-handoff-wt` once their PRs merge.
 4. Run the pre-push suite before touching anything: `npm run lint && npm run test:unit && npm run build && npm run test:e2e`
-   (`npx playwright install chromium` first on a new machine, and again after any `@playwright/test` bump;
-   `npm ci` after any Dependabot merge). Expect 36 Vitest cases (25 in `color-utils.test.ts`, 11 in
-   `parse-color-input.test.ts`) and 21 Playwright tests; `test:unit` is the second command.
-5. **Resume at row 10 part two** — nothing is in flight. Move the last two poor-contrast sites the way
-   #68 moved the atoms: the header title (`src/components/02-molecules/header/`, `.titleDark` /
-   `.titleLight`) and the tabs (`src/components/03-organisms/tabbed/`, `.tabsDark` / `.tabsLight`)
-   become `:global(body[data-contrast='poor'][data-background=…])` rules. Then nothing outside
-   `src/context.tsx` reads `isPoorContrast` or `isBackgroundDark` (check with
-   `grep -rn 'isPoorContrast\|isBackgroundDark' src`), so drop both from `TColourContrastContext` and
-   the context value; the provider still derives them for the attribute effect. The gate is the widened
-   test (_poor contrast turns every themed control…_): it already reads both sites (`title`, `tabs`),
-   so it should stay green across the move — run it before and after each site, and mutate the new
-   rules to watch it go red. Three docs carry the transitional wording that this PR ends:
-   `docs/ARCHITECTURE.md` §Styling's poor-contrast switch bullet, `docs/CONVENTIONS.md`'s `clsx` bullet (the JS pair
-   is then gone entirely) and `docs/TESTING.md`'s row for that test ("a class branch in the header and
-   tabs"); grep for `second PR` and `header and tabs` as well. `docs/GLOSSARY.md` and
-   `docs/ARCHITECTURE.md` §State describe the booleans as context values — check them when the
-   context type changes. Touches `src/**`, so `da-review` is mandatory; the docs make `copilot-surrogate`
-   mandatory too. Cut the branch as the literal first action; do not re-grill the plan or reorder it
-   without saying why. Row 11 (typed action API, message bridge hook, payload validation) is next after.
-6. Model and agents: Opus at effort `high`, ultracode off — Session 9 ran on Opus 5.5 at `high` with
-   Alex's agreement, after arriving at `medium`; `spec-grill`, `da-review` and `copilot-surrogate` on
-   Fable 5.1 — pass `model` on each dispatch, since the agent files say `inherit` — at most two at a
-   time (`docs/DEVELOPMENT.md` §Scale the fan-out), **and each in its own worktree, written into the
-   dispatch prompt** (`git worktree add ../cc-<name>-wt <branch> --detach && npm ci`, removed at the
-   end), because two reviewers building and mutating one checkout will corrupt each other's runs. A
-   session cannot set its own model or effort with the session tools: check with `get_session self`,
-   and if it is wrong ask Alex to pick it in the model menu; ultracode is a session toggle too.
-   `~/.claude/settings.json` still carries `"effortLevel": "xhigh"` globally. Settle what a shell
-   command can settle before spending an agent.
+   (`npx playwright install chromium` first on a new machine or after a `@playwright/test` bump). Expect 36
+   Vitest cases and 21 Playwright tests.
+5. **Primary work: research porting the PCR Formulation workflow (§Next workstreams item 6).** Output is a
+   research write-up and a proposal for Alex to approve, then `spec-grill` on the proposal before anything
+   in this repo moves (`CLAUDE.md` trigger table: "A spec or plan, before code moves against it"). Not
+   CC-004 — which ticket key it goes under is Alex's (decision (q)). The five things Alex named:
+    - **Agents and their models.** Source:
+      `/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/` — nine agents, each pinning `model:`
+      (e.g. `implementer` → `sonnet`, `da-reviewer` → `opus` with `effort: high`). Here the three agents say
+      `model: inherit` and every dispatch passes `model` by hand (step 6). Session 10 trialled the
+      `implementer` pattern inline (§Session 10); decide whether this repo gets an `implementer.md`, and
+      which PCR agents (`chunk-briefer`, `doc-checker`, `doc-fixer`, `code-reader`, `lint-fixer`) map onto
+      anything here.
+    - **Session handoff that reads usage.** Source: `docs/SESSION-HANDOFF.md` there — handoff triggers on
+      a phase boundary, a 150k soft and 250k hard context line, the 5-hour window at 85%, structural warning
+      signs, plus a next-session model table. The measuring tool exists: the desktop app's
+      `mcp__ccd_session_mgmt__get_usage` returns 5-hour, weekly-all-models and per-model weekly percentages
+      with reset times, and this session's context tokens (§Session 10 has four readings). Compare with this
+      repo's `docs/DEVELOPMENT.md` §Session handoff, whose trigger is qualitative.
+    - **Soft and hard token lines.** PCR's are absolute tokens, not percentages, because the window is 1M.
+      Decide the numbers for this repo, and what each line obliges.
+    - **`AGENTS.md` primary, imported from `CLAUDE.md`.** PCR's `CLAUDE.md` is 222 bytes and imports
+      `@AGENTS.md` (10,989 bytes); here `AGENTS.md` is a symlink to a 12,752-byte `CLAUDE.md`. Alex also
+      asked about agent frontmatter imported through `CLAUDE.md` — confirm with him what shape he means
+      before proposing one. Check what Claude Code actually supports (`@` imports, agent frontmatter keys
+      such as `model` and `effort`) against its docs, not memory: the `claude-code-guide` agent exists for
+      that.
+    - **A token-cost pass over every doc, quality kept.** Measured 28 September 2026 with `wc -c`:
+      `docs/TESTING.md` 117,068 bytes (the poor-contrast row alone is ~4k), `PROGRESS.md` 64,870,
+      `docs/DA-REVIEW.md` 37,387, `docs/GLOSSARY.md` 36,395, `docs/ARCHITECTURE.md` 34,636,
+      `docs/DEVELOPMENT.md` 31,002, the three agents 42,371 together; ~509k bytes in all. PCR has
+      `scripts/docs-budget.ts` and `scripts/check-claude-docs.ts`, and `.claude/rules/` for path-scoped
+      loading — look at what they enforce before proposing a budget. Measure what a session actually loads
+      (the always-on `CLAUDE.md` versus on-demand docs) before cutting anything.
+      Also in PCR and worth a look for the same proposal: `.claude/settings.json` hooks
+      (`guard-destructive-git.ts`, `post-edit-check.ts`). Research reports there live in `research/NN`; this
+      repo has no research directory — where the write-up lives is part of the proposal. Read-only in the PCR
+      repo: nothing there is edited. CC-004 row 11 waits until Alex has seen the proposal.
+6. Model and agents: **Opus at effort `high`** — the work is orchestrating research and writing a proposal,
+   which PCR's own table (`docs/SESSION-HANDOFF.md` §5) puts on Opus `high`; Opus 5.5 defaults to `medium`,
+   so check `get_session self` and ask Alex to pick it in the model menu if it is wrong. Ultracode off.
+   Reviewers and `spec-grill` on Fable 5.1, passing `model` on each dispatch, at most two at a time, each
+   in its own worktree when it builds or mutates (`git worktree add ../cc-<name>-wt <ref> --detach && npm ci`,
+   removed at the end). Research subagents that only read need no worktree. Call `get_usage` at each
+   checkpoint — after digesting a large result, before a fan-out, before a new topic — and record the
+   readings.
 7. Decision branches carried in: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
    running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
    its merge commit `8ac0bdc` carries no body at all; the plan's numbering is the authority);
@@ -719,7 +787,14 @@ not part of CC-004, since nothing here depends on it.
    **(p)** whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
    the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, Session 9
    pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
-   edit, so `copilot-surrogate`; Alex's call whether it rides with row 10 part two or goes alone.
+   edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
+   covers agents and dispatch anyway. Session 10 used it a third time.
+   **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
+   and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
+   **(r)** whether a confirm round is still required when round one is already at nit-floor with nothing
+   above LOW and a fold of a word or two — Session 10 pattern 1; the PCR research may answer it;
+   **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
+   one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.
 
 ## Session archive
 
