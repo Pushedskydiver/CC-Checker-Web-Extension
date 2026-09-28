@@ -43,7 +43,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 5. **Wake the sibling web app.** Not started. Alex answered a six-question list "yes to all six" on
    12 September 2026, which accepts the premise that the sibling's missing fixes are worth making; **that it
    is a workstream of its own rather than part of CC-004 was decided in-session, not by Alex** — his answer
-   could not settle an either/or (see §Session 5). Confirm the shape with him before starting. `Pushedskydiver/Colour-Contrast-Checker` is now **five** items behind, not three: the three fixes this
+   could not settle an either/or (`docs/history/SESSIONS.md` row 5; the full Session 5 entry is in `git log -p PROGRESS.md`). Confirm the shape with him before starting. `Pushedskydiver/Colour-Contrast-Checker` is now **five** items behind, not three: the three fixes this
    repo made on 4 September — the grey-hue defect, range inputs that cannot take a `min`, the tab keyboard
    handling — plus two found by running PR 7's unit tests against its `color-utils.ts` on 17 and
    18 September: `colorToHsl`/`rgbToHsl` return four elements against a three-tuple annotation, and
@@ -449,7 +449,7 @@ alone, since nobody asked for a persistent config change.
 26.5.1, green) and #48 (`copy-to-clipboard` 3.3.3 → 4.0.2 alongside React 19.3.0, red) overnight. #47 merged
 under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9): error TS2322: Type
 'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
-guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
+guard `docs/GIT.md` §Dependabot describes (Session 5 pattern 6, now in `git log -p PROGRESS.md`), and it held. Not merged, not recreated: Alex's.
 
 **Done, 13 September.** Merged: #49, #50, #51, and #52 late that evening (22:18Z). Uploaded to the Web Store:
 nothing; users are on 2.1.0. The session then continued on 17 September — see below.
@@ -584,86 +584,6 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
     the nearest within the set actually searched — every 8-bit colour against black and against white,
     plus every grey pair — and it went into two files and a PR body as a claim about every colour. The exhaustive search found different pairs, ~1e-13 out. Name the
     set that was searched in the same sentence as the number.
-
-## Session 5 — 12 September 2026 (code-quality workstream: model choice, grill, plan, four PRs)
-
-**Model choice first, at Alex's request** — he asked for a recommendation with "strong, real evidence" before
-any agent was spun up. Settled on **Opus 5 at effort `high`, ultracode off**, with the three adversarial
-agents pinned to Fable 5.1. The evidence: Anthropic's own guidance is Opus 5 first and Fable only "when your
-evals on Claude Opus 5 at higher effort still fall short"; on SWE-bench Pro at default effort Opus 5 matched
-Fable 5.1 within noise (91.7% against 92.1%) at about 15% less per solved task; and for work that fits in one
-context "the coordinator's model alone at lower effort came out ahead" in every case Anthropic measured, which
-is this repo at 1,894 lines. Alex's other repos already run this process on Opus 5. Recorded so it is not
-re-litigated: this repo's own `effortLevel` was `xhigh` globally, and ultracode suppresses the large-workflow
-warning, which is why both were turned down rather than left.
-
-**Done:** the brief was grilled by three `spec-grill` discovery rounds (structural, tooling, cross-repo),
-then turned into the plan above, which Alex approved. **The verification round is worth describing exactly,
-because the first attempt did not run.** Four fresh-context verifiers were dispatched on Fable 5.1 and all
-four died on HTTP 429 before doing any work (pattern 3 below). It was re-dispatched as **two** fresh-context
-agents on Opus 5 — one on the build-harness claims, one on the clipboard claims — and the remaining claims
-were settled by the coordinator inline with `grep`, `diff` and `node`. That inline half is
-self-verification, which `docs/DEVELOPMENT.md` §Verification rounds is explicit is not the same thing as an
-independent check; it is recorded as what happened rather than counted as a round. The two agents plus the
-`da-review` and `copilot-surrogate` passes on every PR are the independent evidence.
-
-**All four PRs merged the same day**, each through the full gate (architectural → DA → self → PR) with both
-reviews wherever the trigger table said so: #42 `8ac0bdc` the build-error masking fix, #43 `83dec25` the
-clipboard route correction and this plan, #44 `e62b069` the dead exports, #45 `9156ff2` the failed-copy
-announcement. Three of the four fixed defects **the brief did not know about**; only #44 came from it.
-Across the session the review passes falsified **fourteen** claims of mine, nine of them in #43 alone.
-
-**Two of the six approval questions were either/ors that "yes to all six" could not settle, so they were
-decided and stated rather than left ambiguous:** the pre-push suite becomes **four commands with the unit
-tests second**, before the build, because they need no build and fail in milliseconds — hiding them inside
-`npm test` while the documented gate skipped them would be the gate-that-cannot-see-a-failure problem
-`docs/CONVENTIONS.md` warns about; and **waking the sibling web app is its own workstream** (item 5 above),
-not part of CC-004, since nothing here depends on it.
-
-**Major novel patterns Session 5:**
-
-1. **The brief's own proof claim was false, and it changed the order of work.** It asserted "the e2e suite
-   already covers the visible outcome" of the poor-contrast switch. It does not: there is no assertion
-   anywhere in the suite on a variant class or any control's resolved colour, so by inspection all sixteen
-   branches (fifteen since PR 3) could be deleted with the suite still green. The control — delete one branch, watch a test go
-   red — was **not** run, because there is no test to redden; that absence is the finding. The refactor's first PR is therefore a failing test, not the refactor.
-   A brief that cites coverage is not evidence of coverage — read the assertions.
-2. **The repo already held the fact that killed the documented clipboard route, two documents away.**
-   `docs/DA-REVIEW.md` recorded that `getURL('index.html')` returns a per-session GUID origin redirected to
-   the static one; `docs/ARCHITECTURE.md` said the way out was `allow="clipboard-write"`. Both sentences
-   stood for eight days and nobody joined them. That join is exactly what the `copilot-surrogate`
-   cross-context pass exists for, and it had never been run across those two files together.
-3. **Four concurrent Fable 5.1 subagents exhausted the session limit before doing any work.** All four
-   verification agents died on HTTP 429; the discovery round's output survived only because it had already
-   returned. Same class as `docs/REVIEW-PATTERNS.md` #10 by a different mechanism, so it is n=2 and the rule
-   is promoted rather than restated here: `docs/DEVELOPMENT.md` §Scale the fan-out now carries the
-   concurrency number and this dated instance.
-4. **This session shipped a false "suite green" claim in a commit body.** `777fd96` said "Pre-push suite
-   green: lint, build, e2e 18/18" when Prettier was rejecting `PROGRESS.md`, because the message was written
-   before `format:check` ran. Corrected in `c780745` rather than amended. It is the first instance here of
-   `docs/SELF-REVIEW.md` §Before you write the word verified failing to hold, and the cause is the weak form
-   itself: every commit body on this branch asserts the suite without pasting what it printed. The fix is
-   mechanical — run the chain, paste its last lines, then write the sentence.
-5. **A review finding can be disproved, and that needs a probe too.** The DA pass wanted the new build
-   guard tightened against a case a probe then showed cannot happen. Deferring a finding is a claim like any
-   other: it carries evidence or it is a dismissal. (Event, PR #42; the rule is the second sentence.)
-6. **Promoting a transitive dependency to a direct one exposed a major that would have silently undone
-   the fix it shipped with — through a PR Claude is delegated to merge.** `copy-to-clipboard` was already
-   in the lockfile under the React wrapper; making it direct put it in the weekly
-   `production-dependencies` group, where its 4.x would have made the new guard a no-op and silenced the
-   failure path with it. The DA pass swapped 4.0.2 in and **every gate stayed green**, which under
-   `docs/GIT.md` §Who merges makes it auto-mergeable. Mechanism, the type-annotation gate and what taking
-   the major would need are in `docs/GIT.md` §Dependabot. **Generalise: when a dependency moves from
-   transitive to direct, ask what its next major does to the code that now calls it directly.**
-7. **A stale test run under-reported the count and it reached six files.** A full run printed `19 passed`
-   immediately after a rebuild when `--list` said 20. The number went into a documentation sweep before
-   anyone re-derived it. Counts come from `npx playwright test --list` and `grep -c "^\ttest("`, which
-   agree with each other, not from the tail of a run.
-8. **Stage by path while review agents are running.** The surrogate pass saw
-   `test/e2e/zz-scratch.spec.ts` in the working tree mid-run — the DA pass's own reproduction, removed
-   moments later. It was never committed, and git records no staging command so whether a broad `git add`
-   would have caught it is not provable after the fact; the habit is the finding. Check
-   `git status --untracked-files=all` before staging.
 
 ## Next session loading instructions
 
@@ -802,5 +722,5 @@ not part of CC-004, since nothing here depends on it.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
