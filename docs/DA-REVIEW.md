@@ -410,7 +410,7 @@ load time, and the store does at upload.
       Skip-link targets carry `tabIndex={-1}`.
 - [ ] Every new visual element has its poor-contrast variant — a pair of
       `:global(body[data-contrast='poor'][data-background='light' | 'dark'])` rules in its own
-      stylesheet, not a new `isPoorContrast` class branch — or the reviewer can say why not.
+      stylesheet, not an `isPoorContrast` class branch, which the context no longer offers — or the reviewer can say why not.
 - [ ] Copying still goes through `document.execCommand('copy')`, via `copyText` in
       `src/utils/copy-text.ts`: `navigator.clipboard.writeText` is blocked in this iframe with or
       without `allow="clipboard-write"` (`use_dynamic_url` makes the `src` origin a per-session

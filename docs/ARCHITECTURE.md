@@ -306,14 +306,13 @@ build/
 - **The poor-contrast switch.** Below a ratio of 3 the panel's own controls would vanish against its
   background, so they swap to black or white. The provider writes `data-contrast` (`poor` or `ok`)
   and `data-background` (`dark` or `light`) onto `document.body` in the same kind of effect as the
-  two colours, and each atom's stylesheet selects on them —
-  `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black-on-white, the `dark` twin to white-on-black — so the atoms read
-  nothing from context for it. The header title and the tabs still read `isPoorContrast` and
-  `isBackgroundDark` and add a `.titleDark`/`.tabsDark`-style class until CC-004 row 10's second PR
-  moves them the same way. All fifteen sites (thirty Dark and Light rules or branches) are pinned by one e2e test since
+  two colours, and each component's stylesheet selects on them —
+  `:global(body[data-contrast='poor'][data-background='light']) .badge` sets its locals to black-on-white, the `dark` twin to white-on-black — so no component reads
+  anything from context for it. `isPoorContrast` and `isBackgroundDark` are not on the context value; the provider
+  derives them only to write those two attributes. All fifteen sites (thirty Dark and Light rules) are pinned by one e2e test since
   22 September 2026 (`docs/TESTING.md`, "poor contrast turns every themed control…"), which reads the
   resolved colour of each overridden custom property rather than class names or spellings — which
-  is how it held across the atoms' move into CSS on 24 September 2026, widened first to every
+  is how it held across the move into CSS (the atoms on 24 September 2026, the header title and the tabs on 28 September), widened first to every
   element, every overridden property and both sides of the threshold.
 - **Type.** Avenir Next as a variable font, declared with `font-weight: 100 900` and
   `font-display: swap` in an inline `<style>` in `index.html` (and again in `public/error.html`), and

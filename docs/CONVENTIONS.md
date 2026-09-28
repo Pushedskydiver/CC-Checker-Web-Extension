@@ -156,9 +156,10 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   listener on unmount.
   The picked-colour handler is a `useEffectEvent`
   so the listener registers once and still sees current state.
-- **Derive, don't store.** `contrast`, `level`, `isPoorContrast`, `isBackgroundDark` and both hex
-  strings are computed on every render from the two HSL tuples in `src/context.tsx`. Nothing
-  derived is persisted; the stored value and the rendered value cannot disagree.
+- **Derive, don't store.** `contrast`, `level` and both hex strings are computed on every render
+  from the two HSL tuples in `src/context.tsx`, and so are `isPoorContrast` and `isBackgroundDark`,
+  which stay inside the provider to become the `data-contrast` and `data-background` attributes.
+  Nothing derived is persisted; the stored value and the rendered value cannot disagree.
 - **Context owns colour state and is the only writer of `localStorage`.** `updateView` writes
   `background` and `foreground`; `saveColors` writes `colors`. Reads happen once, lazily, in
   `useState` initialisers through `readStoredColor` / `readStoredColors`, which validate the shape
@@ -176,9 +177,8 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
 - **Conditional classes go through `clsx`.** The poor-contrast variant is not one of them: it is
   CSS, a rule per theme on the component's own class, selecting on the attributes the provider
   writes to `body` — `:global(body[data-contrast='poor'][data-background='light']) .x` (black) and
-  the `dark` twin (white). The header title and the tabs still use the older JavaScript pair,
-  `isPoorContrast && !isBackgroundDark ? styles.xDark : undefined` next to its `Light` twin, until
-  CC-004 row 10's second PR; do not add a new one.
+  the `dark` twin (white). No component reads a poor-contrast boolean from context: the context
+  value does not carry them, so a new variant is a rule pair, not a class branch.
 - `react/prop-types` is off (TypeScript does that job); `_`-prefixed unused parameters are allowed.
 
 ---
