@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 import { useTabbed } from '~/hooks/useTabbed';
 import { Tab } from './components/tab';
 import { Panel } from './components/panel';
@@ -25,7 +23,6 @@ export const Tabbed = ({
 	ariaLabel,
 	orientation = 'horizontal',
 }: TTabbed) => {
-	const { isBackgroundDark, isPoorContrast } = useColourContrast();
 	const {
 		activeTab,
 		tabItemRefs,
@@ -35,17 +32,7 @@ export const Tabbed = ({
 	} = useTabbed();
 
 	return (
-		<div
-			className={clsx(
-				styles.tabs,
-				isPoorContrast && !isBackgroundDark
-					? styles.tabsDark
-					: undefined,
-				isPoorContrast && isBackgroundDark
-					? styles.tabsLight
-					: undefined,
-			)}
-		>
+		<div className={styles.tabs}>
 			<ul
 				id={id}
 				className={styles.list}

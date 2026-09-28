@@ -141,7 +141,8 @@ Read `git diff main...HEAD` top to bottom. For each file:
 review note — but the lint does not see everything.
 
 - **State is derived, not duplicated.** `contrast`, `level`, `isPoorContrast` and `isBackgroundDark`
-  are computed from `background` and `foreground` on every render in `src/context.tsx`. A new value
+  are computed from `background` and `foreground` on every render in `src/context.tsx` (the last two
+  stay inside the provider, for the `body` attributes). A new value
   that can be computed from those two tuples is computed, not stored, and never written to
   `localStorage`.
 - **No effect patches state.** Sanitise at the boundary instead. The NaN hue (chroma gives greys a
