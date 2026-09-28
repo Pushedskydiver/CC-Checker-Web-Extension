@@ -231,8 +231,10 @@ the Web Store: no** (not a release).
 
 **How it was built — the PCR `implementer` pattern, trialled at Alex's suggestion.** The code and docs were
 written by a Sonnet 5.5 subagent from a brief modelled on
-`/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/implementer.md`: work one planned item, list
-every choice the brief left open, write the mutation table, never open a PR or merge. It took about three
+`/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/implementer.md`, which works one planned item,
+lists every choice left open and never merges. Two rules were this repo's own, not the PCR file's: write
+the mutation table (PCR asks for mutation evidence only under `packages/optimiser`), and do not open the
+PR — the PCR agent opens its own, and here the review order puts the PR after both reviews. It took about three
 and a half minutes and ~103k subagent tokens, and every claim in its report survived four reviewers. The
 coordinator read the diff before dispatching reviewers. This repo has no `implementer.md` yet; the brief
 was inline.
@@ -241,8 +243,9 @@ was inline.
 at nit-floor, one shared LOW (a date without its year), folded in `d2a305d`. Confirm round with fresh
 verifiers: every conclusion CONFIRMED, no new finding above LOW.
 
-**Also:** Session 5 archived in its own PR, `docs/CC-004-archive-session-5` (`1fb8bf2`), with
-`copilot-surrogate` on it; opened beside this handoff. The two PRs both edit `PROGRESS.md` in hunks that do
+**Also:** Session 5 archived in its own PR, [#74](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/74)
+(`docs/CC-004-archive-session-5`, to `de764dd`), after two `copilot-surrogate` rounds (two MATERIAL
+folded, then confirmed at nit-floor); opened beside this handoff. The two PRs both edit `PROGRESS.md` in hunks that do
 not touch, so whichever merges second should merge cleanly — but check.
 
 **Usage, read with `get_usage` (the tool the next session's research is about):** at start 5-hour 30%,
@@ -253,8 +256,8 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
 1. **A confirm round after a nit-floor round one confirmed nothing new, at ~120k Fable tokens.** The rule
    (`docs/DEVELOPMENT.md` §Verification rounds) requires it; whether a round one with zero BLOCKING and
    MATERIAL and a one-word fold should still require it is decision (r), not changed here.
-2. **`npx prettier` in a fresh worktree without `node_modules` downloads the latest Prettier** (3.9.9 on the
-   day), not the pinned one. Check formatting with the main checkout's `node_modules/.bin/prettier` or run
+2. **`npx prettier` in a fresh worktree without `node_modules` fetches Prettier from the registry** rather
+   than the checkout's pinned binary — the same 3.9.9 on the day, but nothing guarantees that. Check formatting with the main checkout's `node_modules/.bin/prettier` or run
    `npm ci` first.
 3. **The implementer's report is the thing to read, not its diff alone.** Its "choices the brief left
    open" list surfaced the Prettier table re-pad, the date convention and a stray file it had created and
@@ -667,14 +670,14 @@ not part of CC-004, since nothing here depends on it.
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom. §The approved plan is CC-004; the brief
    above it is the pre-grill record — trust the plan, not the brief.
 2. **Check the archive trigger before writing anything.** Once this handoff and the Session 5 archive
-   PR (`docs/CC-004-archive-session-5`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
+   PR (#74, `docs/CC-004-archive-session-5`) have both merged, `grep -c '^## Session [0-9]' PROGRESS.md`
    gives 5 (Sessions 6 to 10). If it gives 6, the archive PR has not merged: say so and ask Alex, do not
    re-archive. Re-measure the detail band as before (from the first `## Session` line to the line before
    `## Next session loading instructions`, `sed -n '<a>,<b>p' PROGRESS.md | wc -c`, line numbers from
    `grep -n`) — it should sit near 30k bytes, under the roughly-10k-token half. **At the Session 11 close
    the count half fires again**: archive Session 6 in its own PR.
 3. **Then confirm the state, live, since this entry is a snapshot.** `git status --short` (expect clean),
-   `git log --oneline -5 origin/main`, `gh pr list` — expect this handoff and the Session 5 archive, either of
+   `git log --oneline -5 origin/main`, `gh pr list` — expect this handoff (#73) and the Session 5 archive (#74), either of
    which Alex may already have merged, and perhaps a Dependabot PR (delegated,
    `docs/GIT.md` §Who merges; decisions (h), (j)). `origin/main` is at `61b5d43` (#72) or later. Remote branches as before: `main`, `feat/CC-003-apca-3`,
    `chore/CC-004-copy-to-clipboard-4` (do not delete), plus either close-out branch still open.
@@ -698,7 +701,7 @@ not part of CC-004, since nothing here depends on it.
       a phase boundary, a 150k soft and 250k hard context line, the 5-hour window at 85%, structural warning
       signs, plus a next-session model table. The measuring tool exists: the desktop app's
       `mcp__ccd_session_mgmt__get_usage` returns 5-hour, weekly-all-models and per-model weekly percentages
-      with reset times, and this session's context tokens (§Session 10 has four readings). Compare with this
+      with reset times, and this session's context tokens (§Session 10 records two readings, at start and before the handoff). Compare with this
       repo's `docs/DEVELOPMENT.md` §Session handoff, whose trigger is qualitative.
     - **Soft and hard token lines.** PCR's are absolute tokens, not percentages, because the window is 1M.
       Decide the numbers for this repo, and what each line obliges.
