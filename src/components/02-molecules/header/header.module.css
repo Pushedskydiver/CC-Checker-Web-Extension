@@ -22,11 +22,11 @@
 	color: var(--title-color);
 }
 
-.titleDark {
+:global(body[data-contrast='poor'][data-background='light']) .title {
 	--title-color: #000;
 }
 
-.titleLight {
+:global(body[data-contrast='poor'][data-background='dark']) .title {
 	--title-color: #fff;
 }
 

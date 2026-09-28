@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-import { useColourContrast } from '~/context';
 import { BuyMeACoffeeCTA } from '~/components/01-atoms/bmc-cta/bmc-cta';
 import { Text } from '~/components/01-atoms/text/text';
 import { SkipLink } from '~/components/01-atoms/skip-link/skip-link';
@@ -8,8 +6,6 @@ import { Actions } from '../actions/actions';
 import styles from './header.module.css';
 
 export const Header = () => {
-	const { isPoorContrast, isBackgroundDark } = useColourContrast();
-
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
@@ -34,15 +30,7 @@ export const Header = () => {
 					tag="h1"
 					size="pinnacle"
 					weight="semiBold"
-					className={clsx(
-						styles.title,
-						isPoorContrast && !isBackgroundDark
-							? styles.titleDark
-							: undefined,
-						isPoorContrast && isBackgroundDark
-							? styles.titleLight
-							: undefined,
-					)}
+					className={styles.title}
 				>
 					Colour contrast checker
 				</Text>
