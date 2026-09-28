@@ -2,7 +2,7 @@
 
 _A record, not instructions. Once PRs A to G merge, the docs they change are the authority._
 
-Session 11, 29 September 2026. `main` at `2fd018b`. Ticket `CC-005`.
+Sessions 11 and 12, 29 September 2026. `main` at `2fd018b`. Ticket `CC-005`.
 
 Status: **approved by Alex with the decisions at the end; `spec-grill` R1 and R2 folded (the closing
 sections).** Nothing else in the repo changed in this PR. Line citations are against `main` at `2fd018b`.
@@ -15,7 +15,7 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
    hand-passed `model` becomes an override, not the only thing keeping a reviewer off the session's
    model.
 2. **Add one agent, `implementer.md`, on Sonnet.** Session 10's inline trial is the evidence. None of
-   PCR's other six agents earns a file here.
+   PCR's other seven agents earns a file here.
 3. **Give the handoff numbers.** A new `docs/SESSION-HANDOFF.md` adapts PCR's: 150k soft, 250k hard,
    5-hour at 85%, weekly lines, warning signs, and a next-session model table. `get_usage` is the
    meter.
@@ -26,7 +26,7 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
    tokens with memory). The recurring costs are:
     - `PROGRESS.md`, about 25–30k tokens at every session start, and read in full by `copilot-surrogate`
       on every handoff PR;
-    - `docs/TESTING.md`, whose one table is 69% whitespace padding by bytes;
+    - `docs/TESTING.md`, whose one table makes the file 69% whitespace padding by bytes;
     - an archive trigger that has been under-firing, because it converted bytes to tokens at the wrong
       ratio.
 6. **Port one hook, not two.** `guard-destructive-git` should come across, plus an **`ask` on
@@ -64,7 +64,7 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
   `model: inherit`, so a dispatch that forgets `model` silently runs the reviewer on the session's
   model.
     - Sessions 8 and 9 show that a recorded model decision is not self-enforcing.
-    - PCR hit the same failure with an Opus-tagged chunk (Lesson ZZZ, `PROGRESS-ARCHIVE.md:3369-3377`,
+    - PCR hit the same failure with an Opus-tagged chunk (Lesson ZZZ, `PROGRESS-ARCHIVE.md:3368-3377`,
       PCR deep dive).
 - **PCR's model-per-agent table was an assertion, not a measurement.** Its own `research/16:141` says no
   paper measured cheaper models on routine subtasks.
@@ -259,7 +259,7 @@ law.
 
 ### Proposal
 
-- **Swap the files.** `git mv CLAUDE.md AGENTS.md`, then a new `CLAUDE.md` of a few lines:
+- **Swap the files.** `git rm AGENTS.md && git mv CLAUDE.md AGENTS.md` (the symlink blocks a bare `git mv`), then a new `CLAUDE.md` of a few lines:
     - `@AGENTS.md`;
     - Claude-Code-only material below it: the subagent roster with models, `get_usage`, and the pointer
       to `docs/SESSION-HANDOFF.md`.
@@ -358,7 +358,7 @@ It goes there, not at the root like PCR's `research/`, because:
 - the `CLAUDE.md` trigger table already routes `docs/**` to `copilot-surrogate`;
 - `docs/history/` sets the precedent for non-instruction material under `docs/`.
 
-The first line says it is a record, and the docs it changed are the authority.
+The italic line under the title says it is a record, and the docs it changed are the authority.
 
 ## 8. Rollout, if approved
 
@@ -437,8 +437,8 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
 - **M6, M10**: Decisions 3 and 2 above.
 - **L1**: `worktree.baseRef: "head"` makes `isolation: worktree` start from the current HEAD. The
   remaining reasons for manual worktrees are `npm ci` (Session 10 pattern 2) and B1. Trial it in D.
-- **L2**: the size sentence in `copilot-surrogate.md:63` is "~100 KB code and config, ~350 KB prose
-  (11 Sep)". Today it is 131,885 and 529,362 bytes (§5's figures); A corrects it, stating the command it measured with.
+- **L2**: the size sentence in `copilot-surrogate.md:63` says about 100 KB of code and config and
+  roughly 350 KB of prose, dated 11 September 2026. Today it is 131,885 and 529,362 bytes (§5's figures); A corrects it, stating the command it measured with.
 - **L3**: subagents load `CLAUDE.md`, not auto memory, so the per-subagent cost is the 12,752-byte file.
 - **L6, L10, L4, L5**: folded above and in §8. **L9** (siblings): the `CC-005` key list in A, `SESSIONS.md:6-7` in D.
 - **L7**: 171k was **over** the soft line, not "fits". "Finish the unit in hand" includes that unit's
@@ -448,8 +448,8 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
   main-session model mismatches.
 - **L11**: inherits M1; the §5 token figures are superseded by the M1 bullet above.
 
-**R2, the confirm round, is Session 12's first job.** It needs fresh verifiers, run on this file as
-committed in PR H. §1 to §7 above keep their R1 wording where this fold supersedes it (the Plain-English answer
+**R2, the confirm round, ran in Session 12** with a fresh verifier on this file at `7ff2dcf`; its fold is
+the next section. §1 to §7 above keep their R1 wording where this fold supersedes it (the Plain-English answer
 was corrected in R2's fold). Where they
 disagree, the fold and §8 are the authority.
 
@@ -469,3 +469,91 @@ folding:
 - **N6**: `GLOSSARY.md` collapses to 25,368 bytes, not 25,258. The `.gitignore` citation is 32–34.
 
 No further round: the fold is wording and single numbers, each already reproduced.
+
+## Reviews of PR H (29 September 2026) — the fold
+
+`da-review` (Fable 5.1) took the plan as something to be executed next: 0 BLOCKING, 6 MATERIAL, 6 LOW.
+`copilot-surrogate` (Fable 5.1) read the file in full: 1 MATERIAL (the R1 fold still called R2 Session 12's
+first job), 3 LOW and 3 nits, all corrected in place. Where this section specifies a §8 row further, it is the
+authority for that row.
+
+### PR G, the hook (da M1–M4, L4)
+
+- **Matcher.** Split the command on `&&`, `||`, `;` and `|`. In each segment, find `git`, skip its global
+  options (`-C <path>`, `-c <k=v>`, `--git-dir`, `--work-tree`), and read the subcommand and its argv tokens.
+  PCR's regexes (`\bgit\s+push`) miss `git -C … push`, so a faithful port would carry that hole.
+- **Required tests, both directions.** False negatives: `git -C /abs commit --amend`,
+  `cd /abs && git commit --amend`, `git commit -a --no-edit --amend`. False positives: a quoted `--amend`
+  inside `-m`, and `grep -- --amend`.
+- **Fail closed.** A parse error or exception emits `ask` with the reason "guard hook failed", with a test.
+  PCR's `main()` returns silently on bad JSON, and a throwing PreToolUse hook lets the call through.
+- **Acceptance** is an observed `ask` prompt from a real attempt in the permission mode Alex runs, dated,
+  with the transcript line in the PR body. A green matcher test proves the script, not that Claude Code
+  ran it. Hooks load at session start, so G's body states the restart step.
+- **`ask` or `deny` on `--amend` is Alex's call before G** (da M2). R1's M9 chose `ask` for two reasons:
+  only Alex can answer it, and a commit message quoting the rule should not dead-end. The matcher above
+  already excludes the quoted case, so that second reason is gone. `deny` is the faithful form of "Never".
+  With `ask`, `CLAUDE.md` and `docs/GIT.md` §No `--amend` must say "the hook asks; only Alex answers yes".
+- **Protected branches** (da M3). Keep PCR's live check: `git branch -D` of a branch backing an open PR
+  asks, via `gh pr list`, and fails closed. Add a static list for branches kept without a PR
+  (`chore/CC-004-copy-to-clipboard-4`, `feat/CC-003-apca-3`). The list's one home is the script, and
+  `PROGRESS.md` points at it. Retiring a branch removes it from the list in the same PR that records the
+  deliberate deletion.
+- **Siblings G must update** (da M2): `CLAUDE.md`'s "Never `git commit --amend`" and its trigger table
+  (add `scripts/**` and `.claude/settings.json`, "both"); `docs/GIT.md` §No `--amend`, its "No hooks of any
+  kind" line and §Blast-radius docs; `docs/DEVELOPMENT.md` §State-surface ownership's "What is actually
+  enforced" row.
+- **Why a gate before a breakage** (da M4). `docs/DEVELOPMENT.md` §Process-rule promotion says not to build
+  a gate before the rule has been broken. The exception argued here is that an amend, or a deleted
+  unpushed branch, cannot be undone once a rewritten hash is cited elsewhere. Alex approves or rejects the
+  exception in G's PR.
+
+### PR D, the handoff doc (da M4, L3)
+
+- **Triggers 5 and 6 are trials, not promoted rules.** Neither is in PCR, so neither has an incident here
+  or there. D writes them as "trial, reviewed at Session 20, dropped if neither fired", which is the status
+  Decision 4 already gave them. The promotion ladder then reads the same for (r), 5 and 6.
+- **Precedence.** Triggers 4 to 6 override trigger 2's "finish the unit in hand": at 85% five-hour, a unit's
+  review round waits for the reset. Session 12 hit exactly that.
+- **Trigger 1's 100k floor** sits close to the ~65–90k a session starts at, so it fires at almost every phase
+  boundary. D's author picks the number deliberately and says whether one phase per session is intended.
+
+### PR B, the implementer (da M6, L1)
+
+- **Dry-run.** The brief is Session 10's (`PROGRESS.md` §Session 10). It runs in a scratch worktree on a
+  scratch branch cut from #72's parent. It passes when the report lists the choices the brief left open
+  and the pre-push suite output is pasted in. Divergence from #72 is noted, not forbidden. The commands and
+  counts go in B's body, and the scratch branch and worktree are removed after.
+- **Who runs the suite.** Decision 2 gains: the implementer works on a branch the coordinator has already
+  cut. The coordinator runs the pre-push suite on the branch head in the checkout that pushes, immediately
+  before the push, and pastes the counts. A fresh worktree needs `npm ci` first (Session 10 pattern 2).
+
+### PR C, the swap (da L2)
+
+- `git mv CLAUDE.md AGENTS.md` refuses while the `AGENTS.md` symlink exists: `git rm AGENTS.md` first.
+- "Token-neutral" means the import costs nothing extra. The stub's own roster lines do cost a little.
+- After the swap, dispatch one trivial subagent to echo a sentinel line from `AGENTS.md`. If `@AGENTS.md`
+  does not expand for subagents, every reviewer runs without the rules and nothing says so.
+
+### R1 reasoning (da M5)
+
+R1's raw report was not kept. These are the coordinator's reconstruction from the fold and the evidence it
+cites, not R1's words:
+
+- **M3**: the Brief and the commit sequence were ~8k bytes of record read at every session start. One
+  archive PR moves them with Session 6, and E is built that way.
+- **M4**: D edits the always-loaded instruction file and will cross 200 lines, so it gets both reviews
+  whatever its paths say.
+- **M5**: H first, because every later PR cites it. E second, because Session 6's archive was already due.
+  C after D, because C's stub points at D's doc.
+- **M7**: the live docs say `effort` defaults to the session's own, so an unpinned implementer inherits
+  whatever the coordinator runs at.
+- **M8**: PCR's guard protects only branches that back an open PR. The two do-not-delete branches here have
+  no PR.
+
+### Not folded
+
+- da L5 (section names beside line citations): line 8 already says the citations are against `2fd018b`.
+- da L6 (`CC-005` used before `docs/GIT.md` lists it): noted, no action; nothing checks it.
+- Surrogate, noticed on `main`: `CLAUDE.md` says 36 Vitest tests in Commands and 25 colour-utility cases
+  "as of 18 September 2026" in Process directives. Both are true; it goes on G's count sweep (L5).
