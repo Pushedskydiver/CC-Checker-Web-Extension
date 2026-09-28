@@ -30,7 +30,8 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
     - an archive trigger that has been under-firing, because it converted bytes to tokens at the wrong
       ratio.
 6. **Port one hook, not two.** `guard-destructive-git` should come across, plus an **`ask` on
-   `git commit --amend`**, which this repo forbids and nothing enforces (only Alex can answer it). `post-edit-check` should wait.
+   `git commit --amend`**, which this repo forbids and nothing enforces (only Alex can answer it).
+   `post-edit-check` should wait.
 
 ## How this was researched
 
