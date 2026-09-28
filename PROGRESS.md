@@ -389,7 +389,7 @@ alone, since nobody asked for a persistent config change.
 26.5.1, green) and #48 (`copy-to-clipboard` 3.3.3 → 4.0.2 alongside React 19.3.0, red) overnight. #47 merged
 under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9): error TS2322: Type
 'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
-guard from Session 5 pattern 6, and it held. Not merged, not recreated: Alex's.
+guard `docs/GIT.md` §Dependabot describes (Session 5 pattern 6, now in `git log -p PROGRESS.md`), and it held. Not merged, not recreated: Alex's.
 
 **Done, 13 September.** Merged: #49, #50, #51, and #52 late that evening (22:18Z). Uploaded to the Web Store:
 nothing; users are on 2.1.0. The session then continued on 17 September — see below.
