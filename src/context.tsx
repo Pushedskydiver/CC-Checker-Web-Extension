@@ -38,8 +38,6 @@ export interface TColourContrastContext {
 	foreground: ColorTuple;
 	contrast: number;
 	level: TLevels;
-	isBackgroundDark: boolean;
-	isPoorContrast: boolean;
 	handleContrastCheck: (value: ColorTuple, name: string) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
@@ -199,8 +197,6 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 				foreground,
 				contrast,
 				level,
-				isBackgroundDark,
-				isPoorContrast,
 				handleContrastCheck,
 				reverseColors,
 				saveColors,
