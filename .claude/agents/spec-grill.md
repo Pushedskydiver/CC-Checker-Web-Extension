@@ -48,10 +48,11 @@ colour-utility unit tests fired on 17 September 2026, and the APCA experiment on
 
 1. Read `docs/DEVELOPMENT.md` §Verification rounds, including §Scale the fan-out to the repo.
 2. If the spec is an execution plan (a commit sequence, a release, a migration), read the plan's
-   own precedent: `PROGRESS.md` §Suggested commit sequence for the working tree is the one
-   sequenced plan on the record here, and `docs/DEVELOPMENT.md` §The lifecycle — a change, end to
-   end is the shape a plan has to fit — including §Merged is not published, which is the step most
-   plans forget.
+   own precedent: `PROGRESS.md` §The approved plan (CC-004) is the sequenced plan on the record
+   here, and the Vite migration's 11 September 2026 commit sequence the earlier one
+   (`docs/history/SESSIONS.md` §Retired sections; full text in `git log -p PROGRESS.md`).
+   `docs/DEVELOPMENT.md` §The lifecycle — a change, end to end is the shape a plan has to fit —
+   including §Merged is not published, which is the step most plans forget.
 3. If the spec promotes a rule into `docs/CONVENTIONS.md` or `docs/GIT.md`, read
    `docs/CONVENTIONS.md` §Authoring these rules and the surrounding cluster for shape precedent. A
    new rule here names the incident and its absolute date rather than stating a principle, and a
