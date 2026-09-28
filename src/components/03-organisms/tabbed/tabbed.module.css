@@ -2,11 +2,11 @@
 	--tabs-foreground-color: var(--foreground-color);
 }
 
-.tabsDark {
+:global(body[data-contrast='poor'][data-background='light']) .tabs {
 	--tabs-foreground-color: #000;
 }
 
-.tabsLight {
+:global(body[data-contrast='poor'][data-background='dark']) .tabs {
 	--tabs-foreground-color: #fff;
 }
 
