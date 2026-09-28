@@ -711,7 +711,7 @@ not part of CC-004, since nothing here depends on it.
     - **A token-cost pass over every doc, quality kept.** Measured 28 September 2026 with `wc -c`:
       `docs/TESTING.md` 117,068 bytes (the poor-contrast row alone is ~4k), `PROGRESS.md` 64,870,
       `docs/DA-REVIEW.md` 37,387, `docs/GLOSSARY.md` 36,395, `docs/ARCHITECTURE.md` 34,636,
-      `docs/DEVELOPMENT.md` 31,002, the three agents 42,371 together; ~509k bytes in all. PCR has
+      `docs/DEVELOPMENT.md` 31,002, the three agents 42,403 together; ~509k bytes in all. PCR has
       `scripts/docs-budget.ts` and `scripts/check-claude-docs.ts`, and `.claude/rules/` for path-scoped
       loading — look at what they enforce before proposing a budget. Measure what a session actually loads
       (the always-on `CLAUDE.md` versus on-demand docs) before cutting anything.
