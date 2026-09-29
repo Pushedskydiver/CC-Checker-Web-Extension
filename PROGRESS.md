@@ -3,20 +3,18 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff).
 
-## Next workstreams (after Session 12)
+## Next workstreams (after Session 13)
 
-Updated 29 September 2026, end of Session 12: **PR H (#75) has passed `spec-grill` R2 (nit-floor) and both
-reviews, and every finding is folded; one confirm round on that fold is left before it goes ready.** PR E is
-built and pushed as `docs/CC-005-archive-session-6` (`59a39b6`), no PR yet. Session 12 handed off on the
-5-hour line (trigger 4); the soft token line (trigger 2) had also fired and was overridden (§Session 12
-pattern 2). One question is Alex's before PR G: `ask` or `deny` on
-`git commit --amend` (decision (t)).
+Updated 29 September 2026, end of Session 13: **PR H (#75) is ready for review and PR E is open as #78; both
+are Alex's to merge.** H's review fold passed its confirm round at nit-floor, and Alex answered decision (t):
+`deny` on `git commit --amend`. E archived Sessions 6 and 7 and passed both reviews and a confirm round. PR A
+is next. Session 13 handed off on the soft token line (trigger 2), with the 5-hour window at 22%.
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
-`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on the draft
+`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on
 [#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
-reviews passed in Session 12. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
+reviews passed in Session 12, the confirm round in Session 13. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
 
 Updated 28 September 2026, end of Session 10 — **CC-004 rows 1 to 10 have merged — row 10's second half as
@@ -69,7 +67,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
    proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
-   Session 12; a confirm round on that fold is next (§Session 12).
+   Session 12; the confirm round passed in Session 13, and #75 is ready (§Session 13).
 
 ### The approved plan (CC-004), approved by Alex 12 September 2026
 
@@ -139,6 +137,70 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 13 — 29 September 2026 (CC-005: PR H ready, PR E opened as #78)
+
+**H's review fold passed its confirm round and #75 went ready; E was finished, reviewed and opened as #78.**
+Nothing merged. Alex answered decision (t): `deny`.
+
+**Setup:** every loading check matched. #77 had merged before its `copilot-surrogate` review could run, so
+that review ran on `main` after the merge (Alex's instruction). The Session 12 worktrees were already
+removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
+
+**Done:**
+
+- **#75 (PR H), ready at `2888966`.**
+    - The confirm round on `ab598b0` used a fresh Fable `spec-grill` verifier (~85k tokens). It found
+      0 BLOCKING and 0 MATERIAL, so nit-floor. It raised three LOWs that the fold had introduced, all
+      folded in `937403a`.
+    - The sharpest LOW: "hooks load at session start" is wrong. The live hooks doc says the file watcher
+      normally picks up settings edits.
+    - Decision (t) is recorded there as Decision 7, and every `ask` on `--amend` became `deny`.
+    - `main` was merged in, the suite re-run, the PR body updated, and the PR marked ready.
+- **Post-merge surrogate on #77**, on `18205a1` (~112k tokens): nit-floor, 2 LOW and 3 nits. Folded into E
+  (`6794fc0`), not a separate PR.
+- **[#78](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/78) (PR E), `ac790f5`.**
+    - `main` merged in (`31e6d81`, `PROGRESS.md` hand-resolved) and Session 7 archived (`e5e0b2f`).
+    - `da-review` (~102k): 2 MATERIAL, 4 LOW. `copilot-surrogate` (~138k): 2 MATERIAL, 6 LOW, 3 nits.
+      Folded in `9e20bdc` and `ac790f5`.
+    - Confirm round (~97k): every fold CONFIRMED, nit-floor.
+    - The body says to use the merge-commit button: a rebase replay conflicts on the first commit.
+- **This handoff** is cut from #78's head and opened with #78's branch as its base, because both edit the
+  same `PROGRESS.md` regions. GitHub retargets it to `main` when #78 merges and its branch is deleted.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 2, the soft line. The unit in hand (E, with its review and confirm rounds) was finished
+  first, and A was not started. Context 216k when #78 opened; the hard line is 250k.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                    | 5-hour | Weekly | Fable weekly | Context |
+    | ------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (window just reset) | 0%     | 63%    | 14%          | 107k    |
+    | H folded, E's fold done   | 9%     | 64%    | 16%          | 174k    |
+    | E's reviews folded        | 18%    | 65%    | 19%          | 202k    |
+    | #78 opened                | 22%    | 66%    | 20%          | 216k    |
+
+- **Plan usage:** the 5-hour window resets at 05:40Z on 29 September.
+- **Warning signs:** none. Every reviewer had its own detached worktree; the main checkout stayed on `main`
+  and clean.
+- **Clarifying question:** none that Session 12's entry should have answered. Decision (t) was already
+  flagged as Alex's.
+
+**Major novel patterns Session 13:**
+
+1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~533k subagent tokens). That
+   agrees with Session 12's ~4 per reviewer. The estimate holds.
+2. **A review of an archive PR finds defects in lines the PR did not write.** Two of E's four MATERIAL sat
+   outside its diff: a pointer in `docs/REVIEW-PATTERNS.md`, and `spec-grill.md` still calling 2.1.0
+   unbuilt, 17 days after it shipped. That is what reading touched files in full is for.
+3. **A claim about Claude Code's own behaviour needs the live docs.** The review fold had asserted from
+   memory that hooks load only at session start. The verifier fetched the hooks page, and one WebFetch
+   confirmed it before folding.
+4. **A hand-resolved merge of `main` rules out the rebase button.** Every archive or handoff branch that
+   meets a `PROGRESS.md` conflict needs the merge-commit button (#74 before, #78 now). Stacking the next
+   `PROGRESS.md` PR on the open one avoids a second conflict.
 
 ## Session 12 — 29 September 2026 (CC-005: PR H through R2 and both reviews, PR E built)
 
@@ -440,29 +502,32 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 8 to 12): `CC-005`
-   PR E archived Sessions 6 and 7, the pre-grill Brief and the 11 September commit sequence together.
+2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 8 to 13) once #78 and this
+   handoff merge. Archive Session 8 in its own small PR, and re-measure the band in bytes.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect draft
-      #75 at `8d97a69` or later and this handoff, unless Alex has merged it.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #75
+      (ready, `2888966`), #78 (`ac790f5`) and this handoff, unless Alex has merged them. If #78 merged
+      first, this handoff's base should read `main`.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      `docs/CC-005-pcr-workflow-proposal`, `docs/CC-005-archive-session-6`, and perhaps this handoff's.
+      and whichever of `docs/CC-005-pcr-workflow-proposal`, `docs/CC-005-archive-session-6` and
+      `docs/CC-005-close-session-13` have not merged.
     - `git worktree list`: remove `../cc-h-wt`, `../cc-e-wt` and `../cc-handoff-wt` once nothing needs them.
-      E's work can move to a fresh worktree.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: finish H, then E.**
-    - **If this handoff is still open,** run `copilot-surrogate` on it first. Session 12 could not: trigger 4.
-    - **H: one confirm round on the review fold** (`ab598b0`). Use a fresh Fable verifier. Scope: the
-      "Reviews of PR H" section and the in-place corrections, confirm-or-disprove against both reviews'
-      findings as that section records them. Nothing else.
-    - Ask Alex decision (t) if it is not answered, and record it in the file.
-    - Mark #75 ready. Alex merges.
-    - ~~**E:** merge `main` into `docs/CC-005-archive-session-6`, resolve `PROGRESS.md`, and archive
-      Session 7 too. Run both reviews: the diff is over 200 lines. Then open the PR.~~ Done on the branch in
-      Session 13 (`31e6d81` merged `main`, `e5e0b2f` archived Session 7), both reviews folded. Alex merges.
-    - Then A, per §8.
+5. **Primary work: PR A, per §8** (Alex merges #75 and #78).
+    - **First, `copilot-surrogate` on this handoff (#79)**, which was not reviewed (trigger 2). Run it before
+      merge if #79 is still open. Otherwise run it post-merge on `main` and fold its findings into the next
+      `PROGRESS.md` PR, as Session 13 did for #77.
+    - A: pin `model`/`effort` on the three agents, trim `copilot-surrogate`'s description, correct its size
+      sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). The PR
+      body says it is four ideas.
+    - Reviews: `copilot-surrogate` per the table. It touches `.claude/agents/**` and `docs/GIT.md`.
+    - Carried from Session 13, none started:
+        - a rule for `docs/history/SESSIONS.md` §Retired sections goes into D's rewrite of
+          `docs/DEVELOPMENT.md` §Session handoff (#78's `da-review` L5);
+        - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
+          be replaced by the first real instance (Session 8 pattern 2 is one). Its own small docs PR.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
     - Reviewers on Fable 5.1, passed per call, at most two at a time.
@@ -472,10 +537,8 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
       Handoff facts block.
     - **Budget before dispatching:** a Fable reviewer costs ~4 points of the 5-hour window (Session 12
       pattern 3). Two reviewers at 78% or above will cross 85%.
-7. Decision branches carried in. **Open for Alex, from Session 12: (t)** `ask` or `deny` on
-   `git commit --amend` in PR G's hook. `ask` was R1's M9; `da-review` M2 showed its second reason no longer
-   holds once the matcher excludes a quoted `--amend`. With `ask`, `CLAUDE.md` and `docs/GIT.md` must say
-   "the hook asks; only Alex answers yes". Needed before G. **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The settled (a), (c), (d) and (e) are
+7. Decision branches carried in. **Settled in Session 13: (t)** `deny` on `git commit --amend` in PR G's
+   hook (Alex; the research file's Decision 7). **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The settled (a), (c), (d) and (e) are
    archived (`docs/history/SESSIONS.md` §Retired sections). The rest is Session 10's text, unchanged:
    **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
    unit tests — recorded as fired in six files, adopted nowhere; **(g)** whether to adopt `docs/INDEX.md`,
@@ -517,7 +580,8 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    `docs/DA-REVIEW.md:20` (the re-entry "fired" that day) and `docs/TESTING.md:11` (the file was "added"
    that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
    correct; only the date is wrong. A one-commit docs PR whenever it suits. Session 9's surrogate found two of those files
-   (`docs/GLOSSARY.md`, `docs/CONVENTIONS.md`) touched by #68 and still carrying it — still untouched;
+   (`docs/GLOSSARY.md`, `docs/CONVENTIONS.md`) touched by #68 and still carrying it — still untouched. Session 13's confirm round found two more cites
+   outside that list, `.claude/agents/spec-grill.md:45` and `docs/TESTING.md:338`;
    **(n)** whether `lint:js` gains `--max-warnings 0`. In #68's round one, dropping `isBackgroundDark` from
    an effect's dependencies passed `npm run lint`, because `react-hooks/exhaustive-deps` is a warning in
    `eslint-plugin-react-hooks`' recommended set and `lint:js` is plain `eslint .`. `npx eslint . --max-warnings 0`
