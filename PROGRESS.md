@@ -5,6 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 14)
 
+Updated 29 September 2026, Session 15: **#80 (`663e144`), #81 (`4011bf1`) and the Session 14 handoff #82
+(`24fc475`) all merged that day, so the paragraph below is history.** Session 9 is archived in its own PR,
+and PR B is in progress.
+
 Updated 29 September 2026, end of Session 14: **the Session 8 archive is open as
 [#80](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/80) and PR A as
 [#81](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/81); both reached nit-floor after a
@@ -222,7 +226,8 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 Nothing merged. Alex answered decision (t): `deny`.
 
 **Setup:** every loading check matched. #77 had merged before its `copilot-surrogate` review could run, so
-that review ran on `main` after the merge (Alex's instruction). The Session 12 worktrees were already
+that review ran on `main` after the merge (Alex's instruction; on 29 September 2026, in Session 15, Alex said he
+never set post-merge reviews as a practice, and they are dropped: loading step 5). The Session 12 worktrees were already
 removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 
 **Done:**
@@ -471,23 +476,23 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 9 to 14) once #80 and this
-   handoff merge. Archive Session 9 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** Session 9 is archived in `docs/CC-005-archive-session-9` (Session 15). Once that
+   merges, `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 10 to 14), and the detail band
+   (§Session 14 to this block) is 20,784 bytes, so neither half of the trigger fires.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #80
-      (`eff0aec`), #81 (`af4a0d2`) and this handoff, unless Alex has merged them; say which in the entry.
-      This handoff is cut from #80's head with #80's branch as its base, so if #80 merged first its base
-      reads `main`.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. #80, #81 and
+      #82 merged on 29 September 2026 (`663e144`, `4011bf1`, `24fc475`); Session 15's own PRs are listed
+      in its entry.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-005-archive-session-8`, `chore/CC-005-pin-agent-models` and
-      `docs/CC-005-close-session-14` have not merged.
-    - `git worktree list`: remove `../cc-a-wt` and `../cc-handoff-wt` once their PRs merge.
+      plus any unmerged Session 15 branch.
+    - `git worktree list`: remove any Session 15 worktree whose PR has merged.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR B, per §8** and the "Reviews of PR H" section's §PR B, once Alex merges #81.
+5. **Primary work: PR B, per §8** and the "Reviews of PR H" section's §PR B (#81 merged).
     - ~~First, `copilot-surrogate` on this handoff … otherwise post-merge on `main`.~~ **Dropped (Alex,
-      Session 15): no review runs on a PR after it has merged.** Alex never set the practice, and none of his
+      29 September 2026, Session 15): no review runs on a PR after it has merged.** Alex never set it as a
+      standing practice, and none of his
       other repos with AI workflows do it. It began with #77 in Session 13 and was copied forward by each handoff.
       Session 15 stopped the #82 review before it reported.
     - B: `implementer.md` (`model: sonnet`, `effort: high`), dry-run on #72's parent in a scratch
@@ -513,9 +518,8 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
       review.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
-    - Reviewers on Fable 5.1 at `high`, at most two at a time. Once #81 merges, the agent files pin both,
-      and the per-call `model` is only an override (trigger 6's `opus` fallback). Until then, pass it per
-      call.
+    - Reviewers on Fable 5.1 at `high`, at most two at a time. Since #81 merged, the agent files pin both,
+      and the per-call `model` is only an override (trigger 6's `opus` fallback).
     - Keep the trial lines: soft 150k, hard 250k, 5-hour 85%, weekly 90%, Fable weekly 85%. Triggers 4 to 6
       override trigger 2.
     - Read `get_usage` at start, after each digest, before each fan-out and at handoff, and record a
