@@ -135,8 +135,8 @@ a generic checklist.
 
 - Verify every cited file:line before using it as evidence — see `docs/DA-REVIEW.md` §Verify
   subagent claims before acting. `PROGRESS.md` and `docs/history/SESSIONS.md` record superseded
-  reasoning with `~~strikethrough~~` rather than deleting it (`docs/DEVELOPMENT.md` §Session
-  handoff), so a claim you find there may be the struck one. Check before you build a finding on a
+  reasoning with `~~strikethrough~~` rather than deleting it (`docs/SESSION-HANDOFF.md`
+  §5), so a claim you find there may be the struck one. Check before you build a finding on a
   sentence. The `docs/*.md` rule documents are updated in place instead and some carry a **Last
   reviewed** date; a stale sentence there is a finding, not history.
 - Distinguish a finding from a fabrication. If a prior round asserts X exists, grep for X before
