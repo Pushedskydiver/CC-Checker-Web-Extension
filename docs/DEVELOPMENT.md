@@ -259,14 +259,14 @@ Adversarial review here is iterated, not one-shot, and the rounds are two differ
 
 - **Discovery rounds (R1…R*n-1*).** Brief: _find what is wrong._ Adversarial-creative. Iterate
   until findings converge to nits.
-- **Verification round (R*n*, exactly one, a distinct prompt).** Brief: _confirm or disprove the
+- **Verification round (R*n*, one, a distinct prompt, when the rule below calls for it).** Brief: _confirm or disprove the
   claim that this is at the nit-floor._ Evaluative-sceptical. Not "one more discovery pass".
 
 **Why the split.** The last discovery round has a self-terminating bias built in: the author wants
 to converge and so does the subagent, which makes it the _least_ independent check in the
 sequence. A zero mid-discovery might mean convergence or might mean the round asked the wrong
-question; a zero from an explicit verification prompt is evidence. **The verification round has to
-actually fire** — "it would have come back clean" is a rationalisation, not a result.
+question; a zero from an explicit verification prompt is evidence. **A verification round the rule
+below calls for has to actually fire** — "it would have come back clean" is a rationalisation, not a result.
 
 **Finders and verifiers are separate agents, from fresh context.** The agent that fixed a finding
 is the worst possible judge of whether the fix landed. Self-verification — grepping your own diff,
@@ -277,14 +277,16 @@ findings manufactured to prove the round ran.
 **Cap default rounds at 2, then do a manual pass.** Stop when successive rounds produce only
 cosmetic deltas, or when Alex says ship — whichever is sooner.
 
-**Candidate, not a rule: decision (r), when a confirm round is needed.** PCR Formulation's fix-pass stopping
-rule: re-check while the last pass fixed a BLOCKING or MATERIAL finding; when a pass fixed only LOWs, the
-coordinator reads that fold diff itself instead of dispatching a confirm round. The requirement above stands
-until this is promoted. It has one incident, Session 10, where a confirm round after a nit-floor round one
-confirmed nothing new at ~120k Fable tokens, and a counter-case, Session 8 pattern 2, where only the confirm
-round saw the hole (`git show 2d63577^:PROGRESS.md`). §Process-rule promotion wants two incidents. **Promotion
-point:** a second no-news confirm round after a LOW-only fold, or the Session 20 review
-(`docs/research/01-pcr-workflow-port.md`, Decision 3).
+**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026).** A
+verification round follows any fold of a BLOCKING or MATERIAL finding. A round whose findings were all
+LOW or nits needs none: the coordinator reads the fold diff itself, if there is one, and records that
+read in the PR body. A round with no findings has no fold, so there is nothing to confirm. It stands on
+three rounds that found nothing new: Session 10's, after a nit-floor round one and a one-word fold
+(~120k Fable tokens), and the confirm rounds of #84 (Session 15) and #87 (Session 16), each after a
+LOW-only fold. The counter-case is Session 8 pattern 2, where only the confirm round saw the `notacolor`
+hole (`git show 2d63577^:PROGRESS.md`). That round had folded a MATERIAL finding (the filled buttons were
+never read) alongside two LOWs, and the hole came from the fix to one of those LOWs, so it is why a
+MATERIAL fold keeps its round.
 
 ### Scale the fan-out to the repo
 

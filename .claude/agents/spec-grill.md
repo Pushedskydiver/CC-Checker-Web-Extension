@@ -145,7 +145,9 @@ a generic checklist.
   on 4 September 2026); if not, it is UNCHECKED, not established.
 - Report speculative claims as speculative.
 - Verification rounds can legitimately return zero — a zero in verification means the nit-floor is
-  real, not that the round failed. A zero mid-discovery means no such thing.
+  real, not that the round failed. A zero mid-discovery means no such thing. Whether a verification round
+  runs at all is `docs/DEVELOPMENT.md` §Verification rounds' rule: a BLOCKING or MATERIAL fold gets one, a
+  LOW-only round does not.
 - **Cap rounds at 2 by default**, then do a manual pass. Unbounded loops hedge-spiral: finding
   counts grow round over round from added caveats rather than converging, and the 139-agent audit of
   4 September 2026 is this repo's own record of what a verification pass that outgrows its subject

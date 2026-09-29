@@ -180,8 +180,8 @@ child iframe, a grey saturated by hand) had already turned up everything that ma
 found nothing further that did, and consumed the sessions that would have fixed it.
 
 **What to do instead.** `docs/DEVELOPMENT.md` §Scale the fan-out to the repo: discovery rounds until
-findings converge to nits, then exactly one verification round with a distinct confirm-or-disprove
-prompt; cap the default at two rounds and finish with a manual pass. An honest "nit-floor reached"
+findings converge to nits, then one verification round with a distinct confirm-or-disprove
+prompt where the rule calls for it (a BLOCKING or MATERIAL fold); cap the default at two rounds and finish with a manual pass. An honest "nit-floor reached"
 is the signal Alex wants. Sixty agents saying "confirmed" is not more evidence than five.
 
 ### "It's only a LOW."
