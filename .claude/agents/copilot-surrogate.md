@@ -68,7 +68,7 @@ directives and is the source of truth; in words, dispatch when any of these hold
    `':!public/favicons' ':!public/fonts' ':!public/images' ':!.DS_Store' ':!.vscode'` (one command),
    then `git cat-file -s` on each path, split on the `.md` suffix. The 131,885 reproduces the research
    file's figure at `2fd018b`; its 529,362 for Markdown is that commit's 516,610 plus the 12,752-byte
-   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink (a symlink until PR C made
+   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink (a symlink until #91 made
    `AGENTS.md` the real file, so a recompute now counts two different files). A change that trips the ceiling is either a
    repo-wide docs sweep or something that should have been split. If the post-filter set exceeds it,
    stop without walking any file and return a single-line escalation header
