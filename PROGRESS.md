@@ -596,7 +596,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
       `### <describe title> › <test title>`, a blank line, then the "What it proves" cell. Wrap the cell with
       Python's `textwrap.wrap(w, width=100, break_long_words=False, break_on_hyphens=False)`, and assert that
       no continuation line starts with `-`, `*`, `+`, `>`, `#` or `1.`. Use the spec's full describe titles
-      (Session 18 pattern 2), so the headings, with `### ` stripped, diff clean against
+      (Session 18 pattern 2), so §What each test proves' headings, with `### ` stripped, diff clean against
       `npx playwright test --list | grep ' › ' | sed -E 's/^.*extension\.spec\.ts:[0-9]+:[0-9]+ › //'`.
       The file goes from 117,068 to 34,635 bytes (34,557 with the table's short `colour picker` label) and
       passes `prettier --check`. In the PR body, give reviewers a
