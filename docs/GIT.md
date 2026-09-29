@@ -29,16 +29,17 @@ rewritten.
 
 ## What actually enforces any of this
 
-Checked against the live repo with `gh api` on 11 September 2026, not inferred from the sources:
+Checked against the live repo with `gh api` on 11 September 2026, and the review row again on
+29 September 2026, not inferred from the sources:
 
-| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                           |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                                                            |
-| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, unit, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge. |
-| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                              |
-| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                                |
+| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required reviews on `main`       | **No.** Classic branch protection requires a pull request but **0** approving reviews: there is no second human reviewer (Alex, 29 September 2026), so the review is the agents plus Alex's own pass. Stale reviews are dismissed on push; force-pushes and deletions are blocked. `enforce_admins` is **off**. The 11 September reading said one approving review. |
+| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, unit, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge.                                   |
+| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                                                                |
+| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                                                                  |
 
-So, apart from the review requirement and the CI check, this file is instructions, knowingly — the
+So, apart from the pull-request requirement and the CI check, this file is instructions, knowingly — the
 weaker instrument. One thing follows: a required check proves the job passed, not that the job
 covers what you changed, so read the run before merging.
 
@@ -71,7 +72,7 @@ was drift, left alone mid-flight; the next branch on the ticket follows the form
 
 | Branch                | State                                                                                                                                                                                                         |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `main`                | Trunk; the migration merged into it on 11 September 2026 (PR #28, `08542e6`). Protected: one review plus the `Lint, build, e2e` check.                                                                        |
+| `main`                | Trunk; the migration merged into it on 11 September 2026 (PR #28, `08542e6`). Protected: a pull request and the `Lint, build, e2e` check; no approving review (0 on the 29 September 2026 reading).           |
 | `feat/vite-migration` | The CRA → Vite migration, the 4 September 2026 fixes and these docs. Merged and deleted, 11 September 2026.                                                                                                   |
 | `feat/CC-003-apca-3`  | APCA contrast experiment. Pushed; last commit `chore: CC-003 - 🎨 Update app`, 13 August 2024. Needs rebasing onto post-migration `main` before it can be reviewed.                                           |
 | `dependabot/*`        | **Bot-owned.** One remote branch per open Dependabot PR (`npm_and_yarn/*`, `github_actions/*`). Never commit to them; ask the bot (`@dependabot rebase` / `recreate`) instead. See [Dependabot](#dependabot). |
@@ -81,7 +82,7 @@ was drift, left alone mid-flight; the next branch on the ticket follows the form
 Everything. `main` is protected, and the sources' direct-to-`main` exception for small doc fixes is
 not adopted: nothing here is appended to so often that a PR costs more than the reasoning it
 protects, and the docs sit on the [blast-radius list](#blast-radius-docs) anyway. A typo fix is a
-one-commit PR; with `enforce_admins` off it costs Alex a click.
+one-commit PR; it costs Alex a click.
 
 Cut the branch as the literal first action after syncing, before any edit — moe's rule, with the
 same two failure modes it exists to prevent (stacking an unmerged PR's commits under the next branch;
@@ -229,7 +230,7 @@ Alex merges human PRs. Claude Code never merges those, never approves, and does 
 comments on the PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns the PR's
 audit trail. **Delegated exception (Alex, 11 September 2026):** Dependabot PRs with a green
 `Lint, build, e2e` run may be merged by Claude — `gh pr merge <n> --merge --admin --delete-branch`
-(the review rule blocks a non-admin merge; `enforce_admins` is off) — and asked to rebuild with a
+(`--admin` dates from the 11 September 2026 reading of one required review; at the 29 September reading of 0 it bypasses nothing on a green run, and the command is kept as written: decision (h) in `PROGRESS.md`) — and asked to rebuild with a
 `@dependabot recreate` comment. #33, #35 and #47 went in that way. A red run, a conflict Dependabot
 cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back, not force it.
 
@@ -368,8 +369,8 @@ accepted, not on the merge.
 ## Blast-radius docs
 
 Editing any of these needs a PR regardless of the size of the diff, and Alex reviews the
-**substance**, not just the button — with `enforce_admins` off, the approve button is his own, so
-the reading is the whole gate:
+**substance**, not just the button — `main` requires no approving review, so his reading is the
+whole human gate:
 
 - `CLAUDE.md` (and `AGENTS.md`, a symlink to it)
 - `docs/**` — this file, `ARCHITECTURE.md`, `DEVELOPMENT.md`, `TESTING.md`, `CONVENTIONS.md`,

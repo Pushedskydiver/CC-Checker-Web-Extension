@@ -145,10 +145,12 @@ fix was re-indexing (`git rm -r --cached src/components && git add src/component
 `core.ignorecase=false`; the gate is the Linux runner. A green build on the author's Mac is not
 evidence for a case-sensitive checkout.
 
-**Branch protection on `main`, re-checked with `gh api` on 11 September 2026:** one approving
-review required, stale reviews dismissed on push, force-pushes and deletions blocked, and
-**`Lint, build, e2e` is a required status check** (`strict` off). `enforce_admins` is off, so Alex
-can merge his own PRs without a second reviewer. The check was deliberately left non-required until
+**Branch protection on `main`, re-checked with `gh api` on 29 September 2026:** a pull request
+required with **no approving review** (`required_approving_review_count` 0), stale reviews dismissed
+on push, force-pushes and deletions blocked, and **`Lint, build, e2e` is a required status check**
+(`strict` off). `enforce_admins` is off. There is no second human reviewer (Alex, 29 September 2026), so the review is the
+agents plus Alex's own pass. The 11 September reading said one approving review; when the setting
+changed is not recorded. The check was deliberately left non-required until
 it had been observed green — a check never seen passing is not evidence of anything — and that
 happened on PR #28's first run (lint, build, 18/18 e2e in 56 s on `ubuntu-latest`), so it was made
 required the same day. A red check now blocks the merge button; a green one still only proves the

@@ -332,7 +332,7 @@ npm run lint && npm run test:unit && npm run build && npm run test:e2e
 `.github/workflows/ci.yml` runs the same four on `ubuntu-latest` (plus `npm ci` and
 `npx playwright install --with-deps chromium`) on every PR and push to `main`. Its display name,
 `Lint, build, e2e`, has been a required status check on `main` since 11 September 2026 (first green
-run: PR #28), alongside Alex's approval.
+run: PR #28). No approving review is required (`docs/GIT.md` §What actually enforces any of this).
 
 Worth knowing about the members:
 
