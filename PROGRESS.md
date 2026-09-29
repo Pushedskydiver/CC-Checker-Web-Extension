@@ -3,7 +3,13 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 16)
+## Next workstreams (after Session 17)
+
+Updated 29 September 2026, end of Session 17: **the Session 11 archive is open as
+[#90](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/90), and PR C as
+[#91](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/91), both reviewed and confirmed at nit-floor, and #91 is marked ready.** C makes `AGENTS.md` the
+instruction file, with `CLAUDE.md` importing it, and promotes decision (r), scoped by Alex to prose-only LOW folds. F and
+G follow, then CC-004 row 11.
 
 Updated 29 September 2026, Session 17: **PR D (#88, `874846a`) and the Session 16 handoff #89 (`83780fe`)
 both merged, so the paragraph below is history.** Session 11 is archived in its own PR, and PR C is next.
@@ -171,6 +177,66 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 17 — 29 September 2026 (CC-005: Session 11 archived as #90, PR C opened as #91)
+
+**PR C is open as #91: `AGENTS.md` is the instruction file, `CLAUDE.md` imports it, and decision (r) is promoted.**
+Nothing merged this session.
+
+**Setup:** #88 and #89 had merged, `main` was at `83780fe`, there were no open PRs, the three standing remote branches
+were present and there were no worktrees. #89's stale lines were corrected in #90. The pre-push suite was green
+(36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
+
+**Done:**
+
+- **[#90](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/90)**, `docs/CC-005-archive-session-11`,
+  `ee45a84`: Session 11 becomes row 11, and the band is 5 entries and 23,008 bytes. `copilot-surrogate` found
+  1 MATERIAL (seven sentences still read #88 and #89 as open), 1 LOW and 1 nit, all folded. The confirm round
+  CONFIRMED all three and found nothing new.
+- **Decision (r), promoted by Alex**, and then scoped by him, after the `implementer` found that Session 8's
+  `notacolor` hole came from a LOW's test-probe fix. A LOW-only fold skips its confirm round only if it touches
+  prose alone, and a round with no findings needs no confirm.
+- **PR C, [#91](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/91)**, `docs/CC-005-agents-md-swap`,
+  `d5f3565`, built by the `implementer` (Sonnet, ~131k tokens) in its own worktree. It is ready, and CI is green.
+    - The budget sits at 149 of ~150 prose lines.
+    - `da-review` found 1 MATERIAL (the zero-findings clause contradicted three lines), 4 LOW and 1 nit.
+      `copilot-surrogate` found 1 LOW and 2 nits, and disproved the implementer's doubt about
+      `copilot-surrogate.md:71`. Everything was folded except `PROGRESS.md`'s stale pointers (loading step 5).
+    - Confirm round (a MATERIAL was folded): a fresh `da-review` verifier (~52k) CONFIRMED all six findings,
+      found nothing new, and reached nit-floor.
+    - **Sentinel check.** A fresh `claude -p` session's subagent quoted `AGENTS.md`'s budget sentence, so the
+      import expands. An in-session subagent saw the old file.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 2, the soft line, passed at ~188k before C's reviews. The two units in hand were finished, and F
+  was not started. Context was 236k at handoff, close to the 250k hard line, so this handoff PR is unreviewed.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment             | 5-hour | Weekly | Fable weekly | Context |
+    | ------------------ | ------ | ------ | ------------ | ------- |
+    | Start              | 22%    | 75%    | 31%          | 71k     |
+    | Before C's reviews | 27%    | 76%    | 32%          | 188k    |
+    | Before C's confirm | 36%    | 77%    | 34%          | 213k    |
+    | Handoff            | 37%    | 77%    | 34%          | 236k    |
+
+- **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
+  2 October.
+- **Warning signs:** one. `d5f3565` (one line) was pushed after only a Prettier check. The suite ran straight
+  after and was green (36, 21), but the rule says before. Every reviewer had its own detached worktree.
+- **Clarifying question:** none that Session 16's entry should have answered. The two (r) scope questions were new.
+
+**Major novel patterns Session 17:**
+
+1. **In-session subagents inherit the session's instructions, cached at start.** A subagent dispatched after
+   `CLAUDE.md` changed on disk quoted the old file. Test an instruction-file change from a fresh process
+   (`claude -p` in the branch's worktree). A running session keeps the old rules until it restarts.
+2. **The implementer's evidence check reshaped the rule it was asked to write.** Checking the counter-case
+   showed that the hole came from a LOW. Alex narrowed the promotion to prose folds before any review.
+3. **Stacking the confirm round on a first review saved a dispatch.** One surrogate carried #90's confirm
+   round and C's first review (~203k tokens). Two reviewers and the implementer moved the 5-hour window about
+   14 points (22% to 36%).
 
 ## Session 16 — 29 September 2026 (CC-005: Session 10 archived as #87, PR D opened as #88)
 
@@ -514,33 +580,32 @@ Opus 5.5 at `high`.
 
 ## Next session loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
+1. Read `CLAUDE.md` (auto-loaded; once #91 merges, it imports `AGENTS.md`), then this file top to bottom, then
    `docs/research/01-pcr-workflow-port.md` on `main` (#75, `697b8a2`).
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** ~~With this entry the band holds 6 entries (Sessions 11 to 16). The band is 26,527 bytes, over
-   PR D's 24,000 line too.~~ (26,569 by #89's fold commit, `57d4eb0`; the figure was not re-taken.) ~~Archive Session 11 in its own small PR, and re-measure after.~~ Done in Session 17: Session 11
-   archived in its own PR, leaving 5 entries and 23,008 bytes. Session 10 went as #87 (`0d93607`).
+2. **Archive check.** With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
+   small PR, then re-measure. Session 11 went as #90.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. #88 (D) and
-      this handoff (#89) both merged before Session 17 began; its archive PR rewrote the hedges here
-      (Session 14 pattern 1).
-    - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete). Both CC-005
-      branches were deleted on merge.
-    - `git worktree list`: only the main checkout.
+    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. Expect #90,
+      #91 and this handoff open, unless Alex has merged them. Say which in the entry, and rewrite every hedge here
+      that the merges overtake (Session 14 pattern 1).
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
+      any of `docs/CC-005-archive-session-11`, `docs/CC-005-agents-md-swap` and `docs/CC-005-close-session-17`
+      that have not merged.
+    - `git worktree list`: only the main checkout, plus `../cc-pr-c` if #91 is still open.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR C, per §8** and the "Reviews of PR H" section's §PR C; D merged as #88 (F and G follow).
+5. **Primary work: PR F, per §8** (`docs/TESTING.md`'s table becomes sections; both reviews), then G. C is #91.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
       unreviewed; step 3 corrects its state lines.
-    - C: swap `AGENTS.md` and `CLAUDE.md` (`git rm AGENTS.md` first), with the siblings §8 lists, and the
-      sentinel-echo check that `@AGENTS.md` expands for subagents. Its builder can be the `implementer`.
-    - Decision (r): D records the candidate rule and says it has one incident (Session 10). Its promotion
-      point may already be met (Session 16 pattern 1: #84 and #87). ~~Ask Alex before C's reviews whether to
-      promote it.~~ Alex promoted it in Session 17, and PR C carries the rule.
+    - **Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
+      `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
+      and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.
+    - Decision (r) is settled: promoted and scoped by Alex in Session 17, and carried by #91.
     - Carried, none started:
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
@@ -567,7 +632,7 @@ Opus 5.5 at `high`.
    `docs/GIT.md`, `docs/DEVELOPMENT.md` and `docs/SELF-REVIEW.md` each strike one with a dated correction
    beside it (#81's surrogate, LOW). Change the rule to allow a dated strike, or rewrite the three; Alex's
    call. **Settled in Session 13: (t)** `deny` on `git commit --amend` in PR G's
-   hook (Alex; the research file's Decision 7). **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The settled (a), (c), (d) and (e) are
+   hook (Alex; the research file's Decision 7). **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. **Settled in Session 17: (r)** promoted, scoped to prose-only LOW folds (#91). The settled (a), (c), (d) and (e) are
    archived (`docs/history/SESSIONS.md` §Retired sections). The rest is Session 10's text, unchanged:
    **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
    unit tests — recorded as fired in six files, adopted nowhere; **(g)** whether to adopt `docs/INDEX.md`,
