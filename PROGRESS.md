@@ -97,7 +97,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    lines, `AGENTS.md` as the primary file with frontmatter-carrying agents imported from `CLAUDE.md`, and a
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
-   proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
+   proposal approved, `spec-grill` R1 folded (Session 11, in `git show 83780fe:PROGRESS.md`). R2 and both reviews ran and were folded in
    Session 12; the confirm round passed in Session 13 (§Session 13), and #75 merged as `697b8a2` the same day (the
    Session 14 paragraph above).
 
@@ -510,66 +510,6 @@ Opus 5.5 at `high`.
    noticed files move under it mid-walk, and re-took every figure from `git archive 2fd018b`. Point
    reviewers at `git show <sha>:<path>` or a detached worktree, not a live checkout.
 
-## Session 11 — 29 September 2026 (CC-005: PCR workflow port researched, approved, spec-grill R1 folded)
-
-**Alex approved the PCR workflow port as `CC-005`, eight PRs with H first. `spec-grill` R1 found 1 BLOCKING and 10
-MATERIAL findings, all folded into the plan; the confirm round (R2) is Session 12's first job.**
-
-**Setup:** every loading check matched. Archive count 5, detail band 31,138 bytes, tree clean, #73 and #74
-merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (36 unit, 21 e2e).
-`get_session self` reported Opus 5.5 at `high`.
-
-**Done:** the research and proposal, as `docs/research/01-pcr-workflow-port.md` on the draft
-[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75)
-(`docs/CC-005-pcr-workflow-proposal`, `7ff2dcf`).
-
-- **Sources:** PCR, read-only. The Claude Code docs were checked live by a Sonnet `claude-code-guide`
-  agent, and a Sonnet `Explore` agent swept PCR's research and history.
-- **Alex's answers**, 29 September 2026:
-    - "AGENTS.md becomes the real file";
-    - all eight PRs before row 11;
-    - the rest was delegated. The in-session calls are recorded as Decisions 2–5 in the file: implementer
-      commits, (r) left as an observation, triggers 5–6 kept, `CC-005`.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Reviews:** `spec-grill` R1 on Fable 5.1, ~175k tokens: 1 BLOCKING, 10 MATERIAL, 11 LOW, all folded.
-
-- The BLOCKING finding: `.claude/settings.json` is gitignored here, so a hook port would not ship.
-- R2 was not run: the session reached the proposal's own 250k hard line.
-
-**Handoff facts:**
-
-- **Context:** 247k at the decision to hand off (trigger 3, hard line). The soft line was passed at ~165k,
-  before the fan-out. The grill ran afterwards as the proposal's own review round.
-- **Plan usage:** 5-hour 76% (resets 00:40Z on 29 September), weekly 61%, Fable weekly 11%.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment             | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------ | ------ | ------ | ------------ | ------- |
-    | Start              | 61%    | 59%    | 9%           | 91k     |
-    | Before the fan-out | 64%    | 59%    | 9%           | 165k    |
-    | After the digest   | 67%    | 60%    | 9%           | 195k    |
-    | Proposal delivered | 68%    | 60%    | 9%           | 214k    |
-    | After R1           | 76%    | 61%    | 11%          | 232k    |
-
-- **Warning signs:** one deliberate re-read (the detail band, as a token measurement).
-- **Clarifying question:** none was needed that Session 10's entry should have answered.
-
-**Major novel patterns Session 11:**
-
-1. **`claude -p` input-token deltas are not a token meter.** The same file gave −2,859, 10,081 and
-   15,715 tokens on three runs. What worked was a `get_usage` context reading before and after one
-   Read.
-2. **The archive trigger's bytes-to-tokens conversion was low.** Measured that way, the 31,138-byte
-   band is ~12.5–14k tokens, not "under 10k". The token half of the trigger has been firing unseen.
-3. **Prettier pads every Markdown table row to its widest cell.** `docs/TESTING.md` is 69% whitespace
-   by bytes, from one table.
-4. **`.claude/` is gitignored here except `agents/`.** Any settings or hook port must un-ignore
-   `settings.json`. A plan written from another repo's layout carries that repo's `.gitignore`
-   assumptions.
-5. **One Fable grill round moved the 5-hour window eight points** (68% → 76%, ~175k tokens). Budget a
-   grill and its confirm round before starting either.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
@@ -577,8 +517,9 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** With this entry the band holds 6 entries (Sessions 11 to 16). The band is 26,527 bytes, over
-   PR D's 24,000 line too. Archive Session 11 in its own small PR, and re-measure after. Session 10 went as #87 (`0d93607`).
+2. **Archive check.** ~~With this entry the band holds 6 entries (Sessions 11 to 16). The band is 26,527 bytes, over
+   PR D's 24,000 line too. Archive Session 11 in its own small PR, and re-measure after.~~ Done in Session 17: Session 11
+   archived in its own PR, leaving 5 entries and 23,008 bytes. Session 10 went as #87 (`0d93607`).
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #88 (D)
       and this handoff open, unless Alex has merged them; say which in the entry, and rewrite every hedge here
@@ -691,5 +632,5 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 10, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 11, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
