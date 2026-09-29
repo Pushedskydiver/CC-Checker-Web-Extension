@@ -130,7 +130,7 @@ explicit trigger phrases rather than always-on.
     | Trigger                                                                                                                                                          | Review                         |
     | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
     | `src/**`, `public/app/**`                                                                                                                                        | `da-review`, mandatory         |
-    | `docs/**`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                                                                                         | `copilot-surrogate`, mandatory |
+    | `docs/**`, `AGENTS.md`, `CLAUDE.md`, `.claude/agents/**`, `README.md`                                                                                            | `copilot-surrogate`, mandatory |
     | `public/manifest.json`, `vite.config.ts`, `playwright.config.ts`, `vitest.config.ts`, `package.json` deps, `.github/workflows/**`, `test/**`, `src/**/*.test.ts` | both                           |
     | Diff over 200 lines excluding `package-lock.json`                                                                                                                | both                           |
     | A spec or plan, before code moves against it                                                                                                                     | `spec-grill`                   |
@@ -149,13 +149,15 @@ explicit trigger phrases rather than always-on.
   output.
 - **Go and look.** Verify by running the thing — the e2e suite, a fresh clone, the emitted CSS —
   rather than inferring state from a config or a green build on the author's Mac.
-- **Policy-adjacent edits** (this file, `docs/**`, `.claude/agents/**`, `public/manifest.json`,
-  `.github/workflows/**`): enumerate affected siblings by hand. `AGENTS.md` is a symlink to this
-  file — no generator, no drift, no CI gate; add a generator only if the two ever need to differ.
-- **Hand off on the sooner of:** context at 150k (soft: finish the unit in hand) or 250k (hard), a finished unit or merged PR past 130k, or
-  the 5-hour window at 85%. The other triggers, the `get_usage` checkpoints and the handoff prompt are
-  in `docs/SESSION-HANDOFF.md`. Always-loaded because its trigger is "context is filling", which no
-  trigger phrase can reach.
+- **Policy-adjacent edits** (this file, `CLAUDE.md`, `docs/**`, `.claude/agents/**`,
+  `public/manifest.json`, `.github/workflows/**`): enumerate affected siblings by hand. `AGENTS.md` is
+  the primary file, and `CLAUDE.md` imports it (`@AGENTS.md`) and adds only Claude-Code-only lines, so
+  the two do not restate each other.
+- **Instruction-file budget: about 150 prose lines** for the expanded payload, this file plus the
+  `CLAUDE.md` stub. Prose lines are counted with fenced code blocks and blank lines stripped:
+  `awk '/^```/{f=!f; next} f{next} /^[[:space:]]*$/{next} {n++} END{print n}' AGENTS.md CLAUDE.md`.
+  `copilot-surrogate` runs it whenever either file is touched. A script (as PCR Formulation's
+  `docs-budget.ts`) comes back only if the budget is breached once without anyone noticing.
 
 ## Key docs
 
