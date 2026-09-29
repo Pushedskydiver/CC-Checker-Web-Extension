@@ -277,6 +277,15 @@ findings manufactured to prove the round ran.
 **Cap default rounds at 2, then do a manual pass.** Stop when successive rounds produce only
 cosmetic deltas, or when Alex says ship — whichever is sooner.
 
+**Candidate, not a rule: decision (r), when a confirm round is needed.** PCR Formulation's fix-pass stopping
+rule: re-check while the last pass fixed a BLOCKING or MATERIAL finding; when a pass fixed only LOWs, the
+coordinator reads that fold diff itself instead of dispatching a confirm round. The requirement above stands
+until this is promoted. It has one incident, Session 10, where a confirm round after a nit-floor round one
+confirmed nothing new at ~120k Fable tokens, and a counter-case, Session 8 pattern 2, where only the confirm
+round saw the hole (`git show 2d63577^:PROGRESS.md`). §Process-rule promotion wants two incidents. **Promotion
+point:** a second no-news confirm round after a LOW-only fold, or the Session 20 review
+(`docs/research/01-pcr-workflow-port.md`, Decision 3).
+
 ### Scale the fan-out to the repo
 
 **On 4 September 2026 a 139-agent audit workflow — two verifiers per finding across roughly sixty
@@ -298,70 +307,34 @@ and so the trigger to write the number down. The shape that worked: split the cl
 or a browser harness, then spend at most two agents on those. Of the nine claims falsified on that
 workstream, the coordinator settled four at the primary source in single commands.
 
+**Every concurrent reviewer or implementer gets its own worktree, named in the dispatch prompt.** The rule
+fired in Session 8 pattern 5 (`git show 2d63577^:PROGRESS.md`), Session 9 pattern 3
+(`git show 24fc475:PROGRESS.md`) and Session 10, and Session 12 pattern 4 adds why: a reviewer reading the
+live main checkout sees whatever the coordinator does there, and had to re-take every figure mid-walk.
+
+- A reviewer gets `git worktree add --detach <path> <sha>`, and reads `git show <sha>:<path>` or that
+  worktree, never the live main checkout.
+- A fresh worktree has no `node_modules`: run `npm ci` before any `npx`, or a bare `npx prettier` fetches
+  from the registry instead of the pinned binary (Session 10 pattern 2).
+- Remove the worktrees when done.
+- The `Agent` tool's `isolation: worktree`, with `worktree.baseRef: "head"`, is being trialled as a
+  replacement (`docs/research/01-pcr-workflow-port.md`, R1 L1). It is not yet the rule.
+
 ---
 
 ## Session handoff
 
-**Trigger — the sooner of:** context nearing the pre-compaction budget, a natural boundary (a PR
-merged, a workstream segment done, a release uploaded), or the compaction warning firing. Hand off
-_before_ the warning: reasoning quality degrades well before context fills, so waiting for the
-warning means quality slipped some time ago.
+The protocol lives in `docs/SESSION-HANDOFF.md`: the triggers, the `get_usage` checkpoints, the handoff
+prompt, the `PROGRESS.md` entry shape and structure, archiving, retired sections, and the next-session
+model and effort table. It replaces this section and the `PROGRESS.md` structure section that followed it.
+`CLAUDE.md` §Process directives carries the always-loaded summary.
 
-**How to hand off:**
-
-1. **Update `PROGRESS.md`** at the repo root — the living state document. Say what merged and what
-   was uploaded to the store (they are different; say both), the branch and what remains if
-   mid-change, and any open verification round.
-2. **Archive overflow to `docs/history/SESSIONS.md`.** When the detail band in `PROGRESS.md` holds
-   more than five session entries or grows past roughly 10k tokens, compress the oldest to a
-   one-line row there. Check at session start, before picking anything up; a check that only fires
-   "when it occurs to someone" silently backslides.
-3. **Record superseded reasoning with ~~strikethrough~~ rather than deleting it**, and say what
-   corrected it and when. The wrong turns are half the value: the media-query comparator that was
-   "type-satisfying" and wrong, the version numbers that had drifted apart.
-4. **End with a "Next session loading instructions" block.** Pointer-only: what to verify first
-   (branch, whether CI has run, whether the store version changed), the primary workstream,
-   lettered decision branches, carry-overs. It must not restate rules that live in `docs/*.md`.
-
-### `PROGRESS.md` structure
-
-The chief-clancy/moe pair, adopted as-is — same names, same shapes, so citations across Alex's
-repos stay legible:
-
-```markdown
-# Progress
-
-Living state document — current state, what's next. Session-by-session
-detail lives in git history once entries archive out.
-
-## Next workstreams (after Session <N>)
-
-Updated <date> end-Session-<N> — <one-line characterisation>.
-
-**<Workstream>**: [<PR title>](<PR link>) `<short-sha>` — <what happened>.
-Merged: <yes/no>. Uploaded to the Web Store: <version or "no">.
-
-**Major novel patterns Session <N>:**
-
-1. <a durable lesson, a discovered gotcha, a process fix>.
-
-### Session <N+1> loading instructions
-
-- <what to verify before picking anything up>
-- <the primary workstream to resume>
-- <decision branches, lettered, one-line each>
-- <carry-overs — standing facts the next session needs>
-
-## Session archive
-
-Archived sessions are in `docs/history/SESSIONS.md`. Full retrospective
-survives in `git log -p PROGRESS.md` at that session's compression commit.
-```
-
-`docs/history/SESSIONS.md` is a table — `| Session | Date | Headline |` — one row per
-archived session. Deliberately not adopted: per-session metric
-blocks and numeric handoff-cost thresholds. The source repos' own data retired those — the
-thresholds drifted out of meaning and the backfill discipline collapsed.
+**This reverses** a line that stood here until 29 September 2026: "Deliberately not adopted: per-session
+metric blocks and numeric handoff-cost thresholds", on the grounds that the source repos' own data retired
+them. It is adopted now, for three reasons. Session 10 had already recorded readings, so the blocks cost
+nothing new. PCR Formulation's 40-session record backs the numbers (`docs/research/01-pcr-workflow-port.md`
+§2 and §3). And the exit is dated: **Session 20** reviews the lines against this repo's readings, and drops
+them if they have drifted out of meaning, which is what retired them in the source repos.
 
 ---
 
