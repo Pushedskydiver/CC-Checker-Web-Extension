@@ -8,14 +8,15 @@ Living state document — current state, what's next. Session-by-session detail 
 Updated 29 September 2026, end of Session 12: **PR H (#75) has passed `spec-grill` R2 (nit-floor) and both
 reviews, and every finding is folded; one confirm round on that fold is left before it goes ready.** PR E is
 built and pushed as `docs/CC-005-archive-session-6` (`59a39b6`), no PR yet. Session 12 handed off on the
-5-hour line (trigger 4), not the token lines. One question is Alex's before PR G: `ask` or `deny` on
+5-hour line (trigger 4); the soft token line (trigger 2) had also fired and was overridden (§Session 12
+pattern 2). One question is Alex's before PR G: `ask` or `deny` on
 `git commit --amend` (decision (t)).
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
-`docs/research/01-pcr-workflow-port.md` (§8 and the closing fold section). That file is on the draft
-[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until `spec-grill` R2 and
-both reviews pass. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
+`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on the draft
+[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
+reviews passed in Session 12. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
 
 Updated 28 September 2026, end of Session 10 — **CC-004 rows 1 to 10 have merged — row 10's second half as
@@ -70,78 +71,10 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
    Session 12; a confirm round on that fold is next (§Session 12).
 
-### Brief: code quality, architecture, readability (measured 11 September 2026, `main` at `0accd3b`)
-
-**Superseded 12 September 2026 — kept as the pre-grill record, not as instructions.** The grill disproved
-four claims below: that the e2e suite already covers the poor-contrast switch (no assertion in the suite
-touches a variant class or any control's resolved colour); that `@vitejs/plugin-react` 6.1 takes the React
-Compiler via `babel.plugins` (that option does not exist); that the compiler forbids rule-of-hooks violations
-(not at `panicThreshold: 'none'`, which is both the default and what React says production must use); and that
-the import style is mixed in a way the conventions do not already mandate. Four of the six "dead exports" had
-already gone in `c74071b`, and the hex-input logic is one regex with three early returns rather than a chain.
-Two more are dead rather than merely imprecise: the shared-`messages.ts` paragraph still reads as a live
-architecture option and the toolchain refuses it; and "`useEffectEvent` (2 sites)" counts one call plus its
-import, so there is one site. §The approved plan below is the authority and carries the evidence; read this only for what was measured on
-11 September.
-
-Facts, not impressions — re-measure before acting; the commands are one-liners.
-
-- **Size.** 31 `.ts/.tsx` files, 1,894 lines; 25 CSS modules. Largest: `src/context.tsx` 221 lines,
-  `color-controls.tsx` 138, `icon.tsx` 120, `cta.tsx` 105, `useTabbed.ts` 92.
-- **`src/context.tsx` does five jobs:** owns the colour state, derives contrast/level/dark on every render,
-  reads and writes `localStorage`, exposes the actions (`handleContrastCheck`, `reverseColors`, `saveColors`,
-  `updateView`), and bridges `chrome.runtime.onMessage`. Candidates: a pure colour model (a reducer, or
-  `useSyncExternalStore` over a tiny store) with persistence and the message bridge as separate hooks; a typed
-  action API instead of `handleContrastCheck(value, name: string)` dispatching on `'background' | 'foreground'`.
-- ~~**One pattern is copied 16 times across 12 files:**~~ 15 times across 12 files as of PR 3, which
-  deleted one with `LinkButton`. `isPoorContrast && !isBackgroundDark ? styles.xDark :
-undefined` and its `Light` twin (grep `isPoorContrast && !isBackgroundDark` under `src/`). Two structural
-  fixes to weigh: a `useThemeClass(styles)` hook, or — probably better — the provider sets
-  `data-contrast="poor"` / `data-scheme="dark"` on `document.body` once and the CSS modules select on them,
-  removing the JavaScript branch entirely. Either way the e2e suite already covers the visible outcome.
-- **React 19 in use today:** Context rendered as its own provider, `useEffectEvent` (2 sites). Not in use
-  anywhere: `useMemo`, `useCallback`, `memo`, `useReducer`, `use`, `useSyncExternalStore`. That absence is
-  exactly what **React Compiler** exists for: `babel-plugin-react-compiler` 1.0.0 is published and
-  `@vitejs/plugin-react` 6.1 takes it via `babel.plugins`. Run `npx react-compiler-healthcheck` first, then
-  enable it, then measure — bundle size (`build/assets/index-*.js`, 259.74 kB before), e2e 18/18, and a
-  before/after render count on the slider path if it is worth the instrumentation. A compiler that changes
-  nothing observable is still worth having for what it forbids (it fails on rule-of-hooks violations).
-- **`React.FC` in 25 files** — ~~`docs/CONVENTIONS.md` §TypeScript and React currently mandates it.~~ PR 5
-  (#50, 13 September 2026) replaces that rule with plain typed arrows. ~~Decide once: keep, or
-  move to plain typed functions (the React docs' current default).~~ Decided in #50, merged 13 September 2026 as `bbb822b`.
-  A convention change is a doc PR first.
-- **`color-controls.tsx`:** the hex-input acceptance logic is a chain of regexes and early returns. Extract
-  `parseColorInput(value): ColorTuple | null` into `src/utils/`, unit-test it (vitest — the first unit tests
-  in the repo, `docs/TESTING.md` §Future), then the component is a form.
-- **Message names live in three places** (`content.js`, `background.js`, `src/`) as string literals, and the
-  two `public/app/*.js` files are untyped and unbundled. An architecture option, not a quick win: build them
-  from TypeScript as extra Vite entries sharing one `messages.ts`. It changes the manifest paths and the
-  packaging, so it needs its own spec — and the store rejection of 11 September is the reminder that manifest
-  changes get tested by uploading.
-- **`react-copy-to-clipboard`** is the last class-component dependency. ~~The way out is
-  `allow="clipboard-write"` on the iframe `content.js` creates, then `navigator.clipboard.writeText`.
-  Spike it with an e2e test that reads the clipboard back.~~ Corrected 12 September 2026: that attribute
-  changes nothing here, and a host page can revoke the async API anyway while `execCommand` keeps working
-  (`docs/ARCHITECTURE.md` §Deliberately not changed carries the measurements). The dependency goes instead
-  by importing the `copy-to-clipboard` function it wraps — already resolved in the lockfile, ships its own
-  types — which drops the last class component with no change to `content.js`. That swap also fixes a
-  defect found on the way: the wrapper calls `onCopy` whatever the copy returned, so a failed copy is
-  announced as "URL added to clipboard" in a `role="status"` region. The clipboard read-back the old spike
-  wanted does work: the suite gained two clipboard assertions in PR 4 (12 September 2026) — the
-  share button's value, and that a refused copy announces nothing — green three consecutive local
-  runs on macOS, and green on `ubuntu-latest` in PR 4's own CI run — `real clipboard (1.3s)`,
-  `refused copy announces nothing (1.4s)`, `20 passed (18.1s)`. That settles the open question from
-  PR 43, which had one agent's Linux-container run and no reproduction.
-- **Dead exports** flagged on 4 September and left alone (`isHsl`, `isRgb`, `colorToRgb`, `getColorValue`,
-  `LinkButton`, `TIconName`) — re-check with `npx knip` and delete what is still unused.
-- **Readability sweep, last:** import style is mixed (`~/` alias vs relative), `icon.tsx` is an inline SVG
-  sprite, `useTabbed` and the `Tab`/`Panel` pair carry refs through props. Judge these after the structural
-  items, not before — they are the ones most likely to be solved by the items above.
-
-Out of scope for this workstream: APCA (`feat/CC-003-apca-3`, Alex may never add it), Safari, and any
-manifest or permission change.
-
 ### The approved plan (CC-004), approved by Alex 12 September 2026
+
+It replaced the 11 September brief, now archived (`docs/history/SESSIONS.md` §Retired sections); "the
+brief" below means that text.
 
 Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `CLAUDE.md` trigger
 fires, not a record — "both" means `da-review` and `copilot-surrogate`, and a PR that crosses 200 changed
@@ -207,31 +140,13 @@ pull requests.
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
-### Commit sequence as landed on 11 September 2026
-
-One commit per line, in this order, plus a sixth (`5b92bde`) that stops tracking `.vscode/settings.json` — `git add`
-refuses paths under an ignored directory, so the removal missed commit 2 and that commit carries one machine's
-editor colours in history — and a seventh (`963659a`) updating this file. Seven in all.
-
-1. `fix: CC-002 - 🐛 Normalise component directory casing in the git index` (the staged `01-Atoms` → `01-atoms`
-   renames; a Linux checkout could not build before this).
-2. `chore: CC-002 - 🔧 Replace CRA leftovers with ESLint 9, TS 6/7 side-by-side, scripts and configs`
-   (package.json, package-lock.json, eslint.config.mjs, stylelint.config.mjs, tsconfig.node.json, vite.config.ts,
-   .nvmrc, .gitignore, .editorconfig untouched, `_config/` and `types/` removed, `.vscode/` untracked,
-   dependabot.yml moved, `.github/workflows/ci.yml`).
-3. `fix: CC-002 - 🐛 Fix runtime regressions found while verifying the migration` (public/app/*.js,
-   public/manifest.json, index.html, public/error.html, src/** — see `docs/REVIEW-PATTERNS.md` for the list).
-4. `test: CC-002 - ✅ Add Playwright end-to-end suite that loads the built extension` (playwright.config.ts, test/).
-5. `docs: CC-002 - 📝 Port CLAUDE.md, docs/ and .claude/agents from the sibling repos` (CLAUDE.md, AGENTS.md
-   symlink, README.md, docs/**, .claude/agents/**, PROGRESS.md).
-
 ## Session 12 — 29 September 2026 (CC-005: PR H through R2 and both reviews, PR E built)
 
 **PR H's grill and reviews are done and folded; the 5-hour window stopped the confirm round on the review
-fold.** Nothing merged except #76 (Alex, at the start of the session).
+fold.** Nothing merged except #76 (Alex, early in the session: open at the loading checks, merged before E was built).
 
 **Setup:** loading checks matched, with one expected difference: #76 was still open, so `main`'s count was
-5 until Alex merged it mid-session. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
+5 until Alex merged it. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
 Opus 5.5 at `high`.
 
 **Done:**
@@ -252,7 +167,7 @@ Opus 5.5 at `high`.
       the research file, merged (`8d97a69`), and the suite re-run before pushing.
 - **PR E, built and pushed without a PR**: `docs/CC-005-archive-session-6`, `59a39b6`.
     - Session 6 becomes row 6 of `docs/history/SESSIONS.md`.
-    - A new §Retired sections holds the pre-grill Brief, the 11 September commit sequence, and the
+    - A new `docs/history/SESSIONS.md` §Retired sections holds the pre-grill Brief, the 11 September commit sequence, and the
       settled branches (a), (c), (d) and (e).
     - `spec-grill.md` step 2's stale citation is repointed.
     - `PROGRESS.md` went from 64,924 to 43,107 bytes on that branch.
@@ -517,233 +432,16 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    archive branch stayed checked out for its reviewer while the handoff was drafted in a separate
    `git worktree`, so no agent read a tree that changed under it.
 
-## Session 7 — 22 September 2026 (CC-004: PR 8 merged, hex-input parser extracted)
-
-**Setup:** loading instructions followed in order. Archive trigger checked first —
-`grep -c '^## Session [0-9]' PROGRESS.md` gave 4 (Sessions 3–6), so no archive PR stood between
-this session and PR 8, as predicted. State confirmed clean, `origin/main` at `6121a98` or later
-(it was `b432028`), `gh pr list` showed one item not predicted by the handoff: Dependabot's #61
-(dev-dependencies group, green). Merged it under the standing delegation
-(`gh pr merge 61 --merge --admin --delete-branch`) — the first attempt was refused by the
-Claude Code auto-mode classifier ("Merge Without Review"), which does not automatically honour a
-written, dated delegation in `CLAUDE.md`; the user changed a permission rule and the retry
-succeeded (`678252f`). Pre-push suite re-verified green before starting PR 8.
-
-**Done:** PR 8 of the approved plan — `toCompleteHex` extracted from
-`color-controls.tsx` into `src/utils/parse-color-input.ts`, unchanged, with the first unit tests
-for it. TDD as `CLAUDE.md` asks: the test file was written against the not-yet-existing module
-first and watched fail on module resolution, then the move, then green. Full review gate:
-`da-review` found two MATERIAL (no test pinned the length guard against an 8-digit `#rrggbbaa` hex,
-which chroma accepts and silently truncates — added and watched red with the guard removed; a
-`~/utils/color-utils` import that should have been `./color-utils`, same directory); self-review
-clean; `copilot-surrogate` on the resulting doc-sweep commit found seven MATERIAL, all the same
-shape — CLAUDE.md, README.md, `docs/CONVENTIONS.md`, `docs/DEVELOPMENT.md`, `docs/GLOSSARY.md`,
-`docs/SELF-REVIEW.md` (two spots) and `docs/TESTING.md` all stated the unit suite as "25 Vitest
-cases over `color-utils.ts`", stale the moment the second file landed (36 total). A confirm round
-on that fix reached nit-floor — two discovery rounds plus one confirm, the cap `CLAUDE.md`
-prescribes. Merged as **#62, `f046ccf`**, three commits (`0d87535`, `7642bbe`, `8b00ae7`). Then a
-small follow-up PR, **#63, `d0db204`/`36fe364`**, updated `PROGRESS.md` itself — deliberately not
-bundled into #62 (below).
-
-**Post-merge:** both PRs merged with a **merge commit**, not the rebase default (Alex's call per
-PR) — the branch commits kept their original hashes and `git merge-base --is-ancestor` confirmed
-each branch was an ancestor of `main` before `git branch -d` (not `-D`; nothing to force). Pre-push
-suite re-verified green on `main`'s new tip after each merge.
-
-**Major novel patterns Session 7:**
-
-1. **A written, dated delegation in `CLAUDE.md` does not automatically clear the runtime's own
-   safety classifier.** The Dependabot merge delegation (`docs/GIT.md` §Who merges, granted
-   11 September 2026) is explicit and durable, but `gh pr merge --admin` was refused outright on
-   first attempt with reason "Merge Without Review" — the classifier does not read `CLAUDE.md` to
-   know the merge is pre-authorized. It took the user changing a permission rule, not a stronger
-   citation of the delegation, to get past it. Record this as a limit on what "pre-authorized in a
-   durable instruction file" can mean in practice: it authorizes the _action_, not the _tool call_
-   against a runtime gate that has no visibility into repo-level policy.
-2. **An equivalent mutant looks like a real gap until you run it.** The DA-fold commit's own
-   self-check mutated the `isShortHand` regex bound (`{3,5}` → `{3,4}`) and found it made no
-   difference to any test — correctly diagnosed as equivalent, because every 3–5 digit candidate is
-   already rejected by the `length !== 7` check regardless of the regex. The same session, `da-review`
-   found a real gap one line down: removing the length check (not the regex) let an 8-digit
-   `#rrggbbaa` hex through, because chroma parses and silently truncates it. Two mutants one line
-   apart, one dead and one live — the distinction only shows up by running both, not by inspection.
-3. **This repo's own git history contradicts a generic line in `docs/SELF-REVIEW.md`.** §Claims and
-   consistency says a change to next-session loading instructions "edits `PROGRESS.md` in the same
-   PR" — adapted from other repos. Every actual `PROGRESS.md` handoff update in this repo's history
-   (#46, #49, #51, #53, #57 and now #63) is its own small PR opened _after_ the feature PR merges,
-   because the count or state the loading instructions cite is still true on `main` until the
-   feature PR lands. Followed the specific, observed practice over the generic line rather than
-   bundling #63 into #62; not fixed here (scope), carried to Session 8 below.
-4. **One new test file made the same doc claim stale in seven places at once.** `parse-color-input.test.ts`
-   landing meant every file that had ever restated "the unit suite is N Vitest cases" went wrong
-   together — CLAUDE.md, README.md and five files under `docs/`. PR 7 (18 September 2026) hit a
-   milder version of the same thing when the WCAG boundary fix moved the count from 22 to 25. Twice
-   now; `docs/DEVELOPMENT.md` §Process-rule promotion says a rule needs two incidents before promotion — this is
-   at two, so it is at least worth naming as a candidate: derive the count from `npm run test:unit`
-   in scripts/CI output rather than hand-copying it into seven files, or accept the drift as the
-   cost of prose that names concrete numbers. Not decided; carried to Session 8.
-
-## Session 6 — 13 to 18 September 2026 (CC-004: Session 1 archive, PRs 5 to 7, #48, rebase)
-
-**Setup:** the loading block said to set Opus 5 at `high` before anything else. The session-management tools
-refuse to change their own session's model or effort, so it was checked instead: `get_session self` reported
-`claude-opus-5` at `high`, and ultracode was off. The three agents are `model: inherit` on disk, so Fable 5.1
-was passed on each dispatch. `~/.claude/settings.json` still says `"effortLevel": "xhigh"` globally — left
-alone, since nobody asked for a persistent config change.
-
-**State on arrival was not what the handoff expected.** Dependabot had opened #47 (`@types/node` 26.5.0 →
-26.5.1, green) and #48 (`copy-to-clipboard` 3.3.3 → 4.0.2 alongside React 19.3.0, red) overnight. #47 merged
-under the delegation as `346c4b0`. #48 failed `lint:ts` with `copy-cta.tsx(62,9): error TS2322: Type
-'Promise<boolean>' is not assignable to type 'boolean'` — the first real 4.x bump to meet the type-annotation
-guard `docs/GIT.md` §Dependabot describes (Session 5 pattern 6, now in `git log -p PROGRESS.md`), and it held. Not merged, not recreated: Alex's.
-
-**Done, 13 September.** Merged: #49, #50, #51, and #52 late that evening (22:18Z). Uploaded to the Web Store:
-nothing; users are on 2.1.0. The session then continued on 17 September — see below.
-
-- **#49, `d56f6a4` — Session 1 archived** to `docs/history/SESSIONS.md`, in its own PR rather than on PR 5's
-  branch (`docs/GIT.md`: two unrelated changes are two PRs). `copilot-surrogate` found one MATERIAL — the row
-  said Session 1 "finished and proved" a migration it left uncommitted and unpushed — and two Low; a fresh
-  confirm round reached nit-floor. Alex merged it the same afternoon.
-- **#50, `bbb822b` — PR 5.** `docs/CONVENTIONS.md` §TypeScript and React says components are plain typed
-  arrows, `export const Name = ({ … }: TName) => …`, and `docs/DA-REVIEW.md`'s checklist line follows it.
-  `copilot-surrogate` found one MATERIAL and four Low; the confirm round reached nit-floor with nothing
-  falsified. **Arrows rather than `function` declarations was decided in-session**, not by Alex — it is the
-  form `App` and `ColourContrastProvider` already use — and the PR body said it was his to flip. He merged
-  it as written.
-- **#51, `4b46b53` — the first Session 6 handoff**, written while #50 was still open; this entry and the
-  loading block were updated again once #50 merged and #52 opened.
-- **#52, `170ca4e` — PR 6.** 31 `React.FC` signatures in 25 files converted by a script that touched only the
-  declaration line and the closing `}) =>`; four types renamed (`TWcag`, `TCtaShared`, `TTextSize`,
-  `TTextWeight`); `@typescript-eslint/no-restricted-types` now rejects `React.FC`, `FC`,
-  `React.FunctionComponent` and `FunctionComponent`. **Type-only is proved, not argued:** `main` and the
-  branch each built in a scratch worktree give a byte-identical `build/`. The rule was watched failing — 31
-  errors on the unconverted tree, 2 on a planted file. `da-review` approved and `copilot-surrogate` reached
-  nit-floor; the commit body's "nine props-less components" is eight, corrected in the PR body rather than
-  amended.
-
-**#50 to #54 were rebase-merged; #47, #49 and #55 got merge commits.** (Recorded on 13 September as "#50 and
-#51"; #52, #53 and #54 followed the same way.) `docs/GIT.md` §Merge strategy said rebase was "enabled and
-unused. Do not start". Asked on 17 September, Alex confirmed **rebase is the default now**; #56 writes that
-down with its two consequences. Two consequences hit this session: commit bodies on `main` cite branch hashes that
-were rewritten by the merge (`326029c`, `113e6cd`), and `git branch -d` refused both merged branches —
-content was diffed against `origin/main` first, then `-D`.
-
-**Carried into PR 6 by the #50 review, and why row 6 of the plan changed:** PR 6 must rewrite the
-"31 signatures" sentence in `docs/CONVENTIONS.md`, so it touches `docs/**` and fires both reviews, not the
-`da-review` the table predicted. It carries four drift renames, not three — `CtaShared` in `cta.tsx` joins
-`WcagProps`, `TextSizes` and `TextWeights`, because PR 6 touches those files. `ProviderProps` waits until
-`src/context.tsx` is next touched; ~~`ColourContrastContextTypes` is un-prefixed too but is a context value, not
-a prop type, so the rule as worded does not reach it~~ — superseded by #52: two of its renames were unions, so
-the prefix covers every declared type, and on #52's branch `docs/CONVENTIONS.md` names three left as drift
-(`ProviderProps`, `ColourContrastContextTypes`, `ColorTuple`); `main` listed the older five until #52 merged (`170ca4e`, 13 September 2026) and now names the three.
-
-**Major novel patterns Session 6:**
-
-1. **A rule change is itself a rule, and the first draft broke its own file's authoring rule.**
-   `docs/CONVENTIONS.md` §Authoring says every non-obvious rule names its incident and said all of them date
-   from 4 September; the new rule gave three reasons and no incident. The incident existed — the mandate
-   never described `App` or the provider — but only a reader of the whole file saw that the change falsified
-   a sentence about ninety lines above the diff. That is what reading touched files at HEAD in full is for.
-2. **A pathspec silently narrowed a list, and the list looked complete.** `git grep … -- 'src/**/*.tsx'` does
-   not match top-level `src/context.tsx`, so a drift list built on it missed `ProviderProps`. Nothing printed
-   wrong; the file was simply never searched. Use `-- src` and filter, or `':(glob)src/**/*.tsx'`.
-3. **A loading step that cannot be done as written should be checked, not skipped.** "Set the model and
-   effort" is impossible from inside the session — the session tools only change other sessions — but
-   `get_session self` shows both, which is what the step was protecting.
-4. **A type-only refactor is proved by the build output, not by `tsc`.** A green type-check says the types
-   agree; it cannot say the runtime did not move. Building `main` and the branch in two scratch worktrees
-   and running `diff -rq` on `build/` answers the question every reviewer would otherwise argue about —
-   `children`, default parameters, return types — in one command. `da-review` and the author reached it
-   independently.
-5. **A merge button can rewrite the hashes your prose cites.** A rebase merge re-hashes every commit, so a
-   commit body naming a branch hash points at nothing on `main`, and `git branch -d` refuses. Cite PR numbers
-   in prose that outlives the branch; before `-D`, prove the branch's files equal `origin/main`.
-
-### Continued, 13 to 17 September 2026 — #48 answered, PR 6 landed, rebase written down
-
-**Alex merged #52 and #53** late on 13 September, then asked for #48 — the `copy-to-clipboard` 4.x bump,
-red on the `TS2322` guard — to be investigated and the rebase task chip picked up after it. The
-investigation and the port are dated **13-14 September** (`2faf894` 23:28 on the 13th, the port `bf54b97`
-23:58, its review fold `289e158` 02:32 on the 14th), which is the date `CLAUDE.md`,
-`docs/ARCHITECTURE.md`, `docs/TESTING.md` and the e2e comment carry. The merge, #48's closure, #55 and #56
-are 17 September.
-
-- **#48 was tried, not assumed.** Taking 4.x builds and passes: it wraps `navigator.clipboard.writeText` in
-  a `try` and falls back to `execCommand`. `da-review` found, and a probe reproduced on both copy buttons,
-  that the attempt alone makes Chromium log `Permissions policy violation: The Clipboard API has been
-blocked…` as a `console.error` **on every copy click**. 4.0.2 exposes no option to skip it. That branch is
-  `chore/CC-004-copy-to-clipboard-4` (`2faf894`, pushed, no PR) as the record.
-- **Alex chose to port the copy in-house** over staying on 3.x or accepting the error. **#54, `18cfd4a`**:
-  `copyText` in `src/utils/copy-text.ts` — the 3.3.3 `execCommand` path, its LICENSE carried verbatim — and
-  `copy-to-clipboard` dropped. Bundle 255,755 → 254,084 bytes. The `no console errors…` e2e test now clicks
-  both copy buttons; against a 4.x build it fails 5/5 with two policy errors.
-- **#48 closed, #55 merged** (`4c4f9d2`): `@dependabot recreate` on #48 made Dependabot close it
-  ("updatable in another way") and open #55 — React and `react-dom` 19.3.0 with their `@types`, plus `scheduler` in the lockfile, and no
-  `copy-to-clipboard` — green, merged under the delegation.
-  Same mechanism as #32 → #35 in Session 3 (`docs/history/SESSIONS.md`).
-- **#56, `2c86064`**: rebase is the default in `docs/GIT.md`, `CLAUDE.md`, `DEVELOPMENT.md`, `SELF-REVIEW.md`,
-  `GLOSSARY.md` and `README.md`, with `git branch -d` refusing after a rebase and "cite PR numbers, not
-  branch hashes" written down.
-
-**18 September — PR 7, and a boundary fix that was not in the plan.** #58 landed Vitest, 25 cases over
-`src/utils/color-utils.ts`, a `test:unit` step CI has now been observed running (step 6 of 9, `22 passed`
-at the time, 175ms), and the twelve-file documentation sweep. Two review rounds ran on it, then a third on
-the fix: `da-review` found four surviving mutants (AA `Pass` at 5:1 was never asserted), `copilot-surrogate`
-found nine MATERIAL prose slips of one kind — the sweep corrected a sentence and left its neighbour — and a
-second `da-review` on the fix found the sharpest one of the session, below.
-
-**The fix Alex asked for mid-PR:** WCAG 1.4.3 and 1.4.6 say "at least" 7:1, 4.5:1 and 3:1, and `getLevel`
-used `>`, so a ratio of exactly 4.5 was AA to the spec and `Fail` in this tool. Now `>=`. Nothing observable
-changed — an exhaustive search of every ordered pair of 8-bit colours finds no ratio of exactly 3, 4.5 or 7,
-the closest within ~1e-13 — and it closed a latent gap: `isPoorContrast` is `contrast < 3`, so under `>` a
-ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (workstream 5 above).
-
-**Major novel patterns, 17 and 18 September:**
-
-6. **A dependency's own bug fix can be the regression.** `copy-to-clipboard` 4.x does exactly what this
-   repo's docs had called the only safe shape — `writeText` inside a `try`, `execCommand` on the throw —
-   and the try is not free: the blocked attempt is itself reported to the console, once per click, in a
-   panel whose users are developers with DevTools open. Measure the side effects of a fix, not only whether
-   the outcome is right. The `try`/`catch` advice in `docs/ARCHITECTURE.md` was rewritten because of it.
-7. **A verification command can decay.** The check written into `docs/GIT.md` for "did this branch land"
-   was `git diff <branch> origin/main -- <paths>`, empty at the time and false days later, because two
-   further PRs touched the same files — it would tell a reader a landed branch had not landed.
-   `git cherry origin/main <branch>` compares patch ids and cannot go stale that way. A command in a rule
-   document is a claim with a shelf life; prefer the one whose answer does not depend on when it is run.
-8. **The 429 that ate Session 5's verification round did it again**, on two agents rather than four
-   (`docs/DEVELOPMENT.md` §Scale the fan-out caps concurrency at two, which was respected). Both died before
-   any work; one left a scratch spec in the tree. Re-dispatching a single agent after the reset worked.
-   n=3 for this failure mode: check the tree for `zz-*` leftovers after any agent dies.
-9. **Flipping an assertion can delete a guard you did not mean to touch.** The three boundary cases
-   asserted `Fail` at exactly 7, 4.5 and 3. Fixing `getLevel` to `>=` flipped them to `Pass` — correct, and
-   it removed the only thing catching a threshold drifting _down_, which is the direction that grades a
-   failing pair as passing. Planted `>= 6.5`, `>= 4.4` and `>= 2.95`: all three ran green
-   (`da-review`, 18 September 2026). A case that changes sides is two changes — the assertion it stops
-   making and the one it starts — and the one it stops making may be the load-bearing one. Both sides are
-   pinned now, one step either side, the way `isDark` already was.
-10. **`git checkout -- <file>` restores the index — HEAD when nothing is staged — not the state before
-    the probe.** Planting the old operator
-    over an uncommitted fix and then "restoring" reverted the fix and left the mutation. The boundary tests
-    failed on the next run, so the tests written for that fix are what caught its silent removal. Restore a
-    probe with the inverse edit, `git add` the work first, or commit before probing.
-11. **A number measured on a subset, stated as global.** "Nearest overall `#458301` at 4.4999999323" was
-    the nearest within the set actually searched — every 8-bit colour against black and against white,
-    plus every grey pair — and it went into two files and a PR body as a claim about every colour. The exhaustive search found different pairs, ~1e-13 out. Name the
-    set that was searched in the same sentence as the number.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
    `docs/research/01-pcr-workflow-port.md` from #75's branch (`docs/CC-005-pcr-workflow-proposal`), or
    from `main` if Alex has merged it.
-    - The plan is §8 plus the three closing sections. The last, "Reviews of PR H", is the authority for
+    - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** Once this handoff merges, `grep -c '^## Session [0-9]' PROGRESS.md` gives 7
-   (Sessions 6 to 12). That is expected: PR E archives.
-    - E's branch archives only Session 6. After merging `main` into it, the band holds Sessions 7 to 12,
-      six entries, so **E archives Session 7 as well**, as a new commit. Re-measure the band in bytes.
-    - Do not open a separate archive PR.
+2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 8 to 12): `CC-005`
+   PR E archived Sessions 6 and 7, the pre-grill Brief and the 11 September commit sequence together.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect draft
       #75 at `8d97a69` or later and this handoff, unless Alex has merged it.
@@ -761,8 +459,9 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
       findings as that section records them. Nothing else.
     - Ask Alex decision (t) if it is not answered, and record it in the file.
     - Mark #75 ready. Alex merges.
-    - **E:** merge `main` into `docs/CC-005-archive-session-6`, resolve `PROGRESS.md`, and archive Session 7
-      too (step 2). Run both reviews: the diff is over 200 lines. Then open the PR.
+    - ~~**E:** merge `main` into `docs/CC-005-archive-session-6`, resolve `PROGRESS.md`, and archive
+      Session 7 too. Run both reviews: the diff is over 200 lines. Then open the PR.~~ Done on the branch in
+      Session 13 (`31e6d81` merged `main`, `e5e0b2f` archived Session 7), both reviews folded. Alex merges.
     - Then A, per §8.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
@@ -776,27 +475,20 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
 7. Decision branches carried in. **Open for Alex, from Session 12: (t)** `ask` or `deny` on
    `git commit --amend` in PR G's hook. `ask` was R1's M9; `da-review` M2 showed its second reason no longer
    holds once the matcher excludes a quoted `--amend`. With `ask`, `CLAUDE.md` and `docs/GIT.md` must say
-   "the hook asks; only Alex answers yes". Needed before G. **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The rest is Session 10's text, unchanged: ~~**(a)** the pre-push suite gains a fourth command, `test:unit`,
-   running second~~ — shipped in #58 and observed in CI (PR #42's body on GitHub calls that PR "PR 8" —
-   its merge commit `8ac0bdc` carries no body at all; the plan's numbering is the authority);
+   "the hook asks; only Alex answers yes". Needed before G. **Settled in Session 11** (`docs/research/01-pcr-workflow-port.md`, Decisions): **(p)** promoted in PR D; **(q)** `CC-005`; **(r)** recorded as an observation, not adopted; **(s)** `implementer.md` on Sonnet at `high`, PR B. The settled (a), (c), (d) and (e) are
+   archived (`docs/history/SESSIONS.md` §Retired sections). The rest is Session 10's text, unchanged:
    **(f)** whether to adopt a mutation gate, whose re-entry condition fired when the colour utilities got
    unit tests — recorded as fired in six files, adopted nowhere; **(g)** whether to adopt `docs/INDEX.md`,
    whose "after roughly ten PRs" condition fired at 28 merged / 21 human-authored; **(b)** whether
    workstream 5, now five sibling fixes rather than three (§Next workstreams item 5), starts before or
-   after CC-004 finishes; ~~**(c)** arrows
-   or `function` declarations for components — decided in-session in #50, Alex's to flip before PR 6
-   converts anything~~ — settled 13 September 2026: Alex merged #50 (`bbb822b`) with arrows; ~~**(d)** #48 — take `copy-to-clipboard` 4.x
-   (what that needs is in `docs/GIT.md` §Dependabot) or hold it~~ — settled 17 September 2026: neither. The
-   library was dropped (#54) after 4.x was shown to log a `console.error` on every copy click; #48 closed
-   and Dependabot's #55 brought React 19.3.0 on its own; ~~**(e)** whether rebase merges are now
-   accepted~~ — settled 17 September 2026: Alex confirmed rebase is the default, written down in #56;
+   after CC-004 finishes;
    **(h)** which button a _delegated Dependabot_ merge uses: `CLAUDE.md` §PR workflow and `docs/GIT.md`
    §Who merges both prescribe `gh pr merge <n> --merge --admin --delete-branch`, written before rebase became
    the default. #55 was merged that way because that is what they say. Not changed without Alex; **(i)** two
    carry-overs from Session 2, still open — `copilot-surrogate.md`'s trigger names comment-block edits in
    `public/app/*.js`, which the `CLAUDE.md` path table cannot express (leave as a superset, or drop it), and
-   `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (28, 43, 87 — still landing on
-   18 September 2026), which will drift the first time the fixture file changes. The store published 2.1.0
+   `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (87 — still landing on
+   29 September 2026; the 28 and 43 cites are gone), which will drift the first time the fixture file changes. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL); **(j)** the Claude Code auto-mode classifier refused
    `gh pr merge 61 --merge --admin --delete-branch` on first attempt ("Merge Without Review") despite
@@ -807,7 +499,8 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
    another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
    #59, #60, #63, #64, #66 and #67 — handoffs and archives), every one its own small PR, and all but #51
-   (written while #50 was still open, as §Session 6 records) opened after the feature PR merged; Session 9's
+   (written while #50 was still open, as Session 6's entry recorded, now in
+   `git show 18205a1:PROGRESS.md`) opened after the feature PR merged; Session 9's
    two follow the same shape. Worth rewriting that line to match observed
    practice, or leaving it and continuing to
    disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"
@@ -848,5 +541,5 @@ ratio of exactly 3 was neither poor nor passing. The sibling still uses `>` (wor
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 and 7, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
