@@ -8,14 +8,15 @@ Living state document — current state, what's next. Session-by-session detail 
 Updated 29 September 2026, end of Session 12: **PR H (#75) has passed `spec-grill` R2 (nit-floor) and both
 reviews, and every finding is folded; one confirm round on that fold is left before it goes ready.** PR E is
 built and pushed as `docs/CC-005-archive-session-6` (`59a39b6`), no PR yet. Session 12 handed off on the
-5-hour line (trigger 4), not the token lines. One question is Alex's before PR G: `ask` or `deny` on
+5-hour line (trigger 4); the soft token line (trigger 2) had also fired and was overridden (§Session 12
+pattern 2). One question is Alex's before PR G: `ask` or `deny` on
 `git commit --amend` (decision (t)).
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
 `docs/research/01-pcr-workflow-port.md` (§8 and the closing fold section). That file is on the draft
-[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until `spec-grill` R2 and
-both reviews pass. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
+[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
+reviews passed in Session 12. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
 
 Updated 28 September 2026, end of Session 10 — **CC-004 rows 1 to 10 have merged — row 10's second half as
@@ -142,10 +143,10 @@ inside the cross-origin panel, and Chrome does not block it — observed live 12
 ## Session 12 — 29 September 2026 (CC-005: PR H through R2 and both reviews, PR E built)
 
 **PR H's grill and reviews are done and folded; the 5-hour window stopped the confirm round on the review
-fold.** Nothing merged except #76 (Alex, at the start of the session).
+fold.** Nothing merged except #76 (Alex, early in the session: open at the loading checks, merged before E was built).
 
 **Setup:** loading checks matched, with one expected difference: #76 was still open, so `main`'s count was
-5 until Alex merged it mid-session. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
+5 until Alex merged it. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
 Opus 5.5 at `high`.
 
 **Done:**
@@ -166,7 +167,7 @@ Opus 5.5 at `high`.
       the research file, merged (`8d97a69`), and the suite re-run before pushing.
 - **PR E, built and pushed without a PR**: `docs/CC-005-archive-session-6`, `59a39b6`.
     - Session 6 becomes row 6 of `docs/history/SESSIONS.md`.
-    - A new §Retired sections holds the pre-grill Brief, the 11 September commit sequence, and the
+    - A new `docs/history/SESSIONS.md` §Retired sections holds the pre-grill Brief, the 11 September commit sequence, and the
       settled branches (a), (c), (d) and (e).
     - `spec-grill.md` step 2's stale citation is repointed.
     - `PROGRESS.md` went from 64,924 to 43,107 bytes on that branch.
@@ -436,7 +437,7 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
    `docs/research/01-pcr-workflow-port.md` from #75's branch (`docs/CC-005-pcr-workflow-proposal`), or
    from `main` if Alex has merged it.
-    - The plan is §8 plus the three closing sections. The last, "Reviews of PR H", is the authority for
+    - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 8 to 12): `CC-005`
