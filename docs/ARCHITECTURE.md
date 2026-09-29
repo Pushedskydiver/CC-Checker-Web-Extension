@@ -431,4 +431,5 @@ model-client sections (no equivalent in an extension).
 - `docs/SELF-REVIEW.md` — the pre-PR checklist
 - `PROGRESS.md` and `docs/history/SESSIONS.md` — session handoff, living state and archive
 - `CLAUDE.md` — the collaboration contract and the review-trigger table
-- `.claude/agents/` — `da-review`, `copilot-surrogate`, `spec-grill`
+- `.claude/agents/` — `da-review`, `copilot-surrogate`, `spec-grill`, and `implementer`, which builds a
+  planned item for them to review

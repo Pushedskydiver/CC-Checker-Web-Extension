@@ -374,8 +374,8 @@ the reading is the whole gate:
 - `CLAUDE.md` (and `AGENTS.md`, a symlink to it)
 - `docs/**` — this file, `ARCHITECTURE.md`, `DEVELOPMENT.md`, `TESTING.md`, `CONVENTIONS.md`,
   `SELF-REVIEW.md`, `DA-REVIEW.md`, `REVIEW-PATTERNS.md`, `RATIONALIZATIONS.md`, `GLOSSARY.md`
-- `.claude/agents/**` — `da-review.md`, `copilot-surrogate.md`, `spec-grill.md`; these are executed
-  as instructions, so a change here changes behaviour the way a code change does
+- `.claude/agents/**` — `da-review.md`, `copilot-surrogate.md`, `spec-grill.md`, `implementer.md`; these
+  are executed as instructions, so a change here changes behaviour the way a code change does
 - `public/manifest.json` — permissions, `web_accessible_resources`, the version; a bad entry ships
   to every user on the next release and cannot be recalled
 - `.github/workflows/**` — decides what gets checked
