@@ -2,10 +2,10 @@
 
 _A record, not instructions. Once PRs A to G merge, the docs they change are the authority._
 
-Sessions 11 and 12, 29 September 2026. `main` at `2fd018b`. Ticket `CC-005`.
+Sessions 11 to 13, 29 September 2026. `main` at `2fd018b`. Ticket `CC-005`.
 
-Status: **approved by Alex with the decisions at the end; `spec-grill` R1 and R2 folded (the closing
-sections).** Nothing else in the repo changed in this PR. Line citations are against `main` at `2fd018b`.
+Status: **approved by Alex with the decisions at the end; `spec-grill` R1 and R2, both reviews and
+their confirm round folded (the closing sections).** Nothing else in the repo changed in this PR. Line citations are against `main` at `2fd018b`.
 
 ## Plain-English answer
 
@@ -29,8 +29,8 @@ Most of PCR's workflow ports cleanly. It needs smaller numbers here, not a new s
     - `docs/TESTING.md`, whose one table makes the file 69% whitespace padding by bytes;
     - an archive trigger that has been under-firing, because it converted bytes to tokens at the wrong
       ratio.
-6. **Port one hook, not two.** `guard-destructive-git` should come across, plus an **`ask` on
-   `git commit --amend`**, which this repo forbids and nothing enforces (only Alex can answer it).
+6. **Port one hook, not two.** `guard-destructive-git` should come across, plus a **`deny` on
+   `git commit --amend`**, which this repo forbids and nothing enforces (decision (t), Alex).
    `post-edit-check` should wait.
 
 ## How this was researched
@@ -378,7 +378,7 @@ Ticket `CC-005` (Decision 5). Order revised after spec-grill R1 (M5): **H, E, A,
 | C   | Swap `AGENTS.md` / `CLAUDE.md`; state the budget; siblings `CONVENTIONS.md:39`, `DEVELOPMENT.md:454-455`, `GIT.md:372`, `copilot-surrogate.md:35`, `CLAUDE.md:152-153`, `DEVELOPMENT.md:408`, `GLOSSARY.md:97` (L4, R2)                                                                                                                               | `CLAUDE.md`, `AGENTS.md`, siblings                                       | surrogate; both if >200 |
 | E   | `PROGRESS.md` archive: Session 6 (the standing Session 11 instruction) **plus** the pre-grill Brief and the 11 September commit sequence, compressed the way sessions already are (a row or pointer in `docs/history/SESSIONS.md`, full text in `git log -p`), and the struck decision branches (a), (c), (d), (e) (M3)                               | `PROGRESS.md`, `docs/history/SESSIONS.md`                                | surrogate; both if >200 |
 | F   | `docs/TESTING.md` table → sections (then `GLOSSARY.md` separately if wanted)                                                                                                                                                                                                                                                                          | `docs/**`; >200 lines                                                    | both                    |
-| G   | `guard-destructive-git.mjs` + `.claude/settings.json` **+ `.gitignore` gains `!.claude/settings.json`** (B1) + a protected-branch list (M8) + `ask` on `--amend` (M9) + tests, and the unit-count sweep (L5)                                                                                                                                          | `scripts/`, `.claude/`, `.gitignore`, `vitest.config.ts`, count siblings | both                    |
+| G   | `guard-destructive-git.mjs` + `.claude/settings.json` **+ `.gitignore` gains `!.claude/settings.json`** (B1) + a protected-branch list (M8) + `deny` on `--amend` (t) + tests, and the unit-count sweep (L5)                                                                                                                                          | `scripts/`, `.claude/`, `.gitignore`, `vitest.config.ts`, count siblings | both                    |
 
 CC-004 row 11 resumes after all eight (Decision 6).
 
@@ -411,6 +411,8 @@ in-session and are his to flip. Spec-grill R1 revised 2 and 3.
    his tracker; PR A adds it to `docs/GIT.md:13-16` (L9).
 6. **All of A to H before CC-004 row 11** (Alex). Agreed: row 11 should run under the new agent and
    handoff doc.
+7. **Decision (t): `deny` on `git commit --amend`** (Alex, Session 13, 29 September 2026). It overrides
+   R1's M9. The "Reviews of PR H" section says what G does with it.
 
 ## spec-grill R1 (29 September 2026): 1 BLOCKING, 10 MATERIAL, 11 LOW — the fold
 
@@ -434,6 +436,7 @@ Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
       dead end when a commit message merely quotes the rule. The matcher reads argv tokens of a command
       whose first words are `git commit`, and two false-positive tests (a quoted `--amend` in `-m`, and a
       `grep`) are required.
+    - Superseded: Alex chose `deny`, decision (t) (Decision 7).
 - **M6, M10**: Decisions 3 and 2 above.
 - **L1**: `worktree.baseRef: "head"` makes `isolation: worktree` start from the current HEAD. The
   remaining reasons for manual worktrees are `npm ci` (Session 10 pattern 2) and B1. Trial it in D.
@@ -487,13 +490,16 @@ authority for that row.
   inside `-m`, and `grep -- --amend`.
 - **Fail closed.** A parse error or exception emits `ask` with the reason "guard hook failed", with a test.
   PCR's `main()` returns silently on bad JSON, and a throwing PreToolUse hook lets the call through.
-- **Acceptance** is an observed `ask` prompt from a real attempt in the permission mode Alex runs, dated,
-  with the transcript line in the PR body. A green matcher test proves the script, not that Claude Code
-  ran it. Hooks load at session start, so G's body states the restart step.
-- **`ask` or `deny` on `--amend` is Alex's call before G** (da M2). R1's M9 chose `ask` for two reasons:
+- **Acceptance** is an observed `ask` from a real `git branch -D` and an observed `deny` from a real
+  `git commit --amend`, in the permission mode Alex runs, dated, with the transcript lines in the PR body.
+  A green matcher test proves the script, not that Claude Code ran it. The file watcher normally picks up
+  settings edits without a restart (the live hooks doc, checked 29 September 2026). G's body confirms
+  with `/hooks`, which is read-only, that the PreToolUse Bash entry lists the script before the real
+  attempts, and restarts only if it does not.
+- **`deny` on `--amend`: Alex's decision (t)** (da M2, Decision 7). R1's M9 chose `ask` for two reasons:
   only Alex can answer it, and a commit message quoting the rule should not dead-end. The matcher above
-  already excludes the quoted case, so that second reason is gone. `deny` is the faithful form of "Never".
-  With `ask`, `CLAUDE.md` and `docs/GIT.md` §No `--amend` must say "the hook asks; only Alex answers yes".
+  already excludes the quoted case, so that second reason is gone, and `deny` is the faithful form of
+  "Never". G makes `CLAUDE.md` and `docs/GIT.md` §No `--amend` say the hook denies it.
 - **Protected branches** (da M3). Keep PCR's live check: `git branch -D` of a branch backing an open PR
   asks, via `gh pr list`, and fails closed. Add a static list for branches kept without a PR
   (`chore/CC-004-copy-to-clipboard-4`, `feat/CC-003-apca-3`). The list's one home is the script, and
@@ -520,7 +526,8 @@ authority for that row.
 
 ### PR B, the implementer (da M6, L1)
 
-- **Dry-run.** The brief is Session 10's (`PROGRESS.md` §Session 10). It runs in a scratch worktree on a
+- **Dry-run.** Session 10's brief was inline and not kept, so B rebuilds it from `PROGRESS.md`
+  §Session 10's description and says so in its body. It runs in a scratch worktree on a
   scratch branch cut from #72's parent. It passes when the report lists the choices the brief left open
   and the pre-push suite output is pasted in. Divergence from #72 is noted, not forbidden. The commands and
   counts go in B's body, and the scratch branch and worktree are removed after.
@@ -557,3 +564,17 @@ cites, not R1's words:
 - da L6 (`CC-005` used before `docs/GIT.md` lists it): noted, no action; nothing checks it.
 - Surrogate, noticed on `main`: `CLAUDE.md` says 36 Vitest tests in Commands and 25 colour-utility cases
   "as of 18 September 2026" in Process directives. Both are true; it goes on G's count sweep (L5).
+
+### Confirm round (29 September 2026, Session 13)
+
+A fresh Fable 5.1 verifier, ~85k tokens, confirm-or-disprove on this section and `ab598b0`'s in-place
+corrections: 0 BLOCKING, 0 MATERIAL, nit-floor. Every finding above was CONFIRMED except three PARTIALs, each on one
+sentence: da M1 and L4 on the hooks sentence, and M6 on B's brief. A surrogate nit's PCR range
+(`PROGRESS-ARCHIVE.md:3368-3377`) also overshoots by two lines; it is left as is. With the (t) drift under
+da M2, the fold had introduced three LOWs, each corrected above:
+
+- **Hooks and restarts.** The acceptance bullet said hooks load at session start. The live hooks doc says the
+  file watcher normally picks up settings edits.
+- **`ask` or `deny`.** Plain-English item 6, R1's M9 and §8 row G still stated a settled value. They became
+  `deny` once Alex answered (t).
+- **B's brief.** "The brief is Session 10's" pointed at a description; the brief itself was inline.
