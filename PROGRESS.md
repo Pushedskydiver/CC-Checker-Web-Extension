@@ -204,7 +204,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
   CONFIRMED all four in-tree folds and found one LOW that the fold itself caused (the band went from 22,576 to
   22,609 bytes). That was a prose-only fold, so the coordinator read it (decision (r)).
 - **PR F, prepared, not built.** Converting §What each test proves takes `docs/TESTING.md` from 117,068 to
-  34,557 bytes and passes Prettier. The method is in loading step 5.
+  34,635 bytes with the spec's full titles, and passes Prettier. The method is in loading step 5.
 - **Merged:** nothing. **Uploaded:** no.
 
 **Handoff facts:**
@@ -221,15 +221,16 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 
 - **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
   2 October.
-- **Warning signs:** none. The reviewer and the confirm verifier shared one detached worktree, one after the
-  other, never at the same time.
+- **Warning signs:** one. `291a668` and `bd6a418` were pushed after only `npm run lint`, the same slip as
+  Session 17's. The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
+  reviewer and the confirm verifier shared one detached worktree, one after the other, never at the same time.
 - **Clarifying question:** none that Session 17's entry should have answered.
 
 **Major novel patterns Session 18:**
 
 1. **A fold inside the band moves the band figure quoted outside it.** #93's LOW fix added 33 bytes to the
    Session 13 entry, so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
-   was the same class, which makes two incidents. The candidate rule is to re-take any band figure after the
+   was the same class, which makes two incidents. This handoff's own review fold made a third (25,973 to 26,183). The candidate rule is to re-take any band figure after the
    last commit that touches the band. Promoting it is Alex's call (`docs/DEVELOPMENT.md` §Process-rule
    promotion).
 2. **The table's Group column was not the spec's title.** It shortened `colour picker (needs captureVisibleTab)`
@@ -576,7 +577,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
    small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR (#93), leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
-    - **With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 25,973 bytes.** Archive
+    - **With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
       Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
       commit that touches the band (Session 18 pattern 1).
 3. **Confirm the state, live.**
@@ -595,11 +596,12 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
       `### <describe title> › <test title>`, a blank line, then the "What it proves" cell. Wrap the cell with
       Python's `textwrap.wrap(w, width=100, break_long_words=False, break_on_hyphens=False)`, and assert that
       no continuation line starts with `-`, `*`, `+`, `>`, `#` or `1.`. Use the spec's full describe titles
-      (Session 18 pattern 2), so the headings diff clean against
-      `npx playwright test --list | sed -E 's/^.*extension\.spec\.ts:[0-9]+:[0-9]+ › //'`.
-      The file goes from 117,068 to 34,557 bytes and passes `prettier --check`. In the PR body, give reviewers a
+      (Session 18 pattern 2), so the headings, with `### ` stripped, diff clean against
+      `npx playwright test --list | grep ' › ' | sed -E 's/^.*extension\.spec\.ts:[0-9]+:[0-9]+ › //'`.
+      The file goes from 117,068 to 34,635 bytes (34,557 with the table's short `colour picker` label) and
+      passes `prettier --check`. In the PR body, give reviewers a
       whitespace-collapsed old-against-new check of every cell.
-    - F shifts decision (m)'s `docs/TESTING.md:338` cite (step 7) by about 60 lines. Repoint it to
+    - F shifts decision (m)'s `docs/TESTING.md:338` cite (step 7) by about 132 lines, to 470. Repoint it to
       §Not ported from the source documents. `docs/TESTING.md:11` sits above the table and does not move.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
