@@ -54,7 +54,7 @@ merged by Claude (`gh pr merge <n> --merge --admin --delete-branch`) and recreat
 (`@dependabot recreate`) when its group needs rebuilding. Branch protection on `main` requires a pull request and a green
 `Lint, build, e2e` status check (the `quality` job in `.github/workflows/ci.yml`: lint, build, e2e
 on Linux — required since 11 September 2026, after its first green run on PR #28), but **no
-approving review**: there is no second human reviewer, so review is the agents plus Alex's own pass
+approving review**: there is no second human reviewer (Alex, 29 September 2026), so review is the agents plus Alex's own pass
 (`gh api`, 29 September 2026). `enforce_admins` is off. **Rebase is the default merge button since
 13 September 2026**; merge commit and squash stay available and the button is his call per PR
 (`docs/GIT.md` §Merge strategy). A rebase keeps each branch commit's own subject and body but
