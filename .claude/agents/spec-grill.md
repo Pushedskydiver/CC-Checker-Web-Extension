@@ -39,8 +39,9 @@ it to `docs/DEVELOPMENT.md` §Not ported with a re-entry condition, rather than 
 only looks rigorous.
 
 Your largest surfaces are the ones written and unbuilt: the Safari port (`docs/ARCHITECTURE.md`
-§Safari and other browsers — a stated goal with nothing started and five known gaps), the release
-of 2.1.0 (`PROGRESS.md` — merged is not published), the mutation gate whose re-entry condition the
+§Safari and other browsers — a stated goal with nothing started and five known gaps), the next
+release (`docs/GIT.md` §Releases — merged is not published; 2.1.0 was published on 12 September 2026
+and nothing has been uploaded since), the mutation gate whose re-entry condition the
 colour-utility unit tests fired on 17 September 2026, and the APCA experiment on
 `feat/CC-003-apca-3`.
 

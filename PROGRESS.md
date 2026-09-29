@@ -14,7 +14,7 @@ pattern 2). One question is Alex's before PR G: `ask` or `deny` on
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
-`docs/research/01-pcr-workflow-port.md` (§8 and the closing fold section). That file is on the draft
+`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on the draft
 [#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
 reviews passed in Session 12. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
@@ -459,8 +459,9 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
       findings as that section records them. Nothing else.
     - Ask Alex decision (t) if it is not answered, and record it in the file.
     - Mark #75 ready. Alex merges.
-    - **E:** merge `main` into `docs/CC-005-archive-session-6`, resolve `PROGRESS.md`, and archive Session 7
-      too (step 2). Run both reviews: the diff is over 200 lines. Then open the PR.
+    - ~~**E:** merge `main` into `docs/CC-005-archive-session-6`, resolve `PROGRESS.md`, and archive
+      Session 7 too. Run both reviews: the diff is over 200 lines. Then open the PR.~~ Done on the branch in
+      Session 13 (`31e6d81` merged `main`, `e5e0b2f` archived Session 7), both reviews folded. Alex merges.
     - Then A, per §8.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
@@ -486,8 +487,8 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    the default. #55 was merged that way because that is what they say. Not changed without Alex; **(i)** two
    carry-overs from Session 2, still open — `copilot-surrogate.md`'s trigger names comment-block edits in
    `public/app/*.js`, which the `CLAUDE.md` path table cannot express (leave as a superset, or drop it), and
-   `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (28, 43, 87 — still landing on
-   18 September 2026), which will drift the first time the fixture file changes. The store published 2.1.0
+   `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (87 — still landing on
+   29 September 2026; the 28 and 43 cites are gone), which will drift the first time the fixture file changes. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
    (`docs/GIT.md` §Releases has the URL); **(j)** the Claude Code auto-mode classifier refused
    `gh pr merge 61 --merge --admin --delete-branch` on first attempt ("Merge Without Review") despite
@@ -498,7 +499,8 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
    #59, #60, #63, #64, #66 and #67 — handoffs and archives), every one its own small PR, and all but #51
-   (written while #50 was still open, as Session 6's entry recorded; `docs/history/SESSIONS.md` row 6) opened after the feature PR merged; Session 9's
+   (written while #50 was still open, as Session 6's entry recorded, now in
+   `git show 18205a1:PROGRESS.md`) opened after the feature PR merged; Session 9's
    two follow the same shape. Worth rewriting that line to match observed
    practice, or leaving it and continuing to
    disagree with a stated reason each time it comes up; not decided; **(l)** the "N Vitest cases"

@@ -33,6 +33,6 @@ The full text survives in `git log -p PROGRESS.md` at that commit, as an archive
       PR "PR 8"; the plan's numbering is the authority.)
     - **(c)** arrows or `function` declarations for components — arrows, in #50, merged 13 September 2026.
     - **(d)** take `copy-to-clipboard` 4.x or hold it — neither: the library went in #54, #48 closed, and
-      Dependabot's #55 brought React 19.3.0 alone (17 September 2026).
+      Dependabot's #55 brought React 19.3.0 on its own (17 September 2026).
     - **(e)** whether rebase merges are accepted — settled 17 September 2026: Alex confirmed rebase as the
       default, in use since #50 on 13 September, and #56 wrote it down.
