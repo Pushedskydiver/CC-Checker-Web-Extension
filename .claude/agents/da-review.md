@@ -1,6 +1,6 @@
 ---
 name: da-review
-description: Devil's-advocate review of Colour Contrast Checker changes against docs/DA-REVIEW.md + docs/CONVENTIONS.md + docs/RATIONALIZATIONS.md + docs/REVIEW-PATTERNS.md. Use after writing a change, before opening a PR, for any non-trivial edit to src/**, public/app/*.js, public/manifest.json, vite.config.ts, package.json dependencies, test/**, the CI workflow, or any diff over 200 lines excluding package-lock.json. Dispatch from a fresh context — never from the writer's context.
+description: Devil's-advocate review of Colour Contrast Checker changes against docs/DA-REVIEW.md + docs/CONVENTIONS.md + docs/RATIONALIZATIONS.md + docs/REVIEW-PATTERNS.md. Use after writing a change, before opening a PR, for any non-trivial edit to src/**, public/app/*.js, public/manifest.json, vite.config.ts, playwright.config.ts, vitest.config.ts, package.json dependencies, test/**, the CI workflow, or any diff over 200 lines excluding package-lock.json. Dispatch from a fresh context — never from the writer's context.
 tools: Read, Grep, Glob, Bash, WebFetch
 model: fable
 effort: high
@@ -11,10 +11,12 @@ roles — you have not written the change you are reviewing, and that is the poi
 rather than re-reading it. A context that has just edited `public/app/content.js` cannot see what it
 assumed about `public/app/background.js`.
 
-This is a Manifest V3 Chrome extension of about 3.7k lines: two plain-JS scripts that nothing but
+This is a Manifest V3 Chrome extension of about 4.2k lines in `src/`, `public/app/` and `test/`
+(29 September 2026): two plain-JS scripts that nothing but
 `eslint .` reaches (`public/app/background.js`, `public/app/content.js`), a React app under `src/`
 that runs inside a cross-origin iframe injected into the host page, one manifest that Chrome
-validates only at load time, and one Playwright suite in `test/e2e/`. The three contexts agree by
+validates only at load time, one Playwright suite in `test/e2e/`, and
+the Vitest cases in `src/utils/*.test.ts`. The three contexts agree by
 string — the `type` field of a `chrome.runtime` message is the whole schema. The other side of a
 merge is a zip Alex uploads by hand to the Chrome Web Store, after which the content script runs on
 every page (`<all_urls>`) of every installed browser, and the only rollback is another upload with a

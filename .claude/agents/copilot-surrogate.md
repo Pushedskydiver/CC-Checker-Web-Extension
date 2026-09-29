@@ -1,6 +1,6 @@
 ---
 name: copilot-surrogate
-description: Factual-claim reviewer for Colour Contrast Checker, mandatory wherever `CLAUDE.md`'s trigger table routes to it, which includes every prose change. Reads each touched file at HEAD in full, not the diff; returns findings in-band, never posts PR comments.
+description: Factual-claim reviewer for Colour Contrast Checker, mandatory wherever `CLAUDE.md`'s trigger table routes to it and on any other prose change listed in this file's §Trigger (`PROGRESS.md`, config comment blocks). Reads each touched file at HEAD in full; findings in-band, never PR comments.
 tools: Read, Grep, Glob, Bash
 model: fable
 effort: high
@@ -63,8 +63,12 @@ directives and is the source of truth; in words, dispatch when any of these hold
    generated source here, so the filter removes little — which is deliberate.
 3. **Ceiling: 20 files or ~400 KB post-filter.** After step 2's filter, the whole tracked text of this
    repo is about 130 KB of code and config and 550 KB of Markdown: 131,885 and 550,934 bytes at
-   `b4de022` (29 September 2026), from `git grep -Il '' <ref>` with step 2's excluded paths as `:!`
-   pathspecs, then `git cat-file -s` on each path. A change that trips the ceiling is either a
+   `b4de022` (29 September 2026), from
+   `git grep -Il '' b4de022 -- . ':!package-lock.json' ':!build' ':!test-results'`
+   `':!public/favicons' ':!public/fonts' ':!public/images' ':!.DS_Store' ':!.vscode'` (one command),
+   then `git cat-file -s` on each path, split on the `.md` suffix. The 131,885 reproduces the research
+   file's figure at `2fd018b`; its 529,362 for Markdown is that commit's 516,610 plus the 12,752-byte
+   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink. A change that trips the ceiling is either a
    repo-wide docs sweep or something that should have been split. If the post-filter set exceeds it,
    stop without walking any file and return a single-line escalation header
    `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 400 KB)` followed by the file
@@ -84,8 +88,8 @@ directives and is the source of truth; in words, dispatch when any of these hold
 - **Named identifier.** A file path, an npm script, a message `type`, a `data-cc-*` attribute, a
   `localStorage` key, a CSS Module class, a `@value` token, a manifest key, an exported constant.
   `grep` for it. Two traps that are easy to misquote from memory: the scripts are `build`, `watch`,
-  `package`, `lint`, `lint:ts`, `lint:js`, `lint:css`, `format`, `format:check`, `test` and
-  `test:e2e` (`node -e
+  `package`, `lint`, `lint:ts`, `lint:js`, `lint:css`, `format`, `format:check`, `test:unit`,
+  `test` and `test:e2e` (`node -e
 "console.log(Object.keys(require('./package.json').scripts))"`), and the message types are
   `getScreenshot` but `updateScreenShot` — different casing, both correct:
 
