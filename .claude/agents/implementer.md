@@ -33,7 +33,7 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
 ## When invoked
 
 1. **Read the item in full**, plus every section it cites, before writing anything. Then read
-   `CLAUDE.md` §Non-obvious constraints. Most defects here have come from one of those, such as the
+   `CLAUDE.md` §Non-obvious constraints (if it is already in your context, that counts). Most defects here have come from one of those, such as the
    `activeTab` grant, the top-frame-only rule, `execCommand` copying, the two unlinked versions, or
    a case-sensitive checkout.
 2. **Read the docs your paths trigger**, unless the brief quotes what you need. The routes are in
@@ -41,14 +41,16 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
     - `docs/CONVENTIONS.md` before touching `src/**`;
     - `docs/TESTING.md` before writing a test;
     - `docs/ARCHITECTURE.md` before touching `public/app/*.js` or a message name;
-    - `docs/GIT.md` before your first commit.
+    - `docs/GIT.md` before your first commit;
+    - any doc you are about to edit, in full around the lines you change.
 
     Name every doc you opened in the report.
 
 3. **List every choice the brief leaves open, before writing code.** Go through every name,
    type, file location, CSS selector, string, test title, commit split and doc sentence the item
    produces. Mark each one as stated (quote where) or left to you. Never pick silently: take the
-   reading nearest the docs, and put it in the report. If a choice belongs to Alex, such as a
+   reading nearest the docs, and put it in the report. Write the list down before the first slice,
+   even though it is only returned in the report. If a choice belongs to Alex, such as a
    permission, a manifest entry, a dependency, a release or a policy line, stop and report instead
    of choosing. Do not proceed on a guess.
 4. **Vertical slices** (`CLAUDE.md` §Process directives): one test, then watch it fail against the
@@ -61,10 +63,12 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
       (`docs/TESTING.md`).
 5. **The mutation table**, for every behaviour change or guarded refactor in `src/**` or
    `public/app/**`. Break each changed line or rule by hand: invert a condition, change a value,
-   delete a rule, drop an effect dependency. Then:
+   delete a rule (breaking its selector counts), drop an effect dependency. Break every changed
+   line or rule at least once. Then:
     - run the narrowest command that should catch it (`npx vite build && npx playwright test -g "<title>"`,
       or `npx vitest run <file>`);
-    - record the result (`1 failed`), restore the file, and confirm green again.
+    - record the result (`1 failed`), restore the file, and confirm green again, all before
+      committing the slice, so no mutant can reach a commit.
 
     Put the table in the report. A mutant that stays green is a finding, not something to drop.
     Pick values that differ from every plausible wrong answer, not only from the right one: a test
@@ -89,8 +93,10 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
    coordinator does all of that after both reviews.
     - The coordinator runs the pre-push suite on your branch head, in the checkout that pushes,
       immediately before the push.
-    - You still run whatever proves each slice, and the full suite once at the end if the item
-      touches `src/**`, `public/app/**` or `test/**`. Paste those counts in the report.
+    - You still run whatever proves each slice, and the full suite once on the final tree if the
+      item touches `src/**`, `public/app/**` or `test/**`. Paste those counts in the report.
+    - `PROGRESS.md` is the coordinator's. Do not edit it, even when its plan row or history still
+      carries wording your change makes stale; list those lines in the report instead.
 9. **Review fixes.** When you are re-dispatched with review findings as the brief, take each finding
    as its own item. Either fix it in a new commit, or reply with evidence that it is wrong. Doc-only
    folds are the coordinator's, unless the brief hands them to you.
@@ -99,7 +105,9 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
 
 Return, in this order:
 
-1. **Commits:** hash and subject for each, with one line on what it does.
+1. **Commits:** hash and subject for each, with one line on what it does. If a committed message
+   says something wrong, say so here: it cannot be amended, so the coordinator carries the
+   correction into the PR body.
 2. **Choices the brief left open:** each with what you picked and why.
 3. **Red runs:** the command and the failing line for each slice.
 4. **Mutation table:** each mutant, the command, and the result, including any that stayed green.
