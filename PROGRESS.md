@@ -486,8 +486,10 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
 5. **Primary work: PR B, per §8** and the "Reviews of PR H" section's §PR B, once Alex merges #81.
-    - First, `copilot-surrogate` on this handoff, which was not reviewed (trigger 2): before merge if it is
-      still open, otherwise post-merge on `main`, folded into the next `PROGRESS.md` PR.
+    - ~~First, `copilot-surrogate` on this handoff … otherwise post-merge on `main`.~~ **Dropped (Alex,
+      Session 15): no review runs on a PR after it has merged.** Alex never set the practice, and none of his
+      other repos with AI workflows do it. It began with #77 in Session 13 and was copied forward by each handoff.
+      Session 15 stopped the #82 review before it reported.
     - B: `implementer.md` (`model: sonnet`, `effort: high`), dry-run on #72's parent in a scratch
       worktree before merging; the pass criterion is in "Reviews of PR H".
     - Reviews: `copilot-surrogate` per the table (`.claude/agents/**`).
