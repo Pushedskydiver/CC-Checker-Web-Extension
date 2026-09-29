@@ -14,7 +14,8 @@ any of them is the trigger to promote it per `docs/DEVELOPMENT.md` §Process-rul
 every defect below; no gate caught any of them. They were found on 4 September 2026 by five finder
 agents plus hands-on reproduction (a case-sensitive disk image, a child iframe, a grey on the
 saturation slider), then pinned by the Playwright suite in `test/e2e/extension.spec.ts` (18 tests that day).
-The fixes merged into `main` on 11 September 2026 (PR #28); `PROGRESS.md` records the commit sequence.
+The fixes merged into `main` on 11 September 2026 (PR #28); `docs/history/SESSIONS.md` §Retired sections
+summarises the commit sequence, and the full text is in `git log -p PROGRESS.md`.
 
 **Adapted from nas-stacks' and moe's `docs/REVIEW-PATTERNS.md`** for structure and the
 living-document convention only. Their catches belong to a Python relay, shell scripts and a pnpm
