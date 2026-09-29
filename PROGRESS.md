@@ -498,8 +498,8 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 10 to 15) once #83 and this
-   handoff merge. Archive Session 10 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** Done in Session 16: Session 10 is archived (`docs/CC-005-archive-session-10`), so the
+   band holds 5 entries (Sessions 11 to 15), 21,815 bytes.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #83,
       #84 (B), #85 (branch protection) and this handoff, unless Alex has merged them; say which in the entry,

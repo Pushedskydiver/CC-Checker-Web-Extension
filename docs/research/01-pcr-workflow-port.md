@@ -527,7 +527,7 @@ authority for that row.
 ### PR B, the implementer (da M6, L1)
 
 - **Dry-run.** Session 10's brief was inline and not kept, so B rebuilds it from `PROGRESS.md`
-  §Session 10's description and says so in its body. It runs in a scratch worktree on a
+  §Session 10's description (archived since; `git show 759db88:PROGRESS.md`) and says so in its body. It runs in a scratch worktree on a
   scratch branch cut from #72's parent. It passes when the report lists the choices the brief left open
   and the pre-push suite output is pasted in. Divergence from #72 is noted, not forbidden. The commands and
   counts go in B's body, and the scratch branch and worktree are removed after.
