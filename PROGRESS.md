@@ -443,57 +443,6 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
    gitmoji was off-table; both were caught only after commit, where the never-amend rule makes them
    permanent. Count and check the type table before `git commit`, not after.
 
-## Session 8 — 22 September 2026 (CC-004: PR 9 merged, poor-contrast switch pinned)
-
-**Setup:** loading instructions followed in order. Archive trigger 5, did not fire; tree clean;
-`origin/main` at `8af89df` (the Session 7 close, #64, one later than the block predicted); no open
-PRs; pre-push suite green (36 unit, 20 e2e). **Step 6 did not match:** `get_session self` reported
-Sonnet 5 at `xhigh`, and ultracode was on. The session cannot change its own model, so it asked;
-Alex chose Opus 5 at `high` and ultracode off, and switched both himself before PR 9's design work.
-
-**Done:** PR 9 — **#65, `25cf7ab`**, five commits, merged by Alex with a merge commit. One e2e test,
-_poor contrast turns every themed control black on a light background and white on a dark one_,
-reads one element per poor-contrast site (fifteen across twelve components) plus `ActionCta`'s
-filled variant, in three states: the default pair, `#ffffff`/`#eeeeee` and `#000000`/`#111111`.
-It compares resolved colours through a probe element, not class names or spellings, so row 10 can
-move the switch into CSS under it. Watched failing: all 30 Dark/Light branches set to `false` one
-at a time, 30 red. The doc sweep moved the e2e count to 21 in six files (the seventh, this file's
-loading block, is this handoff's) and corrected
-`docs/ARCHITECTURE.md`'s "the only automated tests are Playwright", false since #58.
-
-**Reviews:** two rounds, the cap. `da-review` round one: one MATERIAL (the filled Reverse, Close and
-share buttons were never read — deleting their `.ctaWithBackground` rule left the test green) and
-two Low (the assertion compared the value as written, so `black` failed where `#000` passed; unread
-companion properties undocumented). `copilot-surrogate` round one: two MATERIAL (two more stale
-"20"s) and two Low. In the confirm round `da-review` re-verified its fixes with its own red runs and
-`copilot-surrogate` re-checked the docs; both reached nit-floor, with one new Low from `da-review`
-(below), fixed before the PR opened.
-
-**Post-merge:** branch an ancestor of `main`, deleted with `-d`; pre-push suite green on `25cf7ab`
-(36 unit, 21 e2e). Session 3 archived in its own PR (`docs/CC-004-archive-session-3`).
-
-**Major novel patterns Session 8:**
-
-1. **Killing every branch mutant is not killing every mutant.** The author's sweep set all 30 JS
-   branches to `false` and every one went red, and the test still missed a whole rule: the JS
-   branch was covered, the CSS it switches on was not read for one variant. `da-review` found it by
-   mutating the stylesheet, not the component. For a test that pins a visible outcome, mutate the
-   layer that produces the outcome as well as the one that decides it.
-2. **A fix to a test's permissiveness opened a new one, and only the confirm round saw it.** Painting
-   the value onto a probe made the test compare colours, not spellings — and an unparsable value
-   made the probe silently inherit the body's colour, which at the default pair is exactly the
-   expected foreground (`notacolor` passed). The confirm round exists for this: re-attack the fix,
-   not just re-check the finding.
-3. **The count-sweep grep had the same hole the count had.** The sweep searched for `20 tests`,
-   `20 Playwright` and similar, and missed "20 green tests" and "20-test" — `copilot-surrogate`
-   found both. A third instance of decision (l)'s pattern (22 → 25, 25 → 36, now 20 → 21 e2e).
-4. **A session's recorded model decision is not self-enforcing.** The loading block said Opus 5 at
-   `high`, ultracode off; the session arrived on Sonnet 5 at `xhigh` with ultracode on. The check in
-   step 6 caught it before any design work — that step is the enforcement, so keep it.
-5. **Two reviewers and a drafting session can share one repo without stepping on each other.** The
-   archive branch stayed checked out for its reviewer while the handoff was drafted in a separate
-   `git worktree`, so no agent read a tree that changed under it.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
@@ -605,5 +554,5 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 and 7, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 8, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
