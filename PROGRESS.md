@@ -516,6 +516,9 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
 5. **Primary work: PR A, per §8** (Alex merges #75 and #78).
+    - **First, `copilot-surrogate` on this handoff (#79)**, which was not reviewed (trigger 2). Run it before
+      merge if #79 is still open. Otherwise run it post-merge on `main` and fold its findings into the next
+      `PROGRESS.md` PR, as Session 13 did for #77.
     - A: pin `model`/`effort` on the three agents, trim `copilot-surrogate`'s description, correct its size
       sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). The PR
       body says it is four ideas.
