@@ -29,16 +29,17 @@ rewritten.
 
 ## What actually enforces any of this
 
-Checked against the live repo with `gh api` on 11 September 2026, not inferred from the sources:
+Checked against the live repo with `gh api` on 11 September 2026, and the review row again on
+29 September 2026, not inferred from the sources:
 
-| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                           |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Required reviews on `main`       | **Yes.** Classic branch protection: one approving review, stale reviews dismissed on push, force-pushes and deletions blocked. `enforce_admins` is **off**, so Alex (admin) can merge his own PRs without a second reviewer. Real for everyone else; a habit for Alex.                                                            |
-| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, unit, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge. |
-| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                              |
-| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                                |
+| Gate                             | Colour Contrast Checker                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Required reviews on `main`       | **No.** Classic branch protection requires a pull request but **0** approving reviews: there is no second human reviewer, so the review is the agents plus Alex's own pass. Stale reviews are dismissed on push; force-pushes and deletions are blocked. `enforce_admins` is **off**. The 11 September reading said one approving review. |
+| Required status checks on `main` | **Yes, since 11 September 2026.** `Lint, build, e2e` — the display name of job `quality` in `.github/workflows/ci.yml` (`npm ci`, lint, unit, build, Playwright e2e on `ubuntu-latest`) — must pass. Made required the day of its first green run (PR #28). `strict` is off, so a PR need not be up to date with `main` to merge.         |
+| Commit message format            | **Nothing.** No hooks of any kind — no `.husky/`, no `core.hooksPath`, no commitlint or lint-staged in `package.json`. Any subject line is accepted.                                                                                                                                                                                      |
+| PR title format                  | **Nothing.** `ci.yml` does not look at titles. PR #17 went in as `Feat/cc 002`, GitHub's default title from the branch name, and nothing objected.                                                                                                                                                                                        |
 
-So, apart from the review requirement and the CI check, this file is instructions, knowingly — the
+So, apart from the pull-request requirement and the CI check, this file is instructions, knowingly — the
 weaker instrument. One thing follows: a required check proves the job passed, not that the job
 covers what you changed, so read the run before merging.
 
@@ -368,8 +369,8 @@ accepted, not on the merge.
 ## Blast-radius docs
 
 Editing any of these needs a PR regardless of the size of the diff, and Alex reviews the
-**substance**, not just the button — with `enforce_admins` off, the approve button is his own, so
-the reading is the whole gate:
+**substance**, not just the button — `main` requires no approving review, so his reading is the
+whole human gate:
 
 - `CLAUDE.md` (and `AGENTS.md`, a symlink to it)
 - `docs/**` — this file, `ARCHITECTURE.md`, `DEVELOPMENT.md`, `TESTING.md`, `CONVENTIONS.md`,
