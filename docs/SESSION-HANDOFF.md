@@ -33,10 +33,11 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
 - **"The unit in hand" includes that unit's own review round and any confirm round the rule calls for.** Session 10's 171k handoff was over
   the soft line, not "fits" (R1 L7).
 - **Precedence.** Triggers 4 and 5 override trigger 2's "finish the unit in hand": at 85% five-hour, a unit's
-  review round waits for the next session, after the reset. Session 12 hit exactly that. Trigger 6 changes
-  the reviewers' model and stops nothing.
-- **Budget before dispatching.** A Fable reviewer costs ~4 points of the 5-hour window (Session 12 pattern 3;
-  Session 13 pattern 1: five reviewers, 22 points). Two reviewers at 78% or above cross 85%.
+  review round waits for the next session, after the reset. Session 12 hit exactly that (`git show 075e38d:PROGRESS.md`).
+  Trigger 6 changes the reviewers' model and stops nothing.
+- **Budget before dispatching.** A Fable reviewer costs ~4 points of the 5-hour window (Session 12 pattern 3,
+  in `git show 075e38d:PROGRESS.md`; Session 13 pattern 1: five reviewers, 22 points). Two reviewers at 78% or above
+  cross 85%.
 
 ## 2. Checkpoints
 
