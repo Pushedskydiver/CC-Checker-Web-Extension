@@ -5,6 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 17)
 
+Updated 29 September 2026, Session 18: **the Session 11 archive (#90, `5629d6e`), PR C (#91, `a358bee`) and the
+Session 17 handoff (#92, `075e38d`) all merged, so the paragraph below is history.** Session 12 is archived in its
+own PR, and PR F is next.
+
 Updated 29 September 2026, end of Session 17: **the Session 11 archive is open as
 [#90](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/90), and PR C as
 [#91](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/91), both reviewed and confirmed at nit-floor, and #91 is marked ready.** C makes `AGENTS.md` the
@@ -82,7 +86,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72) (`61b5d43`). Row 11 comes after
    the PCR research (item 6) has reported — Alex's order, 28 September 2026. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
-   `CLAUDE.md` trigger table says so, the e2e suite as the gate.
+   `AGENTS.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
    submitted — found by a `copilot-surrogate` pass checking the claim that it was still under review, not by
    anyone watching. Users are on it. Nothing further; the next release repeats `docs/GIT.md` §Releases.
@@ -114,7 +118,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 It replaced the 11 September brief, now archived (`docs/history/SESSIONS.md` §Retired sections); "the
 brief" below means that text.
 
-Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `CLAUDE.md` trigger
+Measured against `main` at `94cd658`. The Reviews column is a **prediction** of which `AGENTS.md` trigger
 fires, not a record — "both" means `da-review` and `copilot-surrogate`, and a PR that crosses 200 changed
 lines fires both whatever its paths. Row 2 is the worked example: predicted surrogate-only, it came to 232
 lines and fired both — 232 at the time that was measured, 305 by the time it merged. Row 10 is one concern
@@ -507,104 +511,33 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
    meets a `PROGRESS.md` conflict needs the merge-commit button (#74 before, #78 now). Stacking the next
    `PROGRESS.md` PR on the open one avoids a second conflict.
 
-## Session 12 — 29 September 2026 (CC-005: PR H through R2 and both reviews, PR E built)
-
-**PR H's grill and reviews are done and folded; the 5-hour window stopped the confirm round on the review
-fold.** Nothing merged except #76 (Alex, early in the session: open at the loading checks, merged before E was built).
-
-**Setup:** loading checks matched, with one expected difference: #76 was still open, so `main`'s count was
-5 until Alex merged it. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
-Opus 5.5 at `high`.
-
-**Done:**
-
-- **#75 (PR H), `8d97a69`, still a draft.**
-    - `spec-grill` R2, a fresh Fable verifier (~89k tokens): 0 BLOCKING, 0 MATERIAL, 6 LOW, nit-floor.
-      Every changed figure was re-run before folding (`04b12bc`).
-    - `da-review` on Fable (~109k): 6 MATERIAL, 6 LOW. It took the plan as something to execute. It
-      found PR G's `--amend` matcher misses `git -C … commit --amend`, with no fail-closed path. It
-      also found missing siblings, an unspecified protected-branch list, and the promotion ladder
-      applied to (r) but not to triggers 5 and 6. B's dry-run had no pass criterion, and five R1 IDs
-      had no reasoning in the tree.
-    - `copilot-surrogate` on Fable (~120k): 1 MATERIAL (the R1 fold still called R2 a future job), 3 LOW,
-      3 nits. Two overlap `da-review`.
-    - All folded in `ab598b0`, as a closing "Reviews of PR H" section that is the authority for rows B, C,
-      D and G, plus in-place corrections.
-    - Alex's "Update branch" merge (`9c1f46c`) rejected the push. It was checked to equal `main` outside
-      the research file, merged (`8d97a69`), and the suite re-run before pushing.
-- **PR E, built and pushed without a PR**: `docs/CC-005-archive-session-6`, `59a39b6`.
-    - Session 6 becomes row 6 of `docs/history/SESSIONS.md`.
-    - A new `docs/history/SESSIONS.md` §Retired sections holds the pre-grill Brief, the 11 September commit sequence, and the
-      settled branches (a), (c), (d) and (e).
-    - `spec-grill.md` step 2's stale citation is repointed.
-    - `PROGRESS.md` went from 64,924 to 43,107 bytes on that branch.
-    - Not reviewed yet. Its diff is ~300 lines, so both reviews.
-- **Merged:** #76 (Alex). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 4, the 5-hour window at 89% after `da-review` reported. Context was 169k then, past the soft
-  line (trigger 2) since ~150k. The surrogate, already dispatched, was allowed to finish, and nothing new
-  was dispatched after.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment              | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------- | ------ | ------ | ------------ | ------- |
-    | Start               | 76%    | 61%    | 11%          | 67k     |
-    | E built, R2 running | 79%    | 61%    | 12%          | 141k    |
-    | After R2's fold     | 81%    | 61%    | 12%          | 156k    |
-    | After `da-review`   | 89%    | 63%    | 14%          | 169k    |
-    | Handoff             | 91%    | 63%    | 14%          | 189k    |
-
-- **Plan usage:** the 5-hour window resets at 00:40Z on 29 September.
-- **Warning signs:** one. A stray `git checkout 2fd018b --` with no path detached HEAD in the main checkout
-  while two reviewers were reading it. HEAD stayed on the same commit and no file changed; it was restored
-  at once.
-- **Clarifying question:** none that Session 11's entry should have answered.
-
-**Major novel patterns Session 12:**
-
-1. **Two reviews after a nit-floor grill still found six MATERIAL, from a different angle.** The grill
-   checked claims and figures. `da-review`, told to treat the plan as something to execute next, found
-   what an author would have to guess. A confirm round verifies one angle; it does not stand in for the
-   other.
-2. **Triggers 4 and 2 collided, as `da-review` predicted in the same round.** The soft line said to finish
-   the unit, including its review round, and the 5-hour line said to dispatch nothing. The 5-hour line won,
-   and the confirm round waits. The D fold now writes that precedence down.
-3. **Three Fable reviewers cost about 12 points of the 5-hour window** (79% to 91%, ~318k subagent tokens
-   plus the coordinator's work). Session 11's one grill cost 8. Budget a review round at ~4 points per
-   reviewer.
-4. **A reviewer reading the main checkout sees whatever the coordinator does there.** The surrogate
-   noticed files move under it mid-walk, and re-took every figure from `git archive 2fd018b`. Point
-   reviewers at `git show <sha>:<path>` or a detached worktree, not a live checkout.
-
 ## Next session loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded; once #91 merges, it imports `AGENTS.md`), then this file top to bottom, then
+1. Read `CLAUDE.md` (auto-loaded; it imports `AGENTS.md` since #91), then this file top to bottom, then
    `docs/research/01-pcr-workflow-port.md` on `main` (#75, `697b8a2`).
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
-   small PR, then re-measure. Session 11 went as #90.
+2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
+   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR, leaving 5 entries and 22,576 bytes. Session 11 went as #90.
 3. **Confirm the state, live.**
-    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. Expect #90,
-      #91 and this handoff open, unless Alex has merged them. Say which in the entry, and rewrite every hedge here
-      that the merges overtake (Session 14 pattern 1).
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      any of `docs/CC-005-archive-session-11`, `docs/CC-005-agents-md-swap` and `docs/CC-005-close-session-17`
-      that have not merged.
-    - `git worktree list`: only the main checkout, plus `../cc-pr-c` if #91 is still open.
+    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. #90, #91 and
+      this handoff (#92) all merged before Session 18 began; its archive PR rewrote the hedges here (Session 14
+      pattern 1).
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete). The
+      three CC-005 branches were deleted on merge.
+    - `git worktree list`: only the main checkout; `../cc-pr-c` was already gone at Session 18's start.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR F, per §8** (`docs/TESTING.md`'s table becomes sections; both reviews), then G. C is #91.
+5. **Primary work: PR F, per §8** (`docs/TESTING.md`'s table becomes sections; both reviews), then G. C merged as #91 (`a358bee`).
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
       unreviewed; step 3 corrects its state lines.
-    - **Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
+    - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
-      and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.
+      and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.~~
+      Done in Session 18's archive PR; they now name `AGENTS.md`.
     - Decision (r) is settled: promoted and scoped by Alex in Session 17, and carried by #91.
     - Carried, none started:
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
@@ -626,7 +559,7 @@ Opus 5.5 at `high`.
     - Read `get_usage` at start, after each digest, before each fan-out and at handoff, and record a
       Handoff facts block.
     - **Budget before dispatching:** a Fable reviewer costs ~4 points of the 5-hour window (Session 12
-      pattern 3). Two reviewers at 78% or above will cross 85%.
+      pattern 3, in `git show 075e38d:PROGRESS.md`). Two reviewers at 78% or above will cross 85%.
 7. Decision branches carried in. **New in Session 14: (u)** `copilot-surrogate.md` says a superseded
    sentence in a `docs/*.md` rule document is rewritten, not struck, and reports struck text there. But
    `docs/GIT.md`, `docs/DEVELOPMENT.md` and `docs/SELF-REVIEW.md` each strike one with a dated correction
@@ -639,11 +572,11 @@ Opus 5.5 at `high`.
    whose "after roughly ten PRs" condition fired at 28 merged / 21 human-authored; **(b)** whether
    workstream 5, now five sibling fixes rather than three (§Next workstreams item 5), starts before or
    after CC-004 finishes;
-   **(h)** which button a _delegated Dependabot_ merge uses: `CLAUDE.md` §PR workflow and `docs/GIT.md`
+   **(h)** which button a _delegated Dependabot_ merge uses: `AGENTS.md` §PR workflow and `docs/GIT.md`
    §Who merges both prescribe `gh pr merge <n> --merge --admin --delete-branch`, written before rebase became
    the default. #55 was merged that way because that is what they say. Not changed without Alex; **(i)** two
    carry-overs from Session 2, still open — `copilot-surrogate.md`'s trigger names comment-block edits in
-   `public/app/*.js`, which the `CLAUDE.md` path table cannot express (leave as a superset, or drop it), and
+   `public/app/*.js`, which the `AGENTS.md` path table cannot express (leave as a superset, or drop it), and
    `docs/TESTING.md` cites `test/e2e/fixtures.ts` by line number (87 — still landing on
    29 September 2026; the 28 and 43 cites are gone), which will drift the first time the fixture file changes. The store published 2.1.0
    on 12 September 2026; read the public listing before any release rather than assuming
@@ -669,7 +602,7 @@ Opus 5.5 at `high`.
    ("20 green tests", "20-test"); **(m)** a date drift, found in PR 9's review and left
    untouched there: five files say the colour-utility unit tests reached 25 cases on **17** September,
    when the history shows the 18th (`4799394`) — `README.md`, `docs/CONVENTIONS.md`,
-   `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`CLAUDE.md` and `docs/TESTING.md`'s
+   `docs/GLOSSARY.md`, `docs/DEVELOPMENT.md`, `docs/SELF-REVIEW.md` (`AGENTS.md` and `docs/TESTING.md`'s
    baseline row are right). Two more put 25 beside 17 September in a sentence that is literally true —
    `docs/DA-REVIEW.md:20` (the re-entry "fired" that day) and `docs/TESTING.md:11` (the file was "added"
    that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
@@ -691,7 +624,7 @@ Opus 5.5 at `high`.
    covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).~~
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
    and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
-   **(r)** _In PR D (#88, merged): recorded as a candidate, with its promotion point (Session 16 pattern 1). Promoted by Alex in Session 17; PR C carries it._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
+   **(r)** _In PR D (#88, merged): recorded as a candidate, with its promotion point (Session 16 pattern 1). Promoted by Alex in Session 17; #91 carried it._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
    above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it~~;
    **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
    one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.

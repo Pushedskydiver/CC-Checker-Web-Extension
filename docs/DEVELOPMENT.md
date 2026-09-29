@@ -315,8 +315,8 @@ workstream, the coordinator settled four at the primary source in single command
 
 **Every concurrent reviewer or implementer gets its own worktree, named in the dispatch prompt.** The rule
 fired in Session 8 pattern 5 (`git show 2d63577^:PROGRESS.md`), Session 9 pattern 3
-(`git show 24fc475:PROGRESS.md`) and Session 10, and Session 12 pattern 4 adds why: a reviewer reading the
-live main checkout sees whatever the coordinator does there, and had to re-take every figure mid-walk.
+(`git show 24fc475:PROGRESS.md`) and Session 10, and Session 12 pattern 4 (`git show 075e38d:PROGRESS.md`) adds
+why: a reviewer reading the live main checkout sees whatever the coordinator does there, and had to re-take every figure mid-walk.
 
 - A reviewer gets `git worktree add --detach <path> <sha>`, and reads `git show <sha>:<path>` or that
   worktree, never the live main checkout.
