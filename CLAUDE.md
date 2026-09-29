@@ -152,7 +152,7 @@ explicit trigger phrases rather than always-on.
 - **Policy-adjacent edits** (this file, `docs/**`, `.claude/agents/**`, `public/manifest.json`,
   `.github/workflows/**`): enumerate affected siblings by hand. `AGENTS.md` is a symlink to this
   file — no generator, no drift, no CI gate; add a generator only if the two ever need to differ.
-- **Hand off on the sooner of:** context at 150k (soft) or 250k (hard), a phase boundary past 130k, or
+- **Hand off on the sooner of:** context at 150k (soft: finish the unit in hand) or 250k (hard), a finished unit or merged PR past 130k, or
   the 5-hour window at 85%. The other triggers, the `get_usage` checkpoints and the handoff prompt are
   in `docs/SESSION-HANDOFF.md`. Always-loaded because its trigger is "context is filling", which no
   trigger phrase can reach.

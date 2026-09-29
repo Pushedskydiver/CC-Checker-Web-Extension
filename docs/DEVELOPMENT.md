@@ -317,8 +317,10 @@ live main checkout sees whatever the coordinator does there, and had to re-take 
 - A fresh worktree has no `node_modules`: run `npm ci` before any `npx`, or a bare `npx prettier` fetches
   from the registry instead of the pinned binary (Session 10 pattern 2).
 - Remove the worktrees when done.
-- The `Agent` tool's `isolation: worktree`, with `worktree.baseRef: "head"`, is being trialled as a
-  replacement (`docs/research/01-pcr-workflow-port.md`, R1 L1). It is not yet the rule.
+- The `Agent` tool's `isolation: worktree` (`docs/research/01-pcr-workflow-port.md`, R1 L1) was trialled
+  once, on PR D's `da-review` (29 September 2026). It started at `main`, not the checkout's HEAD, with no
+  `node_modules`, and left a harness branch to delete; the reviewer detached to the PR head by hand. It is
+  not yet the rule.
 
 ---
 

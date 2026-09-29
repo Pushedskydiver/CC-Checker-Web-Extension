@@ -12,7 +12,7 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
 
 | #   | Trigger                              | Rule                                                                                                                                                     |
 | --- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Phase boundary                       | A PR merged, a proposal delivered or a review round digested, **and** context above **130k**. Hand off before the next phase.                            |
+| 1   | Unit boundary                        | A unit finished or a PR merged, **and** context above **130k**. Hand off before the next unit.                                                           |
 | 2   | Soft line, **150k**                  | Finish the unit in hand, start nothing new.                                                                                                              |
 | 3   | Hard line, **250k**                  | Hand off now; finish only the step in progress.                                                                                                          |
 | 4   | 5-hour window at **85%** or more     | No new subagents. Write the handoff and tell Alex the reset time.                                                                                        |
@@ -23,13 +23,17 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
 
 - **Lines are `get_usage`'s `tokensUsed`, absolute not percentage.** The window is 1M, so 60% would be 600k,
   far past where quality holds. Trigger 6 is desktop only: the terminal statusline has no per-model figure.
-- **Why 130k for trigger 1.** Every session start recorded here was 67k to 107k, so a 100k floor fires at
-  almost every phase boundary, even after a small archive PR. 130k lets one small unit and its PR through
-  review share a session, and a boundary past 130k leaves too little room before 150k to start another phase.
+- **A unit** is one PR or one proposal, with its own review and confirm round. A round digested inside a
+  unit still in hand is not a boundary.
+- **Why 130k for trigger 1.** Session starts in `PROGRESS.md` ran 67k to 107k, so a 100k floor could fire
+  even after a small archive PR. No recorded boundary has yet fallen between 100k and 130k, so the readings
+  do not separate the two; at current start sizes one or two units per session is the expected shape. 130k
+  is the dial, and Session 20 reads it against the readings.
 - **"The unit in hand" includes that unit's own review and confirm round.** Session 10's 171k handoff was over
   the soft line, not "fits" (R1 L7).
-- **Precedence.** Triggers 4 to 6 override trigger 2's "finish the unit in hand": at 85% five-hour, a unit's
-  review round waits for the reset. Session 12 hit exactly that.
+- **Precedence.** Triggers 4 and 5 override trigger 2's "finish the unit in hand": at 85% five-hour, a unit's
+  review round waits for the next session, after the reset. Session 12 hit exactly that. Trigger 6 changes
+  the reviewers' model and stops nothing.
 - **Budget before dispatching.** A Fable reviewer costs ~4 points of the 5-hour window (Session 12 pattern 3;
   Session 13 pattern 1: five reviewers, 22 points). Two reviewers at 78% or above cross 85%.
 
@@ -105,7 +109,7 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
   instead of assuming answers.
 - **Superseded reasoning in `PROGRESS.md`** gets `~~strikethrough~~` rather than deletion, with what corrected
   it and when. The wrong turns are half the value. (This concerns `PROGRESS.md` and
-  `docs/history/SESSIONS.md`.)
+  `docs/history/SESSIONS.md`; whether `docs/*.md` may carry a dated strike is decision (u), open.)
 - **The loading block is pointer-only:** what to verify first, the primary work, lettered decision branches,
   carry-overs, the model and effort. It must not restate rules that live in `docs/*.md`.
 
@@ -114,12 +118,12 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
 - **Archive** the oldest entry to `docs/history/SESSIONS.md` (a one-line table row) when the detail band holds
   **more than five entries or exceeds 24,000 bytes.** Measure with
   `awk '/^## Session [0-9]/{p=1} /^## Next session loading instructions/{p=0} p' PROGRESS.md | wc -c`. 24,000
-  is ~10k tokens at the measured 2.2 to 2.5 bytes a token (22k to 25k). Check at session start, before
+  is ~10k tokens at the measured 2.2 to 2.5 bytes a token (22k to 25k bytes). Check at session start, before
   picking anything up. An archive is its own
   small PR.
-- **Repoint cites** of an archived entry's content to `git show <hash on main>:PROGRESS.md`: the last commit on
-  `main` that still held it (a merge commit, or under the rebase button that PR's last commit). Never a branch
-  hash, which a rebase re-hashes.
+- **Repoint cites** of an archived entry's content to `git show <sha>^:PROGRESS.md`, where `<sha>` is the
+  archive PR's first commit on `main` (its merge commit, or under rebase or squash its first commit there). That
+  parent still holds the entry under any merge button. Never a branch hash, which a rebase re-hashes.
 - **Retired sections.** A block in `PROGRESS.md` that is record rather than state (a superseded brief, a
   finished commit sequence, settled decision branches) moves to `docs/history/SESSIONS.md` §Retired sections as
   one bullet: what it was, when and by what it was superseded. Full text stays in `git log -p`.
@@ -141,5 +145,5 @@ State **both**. Opus 5.5 defaults to `medium`, and Session 9 arrived on it.
 ## 8. Keeping this honest
 
 Record the Handoff facts every session. Review the lines at **Session 20** with the readings, as PCR did at
-40 (median handoff 170k when the main session orchestrated, 1 in 13 past 250k). Two sessions in a row with a
-clarifying question means the entry shape needs fixing.
+40 (median handoff 170k when the main session orchestrated, 1 in 13 reached 250k). Two sessions in a row with a
+clarifying question the previous entry should have answered means the entry shape needs fixing.
