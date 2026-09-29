@@ -122,7 +122,8 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
   picking anything up. An archive is its own
   small PR.
 - **Repoint cites** of an archived entry's content to `git show <sha>^:PROGRESS.md`, where `<sha>` is the
-  archive PR's first commit on `main` (its merge commit, or under rebase or squash its first commit there). That
+  archive PR's first commit on `main` (its merge commit or its first branch commit under the merge-commit
+  button, its first commit there under rebase or squash). That
   parent still holds the entry under any merge button. Never a branch hash, which a rebase re-hashes.
 - **Retired sections.** A block in `PROGRESS.md` that is record rather than state (a superseded brief, a
   finished commit sequence, settled decision branches) moves to `docs/history/SESSIONS.md` §Retired sections as
