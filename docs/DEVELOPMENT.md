@@ -277,16 +277,18 @@ findings manufactured to prove the round ran.
 **Cap default rounds at 2, then do a manual pass.** Stop when successive rounds produce only
 cosmetic deltas, or when Alex says ship — whichever is sooner.
 
-**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026).** A
-verification round follows any fold of a BLOCKING or MATERIAL finding. A round whose findings were all
-LOW or nits needs none: the coordinator reads the fold diff itself, if there is one, and records that
-read in the PR body. A round with no findings has no fold, so there is nothing to confirm. It stands on
-three rounds that found nothing new: Session 10's, after a nit-floor round one and a one-word fold
-(~120k Fable tokens), and the confirm rounds of #84 (Session 15) and #87 (Session 16), each after a
-LOW-only fold. The counter-case is Session 8 pattern 2, where only the confirm round saw the `notacolor`
-hole (`git show 2d63577^:PROGRESS.md`). That round had folded a MATERIAL finding (the filled buttons were
-never read) alongside two LOWs, and the hole came from the fix to one of those LOWs, so it is why a
-MATERIAL fold keeps its round.
+**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026, and scoped by him
+to prose folds the same day).** A verification round follows any fold of a BLOCKING or MATERIAL finding, and
+any fold of whatever grade that touches code, config or tests (`src/**`, `public/**`, `test/**`, config
+files). A round whose findings were all LOW or nits, folded in prose only (Markdown and `.claude/agents/**`),
+needs none: the coordinator reads the fold diff itself, if there is one, and records that read in the PR body.
+A round with no findings has no fold, so there is nothing to confirm. It stands on three rounds that found
+nothing new: Session 10's, after a nit-floor round one and a one-word fold (~120k Fable tokens), and the
+confirm rounds of #84 (Session 15) and #87 (Session 16), each after a LOW-only fold. The counter-case is
+Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show 2d63577^:PROGRESS.md`).
+That round had folded a MATERIAL finding (the filled buttons were never read) alongside two LOWs, and the hole
+came from the fix to one of those LOWs, a test-probe rewrite. That is why a code or test fold keeps its round
+whatever its grade. All three no-news rounds above followed prose folds.
 
 ### Scale the fan-out to the repo
 
