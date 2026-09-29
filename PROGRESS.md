@@ -190,9 +190,9 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
   `git show 759db88:PROGRESS.md`. `copilot-surrogate`: nit-floor, 2 LOW, folded; confirm round CONFIRMED,
   nothing new. The band is 5 entries, 21,815 bytes, before this entry.
 - **PR D, [#88](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/88)**,
-  `docs/CC-005-session-handoff-doc`, `97ccf07`: `docs/SESSION-HANDOFF.md` (10,677 bytes), with
+  `docs/CC-005-session-handoff-doc`, `97ccf07` (Alex then merged `main` in as `c0eb71b`): `docs/SESSION-HANDOFF.md` (10,677 bytes), with
   `docs/DEVELOPMENT.md` §Session handoff as a pointer that reverses the old "no numeric thresholds" line. The
-  worktree rule is promoted (p), (r) is recorded as a candidate, and six siblings are repointed.
+  worktree rule is promoted (p), (r) is recorded as a candidate, and five siblings are repointed.
     - **Built by the `implementer`** (Sonnet, ~113k tokens, ~5 minutes) from a coordinator brief that settled
       trigger 1's floor (130k) and the archive line (24,000 bytes). It listed 14 open choices. One corrected
       the brief: a rebase makes no merge commit, so "cite a merge commit" is not always possible.
@@ -210,7 +210,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
 **Handoff facts:**
 
 - **Trigger:** 2, the soft line, passed at ~151k after #87's first fold, with D already dispatched. Both units
-  were finished, with their review and confirm rounds. Context ~215k at handoff; the hard line is 250k.
+  were finished, with their review and confirm rounds. Context 213k at handoff; the hard line is 250k.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment               | 5-hour | Weekly | Fable weekly | Context |
@@ -577,8 +577,8 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** With this entry the band holds 6 entries (Sessions 11 to 16). Archive Session 11 in its
-   own small PR, and re-measure the band in bytes (PR D's line is 24,000). Session 10 went as #87 (`0d93607`).
+2. **Archive check.** With this entry the band holds 6 entries (Sessions 11 to 16). The band is 26,527 bytes, over
+   PR D's 24,000 line too. Archive Session 11 in its own small PR, and re-measure after. Session 10 went as #87 (`0d93607`).
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #88 (D)
       and this handoff open, unless Alex has merged them; say which in the entry, and rewrite every hedge here
@@ -595,8 +595,9 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
       unreviewed; step 3 corrects its state lines.
     - C: swap `AGENTS.md` and `CLAUDE.md` (`git rm AGENTS.md` first), with the siblings §8 lists, and the
       sentinel-echo check that `@AGENTS.md` expands for subagents. Its builder can be the `implementer`.
-    - Decision (r): D records the candidate rule, and its promotion point may already be met (Session 16
-      pattern 1). Ask Alex before C's reviews whether to promote it.
+    - Decision (r): D records the candidate rule and says it has one incident (Session 10). Its promotion
+      point may already be met (Session 16 pattern 1: #84 and #87). Ask Alex before C's reviews whether to
+      promote it.
     - Carried, none started:
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
@@ -675,15 +676,15 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
    **(o)** `f91c844` reached `main` with 🏷️ as a `refactor` gitmoji, where `docs/GIT.md`'s table pins ♻️.
    History is not rewritten; the only open question is whether the table should admit 🏷️ for
    type-only renames or the slip stays a slip. Default: a slip.
-   **(p)** _Done in PR D (#88, Session 16): promoted to `docs/DEVELOPMENT.md` §Scale the fan-out._ Whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
+   **(p)** _In PR D (#88, open at Session 16's end): promoted to `docs/DEVELOPMENT.md` §Scale the fan-out._ ~~Whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
    the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
    `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3, in `git show 24fc475:PROGRESS.md`), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
-   covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).
+   covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).~~
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
    and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
-   **(r)** _Recorded in PR D as a candidate, with its promotion point (Session 16 pattern 1)._ Whether a confirm round is still required when round one is already at nit-floor with nothing
-   above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it;
+   **(r)** _In PR D (#88, open): recorded as a candidate, with its promotion point (Session 16 pattern 1)._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
+   above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it~~;
    **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
    one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.
 
