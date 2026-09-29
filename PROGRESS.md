@@ -500,7 +500,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
 **Major novel patterns Session 13:**
 
 1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~534k subagent tokens). That
-   agrees with Session 12's ~4 per reviewer. The estimate holds.
+   agrees with Session 12's ~4 per reviewer (`git show 075e38d:PROGRESS.md`). The estimate holds.
 2. **A review of an archive PR finds defects in lines the PR did not write.** Two of E's four MATERIAL sat
    outside its diff: a pointer in `docs/REVIEW-PATTERNS.md`, and `spec-grill.md` still calling 2.1.0
    unbuilt, 17 days after it shipped. That is what reading touched files in full is for.
@@ -540,7 +540,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
       Done in Session 18's archive PR; they now name `AGENTS.md`.
     - Decision (r) is settled: promoted and scoped by Alex in Session 17, and carried by #91.
     - Carried, none started:
-        - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
+        - `docs/REVIEW-PATTERNS.md:251-252` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
           the full entry is `git show 2d63577^:PROGRESS.md`). Its own small docs PR.
     - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14: ship A pinned to
@@ -608,7 +608,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
    that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
    correct; only the date is wrong. A one-commit docs PR whenever it suits. Session 9's surrogate found two of those files
    (`docs/GLOSSARY.md`, `docs/CONVENTIONS.md`) touched by #68 and still carrying it — still untouched. Session 13's confirm round found two more cites
-   outside that list, `.claude/agents/spec-grill.md:45` and `docs/TESTING.md:338`;
+   outside that list, `.claude/agents/spec-grill.md:46` and `docs/TESTING.md:338`;
    **(n)** whether `lint:js` gains `--max-warnings 0`. In #68's round one, dropping `isBackgroundDark` from
    an effect's dependencies passed `npm run lint`, because `react-hooks/exhaustive-deps` is a warning in
    `eslint-plugin-react-hooks`' recommended set and `lint:js` is plain `eslint .`. `npx eslint . --max-warnings 0`
@@ -632,5 +632,5 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 11, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
