@@ -36,7 +36,7 @@ the day the CRA → Vite migration was verified end to end, and later ones carry
 | `.github/workflows/ci.yml`                                | What must be green before a merge (a required check on `main` since 11 September 2026 — see below). |
 | `docs/`                                                   | Rules and process: how work is done, reviewed, tested, released.                                    |
 | `PROGRESS.md` / `docs/history/SESSIONS.md`                | State: what is finished, what is next, how the next session loads. Never rules.                     |
-| `CLAUDE.md` (`AGENTS.md` is a symlink to it)              | Only what an agent must know before touching anything; the rest is a pointer.                       |
+| `AGENTS.md` (`CLAUDE.md` imports it)                      | Only what an agent must know before touching anything; the rest is a pointer.                       |
 
 `public/manifest.json` is JSON and cannot carry a comment, so the reasoning behind every manifest
 key (`activeTab` only, `use_dynamic_url`, no `all_frames`) lives in `docs/ARCHITECTURE.md`. `docs/`

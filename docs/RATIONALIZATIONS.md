@@ -282,7 +282,7 @@ bump both files, `npm run package`, and record the upload in `PROGRESS.md`. A me
 7. Commit as `docs: CC-<n> - 📝 Add "<rationalisation>" to RATIONALIZATIONS` (`docs/GIT.md`
    §Commit messages).
 
-`CLAUDE.md`, `docs/DA-REVIEW.md`, `docs/SELF-REVIEW.md`, `docs/GIT.md` and `docs/DEVELOPMENT.md`
+`AGENTS.md`, `docs/DA-REVIEW.md`, `docs/SELF-REVIEW.md`, `docs/GIT.md` and `docs/DEVELOPMENT.md`
 point here from their own sections. `.claude/agents/da-review.md` should consult this file only
 when about to dismiss a finding, never as part of the standard brief: a list of excuses read too
 early becomes a menu.

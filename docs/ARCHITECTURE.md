@@ -430,6 +430,7 @@ model-client sections (no equivalent in an extension).
 - `docs/DEVELOPMENT.md` — setup, the pre-push gates, loading unpacked, releasing, §Not ported
 - `docs/SELF-REVIEW.md` — the pre-PR checklist
 - `PROGRESS.md` and `docs/history/SESSIONS.md` — session handoff, living state and archive
-- `CLAUDE.md` — the collaboration contract and the review-trigger table
+- `AGENTS.md` — the collaboration contract and the review-trigger table; `CLAUDE.md` imports it and adds the
+  subagent roster and the hand-off directive
 - `.claude/agents/` — `da-review`, `copilot-surrogate`, `spec-grill`, and `implementer`, which builds a
   planned item for `da-review` and `copilot-surrogate` to review

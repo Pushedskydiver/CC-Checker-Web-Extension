@@ -1,6 +1,6 @@
 ---
 name: copilot-surrogate
-description: Factual-claim reviewer for Colour Contrast Checker, mandatory wherever `CLAUDE.md`'s trigger table routes to it and on any other prose change listed in this file's §Trigger (`PROGRESS.md`, config comment blocks). Reads each touched file at HEAD in full; findings in-band, never PR comments.
+description: Factual-claim reviewer for Colour Contrast Checker, mandatory wherever `AGENTS.md`'s trigger table routes to it and on any other prose change listed in this file's §Trigger (`PROGRESS.md`, config comment blocks). Reads each touched file at HEAD in full; findings in-band, never PR comments.
 tools: Read, Grep, Glob, Bash
 model: fable
 effort: high
@@ -30,10 +30,10 @@ trigger then rather than assuming it now.
 
 ## Trigger
 
-Not a discretionary judgement call. The grep-able routing table lives in `CLAUDE.md` §Process
+Not a discretionary judgement call. The grep-able routing table lives in `AGENTS.md` §Process
 directives and is the source of truth; in words, dispatch when any of these hold:
 
-- the change touches any `.md` file, `CLAUDE.md` (`AGENTS.md` is a symlink to it), `README.md`,
+- the change touches any `.md` file, `AGENTS.md`, `CLAUDE.md`, `README.md`,
   `PROGRESS.md`, `docs/**`, or `.claude/agents/**`;
 - the change touches a comment block or file header in `public/app/background.js`,
   `public/app/content.js`, `vite.config.ts`, `playwright.config.ts` or `test/e2e/fixtures.ts` —
@@ -68,7 +68,8 @@ directives and is the source of truth; in words, dispatch when any of these hold
    `':!public/favicons' ':!public/fonts' ':!public/images' ':!.DS_Store' ':!.vscode'` (one command),
    then `git cat-file -s` on each path, split on the `.md` suffix. The 131,885 reproduces the research
    file's figure at `2fd018b`; its 529,362 for Markdown is that commit's 516,610 plus the 12,752-byte
-   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink. A change that trips the ceiling is either a
+   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink (a symlink until PR C made
+   `AGENTS.md` the real file, so a recompute now counts two different files). A change that trips the ceiling is either a
    repo-wide docs sweep or something that should have been split. If the post-filter set exceeds it,
    stop without walking any file and return a single-line escalation header
    `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 400 KB)` followed by the file
@@ -155,6 +156,9 @@ directives and is the source of truth; in words, dispatch when any of these hold
 - **Adverb of confidence.** "always", "never", "only", "silently", "cannot". Each is a strong
   claim. "Only `index.html` and the font need listing" rests on a dated observation; "nothing else
   sends this message" needs the grep in the same paragraph. Try to construct the counter-case.
+- **Instruction-file budget.** When the change touches `AGENTS.md` or `CLAUDE.md`, run the `awk` line in
+  `AGENTS.md` §Process directives over both files and report the figure against its "about 150" prose
+  lines, whether or not it is over. Over budget is a finding.
 - **Structural claim.** "Every component directory holds `<name>.tsx` + `<name>.module.css`",
   "every listener added in `getScreenshot` is removed in `closeColorPicker`", "all three contexts
   call `chrome.*` directly", "every `chrome.*` promise has a `.catch`". Loop over all of them, not
@@ -164,7 +168,7 @@ directives and is the source of truth; in words, dispatch when any of these hold
 
 **The duplicate-fact pass.** `docs/DEVELOPMENT.md` §State-surface ownership says each fact has one
 home and other surfaces point at it; in practice the same fact is restated across a code comment,
-`CLAUDE.md`, `README.md`, `PROGRESS.md` and most of `docs/`, because each is meant to be readable
+`AGENTS.md`, `README.md`, `PROGRESS.md` and most of `docs/`, because each is meant to be readable
 alone. So a corrected fact has to be corrected in all of them, and usually is not. Build the set of
 places a claim appears before deciding it is consistent; a restatement that has drifted is
 MATERIAL, and a new copy where a pointer to the home would do is LOW.
@@ -192,7 +196,7 @@ rather than written as live.
 `docs/history/SESSIONS.md` record superseded reasoning with `~~strikethrough~~` and say what
 corrected it and when (`docs/SESSION-HANDOFF.md` §5); text inside `~~...~~` there is a
 historical claim kept on purpose — being wrong is _why_ it is struck. Do not report struck text as
-false; that is the convention working. The `docs/*.md` rule documents and `CLAUDE.md` are living
+false; that is the convention working. The `docs/*.md` rule documents, `AGENTS.md` and `CLAUDE.md` are living
 documents updated in place (some carry a **Last reviewed** date), so a superseded sentence there is
 rewritten, not struck. Do report:
 

@@ -157,8 +157,8 @@ Issues and pull requests are welcome. Please:
 - follow the commit format the history uses: `<type>: CC-<n> - <gitmoji> Description`, for
   example `fix: CC-002 - 🐛 Fix issue with rgb options being in wrong order`
 
-[CLAUDE.md](CLAUDE.md) is the working agreement for this repo — Alex and Claude Code both work
-from it — and `docs/` holds the longer material it points at (development, testing, review and
+[AGENTS.md](AGENTS.md) is the working agreement for this repo — Alex and Claude Code both work
+from it, and `CLAUDE.md` imports it and adds the Claude-Code-only lines — and `docs/` holds the longer material it points at (development, testing, review and
 handoff). Alex merges every human PR; the one exception is a green Dependabot bump, which Claude Code may merge on his behalf (`docs/GIT.md` §Who merges). This project follows the Contributor Covenant,
 see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
