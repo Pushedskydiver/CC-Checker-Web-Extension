@@ -230,7 +230,7 @@ Alex merges human PRs. Claude Code never merges those, never approves, and does 
 comments on the PR — review findings come back in chat (`docs/DA-REVIEW.md`), and Alex owns the PR's
 audit trail. **Delegated exception (Alex, 11 September 2026):** Dependabot PRs with a green
 `Lint, build, e2e` run may be merged by Claude — `gh pr merge <n> --merge --admin --delete-branch`
-(`--admin` dates from the 11 September 2026 reading of one required review; at the 29 September reading of 0 it bypasses nothing, and the command is kept as written: decision (h) in `PROGRESS.md`) — and asked to rebuild with a
+(`--admin` dates from the 11 September 2026 reading of one required review; at the 29 September reading of 0 it bypasses nothing on a green run, and the command is kept as written: decision (h) in `PROGRESS.md`) — and asked to rebuild with a
 `@dependabot recreate` comment. #33, #35 and #47 went in that way. A red run, a conflict Dependabot
 cannot rebase, or a bump the docs say to hold (ESLint majors) means hand it back, not force it.
 
