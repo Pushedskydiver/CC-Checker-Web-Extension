@@ -23,13 +23,14 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
 
 - **Lines are `get_usage`'s `tokensUsed`, absolute not percentage.** The window is 1M, so 60% would be 600k,
   far past where quality holds. Trigger 6 is desktop only: the terminal statusline has no per-model figure.
-- **A unit** is one PR or one proposal, with its own review and confirm round. A round digested inside a
+- **A unit** is one PR or one proposal, with its own review round, and its confirm round where
+  `docs/DEVELOPMENT.md` §Verification rounds calls for one. A round digested inside a
   unit still in hand is not a boundary.
 - **Why 130k for trigger 1.** Session starts in `PROGRESS.md` ran 67k to 107k, so a 100k floor could fire
   even after a small archive PR. No recorded boundary has yet fallen between 100k and 130k, so the readings
   do not separate the two; at current start sizes one or two units per session is the expected shape. 130k
   is the dial, and Session 20 reads it against the readings.
-- **"The unit in hand" includes that unit's own review and confirm round.** Session 10's 171k handoff was over
+- **"The unit in hand" includes that unit's own review round and any confirm round the rule calls for.** Session 10's 171k handoff was over
   the soft line, not "fits" (R1 L7).
 - **Precedence.** Triggers 4 and 5 override trigger 2's "finish the unit in hand": at 85% five-hour, a unit's
   review round waits for the next session, after the reset. Session 12 hit exactly that. Trigger 6 changes

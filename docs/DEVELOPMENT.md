@@ -181,7 +181,7 @@ live-after-close picker listeners were hiding.
 Four steps, in that order, never reordered.
 
 1. **Architectural pass — before writing anything.** Does the approach fit the three-context
-   architecture and `CLAUDE.md`? Does it widen permissions beyond `activeTab`? This is judgement,
+   architecture and `AGENTS.md`? Does it widen permissions beyond `activeTab`? This is judgement,
    not a checklist. The question this repo keeps needing: _is this patching a symptom where the
    boundary should have been sanitised?_ The NaN hue was long patched by an effect rewriting state
    in place; the fix that held normalises hue to 0 in `toHslTuple` (`src/utils/color-utils.ts`),
@@ -200,7 +200,7 @@ Four steps, in that order, never reordered.
    file at HEAD in full and grep-falsifies the claims. **Findings from every review agent stay
    in-chat. None of them post PR comments; Alex owns the PR's audit trail.**
 
-The grep-able trigger table (which agent fires for which paths) lives in `CLAUDE.md`; this doc
+The grep-able trigger table (which agent fires for which paths) lives in `AGENTS.md`; this doc
 sequences the agents and does not duplicate the table.
 
 ### Why this order
@@ -259,14 +259,16 @@ Adversarial review here is iterated, not one-shot, and the rounds are two differ
 
 - **Discovery rounds (R1…R*n-1*).** Brief: _find what is wrong._ Adversarial-creative. Iterate
   until findings converge to nits.
-- **Verification round (R*n*, exactly one, a distinct prompt).** Brief: _confirm or disprove the
+- **Verification round (R*n*, one, a distinct prompt, when the rule below calls for it).** Brief: _confirm or disprove the
   claim that this is at the nit-floor._ Evaluative-sceptical. Not "one more discovery pass".
 
-**Why the split.** The last discovery round has a self-terminating bias built in: the author wants
-to converge and so does the subagent, which makes it the _least_ independent check in the
-sequence. A zero mid-discovery might mean convergence or might mean the round asked the wrong
-question; a zero from an explicit verification prompt is evidence. **The verification round has to
-actually fire** — "it would have come back clean" is a rationalisation, not a result.
+**Why the split.** The last discovery round has a self-terminating bias built in: the author wants to
+converge and so does the subagent, which makes it the _least_ independent check in the sequence. A zero
+mid-discovery might mean convergence or might mean the round asked the wrong question; a zero from an
+explicit verification prompt is evidence. The rule below accepts the first risk for a round that finds
+nothing at all: with no fold, the review stops there (Alex, 29 September 2026). **A verification round the
+rule below calls for has to actually fire** — "it would have come back clean" is a rationalisation, not a
+result.
 
 **Finders and verifiers are separate agents, from fresh context.** The agent that fixed a finding
 is the worst possible judge of whether the fix landed. Self-verification — grepping your own diff,
@@ -277,14 +279,18 @@ findings manufactured to prove the round ran.
 **Cap default rounds at 2, then do a manual pass.** Stop when successive rounds produce only
 cosmetic deltas, or when Alex says ship — whichever is sooner.
 
-**Candidate, not a rule: decision (r), when a confirm round is needed.** PCR Formulation's fix-pass stopping
-rule: re-check while the last pass fixed a BLOCKING or MATERIAL finding; when a pass fixed only LOWs, the
-coordinator reads that fold diff itself instead of dispatching a confirm round. The requirement above stands
-until this is promoted. It has one incident, Session 10, where a confirm round after a nit-floor round one
-confirmed nothing new at ~120k Fable tokens, and a counter-case, Session 8 pattern 2, where only the confirm
-round saw the hole (`git show 2d63577^:PROGRESS.md`). §Process-rule promotion wants two incidents. **Promotion
-point:** a second no-news confirm round after a LOW-only fold, or the Session 20 review
-(`docs/research/01-pcr-workflow-port.md`, Decision 3).
+**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026, and scoped by
+him to prose folds the same day).** A verification round follows any fold of a BLOCKING or MATERIAL
+finding, and any fold of whatever grade that touches a file other than prose: code, config or tests. A
+round whose findings were all LOW or nits, folded in prose only (Markdown and `.claude/agents/**`), needs
+none: the coordinator reads the fold diff itself, if there is one, and records that read in the PR body. A
+round with no findings has no fold, so there is nothing to confirm. It stands on three rounds that found
+nothing new: Session 10's, after a nit-floor round one and a one-word fold (~120k Fable tokens), and the
+confirm rounds of #84 (Session 15) and #87 (Session 16), each after a LOW-only fold. The counter-case is
+Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show
+2d63577^:PROGRESS.md`). That round folded three MATERIAL findings and four LOWs across both reviewers, and
+the hole came from the fix to one of `da-review`'s LOWs, a test-probe rewrite. That is why a code or test
+fold keeps its round whatever its grade. All three no-news rounds above followed prose folds.
 
 ### Scale the fan-out to the repo
 
@@ -330,7 +336,7 @@ live main checkout sees whatever the coordinator does there, and had to re-take 
 The protocol lives in `docs/SESSION-HANDOFF.md`: the triggers, the `get_usage` checkpoints, the handoff
 prompt, the `PROGRESS.md` entry shape and structure, archiving, retired sections, and the next-session
 model and effort table. It replaces this section and the `PROGRESS.md` structure section that followed it.
-`CLAUDE.md` §Process directives carries the always-loaded summary.
+`CLAUDE.md` §Session handoff carries the always-loaded summary.
 
 **This reverses** a line that stood here until 29 September 2026: "Deliberately not adopted: per-session
 metric blocks and numeric handoff-cost thresholds", on the grounds that the source repos' own data retired
@@ -350,7 +356,7 @@ becomes a _gate_ when reader discipline has demonstrably failed to hold it. The 
 | ----------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | Observation | noted in the session, nothing written                                     | —                                                             |
 | Recorded    | written into `PROGRESS.md` or `docs/REVIEW-PATTERNS.md` where it happened | the 4 September 2026 findings                                 |
-| Promoted    | a rule in `CLAUDE.md` or `docs/*.md`                                      | this doc's review-gate order; "verify emitted CSS order"      |
+| Promoted    | a rule in `AGENTS.md` or `docs/*.md`                                      | this doc's review-gate order; "verify emitted CSS order"      |
 | Gated       | a check in `ci.yml` or a lint rule                                        | the `quality` job on Linux; `react-hooks/set-state-in-effect` |
 
 **Promotion to a gate is not a reward for importance; it is what you do when the rule cannot be
@@ -383,9 +389,9 @@ moves, the pointer and the old copy are updated in the same commit.
 
 | Fact kind                                            | Home                                                                                         | Why there                                                                                                                                                                           |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Stable process rules, review discipline, conventions | `docs/*.md`, `CLAUDE.md`                                                                     | reviewed and versioned. `AGENTS.md` is a symlink to `CLAUDE.md`, not a second home                                                                                                  |
+| Stable process rules, review discipline, conventions | `docs/*.md`, `AGENTS.md`                                                                     | reviewed and versioned. `CLAUDE.md` imports `AGENTS.md` and adds only Claude-Code-only lines, not a second home                                                                     |
 | Session state, what shipped, what is next            | `PROGRESS.md`                                                                                | read first at session start; archived to `docs/history/SESSIONS.md`                                                                                                                 |
-| Which agent reviews which path                       | the trigger table in `CLAUDE.md`                                                             | grep-able from the file every session loads                                                                                                                                         |
+| Which agent reviews which path                       | the trigger table in `AGENTS.md`                                                             | grep-able from the file every session loads                                                                                                                                         |
 | What the extension may do                            | `public/manifest.json`                                                                       | the store and the browser read it; docs describe, the manifest enforces                                                                                                             |
 | The published version                                | the Chrome Web Store dashboard                                                               | it is not in this repo — check it, do not guess it                                                                                                                                  |
 | Default colours                                      | `src/context.tsx` (`DEFAULT_BACKGROUND` / `DEFAULT_FOREGROUND`) and `src/styles/globals.css` | two homes by necessity — they must stay in sync; only the comment in `context.tsx` guards that (the first-run e2e test reads the variable the app sets, not the stylesheet default) |
@@ -429,8 +435,8 @@ condition, or dropped outright:**
   them on 17 September 2026 (25 Vitest cases), so the condition is met and the decision is open.
 - **Phase Validation Protocol, auto-merge criteria, HITL trigger taxonomy.** Chief-clancy's
   autonomous-merge apparatus. Here Alex merges — there is no autonomy to gate.
-- **`AGENTS.md` generation and sync tables.** `AGENTS.md` is a symlink to `CLAUDE.md`: no
-  generator, no drift, no CI check.
+- **`AGENTS.md` generation and sync tables.** `AGENTS.md` is the real file and
+  `CLAUDE.md` imports it: no generator, no second copy to drift, and the budget is a reviewer's `awk` line, not a CI check.
 - **Task-sizing tables in LOC.** The meaningful unit here is which execution context a change
   touches, not how many lines moved; ten lines in `content.js` run in every page on the web.
 

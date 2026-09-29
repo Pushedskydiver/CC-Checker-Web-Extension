@@ -372,7 +372,7 @@ Editing any of these needs a PR regardless of the size of the diff, and Alex rev
 **substance**, not just the button — `main` requires no approving review, so his reading is the
 whole human gate:
 
-- `CLAUDE.md` (and `AGENTS.md`, a symlink to it)
+- `AGENTS.md`, and `CLAUDE.md`, which imports it
 - `docs/**` — this file, `ARCHITECTURE.md`, `DEVELOPMENT.md`, `TESTING.md`, `CONVENTIONS.md`,
   `SELF-REVIEW.md`, `DA-REVIEW.md`, `REVIEW-PATTERNS.md`, `RATIONALIZATIONS.md`, `GLOSSARY.md`
 - `.claude/agents/**` — `da-review.md`, `copilot-surrogate.md`, `spec-grill.md`, `implementer.md`; these
@@ -381,7 +381,7 @@ whole human gate:
   to every user on the next release and cannot be recalled
 - `.github/workflows/**` — decides what gets checked
 
-`copilot-surrogate` is mandatory on all five (review-trigger table in `CLAUDE.md`). This list
+`copilot-surrogate` is mandatory on all five (review-trigger table in `AGENTS.md`). This list
 is the source of truth; re-check it rather than reciting it from memory.
 
 ## Deliberately not adopted

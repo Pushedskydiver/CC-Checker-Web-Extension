@@ -270,7 +270,7 @@ workers. `src/utils/color-utils.test.ts` is 25 Vitest cases since 17 September 2
 - **`PROGRESS.md` updated.** A change that closes or opens a workstream, or changes the loading
   instructions for the next session, edits `PROGRESS.md` in the same PR.
 - **After a rename, `grep -rn` the old name** across `src`, `public`, `test`, `docs`, `README.md`
-  and `CLAUDE.md`. It is in more places than the diff shows.
+  `AGENTS.md` and `CLAUDE.md`. It is in more places than the diff shows.
 - **When your change adds a rule, apply it to your own diff before landing**, exhaustively, as the
   last step. The self-referential miss is the one a later review finds first.
 

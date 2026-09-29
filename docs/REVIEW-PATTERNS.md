@@ -201,9 +201,10 @@ added nothing to the list. `docs/DEVELOPMENT.md` §Scale the fan-out to the repo
 - **Detect:** the agents about to be dispatched outnumber the files in `src/`; a verifier per
   finding rather than one verification round over the diff; findings arriving faster than they can
   be reproduced.
-- **Structural fix:** the round cap — discovery rounds until findings converge to nits, exactly one
-  verification round with a confirm-or-disprove brief, default cap of 2 then a manual pass. Report
-  "nit-floor reached" honestly rather than manufacture findings to prove a round ran.
+- **Structural fix:** the round cap — discovery rounds until findings converge to nits, one verification
+  round with a confirm-or-disprove brief after a BLOCKING or MATERIAL fold or any code, config or test
+  fold, default cap of 2 then a manual pass. Report "nit-floor reached" honestly rather than manufacture
+  findings to prove a round ran.
 
 ## 11. Range inputs without `min` snap to the initial value
 

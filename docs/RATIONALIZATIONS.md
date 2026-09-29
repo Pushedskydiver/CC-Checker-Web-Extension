@@ -180,9 +180,10 @@ child iframe, a grey saturated by hand) had already turned up everything that ma
 found nothing further that did, and consumed the sessions that would have fixed it.
 
 **What to do instead.** `docs/DEVELOPMENT.md` §Scale the fan-out to the repo: discovery rounds until
-findings converge to nits, then exactly one verification round with a distinct confirm-or-disprove
-prompt; cap the default at two rounds and finish with a manual pass. An honest "nit-floor reached"
-is the signal Alex wants. Sixty agents saying "confirmed" is not more evidence than five.
+findings converge to nits, then one verification round with a distinct confirm-or-disprove prompt where
+the rule calls for it (a BLOCKING or MATERIAL fold, or any code, config or test fold); cap the default at
+two rounds and finish with a manual pass. An honest "nit-floor reached" is the signal Alex wants. Sixty
+agents saying "confirmed" is not more evidence than five.
 
 ### "It's only a LOW."
 
@@ -282,7 +283,7 @@ bump both files, `npm run package`, and record the upload in `PROGRESS.md`. A me
 7. Commit as `docs: CC-<n> - 📝 Add "<rationalisation>" to RATIONALIZATIONS` (`docs/GIT.md`
    §Commit messages).
 
-`CLAUDE.md`, `docs/DA-REVIEW.md`, `docs/SELF-REVIEW.md`, `docs/GIT.md` and `docs/DEVELOPMENT.md`
+`AGENTS.md`, `docs/DA-REVIEW.md`, `docs/SELF-REVIEW.md`, `docs/GIT.md` and `docs/DEVELOPMENT.md`
 point here from their own sections. `.claude/agents/da-review.md` should consult this file only
 when about to dismiss a finding, never as part of the standard brief: a list of excuses read too
 early becomes a menu.

@@ -151,7 +151,7 @@ errors, or failed requests while driving the UI` — sees only what its filter a
 - **Prose.** The comments in `background.js` and `content.js` carry the reasoning (relay for
   incognito, reset before `openPopup`, the top-frame guard, `devicePixelRatio` read per event); a
   comment the code has overtaken is actively misleading. A new rule in `docs/` names its incident
-  and its absolute date. Deep factual-drift checking across `README.md`, `CLAUDE.md` and `docs/` is
+  and its absolute date. Deep factual-drift checking across `README.md`, `AGENTS.md`, `CLAUDE.md` and `docs/` is
   `copilot-surrogate`'s job, not yours — flag what you trip over, don't run its pass.
 
 ## Key disciplines

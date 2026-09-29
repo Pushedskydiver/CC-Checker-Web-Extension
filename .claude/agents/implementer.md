@@ -33,11 +33,11 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
 ## When invoked
 
 1. **Read the item in full**, plus every section it cites, before writing anything. Then read
-   `CLAUDE.md` §Non-obvious constraints (if it is already in your context, that counts). Most defects here have come from one of those, such as the
+   `AGENTS.md` §Non-obvious constraints (if it is already in your context, that counts). Most defects here have come from one of those, such as the
    `activeTab` grant, the top-frame-only rule, `execCommand` copying, the two unlinked versions, or
    a case-sensitive checkout.
 2. **Read the docs your paths trigger**, unless the brief quotes what you need. The routes are in
-   `CLAUDE.md` §Key docs and §Architecture:
+   `AGENTS.md` §Key docs and §Architecture:
     - `docs/CONVENTIONS.md` before touching `src/**`;
     - `docs/TESTING.md` before writing a test;
     - `docs/ARCHITECTURE.md` before touching `public/app/*.js` or a message name;
@@ -53,7 +53,7 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
    even though it is only returned in the report. If a choice belongs to Alex, such as a
    permission, a manifest entry, a dependency, a release or a policy line, stop and report instead
    of choosing. Do not proceed on a guess.
-4. **Vertical slices** (`CLAUDE.md` §Process directives): one test, then watch it fail against the
+4. **Vertical slices** (`AGENTS.md` §Process directives): one test, then watch it fail against the
    code as it stands, then implement, then green, then commit. Take the next slice only after that.
     - One green commit per slice. The red run goes in the report (the command and the failing
       line) and is never committed, so a rebase merge replays no red commit onto `main`.
@@ -76,7 +76,7 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
     docs-only item has no mutation table.
 
 6. **Sweep the docs the change makes stale.** Grep the old wording, every name you renamed, and
-   every count you changed across `CLAUDE.md`, `README.md`, `docs/**` and `.claude/agents/**`.
+   every count you changed across `AGENTS.md`, `CLAUDE.md`, `README.md`, `docs/**` and `.claude/agents/**`.
     - Counts such as "36 Vitest tests" and "21 e2e tests" are restated in several files on purpose.
       Grep the number and its spelled-out form ("21 e2e", "twenty-one"). A count has gone stale in
       several files at once three times (`PROGRESS.md` decision (l)).
