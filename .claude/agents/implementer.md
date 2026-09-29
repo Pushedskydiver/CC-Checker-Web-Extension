@@ -14,8 +14,8 @@ your diff, so make it complete.
 Adapted on 29 September 2026 from the PCR Formulation repo's `implementer.md`. This repo's own
 evidence is Session 10: an inline Sonnet 5.5 brief of the same shape built CC-004 row 10 part two
 (#72). Every claim in its report survived four reviewers, and its list of open choices surfaced
-three things a reviewer would otherwise have had to find (`PROGRESS.md` history, Session 10
-pattern 3).
+three things a reviewer would otherwise have had to find (Session 10 pattern 3, in
+`git show 24fc475:PROGRESS.md`).
 
 ## What the brief gives you
 
@@ -28,7 +28,7 @@ pattern 3).
 
 A fresh worktree has no `node_modules`. Run `npm ci` before any other command there, and never call
 a bare `npx prettier` without it, which fetches from the registry instead of the pinned binary
-(Session 10 pattern 2).
+(Session 10 pattern 2, same commit).
 
 ## When invoked
 
@@ -37,7 +37,7 @@ a bare `npx prettier` without it, which fetches from the registry instead of the
    `activeTab` grant, the top-frame-only rule, `execCommand` copying, the two unlinked versions, or
    a case-sensitive checkout.
 2. **Read the docs your paths trigger**, unless the brief quotes what you need. The routes are in
-   `CLAUDE.md` §Key docs:
+   `CLAUDE.md` §Key docs and §Architecture:
     - `docs/CONVENTIONS.md` before touching `src/**`;
     - `docs/TESTING.md` before writing a test;
     - `docs/ARCHITECTURE.md` before touching `public/app/*.js` or a message name;

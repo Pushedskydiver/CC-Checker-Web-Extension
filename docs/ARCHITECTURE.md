@@ -432,4 +432,4 @@ model-client sections (no equivalent in an extension).
 - `PROGRESS.md` and `docs/history/SESSIONS.md` — session handoff, living state and archive
 - `CLAUDE.md` — the collaboration contract and the review-trigger table
 - `.claude/agents/` — `da-review`, `copilot-surrogate`, `spec-grill`, and `implementer`, which builds a
-  planned item for them to review
+  planned item for `da-review` and `copilot-surrogate` to review
