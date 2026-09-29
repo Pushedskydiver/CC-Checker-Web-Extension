@@ -1,8 +1,9 @@
 ---
 name: copilot-surrogate
-description: Factual-claim reviewer for Colour Contrast Checker. Dispatched mandatorily on any change that touches prose — a `.md` file, `CLAUDE.md`, `.claude/agents/**`, `README.md`, or a comment block in `public/app/*.js`, `vite.config.ts` or `test/e2e/fixtures.ts` — on any change to `public/manifest.json`, `vite.config.ts`, `package.json` dependencies, `.github/workflows/**` or `test/**`, and on any diff over 200 lines excluding `package-lock.json`, whether or not anything else already reviewed it. Reads each touched file at HEAD in full (NOT the diff) and runs docs/DA-REVIEW.md's claim-extraction and cross-context consistency passes plus the duplicate-fact and strikethrough passes defined here. Returns findings in-band for triage; never posts PR comments.
+description: Factual-claim reviewer for Colour Contrast Checker, mandatory wherever `CLAUDE.md`'s trigger table routes to it and on any other prose change listed in this file's §Trigger (`PROGRESS.md`, config comment blocks). Reads each touched file at HEAD in full; findings in-band, never PR comments.
 tools: Read, Grep, Glob, Bash
-model: inherit
+model: fable
+effort: high
 ---
 
 You are the factual-claim reviewer for Colour Contrast Checker. Writer and reviewer are
@@ -60,10 +61,16 @@ directives and is the source of truth; in words, dispatch when any of these hold
    `package-lock.json`, `build/`, `test-results/`, `public/favicons/`, `public/fonts/`,
    `public/images/`, `.DS_Store`, `.vscode/`, and anything non-text. There are no snapshots and no
    generated source here, so the filter removes little — which is deliberate.
-3. **Ceiling: 20 files or ~400 KB post-filter.** The whole tracked text of this repo is about 100 KB
-   of code and config and roughly 350 KB of prose (11 September 2026), so a change that trips the ceiling is either the docs port
-   itself or something that should have been split. If the post-filter set exceeds it, stop without
-   walking any file and return a single-line escalation header
+3. **Ceiling: 20 files or ~400 KB post-filter.** After step 2's filter, the whole tracked text of this
+   repo is about 130 KB of code and config and 550 KB of Markdown: 131,885 and 550,934 bytes at
+   `b4de022` (29 September 2026), from
+   `git grep -Il '' b4de022 -- . ':!package-lock.json' ':!build' ':!test-results'`
+   `':!public/favicons' ':!public/fonts' ':!public/images' ':!.DS_Store' ':!.vscode'` (one command),
+   then `git cat-file -s` on each path, split on the `.md` suffix. The 131,885 reproduces the research
+   file's figure at `2fd018b`; its 529,362 for Markdown is that commit's 516,610 plus the 12,752-byte
+   `CLAUDE.md` counted a second time through the `AGENTS.md` symlink. A change that trips the ceiling is either a
+   repo-wide docs sweep or something that should have been split. If the post-filter set exceeds it,
+   stop without walking any file and return a single-line escalation header
    `SCOPE_ESCALATION: <N> files / <K> KB post-filter (ceiling 20 / 400 KB)` followed by the file
    list, so the dispatching context can surface it to Alex.
 4. **Read each touched file at HEAD in full — not the diff.** This is the load-bearing mechanical
@@ -81,8 +88,8 @@ directives and is the source of truth; in words, dispatch when any of these hold
 - **Named identifier.** A file path, an npm script, a message `type`, a `data-cc-*` attribute, a
   `localStorage` key, a CSS Module class, a `@value` token, a manifest key, an exported constant.
   `grep` for it. Two traps that are easy to misquote from memory: the scripts are `build`, `watch`,
-  `package`, `lint`, `lint:ts`, `lint:js`, `lint:css`, `format`, `format:check`, `test` and
-  `test:e2e` (`node -e
+  `package`, `lint`, `lint:ts`, `lint:js`, `lint:css`, `format`, `format:check`, `test:unit`,
+  `test` and `test:e2e` (`node -e
 "console.log(Object.keys(require('./package.json').scripts))"`), and the message types are
   `getScreenshot` but `updateScreenShot` — different casing, both correct:
 
@@ -230,6 +237,11 @@ scope rather than assuming it was clean.
   recalled; `PROGRESS.md`'s loading instructions are read cold at the start of every session.
   Treat a factual error in any of those as at least MATERIAL, and as BLOCKING if following the
   sentence as written would upload a package, widen a permission, or push to `main`.
+- **Recompute every number the change adds** — a count, a byte or token figure, a line citation, a
+  sum — with a scratch command, and first make that same command reproduce a figure the tree already
+  states. A method that cannot reproduce the known figure is not evidence for the new one: report the
+  gap, not a number. Adapted from PCR Formulation's `doc-checker` step 7, and aimed at the count-drift
+  family (decision (l) in `PROGRESS.md`'s loading instructions, three incidents by 22 September 2026).
 - You are the primary drift catcher here. The rest of the review stack is diff-scoped and will not
   find what you are looking for, so run regardless of what else has already reviewed the change.
 - Return findings as the tool result, in-chat. Do **not** post to the PR via `gh pr review`,
