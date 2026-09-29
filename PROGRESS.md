@@ -179,7 +179,7 @@ Opus 5.5 at `high`.
   1 nit, folded.
 - **PR B, [#84](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/84)**, `chore/CC-005-implementer-agent`: `.claude/agents/implementer.md` (`model: sonnet`,
   `effort: high`), plus its line in `docs/ARCHITECTURE.md`, `docs/GIT.md` and `docs/GLOSSARY.md`.
-    - **Dry run**, per "Reviews of PR H" §PR B: the brief was rebuilt from §Session 10, and CC-004 row 10
+    - **Dry run**, per "Reviews of PR H" §PR B: the brief was rebuilt from §Session 10 (now in `git show 759db88:PROGRESS.md`), and CC-004 row 10
       part two was built blind from #72's parent `9ca4d2b` on Sonnet (`general-purpose` told to follow the
       file; ~107k tokens, ~6 minutes). Its `src/` came out byte-identical to #72's, and 17 mutants all went
       red. Suite on its head: 36 unit, 21 e2e. It edited four docs where #72 edited six. The other two
@@ -491,59 +491,6 @@ merged, no open PRs, Session 10's worktrees already gone. Pre-push suite green (
 5. **One Fable grill round moved the 5-hour window eight points** (68% → 76%, ~175k tokens). Budget a
    grill and its confirm round before starting either.
 
-## Session 10 — 28 September 2026 (CC-004: row 10 part two merged as #72, a PCR-style implementer, Session 5 archived)
-
-**Row 10 part two merged as #72 (`61b5d43`), both reviews confirmed at nit-floor, and the next session researches
-porting the PCR Formulation workflow here before CC-004 goes any further — Alex's instruction for this
-handoff.**
-
-**Setup:** loading instructions followed in order and every check matched: archive count 5, detail band
-34,387 bytes, tree clean, `origin/main` at `9ca4d2b` with #70 and #71 merged, no open PRs, pre-push suite
-green (36 unit, 21 e2e), `get_session self` reported Opus 5.5 at `high`.
-
-**Done:** [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72),
-`refactor/CC-004-poor-contrast-css-part-two`, five commits to `d2a305d`. The header title and the tabs
-became `:global(body[data-contrast='poor'][…])` rule pairs; `isPoorContrast` and `isBackgroundDark` left
-`TColourContrastContext` and the value (the provider still derives them for the attributes); six docs
-lost their transitional wording. All fifteen sites are now rule pairs. The PR body carries the mutant
-table and the pasted suite. **Merged: yes** — by Alex on 28 September 2026 with a merge
-commit, `61b5d43`; branch deleted, pre-push suite green on `main` after it (36 unit, 21 e2e). **Uploaded to
-the Web Store: no** (not a release).
-
-**How it was built — the PCR `implementer` pattern, trialled at Alex's suggestion.** The code and docs were
-written by a Sonnet 5.5 subagent from a brief modelled on
-`/Users/alexclapperton/Desktop/PCR Formulation/.claude/agents/implementer.md`, which works one planned item,
-lists every choice left open and never merges. Two rules were this repo's own, not the PCR file's: write
-the mutation table (PCR asks for mutation evidence only under `packages/optimiser`), and do not open the
-PR — the PCR agent opens its own, and here the review order puts the PR after both reviews. It took about three
-and a half minutes and ~103k subagent tokens, and every claim in its report survived four reviewers. The
-coordinator read the diff before dispatching reviewers. This repo has no `implementer.md` yet; the brief
-was inline.
-
-**Reviews:** `da-review` and `copilot-surrogate` on Fable 5.1, each in its own worktree. Round one: both
-at nit-floor, one shared LOW (a date without its year), folded in `d2a305d`. Confirm round with fresh
-verifiers: every conclusion CONFIRMED, no new finding above LOW.
-
-**Also:** Session 5 archived in its own PR, [#74](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/74)
-(`docs/CC-004-archive-session-5`, to `de764dd`), after two `copilot-surrogate` rounds (two MATERIAL
-folded, then confirmed at nit-floor); opened beside this handoff. The two PRs both edit `PROGRESS.md` in hunks that do
-not touch, so whichever merges second should merge cleanly — but check.
-
-**Usage, read with `get_usage` (the tool the next session's research is about):** at start 5-hour 30%,
-weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%, 171k.
-
-**Major novel patterns Session 10:**
-
-1. **A confirm round after a nit-floor round one confirmed nothing new, at ~120k Fable tokens.** The rule
-   (`docs/DEVELOPMENT.md` §Verification rounds) requires it; whether a round one with zero BLOCKING and
-   MATERIAL and a one-word fold should still require it is decision (r), not changed here.
-2. **`npx prettier` in a fresh worktree without `node_modules` fetches Prettier from the registry** rather
-   than the checkout's pinned binary — the same 3.9.9 on the day, but nothing guarantees that. Check formatting with the main checkout's `node_modules/.bin/prettier` or run
-   `npm ci` first.
-3. **The implementer's report is the thing to read, not its diff alone.** Its "choices the brief left
-   open" list surfaced the Prettier table re-pad, the date convention and a stray file it had created and
-   deleted — each of which a reviewer would otherwise have had to discover.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
@@ -551,8 +498,8 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 10 to 15) once #83 and this
-   handoff merge. Archive Session 10 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** Done in Session 16: Session 10 is archived (`docs/CC-005-archive-session-10`), so the
+   band holds 5 entries (Sessions 11 to 15), 21,815 bytes.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #83,
       #84 (B), #85 (branch protection) and this handoff, unless Alex has merged them; say which in the entry,
@@ -655,16 +602,16 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
    the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
    `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3, in `git show 24fc475:PROGRESS.md`), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
-   covers agents and dispatch anyway. Session 10 used it a third time.
+   covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
    and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
    **(r)** whether a confirm round is still required when round one is already at nit-floor with nothing
-   above LOW and a fold of a word or two — Session 10 pattern 1; the PCR research may answer it;
+   above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it;
    **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
    one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.
 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 9, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 10, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
