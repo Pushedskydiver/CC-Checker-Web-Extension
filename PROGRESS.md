@@ -71,7 +71,8 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
    proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
-   Session 12; the confirm round passed in Session 13, and #75 merged as `697b8a2` (§Session 13).
+   Session 12; the confirm round passed in Session 13 (§Session 13), and #75 merged as `697b8a2` the same day (the
+   Session 14 paragraph above).
 
 ### The approved plan (CC-004), approved by Alex 12 September 2026
 
@@ -459,8 +460,8 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
    (`docs/CC-005-archive-session-8`), after which it gives 5 and the band is 20,797 bytes.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. `main` carries
-      `b4de022` (#79), `90fc6a5` (#78) and `697b8a2` (#75), plus whatever Session 14 merged. The heads that
-      merged were `2888966`, `bc71949` and `0a4332e`.
+      `697b8a2` (#75, head `2888966`), `90fc6a5` (#78, head `bc71949`) and `b4de022` (#79, head `0a4332e`),
+      plus whatever Session 14 merged.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
       plus any Session 14 branch that has not merged.
     - `git worktree list`: remove any reviewer worktree Session 14 left once nothing needs it.
@@ -479,7 +480,8 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
         - a rule for `docs/history/SESSIONS.md` §Retired sections goes into D's rewrite of
           `docs/DEVELOPMENT.md` §Session handoff (#78's `da-review` L5);
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
-          be replaced by the first real instance (Session 8 pattern 2 is one). Its own small docs PR.
+          be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
+          the full entry is `git show 2d63577^:PROGRESS.md`). Its own small docs PR.
     - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14: ship A pinned to
       `fable`, benchmark later). "Agents on Fable" was chosen on 12 September from published guidance,
       never measured here. Run `da-review` at `high` on both models over two to four past diffs with a
@@ -550,8 +552,8 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
    History is not rewritten; the only open question is whether the table should admit 🏷️ for
    type-only renames or the slip stays a slip. Default: a slip.
    **(p)** whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
-   the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, Session 9
-   pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
+   the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
+   `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
    covers agents and dispatch anyway. Session 10 used it a third time.
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
