@@ -5,15 +5,19 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 13)
 
-Updated 29 September 2026, end of Session 13: **PR H (#75) is ready for review and PR E is open as #78; both
-are Alex's to merge.** H's review fold passed its confirm round at nit-floor, and Alex answered decision (t):
+Updated 29 September 2026, Session 14: **#75 (PR H), #78 (PR E) and the Session 13 handoff (#79) all merged
+that day, as `697b8a2`, `90fc6a5` and `b4de022`, each with the merge-commit button.** #79's
+`copilot-surrogate` ran post-merge on `b4de022`, and its findings are folded into the Session 8 archive PR.
+PR A is next. The Session 13 state follows.
+
+Updated 29 September 2026, end of Session 13: **PR H (#75) was ready for review and PR E open as #78.** H's review fold passed its confirm round at nit-floor, and Alex answered decision (t):
 `deny` on `git commit --amend`. E archived Sessions 6 and 7 and passed both reviews and a confirm round. PR A
 is next. Session 13 handed off on the soft token line (trigger 2), with the 5-hour window at 22%.
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
-`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on
-[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
+`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file merged to
+`main` as `697b8a2` ([#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75), PR H); R2 and both
 reviews passed in Session 12, the confirm round in Session 13. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
 
@@ -67,7 +71,8 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
    proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
-   Session 12; the confirm round passed in Session 13, and #75 is ready (§Session 13).
+   Session 12; the confirm round passed in Session 13 (§Session 13), and #75 merged as `697b8a2` the same day (the
+   Session 14 paragraph above).
 
 ### The approved plan (CC-004), approved by Alex 12 September 2026
 
@@ -190,7 +195,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
 
 **Major novel patterns Session 13:**
 
-1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~533k subagent tokens). That
+1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~534k subagent tokens). That
    agrees with Session 12's ~4 per reviewer. The estimate holds.
 2. **A review of an archive PR finds defects in lines the PR did not write.** Two of E's four MATERIAL sat
    outside its diff: a pointer in `docs/REVIEW-PATTERNS.md`, and `spec-grill.md` still calling 2.1.0
@@ -443,91 +448,47 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
    gitmoji was off-table; both were caught only after commit, where the never-amend rule makes them
    permanent. Count and check the type table before `git commit`, not after.
 
-## Session 8 — 22 September 2026 (CC-004: PR 9 merged, poor-contrast switch pinned)
-
-**Setup:** loading instructions followed in order. Archive trigger 5, did not fire; tree clean;
-`origin/main` at `8af89df` (the Session 7 close, #64, one later than the block predicted); no open
-PRs; pre-push suite green (36 unit, 20 e2e). **Step 6 did not match:** `get_session self` reported
-Sonnet 5 at `xhigh`, and ultracode was on. The session cannot change its own model, so it asked;
-Alex chose Opus 5 at `high` and ultracode off, and switched both himself before PR 9's design work.
-
-**Done:** PR 9 — **#65, `25cf7ab`**, five commits, merged by Alex with a merge commit. One e2e test,
-_poor contrast turns every themed control black on a light background and white on a dark one_,
-reads one element per poor-contrast site (fifteen across twelve components) plus `ActionCta`'s
-filled variant, in three states: the default pair, `#ffffff`/`#eeeeee` and `#000000`/`#111111`.
-It compares resolved colours through a probe element, not class names or spellings, so row 10 can
-move the switch into CSS under it. Watched failing: all 30 Dark/Light branches set to `false` one
-at a time, 30 red. The doc sweep moved the e2e count to 21 in six files (the seventh, this file's
-loading block, is this handoff's) and corrected
-`docs/ARCHITECTURE.md`'s "the only automated tests are Playwright", false since #58.
-
-**Reviews:** two rounds, the cap. `da-review` round one: one MATERIAL (the filled Reverse, Close and
-share buttons were never read — deleting their `.ctaWithBackground` rule left the test green) and
-two Low (the assertion compared the value as written, so `black` failed where `#000` passed; unread
-companion properties undocumented). `copilot-surrogate` round one: two MATERIAL (two more stale
-"20"s) and two Low. In the confirm round `da-review` re-verified its fixes with its own red runs and
-`copilot-surrogate` re-checked the docs; both reached nit-floor, with one new Low from `da-review`
-(below), fixed before the PR opened.
-
-**Post-merge:** branch an ancestor of `main`, deleted with `-d`; pre-push suite green on `25cf7ab`
-(36 unit, 21 e2e). Session 3 archived in its own PR (`docs/CC-004-archive-session-3`).
-
-**Major novel patterns Session 8:**
-
-1. **Killing every branch mutant is not killing every mutant.** The author's sweep set all 30 JS
-   branches to `false` and every one went red, and the test still missed a whole rule: the JS
-   branch was covered, the CSS it switches on was not read for one variant. `da-review` found it by
-   mutating the stylesheet, not the component. For a test that pins a visible outcome, mutate the
-   layer that produces the outcome as well as the one that decides it.
-2. **A fix to a test's permissiveness opened a new one, and only the confirm round saw it.** Painting
-   the value onto a probe made the test compare colours, not spellings — and an unparsable value
-   made the probe silently inherit the body's colour, which at the default pair is exactly the
-   expected foreground (`notacolor` passed). The confirm round exists for this: re-attack the fix,
-   not just re-check the finding.
-3. **The count-sweep grep had the same hole the count had.** The sweep searched for `20 tests`,
-   `20 Playwright` and similar, and missed "20 green tests" and "20-test" — `copilot-surrogate`
-   found both. A third instance of decision (l)'s pattern (22 → 25, 25 → 36, now 20 → 21 e2e).
-4. **A session's recorded model decision is not self-enforcing.** The loading block said Opus 5 at
-   `high`, ultracode off; the session arrived on Sonnet 5 at `xhigh` with ultracode on. The check in
-   step 6 caught it before any design work — that step is the enforcement, so keep it.
-5. **Two reviewers and a drafting session can share one repo without stepping on each other.** The
-   archive branch stayed checked out for its reviewer while the handoff was drafted in a separate
-   `git worktree`, so no agent read a tree that changed under it.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
-   `docs/research/01-pcr-workflow-port.md` from #75's branch (`docs/CC-005-pcr-workflow-proposal`), or
-   from `main` if Alex has merged it.
+   `docs/research/01-pcr-workflow-port.md` on `main` (#75, `697b8a2`).
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 8 to 13) once #78 and this
-   handoff merge. Archive Session 8 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gave 6 (Sessions 8 to 13) on `main` at
+   `b4de022`, with the detail band at 24,790 bytes. Session 8 is archived in its own small PR
+   (`docs/CC-005-archive-session-8`), after which it gives 5 and the band is 20,797 bytes.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #75
-      (ready, `2888966`), #78 (`ac790f5`) and this handoff, unless Alex has merged them. If #78 merged
-      first, this handoff's base should read `main`.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. `main` carries
+      `697b8a2` (#75, head `2888966`), `90fc6a5` (#78, head `bc71949`) and `b4de022` (#79, head `0a4332e`),
+      plus whatever Session 14 merged.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      and whichever of `docs/CC-005-pcr-workflow-proposal`, `docs/CC-005-archive-session-6` and
-      `docs/CC-005-close-session-13` have not merged.
-    - `git worktree list`: remove `../cc-h-wt`, `../cc-e-wt` and `../cc-handoff-wt` once nothing needs them.
+      plus any Session 14 branch that has not merged.
+    - `git worktree list`: remove any reviewer worktree Session 14 left once nothing needs it.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR A, per §8** (Alex merges #75 and #78).
-    - **First, `copilot-surrogate` on this handoff (#79)**, which was not reviewed (trigger 2). Run it before
-      merge if #79 is still open. Otherwise run it post-merge on `main` and fold its findings into the next
-      `PROGRESS.md` PR, as Session 13 did for #77.
+5. **Primary work: PR A, per §8.**
+    - ~~First, `copilot-surrogate` on #79.~~ Done post-merge on `b4de022` in Session 14 (Fable, ~89k
+      tokens): 0 BLOCKING, 6 MATERIAL and 3 LOW, all state overtaken by the three merges, and 2 nits. Folded
+      into the Session 8 archive PR.
     - A: pin `model`/`effort` on the three agents, trim `copilot-surrogate`'s description, correct its size
-      sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). The PR
-      body says it is four ideas.
+      sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). A's PR
+      body must say it is four ideas in one PR (L10).
     - Reviews: `copilot-surrogate` per the table. It touches `.claude/agents/**` and `docs/GIT.md`.
     - Carried from Session 13, none started:
         - a rule for `docs/history/SESSIONS.md` §Retired sections goes into D's rewrite of
           `docs/DEVELOPMENT.md` §Session handoff (#78's `da-review` L5);
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
-          be replaced by the first real instance (Session 8 pattern 2 is one). Its own small docs PR.
+          be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
+          the full entry is `git show 2d63577^:PROGRESS.md`). Its own small docs PR.
+    - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14: ship A pinned to
+      `fable`, benchmark later). "Agents on Fable" was chosen on 12 September from published guidance,
+      never measured here. Run `da-review` at `high` on both models over two to four past diffs with a
+      known defect (#65's unread filled buttons, #62's 8-digit hex, #68's dependency mutant, #75's
+      `git -C` matcher hole), and score the known defect and the false findings. At ~4 points of the
+      5-hour window per reviewer, four diffs cost ~32. Its own research item, now or at the Session 20
+      review.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
     - Reviewers on Fable 5.1, passed per call, at most two at a time.
@@ -591,8 +552,8 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
    History is not rewritten; the only open question is whether the table should admit 🏷️ for
    type-only renames or the slip stays a slip. Default: a slip.
    **(p)** whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
-   the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, Session 9
-   pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
+   the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
+   `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
    covers agents and dispatch anyway. Session 10 used it a third time.
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
@@ -605,5 +566,5 @@ companion properties undocumented). `copilot-surrogate` round one: two MATERIAL 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 and 7, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 8, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
