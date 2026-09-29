@@ -123,9 +123,9 @@ explicit trigger phrases rather than always-on.
 - **TDD: vertical slices.** One test → implement → next test, never all tests first. Today that means
   one Playwright test in `test/e2e/`, or one Vitest case in `src/**/*.test.ts` — the colour
   utilities have 25 as of 18 September 2026 (`docs/TESTING.md`).
-- **Review order: architectural → DA (subagent) → self → PR. Never skip or reorder.** Dispatch
-  `da-review` from a fresh context — the one that wrote the change cannot see what it assumed. It is
-  a grep, not a judgement:
+- **Review order: architectural → DA (subagent) → self → PR. Never skip or reorder.** Dispatch `da-review`
+  (briefs in `.claude/agents/*.md`) from a fresh context — the one that wrote the change cannot see what
+  it assumed. It is a grep, not a judgement:
 
     | Trigger                                                                                                                                                          | Review                         |
     | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |

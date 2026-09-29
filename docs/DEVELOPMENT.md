@@ -262,11 +262,13 @@ Adversarial review here is iterated, not one-shot, and the rounds are two differ
 - **Verification round (R*n*, one, a distinct prompt, when the rule below calls for it).** Brief: _confirm or disprove the
   claim that this is at the nit-floor._ Evaluative-sceptical. Not "one more discovery pass".
 
-**Why the split.** The last discovery round has a self-terminating bias built in: the author wants
-to converge and so does the subagent, which makes it the _least_ independent check in the
-sequence. A zero mid-discovery might mean convergence or might mean the round asked the wrong
-question; a zero from an explicit verification prompt is evidence. **A verification round the rule
-below calls for has to actually fire** — "it would have come back clean" is a rationalisation, not a result.
+**Why the split.** The last discovery round has a self-terminating bias built in: the author wants to
+converge and so does the subagent, which makes it the _least_ independent check in the sequence. A zero
+mid-discovery might mean convergence or might mean the round asked the wrong question; a zero from an
+explicit verification prompt is evidence. The rule below accepts the first risk for a round that finds
+nothing at all: with no fold, the review stops there (Alex, 29 September 2026). **A verification round the
+rule below calls for has to actually fire** — "it would have come back clean" is a rationalisation, not a
+result.
 
 **Finders and verifiers are separate agents, from fresh context.** The agent that fixed a finding
 is the worst possible judge of whether the fix landed. Self-verification — grepping your own diff,
@@ -277,18 +279,19 @@ findings manufactured to prove the round ran.
 **Cap default rounds at 2, then do a manual pass.** Stop when successive rounds produce only
 cosmetic deltas, or when Alex says ship — whichever is sooner.
 
-**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026, and scoped by him
-to prose folds the same day).** A verification round follows any fold of a BLOCKING or MATERIAL finding, and
-any fold of whatever grade that touches code, config or tests (`src/**`, `public/**`, `test/**`, config
-files). A round whose findings were all LOW or nits, folded in prose only (Markdown and `.claude/agents/**`),
-needs none: the coordinator reads the fold diff itself, if there is one, and records that read in the PR body.
-A round with no findings has no fold, so there is nothing to confirm. It stands on three rounds that found
+**When a verification round is needed (decision (r), promoted by Alex on 29 September 2026, and scoped by
+him to prose folds the same day).** A verification round follows any fold of a BLOCKING or MATERIAL
+finding, and any fold of whatever grade that touches a file other than prose: code, config or tests. A
+round whose findings were all LOW or nits, folded in prose only (Markdown and `.claude/agents/**`), needs
+none: the coordinator reads the fold diff itself, if there is one, and records that read in the PR body. A
+round with no findings has no fold, so there is nothing to confirm. It stands on three rounds that found
 nothing new: Session 10's, after a nit-floor round one and a one-word fold (~120k Fable tokens), and the
 confirm rounds of #84 (Session 15) and #87 (Session 16), each after a LOW-only fold. The counter-case is
-Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show 2d63577^:PROGRESS.md`).
-That round had folded a MATERIAL finding (the filled buttons were never read) alongside two LOWs, and the hole
-came from the fix to one of those LOWs, a test-probe rewrite. That is why a code or test fold keeps its round
-whatever its grade. All three no-news rounds above followed prose folds.
+Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show
+2d63577^:PROGRESS.md`). That round had folded a MATERIAL finding (the filled buttons were never read)
+alongside two LOWs, and the hole came from the fix to one of those LOWs, a test-probe rewrite. That is why
+a code or test fold keeps its round whatever its grade. All three no-news rounds above followed prose
+folds.
 
 ### Scale the fan-out to the repo
 
