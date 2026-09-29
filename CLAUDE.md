@@ -152,10 +152,10 @@ explicit trigger phrases rather than always-on.
 - **Policy-adjacent edits** (this file, `docs/**`, `.claude/agents/**`, `public/manifest.json`,
   `.github/workflows/**`): enumerate affected siblings by hand. `AGENTS.md` is a symlink to this
   file — no generator, no drift, no CI gate; add a generator only if the two ever need to differ.
-- **Hand off on the sooner of:** context nearing the compaction budget, a natural boundary (a PR
-  merged, a workstream segment done), or the compaction warning firing. Always-loaded because its
-  trigger is "context is filling", which no trigger phrase can reach. Mechanics:
-  `docs/DEVELOPMENT.md` §Session handoff.
+- **Hand off on the sooner of:** context at 150k (soft) or 250k (hard), a phase boundary past 130k, or
+  the 5-hour window at 85%. The other triggers, the `get_usage` checkpoints and the handoff prompt are
+  in `docs/SESSION-HANDOFF.md`. Always-loaded because its trigger is "context is filling", which no
+  trigger phrase can reach.
 
 ## Key docs
 
@@ -167,6 +167,6 @@ explicit trigger phrases rather than always-on.
 - **Before a design decision, or when justifying a shortcut:** read `docs/RATIONALIZATIONS.md`.
 - **When a review finding feels familiar:** read `docs/REVIEW-PATTERNS.md`.
 - **For terms** (context, relay, loupe, nit-floor, activeTab grant): read `docs/GLOSSARY.md`.
-- **For the full process — gates, release, merge policy, session handoff:** read
-  `docs/DEVELOPMENT.md`.
+- **Before handing off, and at session start (the archive check):** read `docs/SESSION-HANDOFF.md`.
+- **For the full process — gates, release, merge policy:** read `docs/DEVELOPMENT.md`.
 - **For current state and next steps:** read `PROGRESS.md` (archive: `docs/history/SESSIONS.md`).

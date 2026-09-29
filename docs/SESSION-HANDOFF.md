@@ -104,8 +104,8 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
 - **Point to files** rather than restating them; separate "done" from "verified"; list open questions for Alex
   instead of assuming answers.
 - **Superseded reasoning in `PROGRESS.md`** gets `~~strikethrough~~` rather than deletion, with what corrected
-  it and when. The wrong turns are half the value. (This concerns `PROGRESS.md` and `SESSIONS.md`; the
-  `docs/*.md` rule documents are updated in place.)
+  it and when. The wrong turns are half the value. (This concerns `PROGRESS.md` and
+  `docs/history/SESSIONS.md`.)
 - **The loading block is pointer-only:** what to verify first, the primary work, lettered decision branches,
   carry-overs, the model and effort. It must not restate rules that live in `docs/*.md`.
 

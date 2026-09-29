@@ -190,7 +190,7 @@ rather than written as live.
 
 **The strikethrough pass.** The convention here is split by surface. `PROGRESS.md` and
 `docs/history/SESSIONS.md` record superseded reasoning with `~~strikethrough~~` and say what
-corrected it and when (`docs/DEVELOPMENT.md` §Session handoff); text inside `~~...~~` there is a
+corrected it and when (`docs/SESSION-HANDOFF.md` §5); text inside `~~...~~` there is a
 historical claim kept on purpose — being wrong is _why_ it is struck. Do not report struck text as
 false; that is the convention working. The `docs/*.md` rule documents and `CLAUDE.md` are living
 documents updated in place (some carry a **Last reviewed** date), so a superseded sentence there is
