@@ -3,7 +3,11 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 17)
+## Next workstreams (after Session 18)
+
+Updated 29 September 2026, end of Session 18: **the Session 12 archive is open as
+[#93](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/93), reviewed and confirmed at nit-floor.** PR F
+is scripted but not started on a branch (loading step 5); G follows, then CC-004 row 11.
 
 Updated 29 September 2026, Session 18: **the Session 11 archive (#90, `5629d6e`), PR C (#91, `a358bee`) and the
 Session 17 handoff (#92, `075e38d`) all merged, so the paragraph below is history.** Session 12 is archived in its
@@ -181,6 +185,59 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 18 — 29 September 2026 (CC-005: Session 12 archived as #93, PR F scripted)
+
+**The Session 12 archive is open as #93, at nit-floor after a review and a confirm round; PR F's conversion is
+scripted and checked, not yet on a branch.** Nothing merged this session.
+
+**Setup:** #90, #91 and #92 had merged, `main` was at `075e38d`, there were no open PRs, the three standing remote
+branches were present and `../cc-pr-c` was already gone. #92's stale lines were corrected in #93. The pre-push suite
+was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
+
+**Done:**
+
+- **[#93](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/93)**, `docs/CC-005-archive-session-12`,
+  `291a668`: Session 12 becomes row 12, and its cites point at `git show 075e38d:PROGRESS.md`. It also folds
+  `da-review` LOW 3 on #91, so the `PROGRESS.md` pointers name `AGENTS.md`. `copilot-surrogate` (~103k tokens)
+  found 1 MATERIAL ("Sessions 6 to 11" not bumped), 1 LOW and 3 nits, all folded. The confirm round (~39k)
+  CONFIRMED all four in-tree folds and found one LOW that the fold itself caused (the band went from 22,576 to
+  22,609 bytes). That was a prose-only fold, so the coordinator read it (decision (r)).
+- **PR F, prepared, not built.** Converting §What each test proves takes `docs/TESTING.md` from 117,068 to
+  34,635 bytes with the spec's full titles, and passes Prettier. The method is in loading step 5.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1. #93 was finished with context at 149k, above 130k, so F was not started (the soft line is
+  150k).
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                 | 5-hour | Weekly | Fable weekly | Context |
+    | ---------------------- | ------ | ------ | ------------ | ------- |
+    | Start                  | 38%    | 77%    | 34%          | 73k     |
+    | After round one's fold | 42%    | 78%    | 35%          | 139k    |
+    | Handoff                | 43%    | 78%    | 35%          | 149k    |
+
+- **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
+  2 October.
+- **Warning signs:** one. `291a668` and `bd6a418` were pushed after only `npm run lint`, the same slip as
+  Session 17's. The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
+  reviewer and the confirm verifier shared one detached worktree, one after the other, never at the same time.
+- **Clarifying question:** none that Session 17's entry should have answered.
+
+**Major novel patterns Session 18:**
+
+1. **A fold inside the band moves the band figure quoted outside it.** #93's LOW fix added 33 bytes to the
+   Session 13 entry, so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
+   was the same class, which makes two incidents. This handoff's own review fold made a third (25,973 to 26,183). The candidate rule is to re-take any band figure after the
+   last commit that touches the band. Promoting it is Alex's call (`docs/DEVELOPMENT.md` §Process-rule
+   promotion).
+2. **The table's Group column was not the spec's title.** It shortened `colour picker (needs captureVisibleTab)`
+   to `colour picker`, while the section's intro says "Titles are the spec's own". Diffing the planned headings
+   against `npx playwright test --list` caught it before anything was built.
+3. **One surrogate plus a scoped confirm round cost about 5 points of the 5-hour window** (38% to 43%, ~142k
+   subagent tokens). A confirm round scoped to the fold diff cost ~39k, against ~103k for the full read.
 
 ## Session 17 — 29 September 2026 (CC-005: Session 11 archived as #90, PR C opened as #91)
 
@@ -519,18 +576,33 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
-   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR, leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
+   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR (#93), leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
+    - **With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
+      Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
+      commit that touches the band (Session 18 pattern 1).
 3. **Confirm the state, live.**
-    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. #90, #91 and
-      this handoff (#92) all merged before Session 18 began; its archive PR rewrote the hedges here (Session 14
-      pattern 1).
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete). The
-      three CC-005 branches were deleted on merge.
-    - `git worktree list`: only the main checkout; `../cc-pr-c` was already gone at Session 18's start.
+    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. Expect #93
+      and this handoff, which is stacked on #93, open unless Alex has merged them. Say which in the entry, and
+      rewrite every hedge here that the merges overtake (Session 14 pattern 1).
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
+      whichever of `docs/CC-005-archive-session-12` and `docs/CC-005-close-session-18` have not merged.
+    - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
 5. **Primary work: PR F, per §8** (`docs/TESTING.md`'s table becomes sections; both reviews), then G. C merged as #91 (`a358bee`).
+    - **F's method, checked in Session 18 but not committed.** Convert only §What each test proves. The fixture
+      and baseline tables are at most 352 characters wide and stay as tables. Each of the 21 rows becomes
+      `### <describe title> › <test title>`, a blank line, then the "What it proves" cell. Wrap the cell with
+      Python's `textwrap.wrap(w, width=100, break_long_words=False, break_on_hyphens=False)`, and assert that
+      no continuation line starts with `-`, `*`, `+`, `>`, `#` or `1.`. Use the spec's full describe titles
+      (Session 18 pattern 2), so §What each test proves' headings, with `### ` stripped, diff clean against
+      `npx playwright test --list | grep ' › ' | sed -E 's/^.*extension\.spec\.ts:[0-9]+:[0-9]+ › //'`.
+      The file goes from 117,068 to 34,635 bytes (34,557 with the table's short `colour picker` label) and
+      passes `prettier --check`. In the PR body, give reviewers a
+      whitespace-collapsed old-against-new check of every cell.
+    - F shifts decision (m)'s `docs/TESTING.md:338` cite (step 7) by about 132 lines, to 470. Repoint it to
+      §Not ported from the source documents. `docs/TESTING.md:11` sits above the table and does not move.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
       unreviewed; step 3 corrects its state lines.
