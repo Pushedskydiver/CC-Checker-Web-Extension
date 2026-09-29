@@ -5,15 +5,19 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 13)
 
-Updated 29 September 2026, end of Session 13: **PR H (#75) is ready for review and PR E is open as #78; both
-are Alex's to merge.** H's review fold passed its confirm round at nit-floor, and Alex answered decision (t):
+Updated 29 September 2026, Session 14: **#75 (PR H), #78 (PR E) and the Session 13 handoff (#79) all merged
+that day, as `697b8a2`, `90fc6a5` and `b4de022`, each with the merge-commit button.** #79's
+`copilot-surrogate` ran post-merge on `b4de022`, and its findings are folded into the Session 8 archive PR.
+PR A is next. The Session 13 state follows.
+
+Updated 29 September 2026, end of Session 13: **PR H (#75) was ready for review and PR E open as #78.** H's review fold passed its confirm round at nit-floor, and Alex answered decision (t):
 `deny` on `git commit --amend`. E archived Sessions 6 and 7 and passed both reviews and a confirm round. PR A
 is next. Session 13 handed off on the soft token line (trigger 2), with the 5-hour window at 22%.
 
 Updated 29 September 2026, end of Session 11: **the PCR workflow port is researched, proposed and approved
 by Alex as `CC-005`.** It is eight PRs, ordered H, E, A, B, D, C, F, G, and the plan is
-`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file is on
-[#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75) (PR H) until it merges; R2 and both
+`docs/research/01-pcr-workflow-port.md` (§8, Decisions, and the three review folds). That file merged to
+`main` as `697b8a2` ([#75](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/75), PR H); R2 and both
 reviews passed in Session 12, the confirm round in Session 13. CC-004 row 11 waits for all eight (Alex). The paragraph below is the Session 10 state and
 still holds for CC-004.
 
@@ -67,7 +71,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
    proposal approved, `spec-grill` R1 folded (§Session 11). R2 and both reviews ran and were folded in
-   Session 12; the confirm round passed in Session 13, and #75 is ready (§Session 13).
+   Session 12; the confirm round passed in Session 13, and #75 merged as `697b8a2` (§Session 13).
 
 ### The approved plan (CC-004), approved by Alex 12 September 2026
 
@@ -190,7 +194,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
 
 **Major novel patterns Session 13:**
 
-1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~533k subagent tokens). That
+1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~534k subagent tokens). That
    agrees with Session 12's ~4 per reviewer. The estimate holds.
 2. **A review of an archive PR finds defects in lines the PR did not write.** Two of E's four MATERIAL sat
    outside its diff: a pointer in `docs/REVIEW-PATTERNS.md`, and `spec-grill.md` still calling 2.1.0
@@ -446,37 +450,43 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
-   `docs/research/01-pcr-workflow-port.md` from #75's branch (`docs/CC-005-pcr-workflow-proposal`), or
-   from `main` if Alex has merged it.
+   `docs/research/01-pcr-workflow-port.md` on `main` (#75, `697b8a2`).
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 8 to 13) once #78 and this
-   handoff merge. Archive Session 8 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gave 6 (Sessions 8 to 13) on `main` at
+   `b4de022`, with the detail band at 24,790 bytes. Session 8 is archived in its own small PR
+   (`docs/CC-005-archive-session-8`), after which it gives 5 and the band is 20,797 bytes.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #75
-      (ready, `2888966`), #78 (`ac790f5`) and this handoff, unless Alex has merged them. If #78 merged
-      first, this handoff's base should read `main`.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. `main` carries
+      `b4de022` (#79), `90fc6a5` (#78) and `697b8a2` (#75), plus whatever Session 14 merged. The heads that
+      merged were `2888966`, `bc71949` and `0a4332e`.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      and whichever of `docs/CC-005-pcr-workflow-proposal`, `docs/CC-005-archive-session-6` and
-      `docs/CC-005-close-session-13` have not merged.
-    - `git worktree list`: remove `../cc-h-wt`, `../cc-e-wt` and `../cc-handoff-wt` once nothing needs them.
+      plus any Session 14 branch that has not merged.
+    - `git worktree list`: remove any reviewer worktree Session 14 left once nothing needs it.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR A, per §8** (Alex merges #75 and #78).
-    - **First, `copilot-surrogate` on this handoff (#79)**, which was not reviewed (trigger 2). Run it before
-      merge if #79 is still open. Otherwise run it post-merge on `main` and fold its findings into the next
-      `PROGRESS.md` PR, as Session 13 did for #77.
+5. **Primary work: PR A, per §8.**
+    - ~~First, `copilot-surrogate` on #79.~~ Done post-merge on `b4de022` in Session 14 (Fable, ~89k
+      tokens): 0 BLOCKING, 6 MATERIAL and 3 LOW, all state overtaken by the three merges, and 2 nits. Folded
+      into the Session 8 archive PR.
     - A: pin `model`/`effort` on the three agents, trim `copilot-surrogate`'s description, correct its size
-      sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). The PR
-      body says it is four ideas.
+      sentence (L2), add the recompute discipline, add `CC-005` to `docs/GIT.md`'s key list (L9). A's PR
+      body must say it is four ideas in one PR (L10).
     - Reviews: `copilot-surrogate` per the table. It touches `.claude/agents/**` and `docs/GIT.md`.
     - Carried from Session 13, none started:
         - a rule for `docs/history/SESSIONS.md` §Retired sections goes into D's rewrite of
           `docs/DEVELOPMENT.md` §Session handoff (#78's `da-review` L5);
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8 pattern 2 is one). Its own small docs PR.
+    - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14: ship A pinned to
+      `fable`, benchmark later). "Agents on Fable" was chosen on 12 September from published guidance,
+      never measured here. Run `da-review` at `high` on both models over two to four past diffs with a
+      known defect (#65's unread filled buttons, #62's 8-digit hex, #68's dependency mutant, #75's
+      `git -C` matcher hole), and score the known defect and the false findings. At ~4 points of the
+      5-hour window per reviewer, four diffs cost ~32. Its own research item, now or at the Session 20
+      review.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
     - Reviewers on Fable 5.1, passed per call, at most two at a time.
