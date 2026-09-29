@@ -519,7 +519,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
-   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR, leaving 5 entries and 22,576 bytes. Session 11 went as #90.
+   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR, leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. #90, #91 and
       this handoff (#92) all merged before Session 18 began; its archive PR rewrote the hedges here (Session 14
