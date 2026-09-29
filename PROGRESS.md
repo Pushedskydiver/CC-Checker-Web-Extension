@@ -5,6 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 14)
 
+Updated 29 September 2026, Session 15: **#80 (`663e144`), #81 (`4011bf1`) and the Session 14 handoff #82
+(`24fc475`) all merged that day, so the paragraph below is history.** Session 9 is archived in its own PR,
+and PR B is in progress.
+
 Updated 29 September 2026, end of Session 14: **the Session 8 archive is open as
 [#80](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/80) and PR A as
 [#81](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/81); both reached nit-floor after a
@@ -222,7 +226,8 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 Nothing merged. Alex answered decision (t): `deny`.
 
 **Setup:** every loading check matched. #77 had merged before its `copilot-surrogate` review could run, so
-that review ran on `main` after the merge (Alex's instruction). The Session 12 worktrees were already
+that review ran on `main` after the merge (Alex's instruction; on 29 September 2026, in Session 15, Alex said he
+never set post-merge reviews as a practice, and they are dropped: loading step 5). The Session 12 worktrees were already
 removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 
 **Done:**
@@ -464,63 +469,6 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
    open" list surfaced the Prettier table re-pad, the date convention and a stray file it had created and
    deleted — each of which a reviewer would otherwise have had to discover.
 
-## Session 9 — 24 to 27 September 2026 (CC-004: row 10 part one merged, atoms' variant in CSS)
-
-**Setup:** loading instructions followed in order. Archive trigger 5, did not fire; detail band
-33,224 bytes as predicted; tree clean; `origin/main` at `aa6297b`; no open PRs; pre-push suite green
-(36 unit, 21 e2e). **Step 6 did not match again:** `get_session self` reported Opus 5.5 at `medium`.
-Asked, Alex raised effort to `high` and kept Opus 5.5; the session confirmed it with `get_session`
-before any design work.
-
-**Done:** row 10 part one — **#68, `41e36c4`**, six commits, merged by Alex with a merge commit.
-The data-attribute shape won over a `useThemeClass(styles)` hook because it removes the JavaScript
-branch rather than moving it: the provider writes `data-contrast` (`poor` | `ok`) and
-`data-background` (`dark` | `light`) onto `document.body` in an effect beside the two colour
-properties, and each atom's `.xDark` / `.xLight` became
-`:global(body[data-contrast='poor'][data-background='light' | 'dark']) .x` with its values
-unchanged. Ten atoms, thirteen of the fifteen sites; eight atoms no longer read context at all
-(`5384cf8`'s body says seven — corrected in the PR body, not amended). The test went first
-(`6028b7a`): every element (59, counts fixed), every overridden property by role, non-white and
-non-black backgrounds for the near-1:1 pairs, both sides of `contrast < 3`, and — after
-`da-review` — a light-to-dark crossing that stays poor. `f91c844` renamed `ProviderProps` /
-`ColourContrastContextTypes` to `TColourContrastProvider` / `TColourContrastContext`, as
-`docs/CONVENTIONS.md` asked once `src/context.tsx` was touched; **it carries 🏷️ where `docs/GIT.md`
-pins ♻️ for `refactor`**, flagged in the PR body, and the merge commit kept it on `main`.
-
-**Reviews:** two rounds each, the cap. `da-review` round one: one MATERIAL (every light↔dark step
-passed through a good pair, so dropping `isBackgroundDark` from the effect's deps stayed green —
-and so did `npm run lint`); `copilot-surrogate` round one: one MATERIAL (`docs/CONVENTIONS.md`'s
-"effects do four things" missed the new fifth) and five LOWs. The confirm round of both reached
-nit-floor with three LOWs: two prose, folded before the PR opened, and one process, deferred as
-decision (n). (#68's body says "three prose LOWs"; two is right.)
-
-**Post-merge:** branch deleted with `-d`; #69 merged under the delegation, the classifier allowing
-`gh pr merge 69 --merge --admin --delete-branch` first time; `npm ci`, then the pre-push suite green
-on `fadd8a8` (36 unit, 21 e2e). `git fetch --prune` cleared three merged branches Session 8
-left — stale tracking refs only; GitHub had already deleted the branches on merge. Session 4 is archived in its own PR (`docs/CC-004-archive-session-4`), opened beside this handoff.
-
-**Major novel patterns Session 9:**
-
-1. **A test value that equals the fallback hides the fallback.** The widened test's first draft used
-   `#ffffff` / `#000000` as the poor-pair backgrounds, so a `bg`-role property that fell back to
-   `--background-color` read exactly the white or black it should have been. Two of eleven mutants
-   passed until the backgrounds became `#eeeeee` / `#111111`. Pick values that differ from every
-   plausible wrong answer, not just the right one.
-2. **A path through a good state masks a dependency bug.** Filling background then foreground always
-   crossed a good pair, re-running the effect for the wrong reason. The mutant also passed lint:
-   `react-hooks/exhaustive-deps` is a warning and `lint:js` sets no `--max-warnings` — decision (n).
-3. **Concurrent reviewers need their own worktree, in the dispatch prompt.** Both round-one agents
-   were sent to build and mutate the main checkout at once; a follow-up message moved each into a
-   `git worktree` before they collided. The confirm round's prompts carried the worktree step from
-   the start.
-4. **A grep that cuts a selector can manufacture a defect.** `grep -o 'body\[…'` on the emitted CSS
-   showed `._cta_…):not(…)` with a stray `)`, which looked invalid; the line started
-   `:is(body…`, which postcss-nesting adds around a complex parent. Read emitted CSS with its left
-   context before calling it broken.
-5. **The author's own count is a claim too.** "Seven" atoms in a commit body was eight, and the
-   gitmoji was off-table; both were caught only after commit, where the never-amend rule makes them
-   permanent. Count and check the type table before `git commit`, not after.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded), then this file top to bottom, then
@@ -528,23 +476,25 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** `grep -c '^## Session [0-9]' PROGRESS.md` gives 6 (Sessions 9 to 14) once #80 and this
-   handoff merge. Archive Session 9 in its own small PR, and re-measure the band in bytes.
+2. **Archive check.** Session 9 was archived by #83 (Session 15). Once #83
+   merges, `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 10 to 14), and the detail band
+   (§Session 14 to this block) is 20,784 bytes, so neither half of the trigger fires.
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #80
-      (`eff0aec`), #81 (`af4a0d2`) and this handoff, unless Alex has merged them; say which in the entry.
-      This handoff is cut from #80's head with #80's branch as its base, so if #80 merged first its base
-      reads `main`.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. #80, #81 and
+      #82 merged on 29 September 2026 (`663e144`, `4011bf1`, `24fc475`); Session 15's PRs are in its
+      entry once its handoff lands.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-005-archive-session-8`, `chore/CC-005-pin-agent-models` and
-      `docs/CC-005-close-session-14` have not merged.
-    - `git worktree list`: remove `../cc-a-wt` and `../cc-handoff-wt` once their PRs merge.
+      plus any unmerged Session 15 branch.
+    - `git worktree list`: remove any Session 15 worktree whose PR has merged.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR B, per §8** and the "Reviews of PR H" section's §PR B, once Alex merges #81.
-    - First, `copilot-surrogate` on this handoff, which was not reviewed (trigger 2): before merge if it is
-      still open, otherwise post-merge on `main`, folded into the next `PROGRESS.md` PR.
+5. **Primary work: PR B, per §8** and the "Reviews of PR H" section's §PR B (#81 merged).
+    - ~~First, `copilot-surrogate` on this handoff … otherwise post-merge on `main`.~~ **Dropped (Alex,
+      29 September 2026, Session 15): no review runs on a PR after it has merged.** Alex never set it as a
+      standing practice, and none of his
+      other repos with AI workflows do it. It began with #77 in Session 13 and was copied forward by each handoff.
+      Session 15 stopped the #82 review before it reported.
     - B: `implementer.md` (`model: sonnet`, `effort: high`), dry-run on #72's parent in a scratch
       worktree before merging; the pass criterion is in "Reviews of PR H".
     - Reviews: `copilot-surrogate` per the table (`.claude/agents/**`).
@@ -568,9 +518,8 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
       review.
 6. **Model and usage.**
     - Opus 5.5 at `high`. Check `get_session self`.
-    - Reviewers on Fable 5.1 at `high`, at most two at a time. Once #81 merges, the agent files pin both,
-      and the per-call `model` is only an override (trigger 6's `opus` fallback). Until then, pass it per
-      call.
+    - Reviewers on Fable 5.1 at `high`, at most two at a time. Since #81 merged, the agent files pin both,
+      and the per-call `model` is only an override (trigger 6's `opus` fallback).
     - Keep the trial lines: soft 150k, hard 250k, 5-hour 85%, weekly 90%, Fable weekly 85%. Triggers 4 to 6
       override trigger 2.
     - Read `get_usage` at start, after each digest, before each fan-out and at handoff, and record a
@@ -636,7 +585,7 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
    type-only renames or the slip stays a slip. Default: a slip.
    **(p)** whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
    the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
-   `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
+   `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3, in `git show 24fc475:PROGRESS.md`), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
    covers agents and dispatch anyway. Session 10 used it a third time.
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
@@ -649,5 +598,5 @@ left — stale tracking refs only; GitHub had already deleted the branches on me
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 8, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 9, 29 September 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
