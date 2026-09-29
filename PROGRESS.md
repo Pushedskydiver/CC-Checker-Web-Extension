@@ -476,13 +476,13 @@ weekly 55%, Fable weekly 4%, context 79k of 1M; before this handoff 46%, 57%, 7%
     - The plan is §8, Decisions, and the three review folds (R1, R2, "Reviews of PR H"). The last is the authority for
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** Session 9 is archived in `docs/CC-005-archive-session-9` (Session 15). Once that
+2. **Archive check.** Session 9 was archived by #83 (Session 15). Once #83
    merges, `grep -c '^## Session [0-9]' PROGRESS.md` gives 5 (Sessions 10 to 14), and the detail band
    (§Session 14 to this block) is 20,784 bytes, so neither half of the trigger fires.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. #80, #81 and
-      #82 merged on 29 September 2026 (`663e144`, `4011bf1`, `24fc475`); Session 15's own PRs are listed
-      in its entry.
+      #82 merged on 29 September 2026 (`663e144`, `4011bf1`, `24fc475`); Session 15's PRs are in its
+      entry once its handoff lands.
     - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
       plus any unmerged Session 15 branch.
     - `git worktree list`: remove any Session 15 worktree whose PR has merged.
