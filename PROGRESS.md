@@ -1,10 +1,12 @@
 # Progress
 
 Living state document — current state, what's next. Session-by-session detail archives out to
-`docs/history/SESSIONS.md` (mechanics: `docs/DEVELOPMENT.md` §Session handoff until PR D merges, then
-`docs/SESSION-HANDOFF.md`).
+`docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
 ## Next workstreams (after Session 16)
+
+Updated 29 September 2026, Session 17: **PR D (#88, `874846a`) and the Session 16 handoff #89 (`83780fe`)
+both merged, so the paragraph below is history.** Session 11 is archived in its own PR, and PR C is next.
 
 Updated 29 September 2026, end of Session 16: **the Session 10 archive merged as
 [#87](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/87) (`0d93607`), and PR D,
@@ -518,27 +520,27 @@ Opus 5.5 at `high`.
       rows B, C, D and G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** ~~With this entry the band holds 6 entries (Sessions 11 to 16). The band is 26,527 bytes, over
-   PR D's 24,000 line too. Archive Session 11 in its own small PR, and re-measure after.~~ Done in Session 17: Session 11
+   PR D's 24,000 line too.~~ (26,569 by #89's fold commit, `57d4eb0`; the figure was not re-taken.) ~~Archive Session 11 in its own small PR, and re-measure after.~~ Done in Session 17: Session 11
    archived in its own PR, leaving 5 entries and 23,008 bytes. Session 10 went as #87 (`0d93607`).
 3. **Confirm the state, live.**
-    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. Expect #88 (D)
-      and this handoff open, unless Alex has merged them; say which in the entry, and rewrite every hedge here
-      that the merges overtake (Session 14 pattern 1).
-    - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-005-session-handoff-doc` and `docs/CC-005-close-session-16` have not merged.
+    - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`. #88 (D) and
+      this handoff (#89) both merged before Session 17 began; its archive PR rewrote the hedges here
+      (Session 14 pattern 1).
+    - Remote branches: `main`, `feat/CC-003-apca-3`, `chore/CC-004-copy-to-clipboard-4` (do not delete). Both CC-005
+      branches were deleted on merge.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: PR C, per §8** and the "Reviews of PR H" section's §PR C, once D merges (F and G follow).
-    - If D has merged, read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
+5. **Primary work: PR C, per §8** and the "Reviews of PR H" section's §PR C; D merged as #88 (F and G follow).
+    - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
       unreviewed; step 3 corrects its state lines.
     - C: swap `AGENTS.md` and `CLAUDE.md` (`git rm AGENTS.md` first), with the siblings §8 lists, and the
       sentinel-echo check that `@AGENTS.md` expands for subagents. Its builder can be the `implementer`.
     - Decision (r): D records the candidate rule and says it has one incident (Session 10). Its promotion
-      point may already be met (Session 16 pattern 1: #84 and #87). Ask Alex before C's reviews whether to
-      promote it.
+      point may already be met (Session 16 pattern 1: #84 and #87). ~~Ask Alex before C's reviews whether to
+      promote it.~~ Alex promoted it in Session 17, and PR C carries the rule.
     - Carried, none started:
         - `docs/REVIEW-PATTERNS.md:250-251` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
@@ -617,14 +619,14 @@ Opus 5.5 at `high`.
    **(o)** `f91c844` reached `main` with 🏷️ as a `refactor` gitmoji, where `docs/GIT.md`'s table pins ♻️.
    History is not rewritten; the only open question is whether the table should admit 🏷️ for
    type-only renames or the slip stays a slip. Default: a slip.
-   **(p)** _In PR D (#88, open at Session 16's end): promoted to `docs/DEVELOPMENT.md` §Scale the fan-out._ ~~Whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
+   **(p)** _In PR D (#88, merged as `874846a`): promoted to `docs/DEVELOPMENT.md` §Scale the fan-out._ ~~Whether the worktree-per-reviewer rule in step 6 is promoted into `docs/DEVELOPMENT.md` §Scale
    the fan-out. It has no home in `docs/` today, and it has fired twice (Session 8 pattern 5, in
    `git show 2d63577^:PROGRESS.md`, and Session 9 pattern 3, in `git show 24fc475:PROGRESS.md`), which meets `docs/DEVELOPMENT.md` §Process-rule promotion's bar. A policy-adjacent docs
    edit, so `copilot-surrogate`; Alex's call whether it goes alone or folds into the PCR proposal (step 5), which
    covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).~~
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
    and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
-   **(r)** _In PR D (#88, open): recorded as a candidate, with its promotion point (Session 16 pattern 1)._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
+   **(r)** _In PR D (#88, merged): recorded as a candidate, with its promotion point (Session 16 pattern 1). Promoted by Alex in Session 17; PR C carries it._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
    above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it~~;
    **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
    one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.
