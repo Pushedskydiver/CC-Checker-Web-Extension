@@ -288,10 +288,9 @@ round with no findings has no fold, so there is nothing to confirm. It stands on
 nothing new: Session 10's, after a nit-floor round one and a one-word fold (~120k Fable tokens), and the
 confirm rounds of #84 (Session 15) and #87 (Session 16), each after a LOW-only fold. The counter-case is
 Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show
-2d63577^:PROGRESS.md`). That round had folded a MATERIAL finding (the filled buttons were never read)
-alongside two LOWs, and the hole came from the fix to one of those LOWs, a test-probe rewrite. That is why
-a code or test fold keeps its round whatever its grade. All three no-news rounds above followed prose
-folds.
+2d63577^:PROGRESS.md`). That round folded three MATERIAL findings and four LOWs across both reviewers, and
+the hole came from the fix to one of `da-review`'s LOWs, a test-probe rewrite. That is why a code or test
+fold keeps its round whatever its grade. All three no-news rounds above followed prose folds.
 
 ### Scale the fan-out to the repo
 
