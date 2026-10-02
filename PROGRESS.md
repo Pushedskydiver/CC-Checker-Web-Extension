@@ -219,8 +219,8 @@ auto.
   clean against `--list`, and 21 of 21 cells are equal once whitespace is collapsed. Surrogate round one (Fable, ~40
   claims) found 2 LOW (a stale "table above" and "row below"), folded in `1706110`; `cab8d65` rewrapped the two
   paragraphs at 100. The fold was prose-only and LOW, so the coordinator's read stood in for a confirm round
-  (decision (r)). Decision (m)'s `TESTING.md:338` cite is repointed to §Not ported from the source documents. #96 is
-  independent of #95, and either can merge first.
+  (decision (r)). #96 also repoints decision (m)'s `TESTING.md:338` cite (step 7) to §Not ported from the source documents; step 7
+  keeps the line number until #96 merges. #96 is independent of #95, and either can merge first.
 - **Workflow research**, `docs/CC-005-close-session-19`, `51ab256` (this branch):
   `docs/research/02-workflow-optimisation.md`, with verbatim subagent reports in `docs/research/02-sources/`
   (prettierignored). It ranks nine changes, A to I. Alex's decisions: B goes straight to `main` (the rules must change
@@ -241,7 +241,7 @@ auto.
     | After both PRs opened  | 39%    | 6%     | 2%           | 166k    |
     | Handoff                | 40%    | 6%     | 2%           | 185k    |
 
-- **Plan usage:** the 5-hour window resets at 02:50Z on 3 October. The weekly reset was not read.
+- **Plan usage:** the 5-hour window resets at 02:50Z on 3 October. The weekly windows reset at 15:00Z on 9 October.
 - **Warning signs:** none. Every reviewer had its own detached worktree.
 - **Clarifying question:** none that Session 18's entry should have answered.
 
@@ -253,7 +253,7 @@ auto.
    inline. Research items C, E and F aim at those three.
 2. **A built-in agent dispatched without `model` ran on its own default and was wrong on 4 of 12 claims.** A Sonnet
    re-check replaced it. Every dispatch now passes `model`, Sonnet 5.5 at minimum (Alex; saved to memory).
-3. **Prettier pads tables in copied reports (52,814 to 83,473 bytes), the same defect PR F removed.** Verbatim
+3. **Prettier pads tables in copied reports (52,814 to 83,443 bytes), the same defect PR F removed.** Verbatim
    records go in `.prettierignore`.
 4. **The surrogate's MATERIAL on #95 was a false fact the coordinator wrote in a state line.** That is evidence for a
    pre-push review of handoff lines, not for a PR as the vehicle (Decision B).
@@ -577,7 +577,8 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 
 ## Next session loading instructions
 
-1. Read `CLAUDE.md` (auto-loaded; it imports `AGENTS.md` since #91), then this file top to bottom, then
+1. **Before reading anything, run `/context` and record the figure** (research item F's baseline; step 5(a)).
+   Then read `CLAUDE.md` (auto-loaded; it imports `AGENTS.md` since #91), then this file top to bottom, then
    `docs/research/02-workflow-optimisation.md` in full (10 KB), not its `02-sources/`. That file is on this
    handoff's branch (`51ab256`) until the handoff merges.
     - `docs/research/01-pcr-workflow-port.md` (on `main`, #75, `697b8a2`): read only its PR G sections, and only
@@ -589,7 +590,7 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
       commit that touches the band (Session 18 pattern 1).~~ Done in Session 19: Session 13 archived in its own
       PR, leaving 5 entries and 21,997 bytes.
-    - **With Session 19's entry, the band holds 6 entries (Sessions 14 to 19) and 26,484 bytes.** Archive Session 14 in
+    - **With Session 19's entry, the band holds 6 entries (Sessions 14 to 19) and 26,563 bytes.** Archive Session 14 in
       its own small PR (cites of it: `git grep -n "Session 14"`), then re-measure after the last commit that touches
       the band (Session 18 pattern 1). If item B's rules have landed by then (Decision B), the archive is handled
       the way the handoff is, straight to `main`, not as a PR.
@@ -598,9 +599,9 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       and this handoff, which is stacked on #93, open unless Alex has merged them.~~ Both merged before
       Session 19 started (`9a8c986`, `bf9f8d1`); no PRs were open. Say which in the entry, and
       rewrite every hedge here that the merges overtake (Session 14 pattern 1).
-    - Expect #95, #96 and this handoff open unless Alex has merged them. This handoff is stacked on #95: if #95
-      merged first, the handoff's branch needs the merge-commit button, not rebase (`docs/SESSION-HANDOFF.md` §6,
-      Stacking). Say which merged in the entry.
+    - Expect #95, #96 and this handoff open unless Alex has merged them. This handoff is stacked on #95, and #96 also touches `PROGRESS.md` (one line in step 7). If #95
+      merged first, merge `main` into the handoff's branch; a hand-resolved merge then needs the merge-commit
+      button (`docs/SESSION-HANDOFF.md` §6, Stacking). Say which merged in the entry.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), ~~plus
       whichever of `docs/CC-005-archive-session-12` and `docs/CC-005-close-session-18` have not merged~~ (both gone).
     - Plus whichever of `docs/CC-005-archive-session-13`, `docs/CC-005-testing-sections` and
@@ -625,10 +626,12 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       §Not ported from the source documents. `docs/TESTING.md:11` sits above the table and does not move.~~ Done
       in #96 (the cite names the section).
     - **(a) Research item F first** (`docs/research/02-workflow-optimisation.md`), because it needs a fresh
-      session to measure. Run `/context` at session start, before any change, and record the figure. Then add
+      session to measure. Step 1's `/context` figure is the baseline. Then add
       `deniedMcpServers` to `.claude/settings.json` (the file does not exist yet) for the MCP servers this repo
       never uses. The research file names no servers, only that MCP definitions were ~20k of Session 19's 81k
-      start, so list the candidates from `/context` and `/mcp`, and Alex confirms the list. Measure again in a
+      start, so list the candidates from `/context` and `/mcp`, and Alex confirms the list. `deniedMcpServers` reaches
+      plugin and connector servers; user-scope servers need the `/mcp` toggle (`~/.claude.json`), per the research
+      file's §Claude Code facts. Measure again in a
       fresh session.
     - **(b)** `spec-grill` on research 02, then items C and E as the first PRs, then A with B. B needs
       `AGENTS.md` §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).
@@ -638,8 +641,6 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - **(d) Session 20 reviews `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the
       Handoff facts of Sessions 14 to 19 and its own.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
-    - No review runs on a PR after it has merged (Alex, 29 September 2026). An unreviewed handoff stays
-      unreviewed; step 3 corrects its state lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
       and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.~~
@@ -661,12 +662,7 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - Reviewers on Fable 5.1 at `high`, at most two at a time. Since #81 merged, the agent files pin both,
       and the per-call `model` is only an override (trigger 6's `opus` fallback). Pass `model` on every dispatch,
       built-in agents included: Sonnet 5.5 minimum (Alex, Session 19 pattern 2).
-    - Keep the trial lines: soft 150k, hard 250k, 5-hour 85%, weekly 90%, Fable weekly 85%. Triggers 4 and 5
-      override trigger 2; trigger 6 only changes the reviewers' model (#88's confirm round).
-    - Read `get_usage` at start, after each digest, before each fan-out and at handoff, and record a
-      Handoff facts block.
-    - **Budget before dispatching:** a Fable reviewer costs ~4 points of the 5-hour window (Session 12
-      pattern 3, in `git show 075e38d:PROGRESS.md`). Two reviewers at 78% or above will cross 85%.
+    - Lines, checkpoints and budget: `docs/SESSION-HANDOFF.md` §1, §2 and §7.
 7. Decision branches carried in. **New in Session 14: (u)** `copilot-surrogate.md` says a superseded
    sentence in a `docs/*.md` rule document is rewritten, not struck, and reports struck text there. But
    `docs/GIT.md`, `docs/DEVELOPMENT.md` and `docs/SELF-REVIEW.md` each strike one with a dated correction
