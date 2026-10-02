@@ -680,7 +680,7 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
    that day) — and belong in the same fix so a reader is not left to rediscover them. Every count is
    correct; only the date is wrong. A one-commit docs PR whenever it suits. Session 9's surrogate found two of those files
    (`docs/GLOSSARY.md`, `docs/CONVENTIONS.md`) touched by #68 and still carrying it — still untouched. Session 13's confirm round found two more cites
-   outside that list, `.claude/agents/spec-grill.md:46` and `docs/TESTING.md:338`;
+   outside that list, `.claude/agents/spec-grill.md:46` and `docs/TESTING.md` §Not ported from the source documents;
    **(n)** whether `lint:js` gains `--max-warnings 0`. In #68's round one, dropping `isBackgroundDark` from
    an effect's dependencies passed `npm run lint`, because `react-hooks/exhaustive-deps` is a warning in
    `eslint-plugin-react-hooks`' recommended set and `lint:js` is plain `eslint .`. `npx eslint . --max-warnings 0`
