@@ -5,6 +5,9 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 18)
 
+Updated 2 October 2026, Session 19: **#93 (`9a8c986`) and the Session 18 handoff #94 (`bf9f8d1`) both merged, so the
+paragraph below is history.** Session 13 is archived in its own PR, and PR F is next.
+
 Updated 29 September 2026, end of Session 18: **the Session 12 archive is open as
 [#93](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/93), reviewed and confirmed at nit-floor.** PR F
 is scripted but not started on a branch (loading step 5); G follows, then CC-004 row 11.
@@ -114,7 +117,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    token-cost pass over every doc (including `AGENTS.md`) that keeps quality. Adapt or improve where this
    repo differs. ~~The brief is step 5 of the loading instructions below.~~ Done in Session 11:
    proposal approved, `spec-grill` R1 folded (Session 11, in `git show 83780fe:PROGRESS.md`). R2 and both reviews ran and were folded in
-   Session 12; the confirm round passed in Session 13 (§Session 13), and #75 merged as `697b8a2` the same day (the
+   Session 12; the confirm round passed in Session 13 (`git show bf9f8d1:PROGRESS.md`), and #75 merged as `697b8a2` the same day (the
    Session 14 paragraph above).
 
 ### The approved plan (CC-004), approved by Alex 12 September 2026
@@ -229,7 +232,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 **Major novel patterns Session 18:**
 
 1. **A fold inside the band moves the band figure quoted outside it.** #93's LOW fix added 33 bytes to the
-   Session 13 entry, so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
+   Session 13 entry (`git show bf9f8d1:PROGRESS.md`), so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
    was the same class, which makes two incidents. This handoff's own review fold made a third (25,973 to 26,183). The candidate rule is to re-take any band figure after the
    last commit that touches the band. Promoting it is Alex's call (`docs/DEVELOPMENT.md` §Process-rule
    promotion).
@@ -503,71 +506,6 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 4. **Four Fable reviewers moved the 5-hour window 13 points** (23% → 36%, ~319k subagent tokens plus the
    coordinator). A small confirm round is cheaper than ~4 points; a full review still costs about that.
 
-## Session 13 — 29 September 2026 (CC-005: PR H ready, PR E opened as #78)
-
-**H's review fold passed its confirm round and #75 went ready; E was finished, reviewed and opened as #78.**
-Nothing merged. Alex answered decision (t): `deny`.
-
-**Setup:** every loading check matched. #77 had merged before its `copilot-surrogate` review could run, so
-that review ran on `main` after the merge (Alex's instruction; on 29 September 2026, in Session 15, Alex said he
-never set post-merge reviews as a practice, and they are dropped: loading step 5). The Session 12 worktrees were already
-removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
-
-**Done:**
-
-- **#75 (PR H), ready at `2888966`.**
-    - The confirm round on `ab598b0` used a fresh Fable `spec-grill` verifier (~85k tokens). It found
-      0 BLOCKING and 0 MATERIAL, so nit-floor. It raised three LOWs that the fold had introduced, all
-      folded in `937403a`.
-    - The sharpest LOW: "hooks load at session start" is wrong. The live hooks doc says the file watcher
-      normally picks up settings edits.
-    - Decision (t) is recorded there as Decision 7, and every `ask` on `--amend` became `deny`.
-    - `main` was merged in, the suite re-run, the PR body updated, and the PR marked ready.
-- **Post-merge surrogate on #77**, on `18205a1` (~112k tokens): nit-floor, 2 LOW and 3 nits. Folded into E
-  (`6794fc0`), not a separate PR.
-- **[#78](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/78) (PR E), `ac790f5`.**
-    - `main` merged in (`31e6d81`, `PROGRESS.md` hand-resolved) and Session 7 archived (`e5e0b2f`).
-    - `da-review` (~102k): 2 MATERIAL, 4 LOW. `copilot-surrogate` (~138k): 2 MATERIAL, 6 LOW, 3 nits.
-      Folded in `9e20bdc` and `ac790f5`.
-    - Confirm round (~97k): every fold CONFIRMED, nit-floor.
-    - The body says to use the merge-commit button: a rebase replay conflicts on the first commit.
-- **This handoff** is cut from #78's head and opened with #78's branch as its base, because both edit the
-  same `PROGRESS.md` regions. GitHub retargets it to `main` when #78 merges and its branch is deleted.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line. The unit in hand (E, with its review and confirm rounds) was finished
-  first, and A was not started. Context 216k when #78 opened; the hard line is 250k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                    | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (window just reset) | 0%     | 63%    | 14%          | 107k    |
-    | H folded, E's fold done   | 9%     | 64%    | 16%          | 174k    |
-    | E's reviews folded        | 18%    | 65%    | 19%          | 202k    |
-    | #78 opened                | 22%    | 66%    | 20%          | 216k    |
-
-- **Plan usage:** the 5-hour window resets at 05:40Z on 29 September.
-- **Warning signs:** none. Every reviewer had its own detached worktree; the main checkout stayed on `main`
-  and clean.
-- **Clarifying question:** none that Session 12's entry should have answered. Decision (t) was already
-  flagged as Alex's.
-
-**Major novel patterns Session 13:**
-
-1. **Five Fable reviewers cost 22 points of the 5-hour window**, ~4.4 each (~534k subagent tokens). That
-   agrees with Session 12's ~4 per reviewer (`git show 075e38d:PROGRESS.md`). The estimate holds.
-2. **A review of an archive PR finds defects in lines the PR did not write.** Two of E's four MATERIAL sat
-   outside its diff: a pointer in `docs/REVIEW-PATTERNS.md`, and `spec-grill.md` still calling 2.1.0
-   unbuilt, 17 days after it shipped. That is what reading touched files in full is for.
-3. **A claim about Claude Code's own behaviour needs the live docs.** The review fold had asserted from
-   memory that hooks load only at session start. The verifier fetched the hooks page, and one WebFetch
-   confirmed it before folding.
-4. **A hand-resolved merge of `main` rules out the rebase button.** Every archive or handoff branch that
-   meets a `PROGRESS.md` conflict needs the merge-commit button (#74 before, #78 now). Stacking the next
-   `PROGRESS.md` PR on the open one avoids a second conflict.
-
 ## Next session loading instructions
 
 1. Read `CLAUDE.md` (auto-loaded; it imports `AGENTS.md` since #91), then this file top to bottom, then
@@ -577,15 +515,17 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
    small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR (#93), leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
-    - **With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
+    - ~~**With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
       Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
-      commit that touches the band (Session 18 pattern 1).
+      commit that touches the band (Session 18 pattern 1).~~ Done in Session 19: Session 13 archived in its own
+      PR, leaving 5 entries and 21,997 bytes.
 3. **Confirm the state, live.**
-    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. Expect #93
-      and this handoff, which is stacked on #93, open unless Alex has merged them. Say which in the entry, and
+    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. ~~Expect #93
+      and this handoff, which is stacked on #93, open unless Alex has merged them.~~ Both merged before
+      Session 19 started (`9a8c986`, `bf9f8d1`); no PRs were open. Say which in the entry, and
       rewrite every hedge here that the merges overtake (Session 14 pattern 1).
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      whichever of `docs/CC-005-archive-session-12` and `docs/CC-005-close-session-18` have not merged.
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), ~~plus
+      whichever of `docs/CC-005-archive-session-12` and `docs/CC-005-close-session-18` have not merged~~ (both gone).
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -704,5 +644,5 @@ removed. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported Opu
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.

@@ -36,7 +36,7 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
   review round waits for the next session, after the reset. Session 12 hit exactly that (`git show 075e38d:PROGRESS.md`).
   Trigger 6 changes the reviewers' model and stops nothing.
 - **Budget before dispatching.** A Fable reviewer costs ~4 points of the 5-hour window (Session 12 pattern 3,
-  in `git show 075e38d:PROGRESS.md`; Session 13 pattern 1: five reviewers, 22 points). Two reviewers at 78% or above
+  in `git show 075e38d:PROGRESS.md`; Session 13 pattern 1, in `git show bf9f8d1:PROGRESS.md`: five reviewers, 22 points). Two reviewers at 78% or above
   cross 85%.
 
 ## 2. Checkpoints
@@ -132,7 +132,7 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
   one bullet: what it was, when and by what it was superseded. Full text stays in `git log -p`.
 - **Stacking.** A handoff opened while an earlier `PROGRESS.md` PR is open is cut from that PR's head with its
   branch as base. A branch with a hand-resolved `PROGRESS.md` merge needs the merge-commit button, not rebase
-  (Session 13 pattern 4).
+  (Session 13 pattern 4, in `git show bf9f8d1:PROGRESS.md`).
 
 ## 7. The next session's model and effort
 
