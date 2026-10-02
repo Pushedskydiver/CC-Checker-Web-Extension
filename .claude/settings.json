@@ -1,0 +1,8 @@
+{
+	"deniedMcpServers": [
+		{ "serverUrl": "https://api.anthropic.com/v1/pages/mcp" },
+		{ "serverUrl": "https://calendarmcp.googleapis.com/*" },
+		{ "serverUrl": "https://drivemcp.googleapis.com/*" },
+		{ "serverUrl": "https://gmailmcp.googleapis.com/*" }
+	]
+}

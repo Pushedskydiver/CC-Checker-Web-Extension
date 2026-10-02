@@ -419,6 +419,7 @@ in-session and are his to flip. Spec-grill R1 revised 2 and 3.
 Fable 5.1, discovery round, ~175k tokens. Every byte figure reproduced. Folds:
 
 - **B1**, `.claude/settings.json` is gitignored (`.gitignore:32-34`): PR G un-ignores it.
+  _Done earlier, in `CC-006`'s item F (Session 20): research 02 §Item F, checked._
 - **M1**, the bytes-per-token ratio: **measured directly after R1.** Reading the 31,138-byte detail
   band with the Read tool raised this session's context by ~15.4k tokens. That includes one small tool
   preview and the coordinator's own turn, so the band is ~12.5–14k tokens, about 2.2–2.5 bytes per

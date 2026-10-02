@@ -2,10 +2,10 @@
 
 _A record, not instructions. Once the PRs it leads to merge, the docs they change are the authority._
 
-Session 19, 2 October 2026. `main` at `bf9f8d1`. Ticket: a new key from Alex's tracker, not yet given
-(he chose "new ticket, before PR G"; `CC-006` is a guess, not a key). Status: **researched; Alex
-answered three questions (Decisions); `spec-grill` has not run.** Nothing in the repo changes in the PR
-that adds this file, except a `.prettierignore` line.
+Session 19, 2 October 2026. `main` at `bf9f8d1`. Ticket: `CC-006` (Alex, Session 20; he chose "new
+ticket, before PR G"). Status: **researched; Alex answered three questions in Session 19 and re-scoped F in
+Session 20 (Decisions); `spec-grill` has not run.** Nothing in the repo changes in the PR that adds this
+file, except a `.prettierignore` line.
 
 ## Why
 
@@ -58,9 +58,10 @@ From the Sonnet fact-check against code.claude.com/docs, fetched 2 October 2026:
 
 - **MCP.** `disabledMcpServers` is real but lives in `~/.claude.json` (written by `/mcp`), not
   `settings.json`. `enabledMcpjsonServers`, `disabledMcpjsonServers` and `enableAllProjectMcpServers` cover
-  only `.mcp.json` servers. `deniedMcpServers` in `.claude/settings.json` matches plugin servers and
-  claude.ai connectors by name. Deferred tools still load names and server instructions at start.
-  `disableClaudeAiConnectors` exists but does not reach connectors the desktop app delivers.
+  only `.mcp.json` servers. `deniedMcpServers` in `.claude/settings.json` matches any server that is not
+  in-process `type: "sdk"`, by name, URL or command (corrected in Session 20, §Item F, checked). Deferred
+  tools still load names and server instructions at start. `disableClaudeAiConnectors` exists but does not
+  reach connectors the desktop app delivers.
 - **On-demand loading.** Skills load name and description until invoked. `.claude/rules/*.md` with
   `paths:` load on Read, Write or Edit of a matching file. No per-agent `CLAUDE.md` mechanism exists; a
   subagent loads the same hierarchy unless `omitClaudeMd: true`.
@@ -81,3 +82,36 @@ From the Sonnet fact-check against code.claude.com/docs, fetched 2 October 2026:
    `docs/SESSION-HANDOFF.md` §6 rewritten first; until then handoffs stay PRs.
 2. **A new ticket, before PR G.** Key from Alex.
 3. **F: yes, in project settings**, measured with `/context` before and after in a fresh session.
+4. **F re-scoped (Session 20, 3 October 2026)**, after §Item F, checked below: deny the claude.ai connectors
+   the terminal CLI loads, and Alex turns off the desktop tools this repo does not use. Ticket key `CC-006`.
+
+## Item F, checked (Session 20)
+
+**`deniedMcpServers` cannot reach the servers the desktop app delivers, and on this machine those are all of
+them.** The denylist "applies to every server regardless of where it came from, other than in-process
+`type: "sdk"` entries", and the desktop app delivers its connectors to local sessions as exactly those
+(code.claude.com/docs `managed-mcp` and `mcp`, fetched 3 October 2026). A Code-tab session also loads
+`~/.claude.json` and `.mcp.json` servers, which the denylist does reach, but here both are empty:
+
+- **Session 20's start**, read with `get_usage` (`/context` is a slash command the coordinator cannot run):
+  78,058 tokens, of which MCP tools 19,720. Every server behind that figure came from the desktop app:
+  Browser, iOS Simulator, computer-use, terminal, visualize, `nas-docker`, `filesystem`, the Claude Docs
+  connector and the `ccd_*` tools.
+- **`nas-docker` and `filesystem`** come from `claude_desktop_config.json`, and Claude.app starts them itself
+  (`ps`: Claude.app's main process starts each through its `disclaimer` helper). Nothing passes them to
+  `claude` with `--mcp-config`.
+- **`~/.claude.json`** has no user-scope servers and no project-scope ones for this repo, and no plugin is
+  installed for it.
+
+**Where it does work: the terminal CLI**, which fetches claude.ai connectors itself. `claude mcp list` in this
+repo listed four (Claude Docs, Google Drive, Google Calendar, Gmail), and after the four `serverUrl` entries in
+`.claude/settings.json` it lists none. Run from `~`, all four still connect, so the deny is scoped to this
+repo. `serverUrl` rather than `serverName`, because the docs warn that a connector's display name can change.
+
+**What reaches the desktop figure is Alex's, not the repo's:** Settings → Claude Code → Browser for the
+browser tools (named by the app's `ccd_settings` tool), and claude.ai/customize/connectors for connectors,
+which is account-wide. Measure the start again in a fresh desktop session after any change.
+
+`.gitignore` gains `!.claude/settings.json` here, earlier than PR G planned it (research 01, finding B1). G
+still adds its hook entries to the same file, and its `AGENTS.md` trigger-table row for
+`.claude/settings.json`.
