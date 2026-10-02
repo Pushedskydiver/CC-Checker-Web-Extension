@@ -3,7 +3,15 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 19)
+## Next workstreams (after Session 20)
+
+Updated 3 October 2026, end of Session 20: **research item F is open as
+[#98](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/98), reviewed, under the new key `CC-006`
+(Alex).** `deniedMcpServers` cannot reach the desktop app's servers, so F was re-scoped to the terminal's
+claude.ai connectors. Sessions 14 and 15 are archived next, then `spec-grill` on research 02, then items C and E.
+
+Updated 3 October 2026, Session 20: **#95 (`2f74766`), #96 (`011e276`) and the Session 19 handoff #97
+(`3398776`) all merged, so the paragraph below is history.** The key is `CC-006`, not a guess.
 
 Updated 2 October 2026, end of Session 19: **the Session 13 archive
 ([#95](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/95)) and PR F
@@ -196,6 +204,56 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 20 — 3 October 2026 (CC-006: item F checked, re-scoped and opened as #98)
+
+**`deniedMcpServers` cannot reach any server the desktop app delivers, which on this machine is every MCP
+server in a Code-tab session, so item F saves nothing there.** Alex re-scoped F to the terminal CLI's
+claude.ai connectors and gave the key `CC-006`. Nothing merged this session.
+
+**Setup:** #95, #96 and #97 had merged (`3398776`), no PRs were open, the three standing remote branches were
+present and the only worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Playwright).
+`get_session self` reported Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **[#98](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/98)**,
+  `chore/CC-006-deny-mcp-servers`, `b583a23` + fold `448b5e1`: `.claude/settings.json` denies four claude.ai
+  connectors by `serverUrl`, `.gitignore` un-ignores it, research 02 gains Decision 4 and §Item F,
+  checked, and research 01's B1 gains a pointer to it. `claude mcp list` in the repo went from four connectors to none; from `~` all four still connect.
+  `copilot-surrogate` (Fable, ~70k): 1 MATERIAL, 3 LOW, 1 nit. The LOWs were prose, folded in `448b5e1` and
+  read by the coordinator (decision (r)). The nit was declined (the fold commit says why). The MATERIAL was
+  loading step 5(a)'s stale lines, rewritten in this handoff.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 2, the soft line, crossed at 153k when #98 was committed; the unit (review, fold, PR) was
+  finished and nothing new started.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment            | 5-hour | Weekly | Fable weekly | Context |
+    | ----------------- | ------ | ------ | ------------ | ------- |
+    | Start             | 49%    | 7%     | 3%           | 78k     |
+    | Before the review | 54%    | 8%     | 3%           | 153k    |
+    | #98 opened        | 61%    | 9%     | 5%           | 169k    |
+
+- **Plan usage:** the 5-hour window resets at 02:50Z on 3 October, and the weekly windows at 15:00Z on
+  9 October.
+- **Warning signs:** one. Loading step 2 said to archive Session 14 before picking anything up, and the
+  session went straight to F. The band is now 7 entries. The reviewer had its own detached worktree.
+- **Clarifying question:** one the previous entry could not have answered: F's premise failed on contact.
+
+**Major novel patterns Session 20:**
+
+1. **A setting approved from a fact-check still has to be checked against the surface it runs on.** Research
+   02's facts were right for the terminal CLI and silent about in-process `sdk` servers, so the approved F
+   would have saved nothing in the desktop app. Reading the denylist's exceptions and `ps` caught it before
+   any commit.
+2. **`/context` cannot be run by the coordinator.** `get_usage`'s categories (MCP tools 19,720 of 78,058 at
+   start) stood in for step 1's baseline. A step that needs a slash command needs Alex to run it.
+3. **A docs page fetched whole (`managed-mcp`) was the session's largest single read.** Ask a fetch for
+   quotes only, or delegate it.
 
 ## Session 19 — 2 October 2026 (CC-005: Session 13 archived as #95, PR F opened as #96, workflow research)
 
@@ -577,69 +635,47 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 
 ## Next session loading instructions
 
-1. **Before reading anything, run `/context` and record the figure** (research item F's baseline; step 5(a)).
-   Then read `CLAUDE.md` (auto-loaded; it imports `AGENTS.md` since #91), then this file top to bottom, then
-   `docs/research/02-workflow-optimisation.md` in full (10 KB), not its `02-sources/`. That file is on this
-   handoff's branch (`51ab256`) until the handoff merges.
-    - `docs/research/01-pcr-workflow-port.md` (on `main`, #75, `697b8a2`): read only its PR G sections, and only
-      when G is reached: §8, Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
+1. **Ask Alex to run `/context` first and paste the figure; the coordinator cannot run a slash command**
+   (Session 20 pattern 2). Then call `get_usage` and record its MCP tools figure beside it. Session 20's
+   start: 78,058, MCP tools 19,720. Then read `CLAUDE.md` (auto-loaded), this file top to bottom, and
+   `docs/research/02-workflow-optimisation.md` in full, not its `02-sources/`. Until #98 merges, read it from
+   `git show origin/chore/CC-006-deny-mcp-servers:docs/research/02-workflow-optimisation.md`: `main`'s copy
+   still carries the Session 19 `deniedMcpServers` line, Decision 3 without Decision 4, and no §Item F,
+   checked.
+    - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
+      Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check.** ~~With this entry, the band holds 6 entries (Sessions 12 to 17) and 27,164 bytes, which is also over the 24,000 line. Archive Session 12 in its own
-   small PR, then re-measure.~~ Done in Session 18: Session 12 archived in its own PR (#93), leaving 5 entries and 22,609 bytes (22,576 at `3b8eec6`; the review fold's pointer added 33). Session 11 went as #90.
-    - ~~**With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
-      Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
-      commit that touches the band (Session 18 pattern 1).~~ Done in Session 19: Session 13 archived in its own
-      PR, leaving 5 entries and 21,997 bytes.
-    - **With Session 19's entry, the band holds 6 entries (Sessions 14 to 19) and 26,563 bytes.** Archive Session 14 in
-      its own small PR (cites of it: `git grep -n "Session 14"`), then re-measure after the last commit that touches
-      the band (Session 18 pattern 1). If item B's rules have landed by then (Decision B), the archive is handled
-      the way the handoff is, straight to `main`, not as a PR.
+2. **Archive check, first, before anything else** (Session 20 skipped it). With Session 20's entry the band
+   holds 7 entries (Sessions 14 to 20) and 29,717 bytes, measured after the last commit that touches it.
+   Archive Sessions 14 and 15 together in one small PR, deliberately, since one leaves 6 entries, over the
+   five (cites: `git grep -n "Session 14"`, `git grep -n "Session 15"`), then re-measure. If item B's rules
+   have landed by then, the archive goes straight to `main`.
 3. **Confirm the state, live.**
-    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. ~~Expect #93
-      and this handoff, which is stacked on #93, open unless Alex has merged them.~~ Both merged before
-      Session 19 started (`9a8c986`, `bf9f8d1`); no PRs were open. Say which in the entry, and
-      rewrite every hedge here that the merges overtake (Session 14 pattern 1).
-    - Expect #95, #96 and this handoff open unless Alex has merged them. This handoff is stacked on #95, and #96 also touches `PROGRESS.md` (one line in step 7). If #95
-      merged first, merge `main` into the handoff's branch; a hand-resolved merge then needs the merge-commit
-      button (`docs/SESSION-HANDOFF.md` §6, Stacking). Say which merged in the entry.
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), ~~plus
-      whichever of `docs/CC-005-archive-session-12` and `docs/CC-005-close-session-18` have not merged~~ (both gone).
-    - Plus whichever of `docs/CC-005-archive-session-13`, `docs/CC-005-testing-sections` and
-      `docs/CC-005-close-session-19` have not merged.
+    - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
+    - Expect #98 and this handoff open unless Alex has merged them. They touch different files, and either
+      can merge first. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
+      plus whichever of `chore/CC-006-deny-mcp-servers` and `docs/CC-006-close-session-20` have not merged.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work, in order.** ~~**PR F, per §8**, then G.~~ PR F was built in Session 19 as #96 (`dc5b7ce`,
-   `1706110`, `cab8d65`), and its method and the `TESTING.md:338` repoint are in that PR. C merged as #91 (`a358bee`).
-    - ~~**F's method, checked in Session 18 but not committed.** Convert only §What each test proves. The fixture
-      and baseline tables are at most 352 characters wide and stay as tables. Each of the 21 rows becomes
-      `### <describe title> › <test title>`, a blank line, then the "What it proves" cell. Wrap the cell with
-      Python's `textwrap.wrap(w, width=100, break_long_words=False, break_on_hyphens=False)`, and assert that
-      no continuation line starts with `-`, `*`, `+`, `>`, `#` or `1.`. Use the spec's full describe titles
-      (Session 18 pattern 2), so §What each test proves' headings, with `### ` stripped, diff clean against
-      `npx playwright test --list | grep ' › ' | sed -E 's/^.*extension\.spec\.ts:[0-9]+:[0-9]+ › //'`.
-      The file goes from 117,068 to 34,635 bytes (34,557 with the table's short `colour picker` label) and
-      passes `prettier --check`. In the PR body, give reviewers a
-      whitespace-collapsed old-against-new check of every cell.~~ Built as #96: 34,642 bytes (Session 19).
-    - ~~F shifts decision (m)'s `docs/TESTING.md:338` cite (step 7) by about 132 lines, to 470. Repoint it to
-      §Not ported from the source documents. `docs/TESTING.md:11` sits above the table and does not move.~~ Done
-      in #96 (the cite names the section).
-    - **(a) Research item F first** (`docs/research/02-workflow-optimisation.md`), because it needs a fresh
-      session to measure. Step 1's `/context` figure is the baseline. Then add
-      `deniedMcpServers` to `.claude/settings.json` (the file does not exist yet) for the MCP servers this repo
-      never uses. The research file names no servers, only that MCP definitions were ~20k of Session 19's 81k
-      start, so list the candidates from `/context` and `/mcp`, and Alex confirms the list. `deniedMcpServers` reaches
-      plugin and connector servers; user-scope servers need the `/mcp` toggle (`~/.claude.json`), per the research
-      file's §Claude Code facts. Measure again in a
-      fresh session.
+5. **Primary work, in order**, after the archive. PRs F (#96) and C (#91) merged.
+    - ~~**(a) Research item F first**: add `deniedMcpServers` to `.claude/settings.json` for the MCP servers this
+      repo never uses, and measure in a fresh session.~~ Checked in Session 20: the denylist skips the
+      in-process servers the desktop app delivers, so it saves nothing there; re-scoped by Alex to the
+      terminal's four claude.ai connectors, open as #98 (research 02 §Item F, checked). The desktop figure
+      moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
+      If he changes either, step 1's readings measure it.
     - **(b)** `spec-grill` on research 02, then items C and E as the first PRs, then A with B. B needs
       `AGENTS.md` §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).
-      Ask Alex for the new ticket key before the first commit of (a) or (b); `CC-006` is a guess, not a key.
+      The key is `CC-006` (Alex, Session 20).
       Research items D, G, H and I follow (item G is not PR G).
     - **(c) Then PR G**, per research 01 (step 1).
-    - **(d) Session 20 reviews `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the
-      Handoff facts of Sessions 14 to 19 and its own.
+    - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
+      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; do it in Session 21.
+      Once step 2 archives Sessions 14 and 15, read their readings at the archive PR's parent
+      (`git show <sha>^:PROGRESS.md`, `docs/SESSION-HANDOFF.md` §6).
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
