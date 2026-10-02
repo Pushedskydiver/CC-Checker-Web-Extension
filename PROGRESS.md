@@ -232,7 +232,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 **Major novel patterns Session 18:**
 
 1. **A fold inside the band moves the band figure quoted outside it.** #93's LOW fix added 33 bytes to the
-   Session 13 entry, so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
+   Session 13 entry (`git show bf9f8d1:PROGRESS.md`), so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
    was the same class, which makes two incidents. This handoff's own review fold made a third (25,973 to 26,183). The candidate rule is to re-take any band figure after the
    last commit that touches the band. Promoting it is Alex's call (`docs/DEVELOPMENT.md` §Process-rule
    promotion).
@@ -518,7 +518,7 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - ~~**With Session 18's entry, the band holds 6 entries (Sessions 13 to 18) and 26,247 bytes.** Archive
       Session 13 in its own small PR (cites of it: `git grep -n "Session 13"`), then re-measure after the last
       commit that touches the band (Session 18 pattern 1).~~ Done in Session 19: Session 13 archived in its own
-      PR, leaving 5 entries and 21,964 bytes.
+      PR, leaving 5 entries and 21,997 bytes.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`. ~~Expect #93
       and this handoff, which is stacked on #93, open unless Alex has merged them.~~ Both merged before
@@ -644,5 +644,5 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 13, 29 September 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
