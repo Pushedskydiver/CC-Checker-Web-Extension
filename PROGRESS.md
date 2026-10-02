@@ -219,8 +219,8 @@ present and the only worktree was the main checkout. The pre-push suite was gree
 
 - **[#98](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/98)**,
   `chore/CC-006-deny-mcp-servers`, `b583a23` + fold `448b5e1`: `.claude/settings.json` denies four claude.ai
-  connectors by `serverUrl`, `.gitignore` un-ignores it, and research 02 gains Decision 4 and §Item F,
-  checked. `claude mcp list` in the repo went from four connectors to none; from `~` all four still connect.
+  connectors by `serverUrl`, `.gitignore` un-ignores it, research 02 gains Decision 4 and §Item F,
+  checked, and research 01's B1 gains a pointer to it. `claude mcp list` in the repo went from four connectors to none; from `~` all four still connect.
   `copilot-surrogate` (Fable, ~70k): 1 MATERIAL, 3 LOW, 1 nit. The LOWs were prose, folded in `448b5e1` and
   read by the coordinator (decision (r)). The nit was declined (the fold commit says why). The MATERIAL was
   loading step 5(a)'s stale lines, rewritten in this handoff.
@@ -638,14 +638,17 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 1. **Ask Alex to run `/context` first and paste the figure; the coordinator cannot run a slash command**
    (Session 20 pattern 2). Then call `get_usage` and record its MCP tools figure beside it. Session 20's
    start: 78,058, MCP tools 19,720. Then read `CLAUDE.md` (auto-loaded), this file top to bottom, and
-   `docs/research/02-workflow-optimisation.md` in full, not its `02-sources/`.
+   `docs/research/02-workflow-optimisation.md` in full, not its `02-sources/`. Until #98 merges, read it from
+   `git show origin/chore/CC-006-deny-mcp-servers:docs/research/02-workflow-optimisation.md`: `main`'s copy
+   still carries the Session 19 `deniedMcpServers` line and Decision 3, and has no §Item F, checked.
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check, first, before anything else** (Session 20 skipped it). With Session 20's entry the band
-   holds 7 entries (Sessions 14 to 20) and 29,677 bytes, measured after the last commit that touches it. Archive Sessions 14
-   and 15 in one small PR (cites: `git grep -n "Session 14"`, `git grep -n "Session 15"`), then re-measure.
-   If item B's rules have landed by then, the archive goes straight to `main`.
+   holds 7 entries (Sessions 14 to 20) and 29,717 bytes, measured after the last commit that touches it.
+   Archive Sessions 14 and 15 together in one small PR, deliberately, since one leaves 6 entries, over the
+   five (cites: `git grep -n "Session 14"`, `git grep -n "Session 15"`), then re-measure. If item B's rules
+   have landed by then, the archive goes straight to `main`.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
     - Expect #98 and this handoff open unless Alex has merged them. They touch different files, and either
