@@ -3,3 +3,6 @@ package-lock.json
 public
 build
 node_modules
+
+# Verbatim subagent reports kept as records (docs/research/02-workflow-optimisation.md)
+docs/research/02-sources/
