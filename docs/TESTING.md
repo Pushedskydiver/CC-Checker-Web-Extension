@@ -223,8 +223,8 @@ Guards the `aria-hidden` confirmation regression fixed 4 September 2026.
 `navigator.clipboard.readText()` on the host page equals
 `https://colourcontrast.cc/?background=ffe66d&foreground=222222` after a real click. The suite's
 first clipboard assertion. It proves the success path only — it passes with the guard in
-`copy-cta.tsx` deleted, and on `main` before the guard existed; the section below is the one that guards
-it. `grantPermissions` is applied to the host origin, because it rejects the panel's opaque
+`copy-cta.tsx` deleted, and on `main` before the guard existed; the section below is the one that
+guards it. `grantPermissions` is applied to the host origin, because it rejects the panel's opaque
 `chrome-extension://` origin.
 
 ### app › a refused copy announces nothing
@@ -301,9 +301,9 @@ bulk test imagined behaviour.
 
 When the behaviour under change is a bug, the first slice is the reproduction, and it must be red
 before the fix. The fixes of 4 September 2026 in the sections above were done this way: the NaN-hue,
-slider-endpoint, top-frame, live-region and single-`closeColorPicker` tests were written against
-the intended behaviour, failed against the code as it stood, and went green with the fix. A test
-that passes on its first run against the unfixed code has not reproduced anything.
+slider-endpoint, top-frame, live-region and single-`closeColorPicker` tests were written against the
+intended behaviour, failed against the code as it stood, and went green with the fix. A test that
+passes on its first run against the unfixed code has not reproduced anything.
 
 The hand version of a mutation check is the self-check: revert the line the test names, run
 `npx playwright test -g "<title>"`, watch it redden, restore. If it stays green the test is
