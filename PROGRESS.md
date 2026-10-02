@@ -640,7 +640,8 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
    start: 78,058, MCP tools 19,720. Then read `CLAUDE.md` (auto-loaded), this file top to bottom, and
    `docs/research/02-workflow-optimisation.md` in full, not its `02-sources/`. Until #98 merges, read it from
    `git show origin/chore/CC-006-deny-mcp-servers:docs/research/02-workflow-optimisation.md`: `main`'s copy
-   still carries the Session 19 `deniedMcpServers` line and Decision 3, and has no §Item F, checked.
+   still carries the Session 19 `deniedMcpServers` line, Decision 3 without Decision 4, and no §Item F,
+   checked.
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
