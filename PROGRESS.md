@@ -3,7 +3,13 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 23)
+## Next workstreams (after Session 24)
+
+Updated 6 October 2026, end of Session 24: **the Session 18 archive is open as
+[#110](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/110), at nit-floor, and spec-grill R1 has
+been verified finding by finding against `eb6099a`** (`docs/research/02-sources/spec-grill-r1-verification.md`,
+20 CONFIRMED, 3 PARTLY, 0 DISPROVED, 2 OVERTAKEN by Decision 5). Research 02 is not yet folded. Next: archive Session 19, fold R1 into research 02 from the
+verification report (Decision 5 first), then the token inventory, then items C and E.
 
 Updated 6 October 2026, Session 24: **#106, #107, #108 and the Session 23 handoff #109 all merged between
 04:09Z and 04:10Z, as merge commits (Alex), so the paragraph below is history.** Session 18 is archived in its
@@ -238,6 +244,65 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 24 — 6 October 2026 (CC-006: Session 18 archived as #110, R1 verified)
+
+**Every finding in `spec-grill` R1 was re-checked against `eb6099a` by a background verifier, and the report is
+on disk for the fold** (20 CONFIRMED, 3 PARTLY, 0 DISPROVED, 2 OVERTAKEN by Decision 5). The Session 18 archive is open as #110, at nit-floor. Nothing merged
+this session.
+
+**Setup:** #106, #107, #108 and #109 had all merged between 04:09Z and 04:10Z, as merge commits (Alex). No PRs
+were open, the tree was clean, the remote branches were the three standing ones, and the only worktree was the
+main checkout. The band was 6 entries and 23,614 bytes. The pre-push suite was green (36 Vitest, 21
+Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **[#110](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/110)**,
+  `docs/CC-006-archive-session-18`, `7cbce43` + fold `ecb8cd7`: Session 18 becomes row 18, and four cites of
+  its content point at `git show eb6099a:PROGRESS.md`. `copilot-surrogate` (Fable, ~71k): 33 claims, 1
+  falsified (the first commit's body counted four cites and listed three), 2 LOW and 2 nits, all folded; the
+  coordinator read the fold (decision (r)). The band is 5 entries and 19,976 bytes before this entry.
+- **R1 verified**, by a `general-purpose` agent on Fable (~173k tokens, ~8 minutes) in its own detached worktree at
+  `eb6099a`, dispatched in the background while #110 was built and reviewed. Its report is
+  `docs/research/02-sources/spec-grill-r1-verification.md`, committed by this handoff: a verdict, evidence at
+  `eb6099a` and a proposed fold per finding, Decision 5's rewrite list, and an order. PARTLY: M1, M5 and M8. OVERTAKEN: B1 and L9. Five folds need Alex
+  first: B2(c)'s size threshold for doc folds going to `implementer` (it reverses research 01 Decision 2),
+  M6's CI commit-subject check (only as a stated exception to §Process-rule promotion), L1's
+  `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask), and A with
+  H (answers on (f), (g), (h), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
+  inventory, C, B alone, A with H, E's archive leg, G, D, I. Not yet read by the coordinator beyond that reply.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1, and 2 with it. #110 was opened at 152k, above 130k and past the soft line.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
+    | ----------------------- | ------ | ------ | ------------ | ------- |
+    | Start (late, step 1)    | 8%     | 33%    | 19%          | 76k     |
+    | After the loading reads | 9%     | 33%    | 19%          | 122k    |
+    | #110 opened             | 17%    | 34%    | 20%          | 152k    |
+
+- **Plan usage:** the 5-hour window resets at 09:00Z on 6 October, and the weekly windows at 15:00Z on
+  9 October.
+- **Warning signs:** one, the same as Sessions 22 and 23: step 1's `get_usage` came after
+  `docs/SESSION-HANDOFF.md` and the loading block had been read. Each subagent had its own detached worktree.
+- **Clarifying question:** none.
+
+**Major novel patterns Session 24:**
+
+1. **Step 1 cannot be obeyed as written, so it has been missed three sessions running.** "Call `get_usage`
+   first, before reading anything" sits inside the block the session has to read to learn it, and the paste
+   prompt (`docs/SESSION-HANDOFF.md` §3) tells it to read that doc too. The fix is to put the call in the paste
+   prompt itself; that is a `docs/SESSION-HANDOFF.md` change, so it belongs with research 02's item A, not here.
+   The late reading costs little (75,933 against 75,131 for Session 21's early one).
+2. **A verifier in the background turned the fold's slowest step into a file.** Dispatched at 122k, it ran
+   beside the archive unit and cost the coordinator only its capped reply, so the next session folds from
+   evidence instead of re-checking 25 findings. The same move as Session 22 pattern 1, applied to the digest.
+3. **The archive unit alone took the session from 122k to 152k** (edit, suite, one review digest, a fold,
+   the PR), so after a 46k loading read one unit per session is still the shape. Item A is the lever.
 
 ## Session 23 — 6 October 2026 (CC-006: Session 17 archived as #108, item B re-decided)
 
@@ -534,11 +599,13 @@ auto.
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
    is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, correcting Session 20
    pattern 2). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
-   (19,855) and Session 23 75,948 (19,855), both taken late, after `docs/SESSION-HANDOFF.md` and this block
-   had been read; take it before even those. Take a second reading after the loading reads (Session 23:
-   128,962), as the grill's M1 asks. Then read
+   (19,855), Session 23 75,948 (19,855) and Session 24 75,933 (19,855), all three taken late, after
+   `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24 pattern 1).
+   Take a second reading after the loading reads (Session 23: 128,962; Session 24: 121,940), as the grill's M1
+   asks. Then read
    `CLAUDE.md` (auto-loaded), this file top to bottom, `docs/research/02-workflow-optimisation.md` in
-   full, and `docs/research/02-sources/spec-grill-r1.md` (step 5(b)); not the other `02-sources/`.
+   full, and `docs/research/02-sources/spec-grill-r1.md` and `spec-grill-r1-verification.md` (step 5(b)); not the
+   other `02-sources/`.
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
@@ -547,17 +614,17 @@ auto.
    Session 17 in its own small PR (cites: `git grep -n "Session 17"`), unless item B's rules have landed
    (then straight to `main`).~~ ~~Session 17 archived in Session 23 as #108. With Session 23's entry the band
    holds 6 entries (Sessions 18 to 23); re-take its byte figure after this handoff's last commit. Archive
-   Session 18 in its own small PR (cites: `git grep -n "Session 18"`).~~ Session 18 archived in Session 24, in
-   its own PR; the band holds 5 entries (Sessions 19 to 23) before Session 24's. Alex chose one PR per session
-   (Session 23), but §6 still says an archive is its own PR until research 02's fold rewrites the rules.
+   Session 18 in its own small PR (cites: `git grep -n "Session 18"`).~~ Session 18 archived in Session 24 as
+   #110. With Session 24's entry the band holds 6 entries (Sessions 19 to 24); re-take its byte figure after
+   this handoff's last commit. Archive Session 19 (cites: `git grep -n "Session 19"`, and `git grep -n -B1
+"^ *19"` for a wrapped one). Alex chose one PR per session (Session 23), but §6 still says an archive is its
+   own PR until research 02's fold rewrites the rules, so it stays its own PR until then.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - Expect a stack of four open PRs unless Alex has merged them, in this order: #106 (the Session 16
-      archive), #107 (the Session 22 handoff), #108 (the Session 17 archive) and this handoff, each based on
-      the one before. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - Expect two open PRs unless Alex has merged them: #110 (the Session 18 archive) and this handoff, based
+      on #110. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-006-archive-session-16`, `docs/CC-006-close-session-22`,
-      `docs/CC-006-archive-session-17` and `docs/CC-006-close-session-23` have not merged.
+      plus whichever of `docs/CC-006-archive-session-18` and `docs/CC-006-close-session-24` have not merged.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -570,8 +637,11 @@ auto.
       moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
       If he changes either, step 1's readings measure it.
     - **(b)** ~~`spec-grill` on research 02~~ R1 ran in Session 22: 2 BLOCKING, 9 MATERIAL, 10 LOW, 4 nits,
-      in `docs/research/02-sources/spec-grill-r1.md`. **Next: digest R1 and fold research 02**, verifying
-      each finding before folding it. ~~Ask Alex about B1 first, since it bears on his Decision 1 (item B
+      in `docs/research/02-sources/spec-grill-r1.md`. **Next: digest R1 and fold research 02**, ~~verifying
+      each finding before folding it~~ from `docs/research/02-sources/spec-grill-r1-verification.md`
+      (Session 24: every finding re-checked at `eb6099a`, with a proposed fold each, Decision 5's rewrite list
+      and an order). Read it in full; it replaces re-verifying R1. Put its five Alex questions (the Session 24
+      entry lists them) to him in one batch before folding those rows. ~~Ask Alex about B1 first, since it bears on his Decision 1 (item B
       straight to `main`).~~ B1 checked and answered in Session 23: Alex chose one PR per session (archive
       and handoff together), keeping CI and the surrogate review. Record it as Decision 5, superseding
       Decision 1, and rewrite row B and its rule list, checking B1's sibling list and L9 against Decision 5 (most dissolve). Then a further round per `docs/DEVELOPMENT.md` §Verification rounds. After that,
@@ -591,7 +661,7 @@ auto.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 23. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, and again to Session 24. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, to Session 24, and again to Session 25. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
