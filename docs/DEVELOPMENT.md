@@ -286,7 +286,7 @@ round whose findings were all LOW or nits, folded in prose only (Markdown and `.
 none: the coordinator reads the fold diff itself, if there is one, and records that read in the PR body. A
 round with no findings has no fold, so there is nothing to confirm. It stands on three rounds that found
 nothing new: Session 10's, after a nit-floor round one and a one-word fold (~120k Fable tokens), and the
-confirm rounds of #84 (Session 15) and #87 (Session 16), each after a LOW-only fold. The counter-case is
+confirm rounds of #84 (Session 15, in `git show 9d242b0:PROGRESS.md`) and #87 (Session 16), each after a LOW-only fold. The counter-case is
 Session 8 pattern 2, where only the confirm round saw the `notacolor` hole (`git show
 2d63577^:PROGRESS.md`). That round folded three MATERIAL findings and four LOWs across both reviewers, and
 the hole came from the fix to one of `da-review`'s LOWs, a test-probe rewrite. That is why a code or test

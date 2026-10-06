@@ -505,7 +505,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
 
 ## Next session loading instructions
 
-1. **Call `get_usage` first, before reading anything**, and record `tokensUsed` and its MCP tools category: it
+1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
    is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, correcting Session 20
    pattern 2). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855). Then read
    `CLAUDE.md` (auto-loaded), this file top to bottom, and `docs/research/02-workflow-optimisation.md` in
@@ -520,7 +520,8 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
     - #98 (`54fb4ba`) and the Session 20 handoff #99 (`9d242b0`) merged on 3 October 2026. Expect the
-      Sessions 14 and 15 archive open unless Alex has merged it. Dependabot #100 merged as `3226826`.
+      Sessions 14 and 15 archive open unless Alex has merged it. Dependabot #100 merged as `3226826`;
+      #101, #102 and #103 opened on 6 October, green, and are Alex's to merge while decision (j) holds.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
       plus `docs/CC-006-archive-sessions-14-15` until it merges.
     - `git worktree list`: only the main checkout.
@@ -531,7 +532,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
     - ~~**(a) Research item F first**: add `deniedMcpServers` to `.claude/settings.json` for the MCP servers this
       repo never uses, and measure in a fresh session.~~ Checked in Session 20: the denylist skips the
       in-process servers the desktop app delivers, so it saves nothing there; re-scoped by Alex to the
-      terminal's four claude.ai connectors, open as #98 (research 02 §Item F, checked). The desktop figure
+      terminal's four claude.ai connectors, merged as #98 (`54fb4ba`; research 02 §Item F, checked). The desktop figure
       moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
       If he changes either, step 1's readings measure it.
     - **(b)** `spec-grill` on research 02, then items C and E as the first PRs, then A with B. B needs
@@ -540,9 +541,8 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
       Research items D, G, H and I follow (item G is not PR G).
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
-      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; do it in Session 21.
-      Once step 2 archives Sessions 14 and 15, read their readings at the archive PR's parent
-      (`git show <sha>^:PROGRESS.md`, `docs/SESSION-HANDOFF.md` §6).
+      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; carried to
+      Session 21. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
