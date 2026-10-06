@@ -5,6 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 21)
 
+Updated 6 October 2026, Session 22: **#104 (`e9c5a0a`) and the Session 21 handoff #105 (`8234f50`) both
+merged at 03:31Z and 03:34Z, as merge commits (Alex), so the paragraph below is history.** Session 16 is
+archived in its own PR.
+
 Updated 6 October 2026, end of Session 21: **the Sessions 14 and 15 archive is open as
 [#104](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/104), reviewed and confirmed at
 nit-floor.** Next: archive Session 16, `spec-grill` on research 02, then the AI-docs token inventory Alex asked
@@ -485,7 +489,7 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
   2 October.
 - **Warning signs:** one. `d5f3565` (one line) was pushed after only a Prettier check. The suite ran straight
   after and was green (36, 21), but the rule says before. Every reviewer had its own detached worktree.
-- **Clarifying question:** none that Session 16's entry should have answered. The two (r) scope questions were new.
+- **Clarifying question:** none that Session 16's entry (`git show 8234f50:PROGRESS.md`) should have answered. The two (r) scope questions were new.
 
 **Major novel patterns Session 17:**
 
@@ -498,74 +502,6 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
    round and C's first review (~203k tokens). Two reviewers and the implementer moved the 5-hour window about
    14 points (22% to 36%).
 
-## Session 16 — 29 September 2026 (CC-005: Session 10 archived as #87, PR D opened as #88)
-
-**The Session 10 archive merged as #87, and PR D is open, reviewed, folded and confirmed at nit-floor.** D is
-the `implementer`'s first real use.
-
-**Setup:** every loading check matched Alex's corrected expectations: #83 to #86 merged, `main` at `759db88`, no
-open PRs, the three standing remote branches, no worktrees. Pre-push suite green (36 unit, 21 e2e).
-`get_session self` reported Opus 5.5 at `high`.
-
-- **#86's stale lines, corrected here** (Alex: no post-merge review): its top paragraph says three PRs are open
-  and that the handoff stacks on #83, and loading step 3 expects #83, #84, #85 and #86 open. All four merged
-  (above). Nothing else in #86 was checked.
-
-**Done:**
-
-- **[#87](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/87)**,
-  `docs/CC-005-archive-session-10`, merged by Alex as `0d93607` (a merge commit): Session 10 becomes row 10, and three cites point at
-  `git show 759db88:PROGRESS.md`. `copilot-surrogate`: nit-floor, 2 LOW, folded; confirm round CONFIRMED,
-  nothing new. The band is 5 entries, 21,815 bytes, before this entry.
-- **PR D, [#88](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/88)**,
-  `docs/CC-005-session-handoff-doc`, `97ccf07` (Alex then merged `main` in as `c0eb71b`): `docs/SESSION-HANDOFF.md` (10,677 bytes), with
-  `docs/DEVELOPMENT.md` §Session handoff as a pointer that reverses the old "no numeric thresholds" line. The
-  worktree rule is promoted (p), (r) is recorded as a candidate, and five siblings are repointed.
-    - **Built by the `implementer`** (Sonnet, ~113k tokens, ~5 minutes) from a coordinator brief that settled
-      trigger 1's floor (130k) and the archive line (24,000 bytes). It listed 14 open choices. One corrected
-      the brief: a rebase makes no merge commit, so "cite a merge commit" is not always possible.
-    - `da-review` (~122k): 3 MATERIAL, 4 LOW. Trigger 1 collided with the unit-in-hand rule; the 130k reasoning
-      claimed more than the readings show; trigger 6 cannot "override" trigger 2. `copilot-surrogate` (~161k,
-      with #87's confirm round): 2 LOW. All folded by the coordinator in `e1a9cd8`.
-    - Confirm round, a fresh `da-review` verifier (~65k): every fold CONFIRMED, nit-floor, 3 LOW. Two are
-      folded in `97ccf07`; the third is step 6 below. `97ccf07`'s body gives the LOW-only fold as the reason to
-      stop, which reads as applying (r); the reason is the two-round cap, then a manual pass. #88's body
-      corrects it.
-    - **`isolation: worktree` trialled once** (R1 L1): the worktree started at `main`, not the checkout's
-      HEAD, had no `node_modules`, and left a harness branch, deleted after. Recorded in D.
-- **Merged:** #87 (Alex, 21:51Z). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, passed at ~151k after #87's first fold, with D already dispatched. Both units
-  were finished, with their review and confirm rounds. Context 213k at handoff; the hard line is 250k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment               | 5-hour | Weekly | Fable weekly | Context |
-    | -------------------- | ------ | ------ | ------------ | ------- |
-    | Start                | 0%     | 72%    | 26%          | 89k     |
-    | #87 folded, D built  | 5%     | 73%    | 27%          | 151k    |
-    | D's reviews digested | 15%    | 74%    | 30%          | 184k    |
-    | #88 opened, handoff  | 18%    | 75%    | 30%          | 213k    |
-
-- **Plan usage:** the 5-hour window resets at 02:30Z on 30 September; the weekly windows at 15:00Z on
-  2 October.
-- **Warning signs:** none. Every reviewer had its own worktree.
-- **Clarifying question:** none.
-
-**Major novel patterns Session 16:**
-
-1. **Decision (r)'s promotion point may have been met.** #84's confirm round (Session 15) and #87's (this
-   session) each followed a LOW-only fold and found nothing new. D records the candidate rule with exactly that
-   promotion point; promoting it is Alex's call, not taken here.
-2. **The implementer's open-choice list caught an error in the coordinator's brief.** The brief said a merge
-   commit survives any merge button, and the rebase button makes none. A brief is a claim too.
-3. **A plan's slip reaches the built doc unless the reviewer executes it cold.** "Triggers 4 to 6 override
-   trigger 2" came from the plan's own §PR D, and it was wrong for trigger 6. `da-review`, told to execute the
-   doc with only `CLAUDE.md` and `PROGRESS.md` in hand, found it.
-4. **`isolation: worktree` is not yet a drop-in.** It started from `main`, not the branch under review, and
-   left a harness branch behind. Manual detached worktrees stay the rule.
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
@@ -576,18 +512,20 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check, first, before anything else.** With Session 21's entry the band holds 6 entries (Sessions
+2. **Archive check, first, before anything else.** ~~With Session 21's entry the band holds 6 entries (Sessions
    16 to 21) and 24,236 bytes, measured after the last commit that touches it. Archive Session 16 in its own
-   small PR (cites: `git grep -n "Session 16"`), unless item B's rules have landed (then straight to `main`).
+   small PR (cites: `git grep -n "Session 16"`), unless item B's rules have landed (then straight to `main`).~~
+   Session 16 archived in Session 22, in its own PR; the band holds 5 entries (Sessions 17 to 21) before
+   Session 22's.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - Expect #104 (the Sessions 14 and 15 archive) and this handoff, stacked on it, open unless Alex has
-      merged them; #104 first, since this branch is based on it. Dependabot #100 to #103 all merged in
-      Session 21 (Alex). Say which merged in the entry, and rewrite every hedge here that the
-      merges overtake.
+    - ~~Expect #104 (the Sessions 14 and 15 archive) and this handoff, stacked on it, open unless Alex has
+      merged them; #104 first, since this branch is based on it.~~ Both merged (§Next workstreams, Session 22).
+      Dependabot #100 to #103 all merged in Session 21 (Alex). Say which merged in the entry, and rewrite
+      every hedge here that the merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-006-archive-sessions-14-15` and `docs/CC-006-close-session-21` have not
-      merged.
+      ~~plus whichever of `docs/CC-006-archive-sessions-14-15` and `docs/CC-006-close-session-21` have not
+      merged~~ (both deleted on merge).
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -613,7 +551,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 21. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22. Sessions 14 to 16's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -702,7 +640,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
    covers agents and dispatch anyway. Session 10 used it a third time (`git show 759db88:PROGRESS.md`).~~
    **(q)** which ticket key the PCR workflow port goes under — `CC-004` is the code-quality workstream,
    and the keys are Alex's tracker (`docs/GIT.md`), so none is invented here;
-   **(r)** _In PR D (#88, merged): recorded as a candidate, with its promotion point (Session 16 pattern 1). Promoted by Alex in Session 17; #91 carried it._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
+   **(r)** _In PR D (#88, merged): recorded as a candidate, with its promotion point (Session 16 pattern 1, in `git show 8234f50:PROGRESS.md`). Promoted by Alex in Session 17; #91 carried it._ ~~Whether a confirm round is still required when round one is already at nit-floor with nothing
    above LOW and a fold of a word or two — Session 10 pattern 1, in `git show 759db88:PROGRESS.md`; the PCR research may answer it~~;
    **(s)** whether `implementer.md` becomes a checked-in agent here, and on which model — Session 10 ran
    one inline on Sonnet 5.5 against the "agents on Fable" line in step 6; part of step 5's first bullet.
@@ -710,5 +648,5 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
