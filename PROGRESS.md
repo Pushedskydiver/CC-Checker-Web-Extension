@@ -591,12 +591,12 @@ auto.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 23. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, and again to Session 24. Sessions 14 to 17's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, and again to Session 24. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
       and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.~~
-      Done in Session 18's archive PR; they now name `AGENTS.md`.
+      Done in Session 18's archive PR, #93 (`git show eb6099a:PROGRESS.md`); they now name `AGENTS.md`.
     - Decision (r) is settled: promoted and scoped by Alex in Session 17, and carried by #91.
     - Carried, none started (research item H proposes closing most of the lettered decisions in step 7):
         - `docs/REVIEW-PATTERNS.md:251-252` says no second review round has happened here, and it asks to
