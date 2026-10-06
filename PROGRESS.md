@@ -283,7 +283,7 @@ Opus 5.5 at `high`, permission mode auto.
 
 **Major novel patterns Session 23:**
 
-1. **The loading reads cost 53k (76k to 129k) before any work.** `PROGRESS.md` (~57 KB), research 02 (~13 KB)
+1. **The loading reads cost 53k (76k to 129k) before any work.** `PROGRESS.md` (~58 KB), research 02 (~13 KB)
    and the grill report (~26 KB) were the bulk. That left one small unit before trigger 1 fired. This is the
    "after loading reads" figure the grill's M1 asks for, and it is the "before" for item A and the inventory.
 2. **A fold inside the band moved the band figure again** (19,409 to 19,442), the fifth incident of Session
@@ -619,8 +619,10 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       straight to `main`).~~ B1 checked and answered in Session 23: Alex chose one PR per session (archive
       and handoff together), keeping CI and the surrogate review. Record it as Decision 5, superseding
       Decision 1, and rewrite row B and its rule list from B1's sibling list and L9. Then a further round per `docs/DEVELOPMENT.md` §Verification rounds. After that,
-      items C and E as the first PRs, then A with B, unless the folds reorder them. B needs `AGENTS.md`
-      §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1). The
+      items C and E as the first PRs, then A with B, unless the folds reorder them. ~~B needs `AGENTS.md`
+      §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).~~
+      Superseded in Session 23 by Decision 5 (one PR per session): no direct push, so the rewrite is
+      §6's "An archive is its own small PR" and any sibling that says the same; the fold lists which. The
       key is `CC-006` (Alex, Session 20). Research items D, G, H and I follow (item G is not PR G).
     - **(b) continued: the AI-docs token inventory** (Alex, Session 21), after `spec-grill` and before C and E,
       so that it measures what the grill leaves of A, D and G. Ask: are the AI-facing docs as lean as they can
@@ -633,7 +635,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 23. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, and again to Session 24. Sessions 14 to 16's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, and again to Session 24. Sessions 14 to 17's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
