@@ -5,6 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 23)
 
+Updated 6 October 2026, Session 24: **#106, #107, #108 and the Session 23 handoff #109 all merged between
+04:09Z and 04:10Z, as merge commits (Alex), so the paragraph below is history.** Session 18 is archived in its
+own PR.
+
 Updated 6 October 2026, end of Session 23: **the Session 17 archive is open as
 [#108](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/108), at nit-floor, stacked on #107, and
 Alex re-decided research 02's item B after `spec-grill` R1's B1: one PR per session, not straight to `main`.**
@@ -291,7 +295,7 @@ Opus 5.5 at `high`, permission mode auto.
    and the grill report (~26 KB) were the bulk. That left one small unit before trigger 1 fired. This is the
    "after loading reads" figure the grill's M1 asks for, and it is the "before" for item A and the inventory.
 2. **A fold inside the band moved the band figure again** (19,409 to 19,442), the fifth incident of Session
-   18 pattern 1. #108's body corrects its first commit's figure.
+   18 pattern 1 (`git show eb6099a:PROGRESS.md`). #108's body corrects its first commit's figure.
 3. **MCP tools rose mid-session, 19,855 to 20,947,** after `ReadNotifications` arrived and two deferred
    schemas were loaded. So a start figure is not the session's whole MCP cost.
 
@@ -350,7 +354,7 @@ worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Play
    about 1k of context.** Its ~134k tokens stayed in the subagent, and the next session starts with R1 ready
    to digest rather than to dispatch.
 2. **A fold inside the band moved the band figure again** (19,482 to 19,515), the fourth incident of Session 18
-   pattern 1. #106's body corrects its first commit's figure.
+   pattern 1 (`git show eb6099a:PROGRESS.md`). #106's body corrects its first commit's figure.
 3. **An approved decision met adversarial evidence after approval.** Decision 1 said "unless there is strong
    evidence for a PR per session", and the grill's B1 offers some. Re-deciding is Alex's call; it is not
    folded here.
@@ -510,7 +514,7 @@ auto.
 
 - **Plan usage:** the 5-hour window resets at 02:50Z on 3 October. The weekly windows reset at 15:00Z on 9 October.
 - **Warning signs:** none. Every reviewer had its own detached worktree.
-- **Clarifying question:** none that Session 18's entry should have answered.
+- **Clarifying question:** none that Session 18's entry (`git show eb6099a:PROGRESS.md`) should have answered.
 
 **Major novel patterns Session 19:**
 
@@ -524,59 +528,6 @@ auto.
    records go in `.prettierignore`.
 4. **The surrogate's MATERIAL on #95 was a false fact the coordinator wrote in a state line.** That is evidence for a
    pre-push review of handoff lines, not for a PR as the vehicle (Decision B).
-
-## Session 18 — 29 September 2026 (CC-005: Session 12 archived as #93, PR F scripted)
-
-**The Session 12 archive is open as #93, at nit-floor after a review and a confirm round; PR F's conversion is
-scripted and checked, not yet on a branch.** Nothing merged this session.
-
-**Setup:** #90, #91 and #92 had merged, `main` was at `075e38d`, there were no open PRs, the three standing remote
-branches were present and `../cc-pr-c` was already gone. #92's stale lines were corrected in #93. The pre-push suite
-was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
-
-**Done:**
-
-- **[#93](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/93)**, `docs/CC-005-archive-session-12`,
-  `291a668`: Session 12 becomes row 12, and its cites point at `git show 075e38d:PROGRESS.md`. It also folds
-  `da-review` LOW 3 on #91, so the `PROGRESS.md` pointers name `AGENTS.md`. `copilot-surrogate` (~103k tokens)
-  found 1 MATERIAL ("Sessions 6 to 11" not bumped), 1 LOW and 3 nits, all folded. The confirm round (~39k)
-  CONFIRMED all four in-tree folds and found one LOW that the fold itself caused (the band went from 22,576 to
-  22,609 bytes). That was a prose-only fold, so the coordinator read it (decision (r)).
-- **PR F, prepared, not built.** Converting §What each test proves takes `docs/TESTING.md` from 117,068 to
-  34,635 bytes with the spec's full titles, and passes Prettier. The method is in loading step 5.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1. #93 was finished with context at 149k, above 130k, so F was not started (the soft line is
-  150k).
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                 | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------- | ------ | ------ | ------------ | ------- |
-    | Start                  | 38%    | 77%    | 34%          | 73k     |
-    | After round one's fold | 42%    | 78%    | 35%          | 139k    |
-    | Handoff                | 43%    | 78%    | 35%          | 149k    |
-
-- **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
-  2 October.
-- **Warning signs:** one. `291a668` and `bd6a418` were pushed after only `npm run lint`, the same slip as
-  Session 17's (`git show 8234f50:PROGRESS.md`). The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
-  reviewer and the confirm verifier shared one detached worktree, one after the other, never at the same time.
-- **Clarifying question:** none that Session 17's entry (`git show 8234f50:PROGRESS.md`) should have answered.
-
-**Major novel patterns Session 18:**
-
-1. **A fold inside the band moves the band figure quoted outside it.** #93's LOW fix added 33 bytes to the
-   Session 13 entry (`git show bf9f8d1:PROGRESS.md`), so step 2's figure went stale. #90's LOW (26,527 taken before #89's fold made it 26,569)
-   was the same class, which makes two incidents. This handoff's own review fold made a third (25,973 to 26,183). The candidate rule is to re-take any band figure after the
-   last commit that touches the band. Promoting it is Alex's call (`docs/DEVELOPMENT.md` §Process-rule
-   promotion).
-2. **The table's Group column was not the spec's title.** It shortened `colour picker (needs captureVisibleTab)`
-   to `colour picker`, while the section's intro says "Titles are the spec's own". Diffing the planned headings
-   against `npx playwright test --list` caught it before anything was built.
-3. **One surrogate plus a scoped confirm round cost about 5 points of the 5-hour window** (38% to 43%, ~142k
-   subagent tokens). A confirm round scoped to the fold diff cost ~39k, against ~103k for the full read.
 
 ## Next session loading instructions
 
@@ -594,9 +545,10 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 2. **Archive check, first, before anything else.** ~~With Session 22's entry the band holds 6 entries (Sessions
    17 to 22); re-take its byte figure after this handoff's last commit (Session 18 pattern 1). Archive
    Session 17 in its own small PR (cites: `git grep -n "Session 17"`), unless item B's rules have landed
-   (then straight to `main`).~~ Session 17 archived in Session 23 as #108. With Session 23's entry the band
+   (then straight to `main`).~~ ~~Session 17 archived in Session 23 as #108. With Session 23's entry the band
    holds 6 entries (Sessions 18 to 23); re-take its byte figure after this handoff's last commit. Archive
-   Session 18 in its own small PR (cites: `git grep -n "Session 18"`). Alex chose one PR per session
+   Session 18 in its own small PR (cites: `git grep -n "Session 18"`).~~ Session 18 archived in Session 24, in
+   its own PR; the band holds 5 entries (Sessions 19 to 23) before Session 24's. Alex chose one PR per session
    (Session 23), but §6 still says an archive is its own PR until research 02's fold rewrites the rules.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
@@ -639,12 +591,12 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 23. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, and again to Session 24. Sessions 14 to 17's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, and again to Session 24. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
       and "the `CLAUDE.md` path table" in decisions (h) and (i), and step 7's (r). Then remove `../cc-pr-c`.~~
-      Done in Session 18's archive PR; they now name `AGENTS.md`.
+      Done in Session 18's archive PR, #93 (`git show eb6099a:PROGRESS.md`); they now name `AGENTS.md`.
     - Decision (r) is settled: promoted and scoped by Alex in Session 17, and carried by #91.
     - Carried, none started (research item H proposes closing most of the lettered decisions in step 7):
         - `docs/REVIEW-PATTERNS.md:251-252` says no second review round has happened here, and it asks to
@@ -736,5 +688,5 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
