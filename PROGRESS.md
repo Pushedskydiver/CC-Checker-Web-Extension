@@ -5,6 +5,9 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 22)
 
+Updated 6 October 2026, Session 23: **#106 and the Session 22 handoff #107 were both still open at the
+start, so the paragraph below still holds.** Session 17 is archived in its own PR, stacked on #107.
+
 Updated 6 October 2026, end of Session 22: **the Session 16 archive is open as
 [#106](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/106), at nit-floor, and `spec-grill` R1
 on research 02 found 2 BLOCKING and 9 MATERIAL** (`docs/research/02-sources/spec-grill-r1.md`, not yet
@@ -493,7 +496,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 - **Warning signs:** one. `291a668` and `bd6a418` were pushed after only `npm run lint`, the same slip as
   Session 17's. The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
   reviewer and the confirm verifier shared one detached worktree, one after the other, never at the same time.
-- **Clarifying question:** none that Session 17's entry should have answered.
+- **Clarifying question:** none that Session 17's entry (`git show 8234f50:PROGRESS.md`) should have answered.
 
 **Major novel patterns Session 18:**
 
@@ -508,66 +511,6 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 3. **One surrogate plus a scoped confirm round cost about 5 points of the 5-hour window** (38% to 43%, ~142k
    subagent tokens). A confirm round scoped to the fold diff cost ~39k, against ~103k for the full read.
 
-## Session 17 — 29 September 2026 (CC-005: Session 11 archived as #90, PR C opened as #91)
-
-**PR C is open as #91: `AGENTS.md` is the instruction file, `CLAUDE.md` imports it, and decision (r) is promoted.**
-Nothing merged this session.
-
-**Setup:** #88 and #89 had merged, `main` was at `83780fe`, there were no open PRs, the three standing remote branches
-were present and there were no worktrees. #89's stale lines were corrected in #90. The pre-push suite was green
-(36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
-
-**Done:**
-
-- **[#90](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/90)**, `docs/CC-005-archive-session-11`,
-  `ee45a84`: Session 11 becomes row 11, and the band is 5 entries and 23,008 bytes. `copilot-surrogate` found
-  1 MATERIAL (seven sentences still read #88 and #89 as open), 1 LOW and 1 nit, all folded. The confirm round
-  CONFIRMED all three and found nothing new.
-- **Decision (r), promoted by Alex**, and then scoped by him, after the `implementer` found that Session 8's
-  `notacolor` hole came from a LOW's test-probe fix. A LOW-only fold skips its confirm round only if it touches
-  prose alone, and a round with no findings needs no confirm.
-- **PR C, [#91](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/91)**, `docs/CC-005-agents-md-swap`,
-  `d5f3565`, built by the `implementer` (Sonnet, ~131k tokens) in its own worktree. It is ready, and CI is green.
-    - The budget sits at 149 of ~150 prose lines.
-    - `da-review` found 1 MATERIAL (the zero-findings clause contradicted three lines), 4 LOW and 1 nit.
-      `copilot-surrogate` found 1 LOW and 2 nits, and disproved the implementer's doubt about
-      `copilot-surrogate.md:71`. Everything was folded except `PROGRESS.md`'s stale pointers (loading step 5).
-    - Confirm round (a MATERIAL was folded): a fresh `da-review` verifier (~52k) CONFIRMED all six findings,
-      found nothing new, and reached nit-floor.
-    - **Sentinel check.** A fresh `claude -p` session's subagent quoted `AGENTS.md`'s budget sentence, so the
-      import expands. An in-session subagent saw the old file.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, passed at ~188k before C's reviews. The two units in hand were finished, and F
-  was not started. Context was 236k at handoff, close to the 250k hard line, so this handoff PR is unreviewed.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment             | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------ | ------ | ------ | ------------ | ------- |
-    | Start              | 22%    | 75%    | 31%          | 71k     |
-    | Before C's reviews | 27%    | 76%    | 32%          | 188k    |
-    | Before C's confirm | 36%    | 77%    | 34%          | 213k    |
-    | Handoff            | 37%    | 77%    | 34%          | 236k    |
-
-- **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
-  2 October.
-- **Warning signs:** one. `d5f3565` (one line) was pushed after only a Prettier check. The suite ran straight
-  after and was green (36, 21), but the rule says before. Every reviewer had its own detached worktree.
-- **Clarifying question:** none that Session 16's entry (`git show 8234f50:PROGRESS.md`) should have answered. The two (r) scope questions were new.
-
-**Major novel patterns Session 17:**
-
-1. **In-session subagents inherit the session's instructions, cached at start.** A subagent dispatched after
-   `CLAUDE.md` changed on disk quoted the old file. Test an instruction-file change from a fresh process
-   (`claude -p` in the branch's worktree). A running session keeps the old rules until it restarts.
-2. **The implementer's evidence check reshaped the rule it was asked to write.** Checking the counter-case
-   showed that the hole came from a LOW. Alex narrowed the promotion to prose folds before any review.
-3. **Stacking the confirm round on a first review saved a dispatch.** One surrogate carried #90's confirm
-   round and C's first review (~203k tokens). Two reviewers and the implementer moved the 5-hour window about
-   14 points (22% to 36%).
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
@@ -579,10 +522,11 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check, first, before anything else.** With Session 22's entry the band holds 6 entries (Sessions
+2. **Archive check, first, before anything else.** ~~With Session 22's entry the band holds 6 entries (Sessions
    17 to 22); re-take its byte figure after this handoff's last commit (Session 18 pattern 1). Archive
    Session 17 in its own small PR (cites: `git grep -n "Session 17"`), unless item B's rules have landed
-   (then straight to `main`).
+   (then straight to `main`).~~ Session 17 archived in Session 23, in its own PR stacked on #107; the band
+   holds 5 entries (Sessions 18 to 22) before Session 23's.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
     - Expect #106 (the Session 16 archive) and this handoff, stacked on it, open unless Alex has merged
@@ -716,5 +660,5 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
