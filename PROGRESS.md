@@ -237,7 +237,7 @@ Opus 5.5 at `high`, permission mode auto.
   returned 5 CONFIRMED and 0 DISPROVED, and agreed with the decline: nit-floor. Its two new points are recorded in #104's body.
 - **Dependabot:** `gh pr merge 100 --merge --admin --delete-branch` was refused ("Merge Without Review"), and
   Alex merged #100 as `3226826`. #101, #102 and #103 opened at 03:13Z, all green, and Alex merged them
-  between 03:22Z and 03:23Z (`3dad926`, `f684cf4`, `6a4811a`).
+  at 03:22Z (`3dad926`, `f684cf4`, `6a4811a`).
 - **Alex's new ask:** research whether the AI-facing docs are as lean as they can be for token use. Timing
   was left to the coordinator: it is loading step 5(b).
 - **Merged:** #100, #101, #102 and #103 (Alex). **Uploaded:** no.
@@ -577,7 +577,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check, first, before anything else.** With Session 21's entry the band holds 6 entries (Sessions
-   16 to 21) and 24,252 bytes, measured after the last commit that touches it. Archive Session 16 in its own
+   16 to 21) and 24,236 bytes, measured after the last commit that touches it. Archive Session 16 in its own
    small PR (cites: `git grep -n "Session 16"`), unless item B's rules have landed (then straight to `main`).
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
@@ -661,7 +661,7 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
    `gh pr merge 61 --merge --admin --delete-branch` on first attempt ("Merge Without Review") despite
    the standing delegation in `docs/GIT.md` §Who merges — a written, dated delegation does not by
    itself clear the runtime's own safety gate. Alex added a permission rule and the retry succeeded.
-   Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
+   ~~Whether that rule persists into this session is unknown;~~ It did not persist: #100 was refused in Session 21; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
    another way. Session 9's #69 merged first time with the same command; Session 21's #100 was refused again
    (6 October 2026), and Alex merged it; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
