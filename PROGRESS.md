@@ -494,7 +494,7 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 - **Plan usage:** the 5-hour window resets at 02:30Z on 30 September, and the weekly windows at 15:00Z on
   2 October.
 - **Warning signs:** one. `291a668` and `bd6a418` were pushed after only `npm run lint`, the same slip as
-  Session 17's. The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
+  Session 17's (`git show 8234f50:PROGRESS.md`). The full suite ran on `bd6a418` straight after and was green (36, 21), covering both. The
   reviewer and the confirm verifier shared one detached worktree, one after the other, never at the same time.
 - **Clarifying question:** none that Session 17's entry (`git show 8234f50:PROGRESS.md`) should have answered.
 
