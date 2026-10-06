@@ -66,12 +66,12 @@ Read docs/SESSION-HANDOFF.md and apply it to this session too.
 
 - **A handoff written before its dependencies merge is stale within minutes.** The next session's first live
   check says which PRs merged and rewrites every hedge the merges overtook ("unless Alex has merged...") in
-  its own entry (Session 14 pattern 1).
+  its own entry (Session 14 pattern 1, in `git show 9d242b0:PROGRESS.md`).
 - **No review runs on a PR after it has merged** (Alex, 29 September 2026). An unreviewed handoff stays
   unreviewed; the next session corrects its stale state lines in its own entry.
 - **A loading step that names no rule and no decision by Alex deserves a question before it is followed.** One
   post-merge review (#77) was copied forward by three handoffs until it read as a rule, though no rule
-  document held it (Session 15 pattern 1).
+  document held it (Session 15 pattern 1, in `git show 9d242b0:PROGRESS.md`).
 - **Live checks every loading block carries:** `git status --short`; `git log --oneline -5 origin/main`
   against the entry's own end state; `gh pr list`; remote branches; `git worktree list`; the pre-push suite.
 

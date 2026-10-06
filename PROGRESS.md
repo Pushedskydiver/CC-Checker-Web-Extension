@@ -5,6 +5,11 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 20)
 
+Updated 6 October 2026, Session 21: **#98 (`54fb4ba`) and the Session 20 handoff #99 (`9d242b0`) both
+merged on 3 October, so the paragraph below is history.** Sessions 14 and 15 are archived in their own PR.
+Dependabot #100 merged as `3226826`: the delegated merge was refused by the auto-mode classifier (decision
+(j)), and Alex merged it.
+
 Updated 3 October 2026, end of Session 20: **research item F is open as
 [#98](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/98), reviewed, under the new key `CC-006`
 (Alex).** `deniedMcpServers` cannot reach the desktop app's servers, so F was re-scoped to the terminal's
@@ -250,8 +255,9 @@ present and the only worktree was the main checkout. The pre-push suite was gree
    02's facts were right for the terminal CLI and silent about in-process `sdk` servers, so the approved F
    would have saved nothing in the desktop app. Reading the denylist's exceptions and `ps` caught it before
    any commit.
-2. **`/context` cannot be run by the coordinator.** `get_usage`'s categories (MCP tools 19,720 of 78,058 at
-   start) stood in for step 1's baseline. A step that needs a slash command needs Alex to run it.
+2. ~~**`/context` cannot be run by the coordinator.** `get_usage`'s categories (MCP tools 19,720 of 78,058 at
+   start) stood in for step 1's baseline. A step that needs a slash command needs Alex to run it.~~ Wrong
+   (Alex, Session 21): `get_usage`'s `context` field is the `/context` figure, so nothing stood in.
 3. **A docs page fetched whole (`managed-mcp`) was the session's largest single read.** Ask a fetch for
    quotes only, or delegate it.
 
@@ -497,165 +503,27 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
 4. **`isolation: worktree` is not yet a drop-in.** It started from `main`, not the branch under review, and
    left a harness branch behind. Manual detached worktrees stay the rule.
 
-## Session 15 — 29 September 2026 (CC-005: Session 9 archived as #83, PR B and branch-protection docs opened)
-
-**PR B and two small docs PRs are open, each reviewed, folded and confirmed at nit-floor.** Nothing merged.
-Alex ruled that no review runs on a PR after it has merged.
-
-**Setup:** every loading check matched: #80, #81 and #82 merged, `main` at `24fc475`, no open PRs, the three
-standing remote branches, no worktrees. Pre-push suite green (36 unit, 21 e2e). `get_session self` reported
-Opus 5.5 at `high`.
-
-**Done:**
-
-- **Post-merge reviews dropped (Alex).** The #82 review was dispatched per step 5, then stopped when Alex
-  said he never set the practice and none of his other repos run it. It began with #77 (Session 13). Recorded in
-  #83 and in memory.
-- **[#83](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/83)**,
-  `docs/CC-005-archive-session-9`: Session 9 becomes row 9; the loading steps stop hedging on #80 to #82.
-  `copilot-surrogate`: 3 MATERIAL (all state sentences), folded; confirm round CONFIRMED all, 1 LOW and
-  1 nit, folded.
-- **PR B, [#84](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/84)**, `chore/CC-005-implementer-agent`: `.claude/agents/implementer.md` (`model: sonnet`,
-  `effort: high`), plus its line in `docs/ARCHITECTURE.md`, `docs/GIT.md` and `docs/GLOSSARY.md`.
-    - **Dry run**, per "Reviews of PR H" §PR B: the brief was rebuilt from §Session 10 (now in `git show 759db88:PROGRESS.md`), and CC-004 row 10
-      part two was built blind from #72's parent `9ca4d2b` on Sonnet (`general-purpose` told to follow the
-      file; ~107k tokens, ~6 minutes). Its `src/` came out byte-identical to #72's, and 17 mutants all went
-      red. Suite on its head: 36 unit, 21 e2e. It edited four docs where #72 edited six. The other two
-      were clarifications of true sentences. Eight of its ten friction points are folded (`dbf055c`, whose
-      body miscounts them as seven of eleven). The scratch branch and worktree are removed.
-    - `copilot-surrogate`: nit-floor, 3 LOW, folded; confirm round CONFIRMED.
-- **Branch protection, [#85](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/85)**, `docs/CC-005-branch-protection`: five docs said `main` needs one
-  approving review; it needs 0. `copilot-surrogate` found two more claims in `docs/GIT.md` and the
-  glossary's stale `CC-004` key range, folded; confirm round CONFIRMED.
-    - The review found that a second collaborator has write access, so "no second human reviewer" is
-      attributed to Alex and dated.
-    - `--admin` in the delegated Dependabot merge now bypasses nothing. The command is unchanged (decision (h)).
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, passed at ~169k after #83's first fold. The three units in hand were
-  finished, and D was not started. Context ~231k at handoff; the hard line is 250k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                   | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------------ | ------ | ------ | ------------ | ------- |
-    | Start                    | 37%    | 68%    | 23%          | 95k     |
-    | Before #83's review      | 39%    | 68%    | 23%          | 133k    |
-    | Before the paired review | 43%    | 68%    | 24%          | 169k    |
-    | Before the last confirm  | 52%    | 70%    | 26%          | 211k    |
-    | Handoff                  | 55%    | 70%    | 26%          | 231k    |
-
-- **Plan usage:** the 5-hour window resets at 05:40Z on 29 September; the weekly windows at 15:00Z on
-  2 October.
-- **Warning signs:** one. `00a4b68` was pushed before the pre-push suite ran; the suite was run straight
-  after and was green, but the rule says before. And a `git stash -u` before a branch switch caught the uncommitted handoff draft; it was
-  popped back intact. Every reviewer had its own detached worktree.
-- **Clarifying question:** one that Session 14's entry could not have answered: post-merge reviews.
-
-**Major novel patterns Session 15:**
-
-1. **A one-off can become a standing step through the handoff alone.** One post-merge review (#77) was
-   copied forward by three handoffs until it read as a rule, though no rule document ever held it. A
-   loading step that names no rule and no decision by Alex deserves a question.
-2. **A byte-identical dry run is strong evidence, but only for `src/`.** The implementer matched #72's
-   code exactly and still diverged on which docs to touch, where both readings were defensible.
-3. **A count in a commit body is still the most common self-inflicted slip.** `dbf055c` said "seven of
-   eleven" when it was eight of ten. It was caught by review, and cannot be amended. Session 9 pattern 5 is
-   unchanged: count before `git commit`.
-4. **One verifier can carry two small jobs.** A confirm round and a first review, or two confirm rounds,
-   shared one Fable dispatch twice here, at ~129k and ~56k tokens, against ~75k for one small review alone.
-
-## Session 14 — 29 September 2026 (CC-005: Session 8 archived as #80, PR A opened as #81)
-
-**The Session 8 archive and PR A are open, each reviewed, folded and confirmed at nit-floor.** Nothing merged.
-Alex agreed to ship A pinned to `fable` and benchmark Fable against Opus later, and said branch protection
-has no second human reviewer to require.
-
-**Setup:** every loading check matched Alex's corrected expectations: #75, #78 and #79 merged, `main` at
-`b4de022`, no open PRs, the three expected remote branches, Session 13's worktrees gone. Pre-push suite
-green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
-
-**Done:**
-
-- **Post-merge surrogate on #79**, on `b4de022` (Fable, ~89k tokens): 6 MATERIAL, 3 LOW, 2 nits, every
-  MATERIAL and LOW a state sentence overtaken by the three merges. Folded into #80 (`420f0f1`).
-- **[#80](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/80)**,
-  `docs/CC-005-archive-session-8`, `eff0aec`.
-    - `2d63577` archives Session 8 as row 8; `420f0f1` is the #79 fold.
-    - `copilot-surrogate` (~77k): nit-floor, 3 LOW, folded in `eff0aec`.
-    - `2d63577`'s body says 44,073 bytes, measured before its own last edit; 44,042 was right. Recorded in
-      `420f0f1`'s body, not amended.
-- **[#81](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/81), PR A**,
-  `chore/CC-005-pin-agent-models`, `af4a0d2`.
-    - `b380588`: the three reviewers pin `model: fable` and `effort: high` (checked against the live
-      subagents doc); the surrogate's description is trimmed, its size sentence corrected, and the
-      recompute discipline added; `CC-005` enters `docs/GIT.md`'s key list.
-    - `copilot-surrogate` (~105k): 3 MATERIAL, 6 LOW. Seven folded in `af4a0d2`. The sharpest: the
-      sibling does not share this repo's key numbers (its July 2024 `CC-004` is the rgb work that is
-      `CC-002` here).
-    - Two not folded, below.
-    - `chore` with 🔧, not the table's 📦, under the "more specific gitmoji" clause; the body says so.
-- **Confirm round** on both folds, one fresh Fable verifier (~48k): every fold CONFIRMED, nothing new.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, passed at 161k while #79's fold was being committed. The two units in hand
-  (#80 and A, with their review and confirm rounds) were finished, and B was not started. Context 208k
-  when #81 opened; the hard line is 250k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                       | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------------- | ------ | ------ | ------------ | ------- |
-    | Start                        | 23%    | 66%    | 20%          | 103k    |
-    | #79 folded, before fan-out   | 27%    | 66%    | 20%          | 161k    |
-    | A folded, before the confirm | 34%    | 67%    | 22%          | 193k    |
-    | #80 and #81 opened           | 36%    | 68%    | 23%          | 208k    |
-
-- **Plan usage:** the 5-hour window resets at 05:40Z on 29 September; the weekly windows at 15:00Z on
-  2 October.
-- **Warning signs:** none. Every reviewer had its own detached worktree.
-- **Clarifying question:** one, not answerable from the entry: whether `main` should require an approving
-  review (below).
-
-**Major novel patterns Session 14:**
-
-1. **A handoff written before its dependencies merge is stale within minutes.** #79 described #75 and #78
-   as open, with "unless Alex has merged them" hedges. He merged all three between 01:07Z and 01:13Z, and
-   the post-merge review found nothing but that staleness and two nits. A hedged sentence still has to
-   be rewritten once the event happens.
-2. **Trimming a duplicate made the original's gaps load-bearing.** The surrogate's long description
-   repeated the trigger paths; the short one defers to `CLAUDE.md`'s table, which lacks `PROGRESS.md` and
-   the comment-block trigger, so "every prose change" became false.
-3. **A "checked live" table drifts like any other claim.** `docs/GIT.md`'s enforcement table, read with
-   `gh api` on 11 September, says one approving review; `main` requires 0. Repo settings are state.
-4. **Four Fable reviewers moved the 5-hour window 13 points** (23% → 36%, ~319k subagent tokens plus the
-   coordinator). A small confirm round is cheaper than ~4 points; a full review still costs about that.
-
 ## Next session loading instructions
 
-1. **Ask Alex to run `/context` first and paste the figure; the coordinator cannot run a slash command**
-   (Session 20 pattern 2). Then call `get_usage` and record its MCP tools figure beside it. Session 20's
-   start: 78,058, MCP tools 19,720. Then read `CLAUDE.md` (auto-loaded), this file top to bottom, and
-   `docs/research/02-workflow-optimisation.md` in full, not its `02-sources/`. Until #98 merges, read it from
-   `git show origin/chore/CC-006-deny-mcp-servers:docs/research/02-workflow-optimisation.md`: `main`'s copy
-   still carries the Session 19 `deniedMcpServers` line, Decision 3 without Decision 4, and no §Item F,
-   checked.
+1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
+   is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, correcting Session 20
+   pattern 2). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855). Then read
+   `CLAUDE.md` (auto-loaded), this file top to bottom, and `docs/research/02-workflow-optimisation.md` in
+   full, not its `02-sources/`.
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check, first, before anything else** (Session 20 skipped it). With Session 20's entry the band
-   holds 7 entries (Sessions 14 to 20) and 29,717 bytes, measured after the last commit that touches it.
-   Archive Sessions 14 and 15 together in one small PR, deliberately, since one leaves 6 entries, over the
-   five (cites: `git grep -n "Session 14"`, `git grep -n "Session 15"`), then re-measure. If item B's rules
-   have landed by then, the archive goes straight to `main`.
+2. **Archive check, first, before anything else.** Sessions 14 and 15 are archived (`docs/CC-006-archive-sessions-14-15`); the band holds
+   5 entries (Sessions 16 to 20) and 20,411 bytes. Session 21's entry makes six, so Session 16 is next, in its
+   own small PR unless item B's rules have landed (then straight to `main`). Measure after the last commit
+   that touches the band.
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - Expect #98 and this handoff open unless Alex has merged them. They touch different files, and either
-      can merge first. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - #98 (`54fb4ba`) and the Session 20 handoff #99 (`9d242b0`) merged on 3 October 2026. Expect the
+      Sessions 14 and 15 archive open unless Alex has merged it. Dependabot #100 merged as `3226826`;
+      #101, #102 and #103 opened on 6 October, green, and are Alex's to merge while decision (j) holds.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `chore/CC-006-deny-mcp-servers` and `docs/CC-006-close-session-20` have not merged.
+      plus `docs/CC-006-archive-sessions-14-15` until it merges.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -664,7 +532,7 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
     - ~~**(a) Research item F first**: add `deniedMcpServers` to `.claude/settings.json` for the MCP servers this
       repo never uses, and measure in a fresh session.~~ Checked in Session 20: the denylist skips the
       in-process servers the desktop app delivers, so it saves nothing there; re-scoped by Alex to the
-      terminal's four claude.ai connectors, open as #98 (research 02 §Item F, checked). The desktop figure
+      terminal's four claude.ai connectors, merged as #98 (`54fb4ba`; research 02 §Item F, checked). The desktop figure
       moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
       If he changes either, step 1's readings measure it.
     - **(b)** `spec-grill` on research 02, then items C and E as the first PRs, then A with B. B needs
@@ -673,9 +541,8 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       Research items D, G, H and I follow (item G is not PR G).
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
-      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; do it in Session 21.
-      Once step 2 archives Sessions 14 and 15, read their readings at the archive PR's parent
-      (`git show <sha>^:PROGRESS.md`, `docs/SESSION-HANDOFF.md` §6).
+      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; carried to
+      Session 21. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -686,7 +553,7 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
         - `docs/REVIEW-PATTERNS.md:251-252` says no second review round has happened here, and it asks to
           be replaced by the first real instance (Session 8's confirm round is one: `docs/history/SESSIONS.md` row 8, the `notacolor` hole;
           the full entry is `git show 2d63577^:PROGRESS.md`). Its own small docs PR.
-    - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14: ship A pinned to
+    - **Benchmark Fable 5.1 against Opus 5.5 as the reviewers' model** (Alex, Session 14, in `git show 9d242b0:PROGRESS.md`: ship A pinned to
       `fable`, benchmark later). "Agents on Fable" was chosen on 12 September from published guidance,
       never measured here. Run `da-review` at `high` on both models over two to four past diffs with a
       known defect (#65's unread filled buttons, #62's 8-digit hex, #68's dependency mutant, #75's
@@ -771,5 +638,5 @@ green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
