@@ -290,8 +290,7 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 
 **Handoff facts:**
 
-- **Trigger:** 2. The reading after the loading reads was 144k, and #112's unit ran to 175k; nothing new started
-  after it.
+- **Trigger:** 1, and 2 with it. The reading after the loading reads was 144k, and #112's unit finished at 175k, above 130k and past the soft line; nothing new started after it.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment                  | 5-hour | Weekly | Fable weekly | Context |
@@ -620,7 +619,7 @@ present and the only worktree was the main checkout. The pre-push suite was gree
    taken late, after `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24
    pattern 1). Take a second reading after the loading reads (Session 23: 128,962; Session 24: 121,940; Session 25:
    144,147, with ~20k of it a stale `main` read, Session 25 pattern 1), as the grill's M1 asks. **Before the reads,
-   run `gh pr list`:** if this handoff is still open, read `PROGRESS.md` from its branch, not `main`. Then read
+   run `git fetch` and `gh pr list`:** if this handoff is still open, read `PROGRESS.md` from its branch, not `main`. Then read
    `CLAUDE.md` (auto-loaded), this file top to bottom, and `docs/research/02-workflow-optimisation.md` in full **at
    #113's head** (`git show origin/docs/CC-006-fold-r1:docs/research/02-workflow-optimisation.md`, or `main` once
    #113 merges). Not `02-sources/`: #113's reviewers read R1 and its verification, the coordinator does not.
@@ -660,8 +659,7 @@ present and the only worktree was the main checkout. The pre-push suite was gree
       If he changes either, step 1's readings measure it.
     - **(b) The R1 fold, built as draft #113 (Session 25), needs its review.** ~~Digest R1 and fold research 02
       from the verification report; put its five Alex questions to him first.~~ Done in Session 25: Alex
-      answered (the Session 25 entry), and the `implementer` built the fold, which records them as Decisions 5 to 8
-      plus the (j) disposition. **Next:** `copilot-surrogate` (research 02 is `docs/**`) and `spec-grill` R2, a
+      answered (the Session 25 entry), and the `implementer` built the fold, which records them as Decisions 6 to 8 (after Session 23's Decision 5) plus the (j) disposition. **Next:** `copilot-surrogate` (research 02 is `docs/**`) and `spec-grill` R2, a
       verification round per `docs/DEVELOPMENT.md` §Verification rounds, at most two at a time, each in its own
       detached worktree at #113's head. Both read the whole file: the `implementer` did not read its own diff.
       R2 checks each R1 finding's fold against `02-sources/spec-grill-r1-verification.md` and Alex's answers.
@@ -670,8 +668,7 @@ present and the only worktree was the main checkout. The pre-push suite was gree
       fold's Decision 5 rewrite list), A carrying H (Alex's answers on (f), (g), (h), (k), (m), (o), (u) gathered
       before A starts), E's archive leg, item G, D, I. The key is `CC-006` (Alex, Session 20). Item G is not PR G.
     - **(c) Then PR G**, per research 01 (step 1).
-    - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
-      facts of Sessions 14 to 24. Due at Session 20, which stopped at the soft line first; carried to
+    - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 25. Due at Session 20, which stopped at the soft line first; carried to
       Session 22, to Session 23, to Session 24, to Session 25, and again to Session 26. Sessions 14 to 19's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
