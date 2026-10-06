@@ -261,6 +261,9 @@ Opus 5.5 at `high`, permission mode auto.
   Alex chose **one PR per session**, from four options; the others were straight to `main` with a pre-push
   review, straight to `main` without one, and two PRs as now. Saved to memory
   (`project-workflow-optimisation`).
+- **This handoff** was reviewed by `copilot-surrogate` (Fable, ~94k): 1 MATERIAL (step 5(b) still said B
+  needs Decision 1's three rewrites), 1 LOW and 1 nit, all folded. A fresh confirm verifier (~63k) CONFIRMED
+  all three and reached nit-floor; its two new nits were folded and read by the coordinator.
 - **Merged:** nothing. **Uploaded:** no.
 
 **Handoff facts:**
@@ -273,10 +276,11 @@ Opus 5.5 at `high`, permission mode auto.
     | Start (late, step 1)    | 42%    | 30%    | 17%          | 76k     |
     | After the loading reads | 42%    | 30%    | 17%          | 129k    |
     | During the review       | 47%    | 31%    | 17%          | 143k    |
-    | #108 opened, handoff    | 49%    | 31%    | 17%          | 150k    |
+    | #108 opened             | 49%    | 31%    | 17%          | 150k    |
+    | Handoff reviewed        | 7%     | 33%    | 19%          | 170k    |
 
-- **Plan usage:** the 5-hour window resets at 04:00Z on 6 October, and the weekly windows at 15:00Z on
-  9 October.
+- **Plan usage:** the 5-hour window reset at 04:00Z on 6 October during the handoff's review; the next
+  resets at 09:00Z. The weekly windows reset at 15:00Z on 9 October.
 - **Warning signs:** one, the same as Session 22's. Step 1's `get_usage` came after `docs/SESSION-HANDOFF.md`
   and the loading block had been read. The reviewer had its own detached worktree.
 - **Clarifying question:** one, but a planned one: step 5(b) said to ask Alex about B1 first.
