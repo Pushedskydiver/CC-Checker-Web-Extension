@@ -535,67 +535,6 @@ present and the only worktree was the main checkout. The pre-push suite was gree
 3. **A docs page fetched whole (`managed-mcp`) was the session's largest single read.** Ask a fetch for
    quotes only, or delegate it.
 
-## Session 19 — 2 October 2026 (CC-005: Session 13 archived as #95, PR F opened as #96, workflow research)
-
-**Two PRs are open at nit-floor, the Session 13 archive (#95) and PR F (#96), and a workflow-optimisation
-research file is recorded on this branch with three decisions by Alex.** Nothing merged this session.
-
-**Setup:** #93 (`9a8c986`) and #94 (`bf9f8d1`) had merged and no PRs were open. The remote branches were `main`,
-`feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4`, and the only worktree was the main checkout. The
-pre-push suite was green (36 Vitest, 21 Playwright). `get_session self` reported Opus 5.5 at `high`, permission mode
-auto.
-
-**Done:**
-
-- **[#95](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/95)**, `docs/CC-005-archive-session-13`,
-  `eb4683f` + fold `29d8376`: Session 13 archived. `copilot-surrogate` (Fable) round one made 26 claims and found 1
-  MATERIAL (the archive was dated 29 September; it is 2 October) and 3 LOW. The fold is `29d8376`. The confirm round
-  (a fresh Fable surrogate) CONFIRMED all four: nit-floor. The band was 5 entries and 21,997 bytes at `29d8376`.
-- **[#96](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/96)**, `docs/CC-005-testing-sections`,
-  `dc5b7ce` + `1706110` + `cab8d65`: PR F. The `implementer` (Sonnet, 37k tokens) built it from a coordinator brief,
-  and the coordinator re-checked every figure. `docs/TESTING.md` goes from 117,068 to 34,642 bytes; the headings diff
-  clean against `--list`, and 21 of 21 cells are equal once whitespace is collapsed. Surrogate round one (Fable, ~40
-  claims) found 2 LOW (a stale "table above" and "row below"), folded in `1706110`; `cab8d65` rewrapped the two
-  paragraphs at 100. The fold was prose-only and LOW, so the coordinator's read stood in for a confirm round
-  (decision (r)). #96 also repoints decision (m)'s `TESTING.md:338` cite (step 7) to §Not ported from the source documents; step 7
-  keeps the line number until #96 merges. #96 is independent of #95, and either can merge first.
-- **Workflow research**, `docs/CC-005-close-session-19`, `51ab256` (this branch):
-  `docs/research/02-workflow-optimisation.md`, with verbatim subagent reports in `docs/research/02-sources/`
-  (prettierignored). It ranks nine changes, A to I. Alex's decisions: B goes straight to `main` (the rules must change
-  first, so this handoff is still a PR); a new ticket comes before PR G, key not yet given; F (`deniedMcpServers` in
-  `.claude/settings.json`) is approved, measured with `/context` before and after in a fresh session. `spec-grill`
-  has not run on it.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, crossed at ~166k after #95 and #96 opened. The handoff was written at ~185k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                 | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------- | ------ | ------ | ------------ | ------- |
-    | Start                  | 23%    | 3%     | 0%           | 81k     |
-    | After first dispatches | 28%    | 4%     | 0%           | 117k    |
-    | After both PRs opened  | 39%    | 6%     | 2%           | 166k    |
-    | Handoff                | 40%    | 6%     | 2%           | 185k    |
-
-- **Plan usage:** the 5-hour window resets at 02:50Z on 3 October. The weekly windows reset at 15:00Z on 9 October.
-- **Warning signs:** none. Every reviewer had its own detached worktree.
-- **Clarifying question:** none that Session 18's entry (`git show eb6099a:PROGRESS.md`) should have answered.
-
-**Major novel patterns Session 19:**
-
-1. **The coordinator orchestrated and still reached 166k.** It dispatched 9 subagents (2 surrogate round ones, 1
-   confirm, 1 implementer, 4 research, 1 fact-check), capped their replies and kept full reports in files. About 81k
-   was tools and memory before any work began, reviewer replies ran 400 to 900 words, and small folds were done
-   inline. Research items C, E and F aim at those three.
-2. **A built-in agent dispatched without `model` ran on its own default and was wrong on 4 of 12 claims.** A Sonnet
-   re-check replaced it. Every dispatch now passes `model`, Sonnet 5.5 at minimum (Alex; saved to memory).
-3. **Prettier pads tables in copied reports (52,814 to 83,443 bytes), the same defect PR F removed.** Verbatim
-   records go in `.prettierignore`.
-4. **The surrogate's MATERIAL on #95 was a false fact the coordinator wrote in a state line.** That is evidence for a
-   pre-push review of handoff lines, not for a PR as the vehicle (Decision B).
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
@@ -664,7 +603,7 @@ auto.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 24. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, to Session 24, and again to Session 25. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, to Session 24, and again to Session 25. Sessions 14 to 19's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -686,7 +625,7 @@ auto.
     - Opus 5.5 at `high`. Check `get_session self`.
     - Reviewers on Fable 5.1 at `high`, at most two at a time. Since #81 merged, the agent files pin both,
       and the per-call `model` is only an override (trigger 6's `opus` fallback). Pass `model` on every dispatch,
-      built-in agents included: Sonnet 5.5 minimum (Alex, Session 19 pattern 2).
+      built-in agents included: Sonnet 5.5 minimum (Alex, Session 19 pattern 2, in `git show 610ff54:PROGRESS.md`).
     - Lines, checkpoints and budget: `docs/SESSION-HANDOFF.md` §1, §2 and §7.
 7. Decision branches carried in. **New in Session 14: (u)** `copilot-surrogate.md` says a superseded
    sentence in a `docs/*.md` rule document is rewritten, not struck, and reports struck text there. But
@@ -761,5 +700,5 @@ auto.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
