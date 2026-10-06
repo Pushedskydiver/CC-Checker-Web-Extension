@@ -270,7 +270,7 @@ Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permis
   first: B2(c)'s size threshold for doc folds going to `implementer` (it reverses research 01 Decision 2),
   M6's CI commit-subject check (only as a stated exception to §Process-rule promotion), L1's
   `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask), and A with
-  H (answers on (f), (g), (h), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
+  H (answers on (f), (g), (h), (j) (held open per L4), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
   inventory, C, B alone, A with H, E's archive leg, G, D, I. Not yet read by the coordinator beyond that reply.
 - **Merged:** nothing. **Uploaded:** no.
 
@@ -284,6 +284,7 @@ Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permis
     | Start (late, step 1)    | 8%     | 33%    | 19%          | 76k     |
     | After the loading reads | 9%     | 33%    | 19%          | 122k    |
     | #110 opened             | 17%    | 34%    | 20%          | 152k    |
+    | Handoff reviewed        | 24%    | 35%    | 21%          | 177k    |
 
 - **Plan usage:** the 5-hour window resets at 09:00Z on 6 October, and the weekly windows at 15:00Z on
   9 October.
@@ -297,7 +298,8 @@ Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permis
    first, before reading anything" sits inside the block the session has to read to learn it, and the paste
    prompt (`docs/SESSION-HANDOFF.md` §3) tells it to read that doc too. The fix is to put the call in the paste
    prompt itself; that is a `docs/SESSION-HANDOFF.md` change, so it belongs with research 02's item A, not here.
-   The late reading costs little (75,933 against 75,131 for Session 21's early one).
+   The late reading cost about 800 tokens in Sessions 23
+   and 24 (75,933 against 75,131 for Session 21's early one), and about 8k in Session 22.
 2. **A verifier in the background turned the fold's slowest step into a file.** Dispatched at 122k, it ran
    beside the archive unit and cost the coordinator only its capped reply, so the next session folds from
    evidence instead of re-checking 25 findings. The same move as Session 22 pattern 1, applied to the digest.
@@ -645,7 +647,8 @@ auto.
       straight to `main`).~~ B1 checked and answered in Session 23: Alex chose one PR per session (archive
       and handoff together), keeping CI and the surrogate review. Record it as Decision 5, superseding
       Decision 1, and rewrite row B and its rule list, checking B1's sibling list and L9 against Decision 5 (most dissolve). Then a further round per `docs/DEVELOPMENT.md` §Verification rounds. After that,
-      items C and E as the first PRs, then A with B, unless the folds reorder them. ~~B needs `AGENTS.md`
+      items C and E as the first PRs, then A with B, unless the folds reorder them (the verification report proposes a different order; the Session
+      24 entry has it). ~~B needs `AGENTS.md`
       §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).~~
       Superseded in Session 23 by Decision 5 (one PR per session): no direct push, so the rewrite is
       §6's "An archive is its own small PR" and any sibling that says the same; the research 02 fold lists which. The
@@ -660,7 +663,7 @@ auto.
       fold against digest context for each item.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
-      facts of Sessions 14 to 23. Due at Session 20, which stopped at the soft line first; carried to
+      facts of Sessions 14 to 24. Due at Session 20, which stopped at the soft line first; carried to
       Session 22, to Session 23, to Session 24, and again to Session 25. Sessions 14 to 18's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
