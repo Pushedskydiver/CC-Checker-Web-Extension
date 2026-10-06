@@ -219,7 +219,7 @@ inside the cross-origin panel, and Chrome does not block it — observed live 12
 
 **Sessions 14 and 15 are archived in #104, at nit-floor after a review and a confirm round; the band is 5
 entries and 20,411 bytes before this entry.** Alex merged Dependabot #100 after the classifier refused
-Claude's delegated merge. Nothing else merged.
+Claude's delegated merge, and #101 to #103 as this handoff was written.
 
 **Setup:** #98 (`54fb4ba`) and #99 (`9d242b0`) had merged on 3 October, both as merge commits. Dependabot
 #100 was open and green, and the tree was clean. The remote branches were the three standing ones plus #100's,
@@ -236,14 +236,16 @@ Opus 5.5 at `high`, permission mode auto.
   3 LOW, 2 nits. Everything was folded except one LOW, which step 5(d) owns. The confirm round (Fable, ~37k)
   returned 5 CONFIRMED and 0 DISPROVED, and agreed with the decline: nit-floor. Its two new points are recorded in #104's body.
 - **Dependabot:** `gh pr merge 100 --merge --admin --delete-branch` was refused ("Merge Without Review"), and
-  Alex merged #100 as `3226826`. #101, #102 and #103 opened the same minute, all green, and are unmerged.
+  Alex merged #100 as `3226826`. #101, #102 and #103 opened at 03:13Z, all green, and Alex merged them
+  between 03:22Z and 03:23Z (`3dad926`, `f684cf4`, `6a4811a`).
 - **Alex's new ask:** research whether the AI-facing docs are as lean as they can be for token use. Timing
   was left to the coordinator: it is loading step 5(b).
-- **Merged:** #100 (Alex). **Uploaded:** no.
+- **Merged:** #100, #101, #102 and #103 (Alex). **Uploaded:** no.
 
 **Handoff facts:**
 
-- **Trigger:** 1. #104 was finished at ~150k, above 130k, so nothing new was started.
+- **Trigger:** 1, and 2 with it: #104 was finished at 155k, above 130k and past the 150k soft line, so
+  nothing new was started.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment             | 5-hour | Weekly | Fable weekly | Context |
@@ -265,8 +267,9 @@ Opus 5.5 at `high`, permission mode auto.
    saved to memory.
 2. **Decision (j) now has two refusals.** The classifier refused a delegated Dependabot merge again (#61's
    was the first; #69 and #55 passed). The written delegation is not reliably executable from a session.
-   Alex either adds a permission rule in his own settings or keeps merging Dependabot himself.
-3. **One small archive unit took the session from 75k to 150k.** About 25k was the full `PROGRESS.md` read and
+   The permission rule Alex added in Session 7 evidently did not persist. He either adds one that does, in
+   his own settings, or keeps merging Dependabot himself.
+3. **One small archive unit took the session from 75k to 155k.** About 25k was the full `PROGRESS.md` read and
    about 5k research 02, and two review digests and the folds made up the rest. That is the evidence for
    research items A and E, and for Alex's token-inventory ask.
 
@@ -574,17 +577,17 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
 2. **Archive check, first, before anything else.** With Session 21's entry the band holds 6 entries (Sessions
-   16 to 21) and 24,032 bytes, measured after the last commit that touches it. Archive Session 16 in its own
+   16 to 21) and 24,252 bytes, measured after the last commit that touches it. Archive Session 16 in its own
    small PR (cites: `git grep -n "Session 16"`), unless item B's rules have landed (then straight to `main`).
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
     - Expect #104 (the Sessions 14 and 15 archive) and this handoff, stacked on it, open unless Alex has
-      merged them; #104 first, since this branch is based on it. Dependabot #101, #102 and #103 are Alex's to
-      merge while decision (j) holds. Say which merged in the entry, and rewrite every hedge here that the
+      merged them; #104 first, since this branch is based on it. Dependabot #100 to #103 all merged in
+      Session 21 (Alex). Say which merged in the entry, and rewrite every hedge here that the
       merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-006-archive-sessions-14-15`, `docs/CC-006-close-session-21` and the three
-      Dependabot branches have not merged.
+      plus whichever of `docs/CC-006-archive-sessions-14-15` and `docs/CC-006-close-session-21` have not
+      merged.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -660,7 +663,8 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
    itself clear the runtime's own safety gate. Alex added a permission rule and the retry succeeded.
    Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
-   another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
+   another way. Session 9's #69 merged first time with the same command; Session 21's #100 was refused again
+   (6 October 2026), and Alex merged it; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
    #59, #60, #63, #64, #66 and #67 — handoffs and archives), every one its own small PR, and all but #51
    (written while #50 was still open, as Session 6's entry recorded, now in
