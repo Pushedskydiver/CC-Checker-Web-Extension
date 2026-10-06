@@ -3,7 +3,12 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 20)
+## Next workstreams (after Session 21)
+
+Updated 6 October 2026, end of Session 21: **the Sessions 14 and 15 archive is open as
+[#104](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/104), reviewed and confirmed at
+nit-floor.** Next: archive Session 16, `spec-grill` on research 02, then the AI-docs token inventory Alex asked
+for (loading step 5(b)), then items C and E.
 
 Updated 6 October 2026, Session 21: **#98 (`54fb4ba`) and the Session 20 handoff #99 (`9d242b0`) both
 merged on 3 October, so the paragraph below is history.** Sessions 14 and 15 are archived in their own PR.
@@ -209,6 +214,64 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 21 — 6 October 2026 (CC-006: Sessions 14 and 15 archived as #104)
+
+**Sessions 14 and 15 are archived in #104, at nit-floor after a review and a confirm round; the band is 5
+entries and 20,411 bytes before this entry.** Alex merged Dependabot #100 after the classifier refused
+Claude's delegated merge, and #101 to #103 as this handoff was written.
+
+**Setup:** #98 (`54fb4ba`) and #99 (`9d242b0`) had merged on 3 October, both as merge commits. Dependabot
+#100 was open and green, and the tree was clean. The remote branches were the three standing ones plus #100's,
+and the only worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Playwright) on
+`9d242b0`, and again on the archive branch after `npm ci` for #100's lockfile. `get_session self` reported
+Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **[#104](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/104)**,
+  `docs/CC-006-archive-sessions-14-15`, `6e38e3b` + fold `9c6d03b`: Sessions 14 and 15 become rows 14 and 15,
+  five cites point at `git show 9d242b0:PROGRESS.md`, the overtaken state lines are rewritten, and Session 20
+  pattern 2 is struck. `copilot-surrogate` (Fable, ~90k): 1 MATERIAL (step 5(a) still said #98 was open),
+  3 LOW, 2 nits. Everything was folded except one LOW, which step 5(d) owns. The confirm round (Fable, ~37k)
+  returned 5 CONFIRMED and 0 DISPROVED, and agreed with the decline: nit-floor. Its two new points are recorded in #104's body.
+- **Dependabot:** `gh pr merge 100 --merge --admin --delete-branch` was refused ("Merge Without Review"), and
+  Alex merged #100 as `3226826`. #101, #102 and #103 opened at 03:13Z, all green, and Alex merged them
+  at 03:22Z (`3dad926`, `f684cf4`, `6a4811a`).
+- **Alex's new ask:** research whether the AI-facing docs are as lean as they can be for token use. Timing
+  was left to the coordinator: it is loading step 5(b).
+- **Merged:** #100, #101, #102 and #103 (Alex). **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1, and 2 with it: #104 was finished at 155k, above 130k and past the 150k soft line, so
+  nothing new was started.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment             | 5-hour | Weekly | Fable weekly | Context |
+    | ------------------ | ------ | ------ | ------------ | ------- |
+    | Start              | 3%     | 25%    | 10%          | 75k     |
+    | Before the confirm | 10%    | 26%    | 11%          | 144k    |
+    | #104 opened        | 13%    | 27%    | 11%          | 155k    |
+
+- **Plan usage:** the 5-hour window resets at 04:00Z on 6 October, and the weekly windows at 15:00Z on
+  9 October.
+- **Warning signs:** none. Each reviewer had its own detached worktree.
+- **Clarifying question:** one, and the previous entry caused it. Step 1 told the coordinator to ask Alex to
+  run `/context`, and Alex said `get_usage` already gives it.
+
+**Major novel patterns Session 21:**
+
+1. **A false premise in a loading step costs a round trip with Alex.** Session 20 pattern 2 said the
+   coordinator could not read `/context`; `get_usage`'s `context` field is that figure. Struck in #104, and
+   saved to memory.
+2. **Decision (j) now has two refusals.** The classifier refused a delegated Dependabot merge again (#61's
+   was the first; #69 and #55 passed). The written delegation is not reliably executable from a session.
+   The permission rule Alex added in Session 7 evidently did not persist. He either adds one that does, in
+   his own settings, or keeps merging Dependabot himself.
+3. **One small archive unit took the session from 75k to 155k.** About 25k was the full `PROGRESS.md` read and
+   about 5k research 02, and two review digests and the folds made up the rest. That is the evidence for
+   research items A and E, and for Alex's token-inventory ask.
 
 ## Session 20 — 3 October 2026 (CC-006: item F checked, re-scoped and opened as #98)
 
@@ -513,17 +576,18 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
       Decisions, and the "Reviews of PR H" fold, which is the authority for row G.
     - The `CC-004` plan below is paused until all eight `CC-005` PRs merge (Alex).
-2. **Archive check, first, before anything else.** Sessions 14 and 15 are archived (`docs/CC-006-archive-sessions-14-15`); the band holds
-   5 entries (Sessions 16 to 20) and 20,411 bytes. Session 21's entry makes six, so Session 16 is next, in its
-   own small PR unless item B's rules have landed (then straight to `main`). Measure after the last commit
-   that touches the band.
+2. **Archive check, first, before anything else.** With Session 21's entry the band holds 6 entries (Sessions
+   16 to 21) and 24,236 bytes, measured after the last commit that touches it. Archive Session 16 in its own
+   small PR (cites: `git grep -n "Session 16"`), unless item B's rules have landed (then straight to `main`).
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - #98 (`54fb4ba`) and the Session 20 handoff #99 (`9d242b0`) merged on 3 October 2026. Expect the
-      Sessions 14 and 15 archive open unless Alex has merged it. Dependabot #100 merged as `3226826`;
-      #101, #102 and #103 opened on 6 October, green, and are Alex's to merge while decision (j) holds.
+    - Expect #104 (the Sessions 14 and 15 archive) and this handoff, stacked on it, open unless Alex has
+      merged them; #104 first, since this branch is based on it. Dependabot #100 to #103 all merged in
+      Session 21 (Alex). Say which merged in the entry, and rewrite every hedge here that the
+      merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus `docs/CC-006-archive-sessions-14-15` until it merges.
+      plus whichever of `docs/CC-006-archive-sessions-14-15` and `docs/CC-006-close-session-21` have not
+      merged.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -539,10 +603,17 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
       `AGENTS.md` §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).
       The key is `CC-006` (Alex, Session 20).
       Research items D, G, H and I follow (item G is not PR G).
+    - **(b) continued: the AI-docs token inventory** (Alex, Session 21), after `spec-grill` and before C and E,
+      so that it measures what the grill leaves of A, D and G. Ask: are the AI-facing docs as lean as they can
+      be? Research 02 has the doc-side audit (`02-sources/self-audit.md`); what it lacks is a measured
+      inventory. List what loads at every start (`AGENTS.md`, `CLAUDE.md`, memory, the loading reads), what
+      each dispatch loads (each agent brief plus its mandatory reading), and what loads on demand. Count bytes
+      per file at HEAD, not `claude -p` token deltas (memory). Delegate the counting, and give A, D and G their
+      "before" figures.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
-      facts of Sessions 14 to 20. Due at Session 20, which stopped at the soft line first; carried to
-      Session 21. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
+      facts of Sessions 14 to 21. Due at Session 20, which stopped at the soft line first; carried to
+      Session 22. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -590,9 +661,10 @@ open PRs, the three standing remote branches, no worktrees. Pre-push suite green
    `gh pr merge 61 --merge --admin --delete-branch` on first attempt ("Merge Without Review") despite
    the standing delegation in `docs/GIT.md` §Who merges — a written, dated delegation does not by
    itself clear the runtime's own safety gate. Alex added a permission rule and the retry succeeded.
-   Whether that rule persists into this session is unknown; if a delegated Dependabot merge is
+   ~~Whether that rule persists into this session is unknown;~~ It did not persist: #100 was refused in Session 21; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
-   another way. Session 9's #69 merged first time with the same command; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
+   another way. Session 9's #69 merged first time with the same command; Session 21's #100 was refused again
+   (6 October 2026), and Alex merged it; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
    #59, #60, #63, #64, #66 and #67 — handoffs and archives), every one its own small PR, and all but #51
    (written while #50 was still open, as Session 6's entry recorded, now in
