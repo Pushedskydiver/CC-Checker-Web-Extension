@@ -618,11 +618,11 @@ was green (36 unit, 21 e2e). `get_session self` reported Opus 5.5 at `high`.
       each finding before folding it. ~~Ask Alex about B1 first, since it bears on his Decision 1 (item B
       straight to `main`).~~ B1 checked and answered in Session 23: Alex chose one PR per session (archive
       and handoff together), keeping CI and the surrogate review. Record it as Decision 5, superseding
-      Decision 1, and rewrite row B and its rule list from B1's sibling list and L9. Then a further round per `docs/DEVELOPMENT.md` §Verification rounds. After that,
+      Decision 1, and rewrite row B and its rule list, checking B1's sibling list and L9 against Decision 5 (most dissolve). Then a further round per `docs/DEVELOPMENT.md` §Verification rounds. After that,
       items C and E as the first PRs, then A with B, unless the folds reorder them. ~~B needs `AGENTS.md`
       §PR workflow, `docs/GIT.md` and `docs/SESSION-HANDOFF.md` §6 rewritten first (Alex's Decision 1).~~
       Superseded in Session 23 by Decision 5 (one PR per session): no direct push, so the rewrite is
-      §6's "An archive is its own small PR" and any sibling that says the same; the fold lists which. The
+      §6's "An archive is its own small PR" and any sibling that says the same; the research 02 fold lists which. The
       key is `CC-006` (Alex, Session 20). Research items D, G, H and I follow (item G is not PR G).
     - **(b) continued: the AI-docs token inventory** (Alex, Session 21), after `spec-grill` and before C and E,
       so that it measures what the grill leaves of A, D and G. Ask: are the AI-facing docs as lean as they can
