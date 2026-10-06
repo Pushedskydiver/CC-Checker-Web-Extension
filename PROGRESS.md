@@ -489,7 +489,7 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
   2 October.
 - **Warning signs:** one. `d5f3565` (one line) was pushed after only a Prettier check. The suite ran straight
   after and was green (36, 21), but the rule says before. Every reviewer had its own detached worktree.
-- **Clarifying question:** none that Session 16's entry should have answered. The two (r) scope questions were new.
+- **Clarifying question:** none that Session 16's entry (`git show 8234f50:PROGRESS.md`) should have answered. The two (r) scope questions were new.
 
 **Major novel patterns Session 17:**
 
@@ -551,7 +551,7 @@ were present and there were no worktrees. #89's stale lines were corrected in #9
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff
       facts of Sessions 14 to 21. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22. Sessions 14 and 15's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22. Sessions 14 to 16's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
