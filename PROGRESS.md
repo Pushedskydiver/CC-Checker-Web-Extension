@@ -413,7 +413,7 @@ Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permis
   `eb6099a` and a proposed fold per finding, Decision 5's rewrite list, and an order. PARTLY: M1, M5 and M8. OVERTAKEN: B1 and L9. Five folds need Alex
   first: B2(c)'s size threshold for doc folds going to `implementer` (it reverses research 01 Decision 2),
   M6's CI commit-subject check (only as a stated exception to §Process-rule promotion), L1's
-  `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask), and A with
+  `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask, Session 21 pattern 2 in `git show ae49392:PROGRESS.md`), and A with
   H (answers on (f), (g), (h), (j) (held open per L4), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
   inventory, C, B alone, A with H, E's archive leg, G, D, I. Not yet read by the coordinator beyond that reply.
 - **Merged:** nothing. **Uploaded:** no.
@@ -570,68 +570,10 @@ worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Play
    evidence for a PR per session", and the grill's B1 offers some. Re-deciding is Alex's call; it is not
    folded here.
 
-## Session 21 — 6 October 2026 (CC-006: Sessions 14 and 15 archived as #104)
-
-**Sessions 14 and 15 are archived in #104, at nit-floor after a review and a confirm round; the band is 5
-entries and 20,411 bytes before this entry.** Alex merged Dependabot #100 after the classifier refused
-Claude's delegated merge, and #101 to #103 as this handoff was written.
-
-**Setup:** #98 (`54fb4ba`) and #99 (`9d242b0`) had merged on 3 October, both as merge commits. Dependabot
-#100 was open and green, and the tree was clean. The remote branches were the three standing ones plus #100's,
-and the only worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Playwright) on
-`9d242b0`, and again on the archive branch after `npm ci` for #100's lockfile. `get_session self` reported
-Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#104](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/104)**,
-  `docs/CC-006-archive-sessions-14-15`, `6e38e3b` + fold `9c6d03b`: Sessions 14 and 15 become rows 14 and 15,
-  five cites point at `git show 9d242b0:PROGRESS.md`, the overtaken state lines are rewritten, and Session 20
-  pattern 2 (`git show 67fde5d:PROGRESS.md`) is struck. `copilot-surrogate` (Fable, ~90k): 1 MATERIAL (step 5(a) still said #98 was open),
-  3 LOW, 2 nits. Everything was folded except one LOW, which step 5(d) owns. The confirm round (Fable, ~37k)
-  returned 5 CONFIRMED and 0 DISPROVED, and agreed with the decline: nit-floor. Its two new points are recorded in #104's body.
-- **Dependabot:** `gh pr merge 100 --merge --admin --delete-branch` was refused ("Merge Without Review"), and
-  Alex merged #100 as `3226826`. #101, #102 and #103 opened at 03:13Z, all green, and Alex merged them
-  at 03:22Z (`3dad926`, `f684cf4`, `6a4811a`).
-- **Alex's new ask:** research whether the AI-facing docs are as lean as they can be for token use. Timing
-  was left to the coordinator: it is loading step 5(b).
-- **Merged:** #100, #101, #102 and #103 (Alex). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1, and 2 with it: #104 was finished at 155k, above 130k and past the 150k soft line, so
-  nothing new was started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment             | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------ | ------ | ------ | ------------ | ------- |
-    | Start              | 3%     | 25%    | 10%          | 75k     |
-    | Before the confirm | 10%    | 26%    | 11%          | 144k    |
-    | #104 opened        | 13%    | 27%    | 11%          | 155k    |
-
-- **Plan usage:** the 5-hour window resets at 04:00Z on 6 October, and the weekly windows at 15:00Z on
-  9 October.
-- **Warning signs:** none. Each reviewer had its own detached worktree.
-- **Clarifying question:** one, and the previous entry caused it. Step 1 told the coordinator to ask Alex to
-  run `/context`, and Alex said `get_usage` already gives it.
-
-**Major novel patterns Session 21:**
-
-1. **A false premise in a loading step costs a round trip with Alex.** Session 20 pattern 2 (`git show 67fde5d:PROGRESS.md`) said the
-   coordinator could not read `/context`; `get_usage`'s `context` field is that figure. Struck in #104, and
-   saved to memory.
-2. **Decision (j) now has two refusals.** The classifier refused a delegated Dependabot merge again (#61's
-   was the first; #69 and #55 passed). The written delegation is not reliably executable from a session.
-   The permission rule Alex added in Session 7 evidently did not persist. He either adds one that does, in
-   his own settings, or keeps merging Dependabot himself.
-3. **One small archive unit took the session from 75k to 155k.** About 25k was the full `PROGRESS.md` read and
-   about 5k research 02, and two review digests and the folds made up the rest. That is the evidence for
-   research items A and E, and for Alex's token-inventory ask.
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
-   is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, correcting Session 20
+   is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, in `git show ae49392:PROGRESS.md`, correcting Session 20
    pattern 2, in `git show 67fde5d:PROGRESS.md`). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
    (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855), Session 25 80,518 (19,855) and Session 26 81,299 (19,846), all five
    taken late, after `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24
@@ -686,7 +628,7 @@ Opus 5.5 at `high`, permission mode auto.
       before A starts), E's archive leg, item G, D, I. The key is `CC-006` (Alex, Session 20). Item G is not PR G.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 26. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, and again to Session 27. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, and again to Session 27. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`, and Session 21's in `git show ae49392:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -785,5 +727,5 @@ Opus 5.5 at `high`, permission mode auto.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
