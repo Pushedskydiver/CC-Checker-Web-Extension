@@ -5,8 +5,10 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 29)
 
-Updated 7 October 2026, end of Session 29: **the Session 23 archive is open as
-[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121), at nit-floor, and Alex moved the
+Updated 7 October 2026, end of Session 29: **the Session 23 archive,
+[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121), and the first Session 29 handoff,
+[#122](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/122), merged at 09:05Z as `3855b83` and
+`52b44ea`, merge commits (Alex); then Alex moved the
 next session to product work: CC-004 row 11, with research 02 and PR G parked until one of them costs a session
 real work.** He asked what the last sessions had done; since 29 September, 25 of 34 merges to `main` were
 handoffs or archives, and nothing in `src/`, `public/` or `test/` has changed since #72 (28 September). Next: archive Session 24 inside
@@ -293,10 +295,11 @@ pull requests.
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
-## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, C's brief settled)
+## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, product work next)
 
-**The Session 23 archive, #121, reached nit-floor with no finding above a nit; item C was not started, because the
-loading reads plus the archive unit crossed the soft line.** Nothing merged in-session.
+**Alex moved the next session to product work, CC-004 row 11, and parked the workflow work.** The Session 23
+archive, #121, reached nit-floor with no finding above a nit, and Alex merged it and the first handoff, #122, at
+09:05Z; this entry's last edits ride in a follow-up PR.
 
 **Setup:** the Session 28 handoff #120 had merged as `ddaab4e` at 08:51Z on 7 October, a merge commit (Alex), so
 `main`'s loading block was current. No PRs were open, the tree was clean, the remote branches were the three
@@ -317,8 +320,11 @@ permission mode auto.
   and research 02's items, `CC-005` PR G, the handoff-lines review and the model benchmark parked with re-entry
   on pain (loading step 6). Only Decision 5 stays live: the archive goes inside the handoff PR. The loading block
   was rewritten for row 11; the workflow block it replaced, with C's brief as the coordinator had settled it, is
-  `git show 2539cfe:PROGRESS.md`. A `copilot-surrogate` run on that earlier commit was stopped unread.
-- **Merged:** nothing in-session. **Uploaded:** no.
+  `git show 2539cfe:PROGRESS.md`. Two `copilot-surrogate` runs on #122 were stopped unread, one when Alex
+  redirected the session and one when #122 turned out to have merged.
+- **Merged:** #121 as `3855b83` and #122 as `52b44ea`, both at 09:05Z, merge commits (Alex). #122 merged with the
+  workflow block (`2539cfe`); the row 11 block, pushed to #122's branch after the merge, was moved to a follow-up
+  PR. **Uploaded:** no.
 
 **Handoff facts:**
 
@@ -356,6 +362,9 @@ permission mode auto.
    one workflow step each, with 25 of 34 merges since 29 September being handoffs or archives. The workflow work
    meant to fix that was queued behind itself. Alex broke it by parking the work; the lesson is to count shipped
    product changes in the entry, not only the PRs.
+4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
+   of their opening, and a commit pushed afterwards landed on a branch nobody would merge. Session 26's #113 merged
+   mid-review the same way.
 
 ## Session 28 — 7 October 2026 (CC-006: Session 22 archived as #119, Alex answers the inventory's questions)
 
@@ -677,7 +686,8 @@ Rewritten in Session 29 for product work (Alex: "rewrite the loading instruction
 workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
 
 1. **Call `get_usage` first**, and record `context.tokensUsed` and the MCP tools category. **Then run `git fetch`
-   and `gh pr list`:** if this handoff (#122) is still open, read `PROGRESS.md` from its branch, not `main`.
+   and `gh pr list`:** if this handoff (`docs/CC-006-product-next`) is still open, read `PROGRESS.md` from its
+   branch, not `main`.
    Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph, and §The approved
    plan (CC-004). Not research 01 or 02: both are parked (step 6). Take a second `get_usage` after the reads.
 2. **Archive, inside the session's handoff PR.** With Session 29's entry the band holds 6 entries (Sessions 24 to
@@ -689,10 +699,10 @@ workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRES
    stops early loses nothing.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect two open PRs unless Alex has merged them: #121 (the Session 23 archive) and this handoff, #122,
-      stacked on it. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - Expect one open PR unless Alex has merged it: this handoff, `docs/CC-006-product-next`. #121 and #122
+      merged in Session 29. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      #121's and #122's if unmerged. `git worktree list`: only the main checkout.
+      this handoff's if unmerged. `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
