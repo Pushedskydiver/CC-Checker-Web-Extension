@@ -3,7 +3,16 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 27)
+## Next workstreams (after Session 28)
+
+Updated 7 October 2026, end of Session 28: **the Session 22 archive is open as [#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119), at nit-floor,
+and Alex answered the inventory's questions: Decision 6's threshold is 7 or more hunks or 33 or more changed lines,
+and C keeps its place, re-scoped to one contract in the briefs rather than a token saving, with the inventory's
+corrections to research 02 folded into C's PR.** Next: archive Session 23, then C.
+
+Updated 7 October 2026, Session 28: **#117 (`55f9230`) and the Session 27 handoff #118 (`f5eb1d2`) both merged at
+08:03Z on 7 October, as merge commits (Alex), so the paragraph below is history.** Session 22 is archived in its own
+PR.
 
 Updated 7 October 2026, end of Session 27: **the Session 21 archive is open as
 [#117](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/117), at nit-floor, and the token inventory
@@ -273,6 +282,59 @@ pull requests.
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 28 — 7 October 2026 (CC-006: Session 22 archived as #119, Alex answers the inventory's questions)
+
+**Alex set Decision 6's threshold at 7 or more hunks or 33 or more changed lines, kept item C next but re-scoped
+to one contract in the briefs, and put the inventory's corrections to research 02 in C's PR.** The Session 22
+archive is open as #119, at nit-floor. Nothing merged in-session.
+
+**Setup:** #117 (`55f9230`) and the Session 27 handoff #118 (`f5eb1d2`) had merged at 08:03Z on 7 October, as
+merge commits (Alex), so `main`'s loading block was current. No PRs were open, the tree was clean, the remote
+branches were the three standing ones, and the only worktree was the main checkout. The band was 6 entries and
+27,902 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `f5eb1d2`. `get_session self` reported
+Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **[#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119)**,
+  `docs/CC-006-archive-session-22`, `6ea88a6`: Session 22 becomes row 22, and four cites of its content point at
+  `git show f5eb1d2:PROGRESS.md`. `copilot-surrogate` (Fable, ~82k), in a detached worktree in the scratchpad:
+  39 claims, 1 falsified, nit-floor with 1 LOW and 1 nit. The LOW was the PR body's "fifth incident" (Session 23
+  pattern 2 had counted the fifth); folded in the body, no file change. The nit was declined (#119's body says
+  why). The band is 5 entries and 23,963 bytes before this entry; the commit message's 23,960 predates a
+  three-byte fix, as the body says. The reviewer followed item C's contract again.
+- **Alex's answers** (loading step 5(b)): the three above, put to him while the reviewer ran; recorded in memory
+  `project-workflow-optimisation.md`, and in research 02 by C's PR.
+- **Merged:** nothing in-session. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1. The archive unit finished at 146k, above 130k; C was not started.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                       | 5-hour | Weekly | Fable weekly | Context |
+    | ---------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (late, step 1)         | 54%    | 45%    | 32%          | 77k     |
+    | After the loading reads      | 54%    | 45%    | 32%          | 112k    |
+    | Reviewer running, Alex asked | 57%    | 46%    | 32%          | 139k    |
+    | Archive folded, handoff      | 59%    | 46%    | 33%          | 146k    |
+
+- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
+- **Warning signs:** one, the same as Sessions 22 to 27: step 1's `get_usage` came after
+  `docs/SESSION-HANDOFF.md` and part of the loading block had been read. The reviewer had its own detached
+  worktree outside the repo.
+- **Clarifying question:** none beyond the three step 5(b) planned.
+
+**Major novel patterns Session 28:**
+
+1. **The loading reads plus one archive unit reach trigger 1 on their own.** 77k to 112k for the reads, then
+   112k to 146k for the archive with one reviewer, as Session 27 went 119k to 142k. While each archive is its own
+   unit, a session does the archive and one question round and hands off; item B (the archive inside the session
+   PR) and item A (smaller reads) are what change that.
+2. **Measure the band in the same command as the commit.** A three-byte wording fix after the measurement made
+   the commit message's figure stale, the sixth incident of Session 18 pattern 1 (in `git show eb6099a:PROGRESS.md`).
+   Running the `awk` inside the commit command, after the last edit, closes it.
 
 ## Session 27 — 7 October 2026 (CC-006: Session 21 archived as #117, token inventory run)
 
@@ -599,10 +661,10 @@ Opus 5.5 at `high`, permission mode auto.
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
    is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, in `git show ae49392:PROGRESS.md`, correcting Session 20
    pattern 2, in `git show 67fde5d:PROGRESS.md`). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
-   (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855), Session 25 80,518 (19,855), Session 26 81,299 (19,846) and Session 27 81,148 (19,846), all six
+   (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855), Session 25 80,518 (19,855), Session 26 81,299 (19,846), Session 27 81,148 (19,846) and Session 28 76,858 (19,846), all seven
    taken late, after `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24
    pattern 1). Take a second reading after the loading reads (Session 23: 128,962; Session 24: 121,940; Session 25:
-   144,147, with ~20k of it a stale `main` read, Session 25 pattern 1; Session 26: 116,948; Session 27: 118,575), as the grill's M1 asks. The inventory found these starts 9.7k to 17.8k late against the first turn's meter (`02-sources/inventory.md` §A). **Before the reads,
+   144,147, with ~20k of it a stale `main` read, Session 25 pattern 1; Session 26: 116,948; Session 27: 118,575; Session 28: 111,929), as the grill's M1 asks. The inventory found these starts 9.7k to 17.8k late against the first turn's meter (`02-sources/inventory.md` §A). **Before the reads,
    run `git fetch` and `gh pr list`:** if this handoff is still open, read `PROGRESS.md` from its branch, not `main`. Then read
    `CLAUDE.md` (auto-loaded), this file top to bottom, and `docs/research/02-workflow-optimisation.md` in full, on `main` since #113 merged as `1ea1611`. Not `02-sources/`: #113's reviewers read R1 and its verification, the coordinator does not. The exception is `02-sources/inventory.md` §Proposed threshold and §Decisions this feeds, for step 5(b).
     - `docs/research/01-pcr-workflow-port.md`: read only its PR G sections, and only when G is reached: §8,
@@ -620,17 +682,19 @@ Opus 5.5 at `high`, permission mode auto.
    Archive Session 20 (cites: `git grep -n "Session 20"`, and `git grep -n -B1 "^ *20"` for a wrapped one).~~ ~~Session 20 archived in Session 26 as #115. With Session 26's
    entry the band holds 6 entries (Sessions 21 to 26); re-take its byte figure after this handoff's last commit.
    Archive Session 21 (cites: `git grep -n "Session 21"`, and `git grep -n -B1 "^ *21"` for a wrapped one).~~
-   Session 21 archived in Session 27 as #117. With Session 27's entry the band holds 6 entries (Sessions 22 to 27);
+   ~~Session 21 archived in Session 27 as #117. With Session 27's entry the band holds 6 entries (Sessions 22 to 27);
    re-take its byte figure after this handoff's last commit. Archive Session 22 (cites: `git grep -n "Session 22"`,
-   and `git grep -n -B1 "^ *22"` for a wrapped one). It
+   and `git grep -n -B1 "^ *22"` for a wrapped one).~~ Session 22 archived in Session 28 as #119. With Session 28's
+   entry the band holds 6 entries (Sessions 23 to 28); re-take its byte figure after this handoff's last commit.
+   Archive Session 23 (cites: `git grep -n "Session 23"`, and `git grep -n -B1 "^ *23"` for a wrapped one). It
    stays its own PR until item B's PR rewrites `docs/SESSION-HANDOFF.md` §6 (Decision 5, Alex, Session 23).
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - Expect two open PRs unless Alex has merged them: #117 (the Session 21 archive) and this handoff (based on
-      #117). #115 and #116 merged before Session 27 started. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - Expect two open PRs unless Alex has merged them: #119 (the Session 22 archive) and this handoff (based on
+      #119). #117 and #118 merged before Session 28 started. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-006-archive-session-21` and `docs/CC-006-close-session-27` have not merged.
-      #115's and #116's branches were gone from the remote by Session 27's start.
+      plus whichever of `docs/CC-006-archive-session-22` and `docs/CC-006-close-session-28` have not merged.
+      #117's and #118's branches were gone from the remote by Session 28's start.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
@@ -642,11 +706,18 @@ Opus 5.5 at `high`, permission mode auto.
       terminal's four claude.ai connectors, merged as #98 (`54fb4ba`; research 02 §Item F, checked). The desktop figure
       moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
       If he changes either, step 1's readings measure it.
-    - **(b) The token inventory ran in Session 27 (`docs/research/02-sources/inventory.md`, unreviewed). Next, two
-      questions for Alex before C:** (1) Decision 6's threshold, proposed as 7 or more hunks or 33 or more changed
+    - **(b) Next: item C**, after the archive. Alex answered the inventory's questions in Session 28: Decision 6's
+      threshold is 7 or more hunks or 33 or more changed lines (`git diff --numstat`, insertions plus deletions;
+      inventory §Proposed threshold); C keeps its place, re-scoped so its PR claims one contract in the briefs
+      (the file-write mechanics, the SUMMARY line), not a token saving; and C's PR folds the inventory's
+      corrections to research 02 (row C's reply sizes, row E's ~25k `implementer` read, the "Updated" stack's
+      9,871 B) and records the two answers as Decisions. C's scope is research 02 row C and §Item detail C; the
+      dispatch prompts of #117 and #119 are its working draft. It touches `.claude/agents/**`, so
+      `copilot-surrogate` at least; the `implementer` builds it. ~~(b) The token inventory ran in Session 27 (`docs/research/02-sources/inventory.md`, unreviewed). Next, two
+      questions for Alex before C: (1) Decision 6's threshold, proposed as 7 or more hunks or 33 or more changed
       lines (inventory §Proposed threshold); (2) whether C keeps its place now that its token saving is mostly
       realised (Session 27 pattern 2), and whether C's PR also folds the inventory's corrections to research 02's
-      rows C and E and the "Updated" stack figure, or a small fold of its own does. ~~The R1 fold, #113, is reviewed, confirmed at nit-floor and merged (`1ea1611`, Session 26); next is the token inventory.~~ ~~Digest R1 and fold research 02
+      rows C and E and the "Updated" stack figure, or a small fold of its own does.~~ ~~The R1 fold, #113, is reviewed, confirmed at nit-floor and merged (`1ea1611`, Session 26); next is the token inventory.~~ ~~Digest R1 and fold research 02
       from the verification report; put its five Alex questions to him first.~~ Done in Session 25: Alex
       answered (the Session 25 entry), and the `implementer` built the fold, which records them as Decisions 6 to 8 (after Session 23's Decision 5) plus the (j) disposition. ~~`copilot-surrogate` (research 02 is `docs/**`) and `spec-grill` R2, a
       verification round per `docs/DEVELOPMENT.md` §Verification rounds, at most two at a time, each in its own
@@ -658,8 +729,8 @@ Opus 5.5 at `high`, permission mode auto.
       fold's Decision 5 rewrite list), A carrying H (Alex's answers on (f), (g), (h), (k), (m), (o), (u) gathered
       before A starts), E's archive leg, item G, D, I. The key is `CC-006` (Alex, Session 20). Item G is not PR G.
     - **(c) Then PR G**, per research 01 (step 1).
-    - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 27, and the inventory's first-turn starts (§A). Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, to Session 27, and again to Session 28. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`, Session 21's in `git show ae49392:PROGRESS.md`, and Session 22's in `git show f5eb1d2:PROGRESS.md`.
+    - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 28, and the inventory's first-turn starts (§A). Due at Session 20, which stopped at the soft line first; carried to
+      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, to Session 27, to Session 28, and again to Session 29. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`, Session 21's in `git show ae49392:PROGRESS.md`, and Session 22's in `git show f5eb1d2:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
