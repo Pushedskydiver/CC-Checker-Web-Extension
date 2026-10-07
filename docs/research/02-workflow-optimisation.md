@@ -251,7 +251,7 @@ them.** The denylist "applies to every server regardless of where it came from, 
 (code.claude.com/docs `managed-mcp` and `mcp`, fetched 3 October 2026). A Code-tab session also loads
 `~/.claude.json` and `.mcp.json` servers, which the denylist does reach, but here both are empty:
 
-- **Session 20's start**, read with `get_usage` (`/context` is a slash command the coordinator cannot run):
+- **Session 20's start**, read with `get_usage`, whose `context` field is the `/context` figure (Alex, Session 21; Session 20 believed the coordinator could not read it):
   78,058 tokens, of which MCP tools 19,720. Every server behind that figure came from the desktop app:
   Browser, iOS Simulator, computer-use, terminal, visualize, `nas-docker`, `filesystem`, the Claude Docs
   connector and the `ccd_*` tools.
