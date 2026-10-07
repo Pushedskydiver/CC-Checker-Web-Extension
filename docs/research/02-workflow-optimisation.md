@@ -6,10 +6,12 @@ Session 19, 2 October 2026. `main` at `bf9f8d1`. Ticket: `CC-006` (Alex, Session
 ticket, before PR G"). Status: **researched; Alex answered three questions in Session 19 and re-scoped F in
 Session 20; F is done (#98). `spec-grill` R1 ran in Session 22
 (`02-sources/spec-grill-r1.md`), was verified finding by finding in Session 24
-(`02-sources/spec-grill-r1-verification.md`), and is folded into this file in Session 25 (Decisions 5 to 8,
-the table, §Item detail, §Inventory brief). A verification round (R2) on the fold is due.** The PR that
-added this file changed nothing else in the repo except a `.prettierignore` line; the R1 fold changes this
-file only.
+(`02-sources/spec-grill-r1-verification.md`), and was folded into this file in Session 25 (Decisions 5 to 8,
+the table, §Item detail, §Brief changes and the session cache, §Inventory brief, §Decision 5 rewrite list).
+In Session 26 (7 October 2026) `spec-grill` R2 and `copilot-surrogate` reviewed that fold, and their findings
+are folded here too.** The PR that added this
+file changed nothing else in the repo except a `.prettierignore` line; the R1 and R2 folds change this file
+only.
 
 ## Why
 
@@ -42,20 +44,23 @@ The three repo threads converged on A, C and E independently.
 
 | #   | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Evidence                                                                                                                                                                                                                                                                                                                                                           | Saving                                                                                | Cost                                                                |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| A   | A session reads only the newest `PROGRESS.md` entry and its own loading block. Entries keep §5's `~~strikethrough~~` rule; the loading block and the "Updated" stack are rewritten in place, superseded text reachable by `git log -p PROGRESS.md`. The "Updated" stack and settled decisions move to history. Research 01 as required reading is already done (loading step 1 reads only its PR G sections). The lines it rewrites are in §Item detail.                                                                                                                 | At `eb6099a`: `PROGRESS.md` 60,098 B whole; newest entry plus loading block 20,035 B (4,172 + 15,863); step 7 is 7,742 B of the block and is H's. Before figure: Session 23's 53k loading-reads cost. The self-audit's ~133 KB included research 01 as required reading. PCR `PROGRESS.md:90`, `docs/SESSION-HANDOFF.md:52`; moe `docs/SESSION-HANDOFF.md:78-104`. | ~17–22k per start, H's share counted once                                             | M; both reviews expected (over 200 lines, a prediction until built) |
-| B   | The archive and the handoff go in one PR per session, reviewed as now (Decision 5). The rule rewrite is `docs/SESSION-HANDOFF.md` §6 and §7 only (§Decision 5 rewrite list). Measured in the next session's first dispatch of `copilot-surrogate`, recorded in Handoff facts.                                                                                                                                                                                                                                                                                            | 22 of the last 34 first-parent `main` commits are handoff or archive PRs (re-measured, Session 24). `copilot-surrogate` ran 33 times in 10 sessions (source report's figure; re-run by the inventory).                                                                                                                                                             | A PR, a CI run and a review round per session                                         | S, rules                                                            |
+| A   | A session reads only the newest `PROGRESS.md` entry and its own loading block. Entries keep §5's `~~strikethrough~~` rule; the loading block is rewritten in place, superseded text reachable by `git log -p PROGRESS.md`. The existing "Updated" stack retires to history, and thereafter one dated "Updated" paragraph is rewritten in place. Settled decisions move to history. Research 01 as required reading is already done (loading step 1 reads only its PR G sections). The lines it rewrites are in §Item detail.                                             | At `eb6099a`: `PROGRESS.md` 60,098 B whole; newest entry plus loading block 20,035 B (4,172 + 15,863); step 7 is 7,742 B of the block and is H's. Before figure: Session 23's 53k loading-reads cost. The self-audit's ~133 KB included research 01 as required reading. PCR `PROGRESS.md:90`, `docs/SESSION-HANDOFF.md:52`; moe `docs/SESSION-HANDOFF.md:78-104`. | ~17–22k per start, H's share counted once                                             | M; both reviews expected (over 200 lines, a prediction until built) |
+| B   | The archive and the handoff go in one PR per session, reviewed as now (Decision 5). The rule rewrite is `docs/SESSION-HANDOFF.md` §1 (trigger 1's boundary), §6 and §7 (§Decision 5 rewrite list). Measured as one session PR and one `copilot-surrogate` digest in the next session's Handoff facts (inventory row B).                                                                                                                                                                                                                                                  | 22 of the last 34 first-parent `main` commits are handoff or archive PRs (re-measured, Session 24). `copilot-surrogate` ran 33 times in 10 sessions (source report's figure; re-run by the inventory).                                                                                                                                                             | A PR, a CI run and a review round per session                                         | S, rules                                                            |
 | C   | One report contract for all four agents: verdict and counts first; each finding with `path:line`, failure scenario and fix; full report to a file, a capped reply; the verification round reads only the fold's range (round one unchanged). The SUMMARY line carries "steps completed: n of m; stopped by: none, `maxTurns` or refused tool". Siblings, file-write mechanics and the one-dispatch test are in §Item detail.                                                                                                                                             | Four shapes today; reviewer replies 8.9–11.4 KB (source report's figure; re-run by the inventory). PCR `da-reviewer.md:30-36` (1.3–2.5k tokens); moe #122 (~9k → ~3k per round).                                                                                                                                                                                   | ~half of reviewer bytes in the coordinator                                            | S                                                                   |
 | D   | Leaner agent briefs: history out of agent bodies, keeping `spec-grill.md`'s exit condition (`:37-40`); mandatory reading on demand; `maxTurns` picked from measured turn counts, never by guess; `omitClaudeMd` for reviewers at most, never the implementer. `disallowedTools` is dropped. Verifiers follow C's SUMMARY contract. Measured in the next session's first dispatch of each changed agent, recorded in Handoff facts.                                                                                                                                       | Mandatory reading per dispatch: `da-review` ~65 KB, `spec-grill` ~54 KB, `implementer` up to ~200 KB (self-audit). PCR agents 2–5 KB against CCC's 8–18 KB. All four briefs carry a `tools:` whitelist already.                                                                                                                                                    | ≥15 KB per review dispatch                                                            | M                                                                   |
 | E   | The coordinator only orchestrates. Split by R1's B2: (a) the handoff-drafting leg is dropped (Decision 6); (b) the archive move goes to `implementer`, after A, with a brief that supplies every number; (c) doc folds above a size threshold go to `implementer`, approved in principle (Decision 6), threshold proposed from the inventory. (b) and (c) keep doc-fixer-style preconditions (stop on an incomplete brief, never compute a number, read your own diff).                                                                                                  | PCR's actual rule is don't build in the main session (PCR `docs/SESSION-HANDOFF.md:65`: "most sessions ran past 250k; since it orchestrates, almost none do"), which CCC adopted with the `implementer` (#84). Session 19: `implementer` built PR F for 37k Sonnet tokens; the coordinator only verified, and still reached 166k (`PROGRESS.md:517-520`).          | Session length                                                                        | M                                                                   |
 | F   | `deniedMcpServers` in `.claude/settings.json` for the claude.ai connectors the terminal CLI loads; Alex turns off the desktop tools this repo does not use. Done (#98, `54fb4ba`); re-scoped: §Item F, checked. The optional `autoCompactWindow` backstop is dropped (Decision 7).                                                                                                                                                                                                                                                                                       | §Claude Code facts. MCP tool definitions were ~20k of Session 19's 81k start.                                                                                                                                                                                                                                                                                      | Desktop: none measurable (Sessions 20–23). Terminal: unmeasured. See §Item F, checked | S                                                                   |
 | G   | One home per fact: derive test counts (30 lines in 11 files) rather than restate them; drop the two brief lines that tell agents to restate facts; de-duplicate incidents retold in 8–14 files. Item G lands before PR G, and its PR amends research 01 §8 row G (`01-pcr-workflow-port.md:381`) to drop the unit-count sweep (L5); if PR G overtakes it, PR G bumps the counts and item G deletes them later. Its `AGENTS.md` slice lands before D adds any line there. Measured in the next session's first dispatch of each changed agent, recorded in Handoff facts. | Self-audit §1 clusters D1–D14, §5 test counts; `docs/DEVELOPMENT.md:387` against `copilot-surrogate.md:19-23`.                                                                                                                                                                                                                                                     | ~15–20 KB; settles (l), (m)                                                           | M                                                                   |
-| H   | Close stale decisions (f), (g), (h), (k), (m), (o), (u); (h) is in `docs/GIT.md:232`. (u) closes with the split "rewrite in rule docs and the loading block; strike in entries". (j) is not closed: see Decision 8's (j) line, which has H rewrite `AGENTS.md` §PR workflow and `docs/GIT.md` §Who merges. H rides in A, with Alex's answers gathered before A starts.                                                                                                                                                                                                   | Self-audit §4 has a disposition for each, except (j), whose "close and move to memory" is stale (two refused merges, `PROGRESS.md:408-411`).                                                                                                                                                                                                                       | ~5 KB                                                                                 | Alex rules                                                          |
+| H   | Close stale decisions (f), (g), (h), (k), (m), (o), (u); (h) is in `docs/GIT.md:233`. (u) is proposed to close with the split "rewrite in rule docs and the loading block; strike in entries"; Alex's answer is gathered before A. (j) is not closed: see Decision 8's (j) line, which has H rewrite `AGENTS.md` §PR workflow and `docs/GIT.md` §Who merges. H rides in A, with Alex's answers gathered before A starts.                                                                                                                                                 | Self-audit §4 has a disposition for each, except (j), whose "close and move to memory" is stale (two refused merges, `PROGRESS.md:408-411`).                                                                                                                                                                                                                       | ~5 KB                                                                                 | Alex rules                                                          |
 | I   | Small: `spec-grill.md` says "ask the caller", which a subagent cannot. The stale facts in `docs/GIT.md`, `docs/DA-REVIEW.md` and `docs/REVIEW-PATTERNS.md` are the carried item at `PROGRESS.md:650-652`, not restated here. The CI commit-subject check is dropped (Decision 7).                                                                                                                                                                                                                                                                                        | moe thread #8, #9; self-audit #11.                                                                                                                                                                                                                                                                                                                                 | Quality                                                                               | S                                                                   |
 
-Order (Decision 8): the R1 fold, the token inventory, C, B alone, A carrying H, E's archive leg, item G, D, I.
-Precondition (M8): `AGENTS.md` and `CLAUDE.md` stand at 149 prose lines at `eb6099a`, so G's `AGENTS.md`
-slice lands before D adds any line there. H's answers on (f), (g), (h), (k), (m), (o), (u) are gathered before
-A starts. E's fold leg waits on the inventory's threshold (Decision 6). F is done.
+Order (Decision 8): the R1 fold, the token inventory, C, B alone, A carrying H, E's archive leg ((c) follows
+once the threshold is set), item G, D, I.
+Precondition (M8): `AGENTS.md` and `CLAUDE.md` stand at 149 prose lines at `eb6099a`, one line under the
+budget, so G's `AGENTS.md` slice lands before D adds any line there, and H's `AGENTS.md` §PR workflow rewrite
+must be net-zero in prose lines; if it cannot be, G's `AGENTS.md` slice lands before A. H's answers on (f),
+(g), (h), (k), (m), (o), (u) are gathered before A starts. E's fold leg (c) waits on the inventory's threshold
+and rides in its own small PR (Decision 6). F is done.
 
 The self-audit's proposed shared report contract (for C) is in `02-sources/self-audit.md`.
 
@@ -88,7 +93,7 @@ Decisions 1 to 4 are Alex's of 2 and 3 October 2026; 5 to 8 are in the entries b
 1. ~~**B: straight to `main`**, unless there is strong evidence for a PR per session. The coordinator found
    none: the evidence (Session 19's MATERIAL on #95, #93's MATERIAL) is for a review of state lines,
    which can run before the push. Needs `AGENTS.md` §PR workflow, `docs/GIT.md` and
-   `docs/SESSION-HANDOFF.md` §6 rewritten first; until then handoffs stay PRs.~~ Superseded by Decision 5.
+   `docs/SESSION-HANDOFF.md` §6 rewritten first; until then handoffs stay PRs.~~ Superseded by Decision 5, and its "rewritten first" clause no longer applies.
 2. **A new ticket, before PR G.** Key from Alex.
 3. **F: yes, in project settings**, measured with `/context` before and after in a fresh session.
 4. **F re-scoped (Session 20, 3 October 2026)**, after §Item F, checked below: deny the claude.ai connectors
@@ -104,10 +109,10 @@ Decisions 1 to 4 are Alex's of 2 and 3 October 2026; 5 to 8 are in the entries b
    now. This reverses research 01 Decision 2 ("Doc-only folds are the coordinator's",
    `01-pcr-workflow-port.md:396-397`) and `implementer.md:101-102`; E's own PR changes those, not the R1
    fold. E's handoff-drafting leg is dropped (R1 B2(a)).
-7. **Both optional extras are dropped** (Alex, Session 25): the CI commit-subject check from item I (R1 M6)
+7. **Both optional extras are dropped** (Alex, Session 25, 6 October 2026): the CI commit-subject check from item I (R1 M6)
    and the `autoCompactWindow` backstop from item F (R1 L1). The CI check's re-entry in `docs/GIT.md`
    stands.
-8. **The order is approved** (Alex, Session 25), as the verification report proposed: the R1 fold, the token
+8. **The order is approved** (Alex, Session 25, 6 October 2026), as the verification report proposed: the R1 fold, the token
    inventory, C, B alone, A carrying H, E's archive leg, item G, D, I. It replaces "C and E, then A with B,
    then D, G, H, I". The table's order note carries M8's budget precondition and the list of H's answers
    gathered before A starts.
@@ -122,12 +127,13 @@ Decisions 1 to 4 are Alex's of 2 and 3 October 2026; 5 to 8 are in the entries b
 
 What the table cells point at. Cites are against `eb6099a`.
 
-- **A.** `docs/SESSION-HANDOFF.md` lines it rewrites: `:80` (the "Updated" stack), `:112-114` (the strike
-  rule, split as in the table), `:120-125` (§6's band-only measure becomes a measure of what a session reads,
-  the two standing blocks at 19,961 + 15,863 B included; the "own small PR" sentence at `:124-125` is B's),
-  `:60-63` (the prompt), and `:99`, which gains "including one row after the loading reads" (Session 23 added
-  the row at `PROGRESS.md:277`; loading step 1 asks for it at `:587-588`). Also `PROGRESS.md:589` ("this file
-  top to bottom") and the two brief paragraphs that expect struck text: `copilot-surrogate.md:195-210` and
+- **A.** `docs/SESSION-HANDOFF.md` lines it rewrites: `:80` (the "Updated" stack: retired to history once,
+  then one dated paragraph rewritten in place), `:112-114` (the strike rule, split as in the table),
+  `:120-125` (§6's band-only measure becomes a measure of what a session reads, the two standing blocks at
+  19,961 + 15,863 B included; the "own small PR" sentence at `:124-125` is B's), and `:99`, which gains
+  "including one row after the loading reads" (Session 23 added the row at `PROGRESS.md:277`; loading step 1
+  asks for it at `:587-588`). The prompt at `:60-63` is unchanged. Also `PROGRESS.md:589` ("this file top to
+  bottom") goes, and the two brief paragraphs that expect struck text: `copilot-surrogate.md:195-210` and
   `spec-grill.md:137-140` (self-audit D13). The "Updated" stack is 9,911 B of the next-workstreams block
   (19,961 B).
 - **C.** Siblings that say "Return findings as the tool result": `da-review.md:159`,
@@ -137,21 +143,26 @@ What the table cells point at. Cites are against `eb6099a`.
   contract gains moe's mechanics (`02-sources/moe.md:46`): an absolute path in the primary checkout, written
   in parts, and an in-band fallback if the write is refused (the verification report was written with the
   Write tool without a refusal, so the fallback is a fallback). "Range only" is the verification-round scope
-  already in practice (Session 18 pattern 3, `PROGRESS.md:578-579`; `docs/DEVELOPMENT.md:280-286`). The
+  already in practice (Session 18 pattern 3, `PROGRESS.md:578-579`; `docs/DEVELOPMENT.md:280-286`, where the
+  coordinator reads the fold diff itself). The
   copy-out-before-handoff rule (`docs/SESSION-HANDOFF.md:53-54`) extends to reports in a scratchpad. A
-  verifier that did not finish may not report nit-floor (`docs/DEVELOPMENT.md:269-271`). Signal: the
+  verifier that did not finish may not report nit-floor, by analogy with `docs/DEVELOPMENT.md:269-271` (a
+  verification round "has to actually fire"). Signal: the
   `get_usage` delta across one digest, before (Session 21's ~50k for two digests plus folds) and after. One
   test in C's PR (M5): dispatch `copilot-surrogate` once after the brief edit and record whether it followed
   the new contract.
 - **D.** `spec-grill.md:12-36` is the narrative that goes; `:37-40` ("If after a run of real specs this agent
-  has caught nothing … move it to `docs/DEVELOPMENT.md` §Not ported") stays, or moves to that list. R1 and
-  its verification are that agent's first two real runs, and B1 changed a decision, so the exit condition
-  has not fired. `omitClaudeMd` would strip the implementer of the commit format (`AGENTS.md:31-44`), the
-  pre-push suite (`:24`) and §Non-obvious constraints (`:74-118`), which `implementer.md:36-45` cites rather
+  has caught nothing … move it to `docs/DEVELOPMENT.md` §Not ported") stays, or moves to that list. The
+  agent already has a record: `docs/history/SESSIONS.md` logs six runs before Session 22 (three rounds on the
+  CC-004 brief, 12 September 2026; R1, R2 and a confirm round on research 01's PR H, 29 September 2026), and
+  R1 on this file found B1, which changed a decision. So the exit condition has not fired, and
+  `spec-grill.md:12-14` ("Here it has no record yet") is itself stale; D's trim removes it. `omitClaudeMd`
+  would strip the implementer of the commit format (`AGENTS.md:31-44`), the pre-push suite (`:24`) and
+  §Non-obvious constraints (`:76-116`), which `implementer.md:36-45` cites rather
   than restates.
-- **E.** The archive move fits `implementer.md:3` ("never push, never open a PR") exactly: under Decision 5
+- **E.** The archive move fits `implementer.md:3` ("Never pushes, opens a PR, merges or amends") exactly: under Decision 5
   the archive is the first commit on the session's branch. Reading cost before the first commit: hierarchy
-  17,532 B + brief 7,969 B + `docs/GIT.md` 29,829 B = 55,330 B, about 25k tokens at Session 23's ratio. The
+  17,532 B (the global `CLAUDE.md` read 3,146 B at verification and 3,170 B on 7 October) + brief 7,969 B + `docs/GIT.md` 29,829 B = 55,330 B, about 25k tokens at Session 23's ratio. The
   handoff is mostly numbers only the coordinator holds (`docs/SESSION-HANDOFF.md:51-56`, `:96-102`), which is
   why (a) is dropped. PCR's `doc-fixer.md:56-57` forbids editing `research/**`, `PROGRESS.md` and memory, as
   `implementer.md:98-99` does for CCC. The fold share of the coordinator's context is unmeasured (Session 21
@@ -160,20 +171,22 @@ What the table cells point at. Cites are against `eb6099a`.
 - **G.** G's `AGENTS.md` trims (self-audit `:73`, "~1.5–2 KB, and budget headroom") compete with D's possible
   pointer lines for the one prose line of budget, hence the order.
 - **H.** (u): decision (u) is at `PROGRESS.md:666-670`. The (j) disposition is Decision 8's line. H's rewrite
-  of `AGENTS.md` §PR workflow has to stay inside the prose budget (M8).
+  of `AGENTS.md` §PR workflow has to be net-zero in prose lines (M8), else G's `AGENTS.md` slice lands before A.
 - **I.** `docs/REVIEW-PATTERNS.md:251-252` still reads "There has been one review round on this repo"; that
   is part of the carried item. The commit-subject check was dropped because `docs/GIT.md:396-401`
   ("Re-entry: if those keep drifting, a check on them … is the thing to add") and `docs/DEVELOPMENT.md:352-353`
-  and `:378` say not to build a gate before the rule has been broken; in the last 200 commits on `main`, 29
-  subjects miss the shape and all 29 are Dependabot bumps or `Merge branch 'main' into …` sync commits.
+  and `:378` say not to build a gate before the rule has been broken; in the last 200 commits at `eb6099a`, 29
+  subjects miss the shape and all 29 are Dependabot bumps or merge and sync commits (`Merge branch …`,
+  `Merge remote-tracking branch …`).
 
 ## Brief changes and the session cache (R1 M5)
 
 In-session subagents run on the instruction files as loaded at session start. That is shown for
 `CLAUDE.md` and `AGENTS.md` (memory `project-subagents-cache-instructions.md`); for an edited existing
-`.claude/agents/*.md` it is **unchecked**. So B, C, D and G are each measured in the next session's first
+`.claude/agents/*.md` it is **unchecked**. So C, D and G are each measured in the next session's first
 dispatch of the changed agent, recorded in Handoff facts, and each PR body says the PR's own review could not
-exercise the new brief. C's one-dispatch test (§Item detail) settles the unchecked half.
+exercise the new brief. B changes no agent brief, so it is measured as one session PR and one digest in
+Handoff facts (inventory row B). C's one-dispatch test (§Item detail) settles the unchecked half.
 
 ## Inventory brief (R1 M7)
 
@@ -185,7 +198,7 @@ sidechain jsonl, and a `get_usage` checkpoint; `claude -p` is not a token meter 
 | Item | Quantity                                                                                             | Source                          | Decision it feeds                               |
 | ---- | ---------------------------------------------------------------------------------------------------- | ------------------------------- | ----------------------------------------------- |
 | A    | Bytes of the newest entry, the loading block and `PROGRESS.md`; the "after the loading reads" row    | File bytes at HEAD; `get_usage` | A's saving, and whether H's share is counted    |
-| B    | Archive PRs and their `copilot-surrogate` digests per session; the "33 in 10 sessions" count         | Main jsonl; sidechain jsonl     | B's saving; N3's label                          |
+| B    | Session PRs and their `copilot-surrogate` digests per session; the "33 in 10 sessions" count         | Main jsonl; sidechain jsonl     | B's saving; N3's label                          |
 | C    | Reviewer reply sizes over more than the source's n of 3 and 2; the `get_usage` delta across a digest | Sidechain jsonl; `get_usage`    | C's reply cap; N3's label                       |
 | D    | Turns per agent per dispatch; mandatory-reading bytes per dispatch                                   | Sidechain jsonl; file bytes     | `maxTurns` values; which reading goes on demand |
 | E    | The coordinator's context share spent on folds; the `implementer`'s start cost                       | Main jsonl; `get_usage`         | Decision 6's size threshold; whether (c) pays   |
@@ -211,18 +224,18 @@ are this fold. The rest are other PRs' work, not this one's.
    handoff. Consider "push the branch after the archive commit" so a session that dies before handoff loses
    nothing (§3 item 3's logic). The coordinator's procedure, not Alex's decision.
 
-**This fold (research 02):** item 6 (row B's Change column), item 7 (Decision 1 struck, with the "rewritten
-first" clause gone) and item 8 (the order sentence, now Decision 8). Done here.
+**This fold (research 02):** item 6 (row B's Change column), item 7 (Decision 1 struck, its pointer noting
+the "rewritten first" clause no longer applies) and item 8 (the order sentence, now Decision 8). Done here.
 
 **The handoff's work (records, rewritten at the next handoff):**
 
-9. `PROGRESS.md:599-600`, step 2 ("Archive Session 18 in its own small PR … §6 still says an archive is its
+9. `PROGRESS.md:598-600`, step 2 ("Archive Session 18 in its own small PR … §6 still says an archive is its
    own PR until research 02's fold rewrites the rules"): stale once items 1 to 3 merge.
 10. `PROGRESS.md:625-629`, step 5(b): already records Decision 5 and points at "the research 02 fold lists
     which"; this section is that list.
 11. `PROGRESS.md:11-12`, "the rules still say an archive is its own PR": true until items 1 to 3 merge.
-12. Memory `project-workflow-optimisation.md`: its "How to apply" line still says "then A with B"; update it
-    with Decision 8's order.
+12. Memory `project-workflow-optimisation.md`: done. Its "How to apply" line already carries Decision 8's
+    order (both R2 reviewers read it; it no longer says "then A with B").
 
 Checked and needing no change: `AGENTS.md` §PR workflow (`:45-63`), `docs/GIT.md` §What needs a PR (`:80-85`),
 §Who merges (`:227-236`) and §Deliberately not adopted (`:402-403`) say nothing about archive or handoff PRs
