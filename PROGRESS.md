@@ -518,7 +518,7 @@ Opus 5.5 at `high`, permission mode auto.
 - **[#104](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/104)**,
   `docs/CC-006-archive-sessions-14-15`, `6e38e3b` + fold `9c6d03b`: Sessions 14 and 15 become rows 14 and 15,
   five cites point at `git show 9d242b0:PROGRESS.md`, the overtaken state lines are rewritten, and Session 20
-  pattern 2 is struck. `copilot-surrogate` (Fable, ~90k): 1 MATERIAL (step 5(a) still said #98 was open),
+  pattern 2 (`git show 67fde5d:PROGRESS.md`) is struck. `copilot-surrogate` (Fable, ~90k): 1 MATERIAL (step 5(a) still said #98 was open),
   3 LOW, 2 nits. Everything was folded except one LOW, which step 5(d) owns. The confirm round (Fable, ~37k)
   returned 5 CONFIRMED and 0 DISPROVED, and agreed with the decline: nit-floor. Its two new points are recorded in #104's body.
 - **Dependabot:** `gh pr merge 100 --merge --admin --delete-branch` was refused ("Merge Without Review"), and
@@ -548,7 +548,7 @@ Opus 5.5 at `high`, permission mode auto.
 
 **Major novel patterns Session 21:**
 
-1. **A false premise in a loading step costs a round trip with Alex.** Session 20 pattern 2 said the
+1. **A false premise in a loading step costs a round trip with Alex.** Session 20 pattern 2 (`git show 67fde5d:PROGRESS.md`) said the
    coordinator could not read `/context`; `get_usage`'s `context` field is that figure. Struck in #104, and
    saved to memory.
 2. **Decision (j) now has two refusals.** The classifier refused a delegated Dependabot merge again (#61's
@@ -559,62 +559,11 @@ Opus 5.5 at `high`, permission mode auto.
    about 5k research 02, and two review digests and the folds made up the rest. That is the evidence for
    research items A and E, and for Alex's token-inventory ask.
 
-## Session 20 — 3 October 2026 (CC-006: item F checked, re-scoped and opened as #98)
-
-**`deniedMcpServers` cannot reach any server the desktop app delivers, which on this machine is every MCP
-server in a Code-tab session, so item F saves nothing there.** Alex re-scoped F to the terminal CLI's
-claude.ai connectors and gave the key `CC-006`. Nothing merged this session.
-
-**Setup:** #95, #96 and #97 had merged (`3398776`), no PRs were open, the three standing remote branches were
-present and the only worktree was the main checkout. The pre-push suite was green (36 Vitest, 21 Playwright).
-`get_session self` reported Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#98](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/98)**,
-  `chore/CC-006-deny-mcp-servers`, `b583a23` + fold `448b5e1`: `.claude/settings.json` denies four claude.ai
-  connectors by `serverUrl`, `.gitignore` un-ignores it, research 02 gains Decision 4 and §Item F,
-  checked, and research 01's B1 gains a pointer to it. `claude mcp list` in the repo went from four connectors to none; from `~` all four still connect.
-  `copilot-surrogate` (Fable, ~70k): 1 MATERIAL, 3 LOW, 1 nit. The LOWs were prose, folded in `448b5e1` and
-  read by the coordinator (decision (r)). The nit was declined (the fold commit says why). The MATERIAL was
-  loading step 5(a)'s stale lines, rewritten in this handoff.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, crossed at 153k when #98 was committed; the unit (review, fold, PR) was
-  finished and nothing new started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment            | 5-hour | Weekly | Fable weekly | Context |
-    | ----------------- | ------ | ------ | ------------ | ------- |
-    | Start             | 49%    | 7%     | 3%           | 78k     |
-    | Before the review | 54%    | 8%     | 3%           | 153k    |
-    | #98 opened        | 61%    | 9%     | 5%           | 169k    |
-
-- **Plan usage:** the 5-hour window resets at 02:50Z on 3 October, and the weekly windows at 15:00Z on
-  9 October.
-- **Warning signs:** one. Loading step 2 said to archive Session 14 before picking anything up, and the
-  session went straight to F. The band is now 7 entries. The reviewer had its own detached worktree.
-- **Clarifying question:** one the previous entry could not have answered: F's premise failed on contact.
-
-**Major novel patterns Session 20:**
-
-1. **A setting approved from a fact-check still has to be checked against the surface it runs on.** Research
-   02's facts were right for the terminal CLI and silent about in-process `sdk` servers, so the approved F
-   would have saved nothing in the desktop app. Reading the denylist's exceptions and `ps` caught it before
-   any commit.
-2. ~~**`/context` cannot be run by the coordinator.** `get_usage`'s categories (MCP tools 19,720 of 78,058 at
-   start) stood in for step 1's baseline. A step that needs a slash command needs Alex to run it.~~ Wrong
-   (Alex, Session 21): `get_usage`'s `context` field is the `/context` figure, so nothing stood in.
-3. **A docs page fetched whole (`managed-mcp`) was the session's largest single read.** Ask a fetch for
-   quotes only, or delegate it.
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
    is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, correcting Session 20
-   pattern 2). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
+   pattern 2, in `git show 67fde5d:PROGRESS.md`). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
    (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855) and Session 25 80,518 (19,855), all four
    taken late, after `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24
    pattern 1). Take a second reading after the loading reads (Session 23: 128,962; Session 24: 121,940; Session 25:
@@ -669,7 +618,7 @@ present and the only worktree was the main checkout. The pre-push suite was gree
       before A starts), E's archive leg, item G, D, I. The key is `CC-006` (Alex, Session 20). Item G is not PR G.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 25. Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, to Session 24, to Session 25, and again to Session 26. Sessions 14 to 19's readings are in `git show 9d242b0:PROGRESS.md`.
+      Session 22, to Session 23, to Session 24, to Session 25, and again to Session 26. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -768,5 +717,5 @@ present and the only worktree was the main checkout. The pre-push suite was gree
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
