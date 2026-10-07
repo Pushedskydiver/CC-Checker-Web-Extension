@@ -301,7 +301,7 @@ Opus 5.5 at `high`, permission mode auto.
   `docs/CC-006-archive-session-22`, `6ea88a6`: Session 22 becomes row 22, and four cites of its content point at
   `git show f5eb1d2:PROGRESS.md`. `copilot-surrogate` (Fable, ~82k), in a detached worktree in the scratchpad:
   39 claims, 1 falsified, nit-floor with 1 LOW and 1 nit. The LOW was the PR body's "fifth incident" (Session 23
-  pattern 2 had counted the fifth); folded in the body, no file change. The nit was declined (#119's body says
+  pattern 2, in `git show ddaab4e:PROGRESS.md`, had counted the fifth); folded in the body, no file change. The nit was declined (#119's body says
   why). The band is 5 entries and 23,963 bytes before this entry; the commit message's 23,960 predates a
   three-byte fix, as the body says. The reviewer followed item C's contract again.
 - **Alex's answers** (loading step 5(b)): the three above, put to him while the reviewer ran; recorded in memory
@@ -597,66 +597,6 @@ Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permis
 3. **The archive unit alone took the session from 122k to 152k** (edit, suite, one review digest, a fold,
    the PR), so after a 46k loading read one unit per session is still the shape. Item A is the lever.
 
-## Session 23 — 6 October 2026 (CC-006: Session 17 archived as #108, item B re-decided)
-
-**Alex re-decided research 02's item B: one PR per session (archive and handoff together), not straight to
-`main`.** The grill's B1 held up when checked. The Session 17 archive is open as #108, at nit-floor. Nothing
-merged this session.
-
-**Setup:** #106 and #107 were both open and unmerged, so this session's PRs stack on #107. The tree was clean,
-the remote branches were the three standing ones plus #106's and #107's, and the only worktree was the main
-checkout. The pre-push suite was green (36 Vitest, 21 Playwright) on `20a21e6`. `get_session self` reported
-Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#108](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/108)**,
-  `docs/CC-006-archive-session-17`, `2707c49` + fold `a0916ef`, based on `docs/CC-006-close-session-22`:
-  Session 17 becomes row 17, and its two cites, both in Session 18's entry, point at
-  `git show 8234f50:PROGRESS.md`. `copilot-surrogate` (Fable, ~88k): 27 claims, 0 falsified, nit-floor with
-  3 LOW and 1 nit. LOWs 1 and 2 were folded, and the coordinator read the fold (decision (r)). LOW 3 (step 3
-  did not list #108) is this handoff's job, and the nit was editorial. #108's body says why for each. The
-  band was 6 entries and 23,565 bytes before the archive, and 19,442 after the fold.
-- **B1 checked, then put to Alex.** `docs/GIT.md` §What needs a PR rejects direct-to-`main` and has a re-entry
-  condition (`:402-403`). `format:check` covers `*.md` (`package.json:56`). The surrogate caught a MATERIAL
-  state-line error on #95 and on #104. A direct push would need an admin bypass that no session has tried.
-  Alex chose **one PR per session**, from four options; the others were straight to `main` with a pre-push
-  review, straight to `main` without one, and two PRs as now. Saved to memory
-  (`project-workflow-optimisation`).
-- **This handoff** was reviewed by `copilot-surrogate` (Fable, ~94k): 1 MATERIAL (step 5(b) still said B
-  needs Decision 1's three rewrites), 1 LOW and 1 nit, all folded. A fresh confirm verifier (~63k) CONFIRMED
-  all three and reached nit-floor; its two new nits were folded and read by the coordinator.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1, and 2 with it. #108 was finished at 150k, above 130k and at the soft line.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
-    | ----------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)    | 42%    | 30%    | 17%          | 76k     |
-    | After the loading reads | 42%    | 30%    | 17%          | 129k    |
-    | During the review       | 47%    | 31%    | 17%          | 143k    |
-    | #108 opened             | 49%    | 31%    | 17%          | 150k    |
-    | Handoff reviewed        | 7%     | 33%    | 19%          | 170k    |
-
-- **Plan usage:** the 5-hour window reset at 04:00Z on 6 October during the handoff's review; the next
-  resets at 09:00Z. The weekly windows reset at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Session 22's (in `git show f5eb1d2:PROGRESS.md`). Step 1's `get_usage` came after `docs/SESSION-HANDOFF.md`
-  and the loading block had been read. The reviewer had its own detached worktree.
-- **Clarifying question:** one, but a planned one: step 5(b) said to ask Alex about B1 first.
-
-**Major novel patterns Session 23:**
-
-1. **The loading reads cost 53k (76k to 129k) before any work.** `PROGRESS.md` (~58 KB), research 02 (~13 KB)
-   and the grill report (~26 KB) were the bulk. That left one small unit before trigger 1 fired. This is the
-   "after loading reads" figure the grill's M1 asks for, and it is the "before" for item A and the inventory.
-2. **A fold inside the band moved the band figure again** (19,409 to 19,442), the fifth incident of Session
-   18 pattern 1 (`git show eb6099a:PROGRESS.md`). #108's body corrects its first commit's figure.
-3. **MCP tools rose mid-session, 19,855 to 20,947,** after `ReadNotifications` arrived and two deferred
-   schemas were loaded. So a start figure is not the session's whole MCP cost.
-
 ## Next session loading instructions
 
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
@@ -731,7 +671,7 @@ Opus 5.5 at `high`, permission mode auto.
       before A starts), E's archive leg, item G, D, I. The key is `CC-006` (Alex, Session 20). Item G is not PR G.
     - **(c) Then PR G**, per research 01 (step 1).
     - **(d) Review `docs/SESSION-HANDOFF.md`'s lines** (its §1 and §8) against the readings in the Handoff facts of Sessions 14 to 28, and the inventory's first-turn starts (§A). Due at Session 20, which stopped at the soft line first; carried to
-      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, to Session 27, to Session 28, and again to Session 29. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`, Session 21's in `git show ae49392:PROGRESS.md`, and Session 22's in `git show f5eb1d2:PROGRESS.md`.
+      Session 22, to Session 23, to Session 24, to Session 25, to Session 26, to Session 27, to Session 28, and again to Session 29. Sessions 14 to 20's readings are in `git show 9d242b0:PROGRESS.md`, Session 21's in `git show ae49392:PROGRESS.md`, Session 22's in `git show f5eb1d2:PROGRESS.md`, and Session 23's in `git show ddaab4e:PROGRESS.md`.
     - Read `docs/SESSION-HANDOFF.md` and apply it; it replaces step 6's lines.
     - ~~**Once #91 merges**, repoint `PROGRESS.md`'s stale pointers. This is `da-review` LOW 3 on #91: "the
       `CLAUDE.md` trigger table" (§Next workstreams item 1, §The approved plan), the "`CLAUDE.md` §PR workflow"
@@ -830,5 +770,5 @@ Opus 5.5 at `high`, permission mode auto.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
