@@ -5,8 +5,8 @@ Living state document — current state, what's next. Session-by-session detail 
 
 ## Next workstreams (after Session 28)
 
-Updated 7 October 2026, end of Session 28: **the Session 22 archive is open as [#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119), at nit-floor,
-and Alex answered the inventory's questions: Decision 6's threshold is 7 or more hunks or 33 or more changed lines,
+Updated 7 October 2026, end of Session 28: **the Session 22 archive, [#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119), reached nit-floor
+and merged as `bcd5bc1`, a merge commit (Alex), and Alex answered the inventory's questions: Decision 6's threshold is 7 or more hunks or 33 or more changed lines,
 and C keeps its place, re-scoped to one contract in the briefs rather than a token saving, with the inventory's
 corrections to research 02 folded into C's PR.** Next: archive Session 23, then C.
 
@@ -287,7 +287,7 @@ inside the cross-origin panel, and Chrome does not block it — observed live 12
 
 **Alex set Decision 6's threshold at 7 or more hunks or 33 or more changed lines, kept item C next but re-scoped
 to one contract in the briefs, and put the inventory's corrections to research 02 in C's PR.** The Session 22
-archive is open as #119, at nit-floor. Nothing merged in-session.
+archive, #119, reached nit-floor and Alex merged it in-session as `bcd5bc1`, a merge commit.
 
 **Setup:** #117 (`55f9230`) and the Session 27 handoff #118 (`f5eb1d2`) had merged at 08:03Z on 7 October, as
 merge commits (Alex), so `main`'s loading block was current. No PRs were open, the tree was clean, the remote
@@ -306,7 +306,7 @@ Opus 5.5 at `high`, permission mode auto.
   three-byte fix, as the body says. The reviewer followed item C's contract again.
 - **Alex's answers** (loading step 5(b)): the three above, put to him while the reviewer ran; recorded in memory
   `project-workflow-optimisation.md`, and in research 02 by C's PR.
-- **Merged:** nothing in-session. **Uploaded:** no.
+- **Merged:** #119 as `bcd5bc1` at 08:11Z (Alex). **Uploaded:** no.
 
 **Handoff facts:**
 
@@ -684,17 +684,17 @@ Opus 5.5 at `high`, permission mode auto.
    Archive Session 21 (cites: `git grep -n "Session 21"`, and `git grep -n -B1 "^ *21"` for a wrapped one).~~
    ~~Session 21 archived in Session 27 as #117. With Session 27's entry the band holds 6 entries (Sessions 22 to 27);
    re-take its byte figure after this handoff's last commit. Archive Session 22 (cites: `git grep -n "Session 22"`,
-   and `git grep -n -B1 "^ *22"` for a wrapped one).~~ Session 22 archived in Session 28 as #119. With Session 28's
+   and `git grep -n -B1 "^ *22"` for a wrapped one).~~ Session 22 archived in Session 28 as #119 (`bcd5bc1`). With Session 28's
    entry the band holds 6 entries (Sessions 23 to 28); re-take its byte figure after this handoff's last commit.
    Archive Session 23 (cites: `git grep -n "Session 23"`, and `git grep -n -B1 "^ *23"` for a wrapped one). It
    stays its own PR until item B's PR rewrites `docs/SESSION-HANDOFF.md` §6 (Decision 5, Alex, Session 23).
 3. **Confirm the state, live.**
     - Run `git status --short` (expect clean), `git log --oneline -5 origin/main` and `gh pr list`.
-    - Expect two open PRs unless Alex has merged them: #119 (the Session 22 archive) and this handoff (based on
-      #119). #117 and #118 merged before Session 28 started. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - Expect one open PR unless Alex has merged it: this handoff. #119 (the Session 22 archive) merged in Session
+      28 as `bcd5bc1`. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete),
-      plus whichever of `docs/CC-006-archive-session-22` and `docs/CC-006-close-session-28` have not merged.
-      #117's and #118's branches were gone from the remote by Session 28's start.
+      plus `docs/CC-006-close-session-28` if it has not merged.
+      #117's, #118's and #119's branches were gone from the remote by Session 28's handoff.
     - `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
