@@ -328,6 +328,7 @@ reported Opus 5.5 at `high`, permission mode auto.
     | After the loading reads     | 32%    | 42%    | 30%          | 119k    |
     | Archive review dispatched   | 34%    | 43%    | 30%          | 142k    |
     | Inventory digested, handoff | 46%    | 44%    | 31%          | 151k    |
+    | Handoff reviewed, pushed    | 52%    | 45%    | 32%          | 173k    |
 
 - **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
 - **Warning signs:** one, the same as Sessions 22 to 26: step 1's `get_usage` came after
