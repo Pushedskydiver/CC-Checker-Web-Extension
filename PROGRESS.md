@@ -3,7 +3,13 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 29)
+## Next workstreams (after Session 30)
+
+Updated 7 October 2026, end of Session 30: **#123's confirm round reached nit-floor, Session 24 is archived inside
+this session's PR, [#124](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/124) (stacked on #123),
+with `docs/SESSION-HANDOFF.md` rewritten for one PR per session, and CC-004 row 11 has a five-slice plan with
+`spec-grill` R1 folded (§Row 11's slice plan).** Nothing merged; nothing in `src/` changed yet. Next: the plan's
+confirm round if #124 did not carry it, then the `implementer` builds row 11.
 
 Updated 7 October 2026, end of Session 29: **the Session 23 archive,
 [#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121), and the first Session 29 handoff,
@@ -355,6 +361,62 @@ and `docs/**` each fire both).
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
+## Session 30 — 7 October 2026 (CC-004: row 11 planned and grilled; Session 24 archived inside #124)
+
+**CC-004 row 11 has a five-slice plan, grilled once, and its central bug is reproduced: a malformed relayed
+`colorPicked` turns the background black, persists it and logs nothing.** Session 24 is archived as the first
+commit of this session's PR, #124, the first under Decision 5. Nothing merged.
+
+**Setup:** #123 was still open, so `PROGRESS.md` was read from its branch. The tree was clean, the remote branches
+were the three standing ones plus #123's, and the only worktree was the main checkout. The band was 6 entries and
+28,749 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `9ce7cfc`. `get_session self` reported
+Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **#123's confirm round** (`copilot-surrogate`, Fable, ~39k, in a detached worktree at `9ce7cfc`): all four folds
+  confirmed, the 25-of-34 count reproduced at `ddaab4e`, nit-floor reached. One new LOW: loading step 3 said the
+  round "waited on trigger 4 (5-hour window at 84%)", but trigger 4 fires at 85%; the rule that held it was §1's
+  "Budget before dispatching". That line is rewritten here, not on #123's branch.
+- **[#124](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/124)**, `docs/CC-006-session-30`,
+  stacked on #123: `fd5033b` archives Session 24 (row 24, five cites to `git show 52b44ea:PROGRESS.md`) and
+  rewrites `docs/SESSION-HANDOFF.md` §1, §6 and §7 per research 02 §Decision 5 rewrite list items 1 to 5. The band
+  after it was 5 entries and 24,266 bytes, 266 over the byte line; with this entry it is 6, so Session 25 goes
+  next.
+- **Row 11 planned** from the code (`src/context.tsx`, its callers, `background.js`, `content.js`), as
+  §Row 11's slice plan: validator (Vitest), e2e red then wire, the bridge as `useColorPicked`, `setColor(key,
+value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, built and ran a throwaway e2e):
+  0 BLOCKING, 2 MATERIAL (slice 5's doc list was short; `docs/CONVENTIONS.md:140-141`'s pending `ColorTuple`
+  rename fires in slice 4), 6 LOW, 3 nits, all folded in `ae3fbaf`. A confirm round is owed.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1, at 141k after #123's confirm round finished; the plan was written into the handoff and grilled
+  beside it (Session 29 pattern 1), and the soft line passed at 176k with the fold done.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
+    | ----------------------- | ------ | ------ | ------------ | ------- |
+    | Start (step 1)          | 0%     | 50%    | 36%          | 81k     |
+    | After the loading reads | 0%     | 50%    | 36%          | 89k     |
+    | Row 11 code read        | 5%     | 50%    | 37%          | 141k    |
+    | Grill folded, handoff   | 11%    | 51%    | 38%          | 176k    |
+
+- **Plan usage:** the 5-hour window resets at 16:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
+- **Warning signs:** one, the same as Sessions 22 to 29: step 1's `get_usage` came after the loading block and
+  `docs/SESSION-HANDOFF.md` had been read. Each reviewer had its own detached worktree in the scratchpad.
+- **Clarifying question:** none.
+
+**Major novel patterns Session 30:**
+
+1. **The archive, a confirm round and reading the code for a plan took 89k to 141k**: `context.tsx`, the two
+   content-side scripts, four callers and three doc sections were the bulk. A plan written at the handoff, with
+   the grill beside it, still let the session move product, which an archive alone never did.
+2. **The grill reproduced the bug before anything was built.** Asked to verify slice 2's red claim by running it,
+   it built the extension and ran one throwaway test, which corrected the plan's mechanism (black and persisted,
+   not NaN) and added the positive control the test needed. Ask a grill to run the cheap experiment.
+
 ## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, product work next)
 
 **Alex moved the next session to product work, CC-004 row 11, and parked the workflow work.** The Session 23
@@ -680,53 +742,42 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 
 ## Next session loading instructions
 
-Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"). The
-workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
+Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"); steps 1 to
+5 rewritten in Session 30. The workflow block it replaced, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
 
-1. **Call `get_usage` first**, and record `context.tokensUsed` and the MCP tools category. **Then run `git fetch`
-   and `gh pr list`:** if this handoff (`docs/CC-006-product-next`) is still open, read `PROGRESS.md` from its
-   branch, not `main`.
-   Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph, and §The approved
-   plan (CC-004). Not research 01 or 02: both are parked (step 6). Take a second `get_usage` after the reads.
-2. **Archive, inside the session's handoff PR.** With Session 29's entry the band holds 6 entries (Sessions 24 to
-   29). Archive Session 24 (cites: `git grep -n "Session 24"`, and `git grep -n -B1 "^ *24"` for a wrapped one)
-   as the first commit on the session's handoff branch, not its own PR: Decision 5 (Alex, Session 23, research
-   02), the one part of item B still live. The same PR rewrites `docs/SESSION-HANDOFF.md` §6's "An archive is its
-   own small PR" and the other lines in research 02 §Decision 5 rewrite list, items 1 to 5. Measure the band
-   inside the commit command (Session 28 pattern 2). Push the branch after the archive commit, so a session that
-   stops early loses nothing.
+1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
+   `git fetch` and `gh pr list`:** if #124 (`docs/CC-006-session-30`) is still open, read `PROGRESS.md` from its
+   branch, not `main`. Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph,
+   and §Row 11's slice plan. Take a second `get_usage` after the reads.
+2. **Archive Session 25** (cites: `git grep -n "Session 25"`, and `git grep -n -B1 "^ *25"` for a wrapped one) as
+   the first commit on the session's branch, per `docs/SESSION-HANDOFF.md` §6 as #124 rewrote it: one PR per
+   session, measured inside the commit command, pushed straight after. With Session 30's entry the band holds 6
+   entries (Sessions 25 to 30). If #124 has not merged, the session branch stacks on it (§6, Stacking).
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect one open PR unless Alex has merged it: this handoff, `docs/CC-006-product-next`. #121 and #122
-      merged in Session 29. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
-    - This handoff is #123. Its review found 1 MATERIAL, folded in `7ab93b3`; the confirm round it owes waited on
-      trigger 4 (5-hour window at 84%). If #123 is still open, run that round first (one fresh `copilot-surrogate`
-      on the fold's range); if Alex has merged it, no review runs (`docs/SESSION-HANDOFF.md` §4).
+    - Expect two open PRs unless Alex has merged them: #123 (`docs/CC-006-product-next`, confirm round done in
+      Session 30, nit-floor) and #124 stacked on it. Merge order is #123 then #124. Say which merged in the entry,
+      and rewrite every hedge here that the merges overtake.
+    - #124's own review: see Session 30's entry for whether it ran and what it found. If #124 merged, no review
+      runs (`docs/SESSION-HANDOFF.md` §4).
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      this handoff's if unmerged. `git worktree list`: only the main checkout.
+      #123's and #124's if unmerged. `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: CC-004 row 11**: a typed action API, the message bridge as its own hook, real payload
-   validation (`da-review`). Product work resumes now (Alex, Session 29). That overtakes research 01 Decision 6
-   ("All of A to H before CC-004 row 11"): PR G is parked with the rest (step 6).
-    - **Read the code, not the docs:** `src/context.tsx` (colour state, derived values, `localStorage`, the
-      actions, and the `chrome.runtime.onMessage` bridge in one file), the callers of its
-      `handleContrastCheck(value, name: string)`, and `public/app/background.js` and `content.js` for what each message really carries. The
-      contract is `docs/ARCHITECTURE.md` §Message flows and `docs/DA-REVIEW.md` §Cross-context consistency. The
-      brief's original wording is `git show 90fc6a5^1:PROGRESS.md`, §Brief, the `src/context.tsx` bullet.
-    - **Inside `src/` only.** A shared `messages.ts` across the three contexts was killed by the grill (§The
-      approved plan, "What the grill killed"; re-entry is the Safari `browser.*` shim), and `public/app/*.js`
-      stays plain unbundled JS. Row 12 (a reducer or external store) stays deferred: row 11 must not drag it in.
-    - **Plan, then build.** A short plan of slices, each with the test that proves it (TDD per `AGENTS.md`; the
-      e2e suite pins the message flows, and a payload validator can take Vitest cases), then one `spec-grill`
-      round on the plan (`AGENTS.md` trigger table), then the `implementer` builds it on
-      `refactor/CC-004-typed-messages` (read `docs/GIT.md` before naming it). `da-review` is mandatory; whether
-      `copilot-surrogate` joins it is the `AGENTS.md` trigger table's call (a Vitest file or `test/**` fires both, as does
-      a diff over 200 lines).
+5. **Primary work: build CC-004 row 11 from §Row 11's slice plan** (Alex, Session 29: product first).
+    - **Confirm round first, if Session 30's entry says it is still owed:** one fresh `spec-grill` in
+      verification mode on the plan's text at `ae3fbaf` and later, confirm-or-disprove only
+      (`docs/DEVELOPMENT.md` §Verification rounds). Fold, then build.
+    - **Dispatch the `implementer` at the first checkpoint**, in the background, on
+      `refactor/CC-004-typed-messages` cut from `main` (after #123 and #124 merge; otherwise ask Alex before
+      stacking code on two docs PRs). The brief is the plan: five slices, one green commit each, slice 2's test
+      watched red on `main` first, slice 4's rename as its own commit. It never pushes; the coordinator does.
+    - **Then `da-review` and `copilot-surrogate`**, each in its own worktree outside the repo, at most two at a
+      time; fold, confirm round where the rule calls for one, PR, Alex merges.
     - **Model:** Opus 5.5 at `high` for the coordinator; the `implementer` on Sonnet 5.5 at `high`, reviewers on
-      Fable 5.1 at `high`, at most two at a time, each in its own worktree outside the repo. Pass `model` on every
-      dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and §7.
+      Fable 5.1 at `high`. Pass `model` on every dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and
+      §7.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
