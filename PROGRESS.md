@@ -10,7 +10,7 @@ Updated 7 October 2026, end of Session 29: **the Session 23 archive,
 [#122](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/122), merged at 09:05Z as `3855b83` and
 `52b44ea`, merge commits (Alex); then Alex moved the
 next session to product work: CC-004 row 11, with research 02 and PR G parked until one of them costs a session
-real work.** He asked what the last sessions had done; since 29 September, 25 of 34 merges to `main` were
+real work.** He asked what the last sessions had done; since 29 September, 25 of 34 merges to `main` at `ddaab4e` were
 handoffs or archives, and nothing in `src/`, `public/` or `test/` has changed since #72 (28 September). Next: archive Session 24 inside
 the handoff PR (Decision 5), then plan and build row 11.
 
@@ -318,7 +318,7 @@ permission mode auto.
   C's contract again.
 - **Alex moved the work to product** after asking what the last sessions had actually done: CC-004 row 11 next,
   and research 02's items, `CC-005` PR G, the handoff-lines review and the model benchmark parked with re-entry
-  on pain (loading step 6). Only Decision 5 stays live: the archive goes inside the handoff PR. The loading block
+  on pain (loading step 6). Only Decision 5 stays live as work: the archive goes inside the handoff PR. The loading block
   was rewritten for row 11; the workflow block it replaced, with C's brief as the coordinator had settled it, is
   `git show 2539cfe:PROGRESS.md`. Two `copilot-surrogate` runs on #122 were stopped unread, one when Alex
   redirected the session and one when #122 turned out to have merged.
@@ -359,12 +359,11 @@ permission mode auto.
    Match the heading level, or `grep -n` first.
 3. **The handoff loop fed itself.** Each session's ~45k of loading reads plus a ~30k archive PR reached trigger 1,
    and each handoff added the entry that forced the next archive: Sessions 22 to 29 did one archive and at most
-   one workflow step each, with 25 of 34 merges since 29 September being handoffs or archives. The workflow work
+   one workflow step each, with 25 of 34 merges since 29 September (at `ddaab4e`) being handoffs or archives. The workflow work
    meant to fix that was queued behind itself. Alex broke it by parking the work; the lesson is to count shipped
    product changes in the entry, not only the PRs.
 4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
-   of their opening, and a commit pushed afterwards landed on a branch nobody would merge. Session 26's #113 merged
-   mid-review the same way.
+   of their opening, and a commit pushed afterwards landed on a branch nobody would merge.
 
 ## Session 28 — 7 October 2026 (CC-006: Session 22 archived as #119, Alex answers the inventory's questions)
 
@@ -720,8 +719,9 @@ workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRES
     - **Plan, then build.** A short plan of slices, each with the test that proves it (TDD per `AGENTS.md`; the
       e2e suite pins the message flows, and a payload validator can take Vitest cases), then one `spec-grill`
       round on the plan (`AGENTS.md` trigger table), then the `implementer` builds it on
-      `refactor/CC-004-typed-messages` (read `docs/GIT.md` before naming it). `da-review` is mandatory; both
-      reviews if `test/**` changes or the diff passes 200 lines.
+      `refactor/CC-004-typed-messages` (read `docs/GIT.md` before naming it). `da-review` is mandatory; whether
+      `copilot-surrogate` joins it is the `AGENTS.md` trigger table's call (a Vitest file or `test/**` fires both, as does
+      a diff over 200 lines).
     - **Model:** Opus 5.5 at `high` for the coordinator; the `implementer` on Sonnet 5.5 at `high`, reviewers on
       Fable 5.1 at `high`, at most two at a time, each in its own worktree outside the repo. Pass `model` on every
       dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and §7.
