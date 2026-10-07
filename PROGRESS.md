@@ -319,6 +319,7 @@ Opus 5.5 at `high`, permission mode auto.
     | After the loading reads      | 54%    | 45%    | 32%          | 112k    |
     | Reviewer running, Alex asked | 57%    | 46%    | 32%          | 139k    |
     | Archive folded, handoff      | 59%    | 46%    | 33%          | 146k    |
+    | Handoff reviewed, pushed     | 62%    | 46%    | 33%          | 168k    |
 
 - **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
 - **Warning signs:** one, the same as Sessions 22 to 27: step 1's `get_usage` came after
@@ -661,7 +662,7 @@ Opus 5.5 at `high`, permission mode auto.
 1. **Call `get_usage` first, before reading anything**, and record its `context.tokensUsed` and MCP tools category: it
    is the `/context` figure, so do not ask Alex to run `/context` (Alex, Session 21, in `git show ae49392:PROGRESS.md`, correcting Session 20
    pattern 2, in `git show 67fde5d:PROGRESS.md`). Starts: Session 20 78,058 (MCP tools 19,720); Session 21 75,131 (19,855); Session 22 83,255
-   (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855), Session 25 80,518 (19,855), Session 26 81,299 (19,846), Session 27 81,148 (19,846) and Session 28 76,858 (19,846), all seven
+   (19,855), Session 23 75,948 (19,855), Session 24 75,933 (19,855), Session 25 80,518 (19,855), Session 26 81,299 (19,846), Session 27 81,148 (19,846) and Session 28 76,858 (19,846); Sessions 22 to 28, all seven,
    taken late, after `docs/SESSION-HANDOFF.md` and this block had been read; take it before even those (Session 24
    pattern 1). Take a second reading after the loading reads (Session 23: 128,962; Session 24: 121,940; Session 25:
    144,147, with ~20k of it a stale `main` read, Session 25 pattern 1; Session 26: 116,948; Session 27: 118,575; Session 28: 111,929), as the grill's M1 asks. The inventory found these starts 9.7k to 17.8k late against the first turn's meter (`02-sources/inventory.md` §A). **Before the reads,
