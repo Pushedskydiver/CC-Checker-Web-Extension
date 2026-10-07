@@ -284,7 +284,7 @@ checkout. The band was 6 entries and 24,721 bytes. The pre-push suite was green 
   #113) and 2 nits declined. The band is 5 entries and 21,523 bytes before this entry.
 - **[#113](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/113)**, `docs/CC-006-fold-r1`, `319c414` + `28688c7` + `d1c6625`, ready. `spec-grill` R2 (Fable,
   ~121k): 23 CONFIRMED, 0 DISPROVED, 2 N/A (B1, L9), and 6 new LOW. `copilot-surrogate` (Fable, ~126k): 98
-  claims, 3 falsified, 2 MATERIAL (Item D called R1 `spec-grill`'s first real run, but `docs/history/SESSIONS.md`
+  claims, 3 falsified, 2 MATERIAL (Item D called R1 and its verification `spec-grill`'s first two real runs, but `docs/history/SESSIONS.md`
   records six earlier; row B said "§6 and §7 only" against a §1 rewrite) and 1 LOW. The `implementer` (Sonnet,
   ~69k, ~2 minutes, its own branch worktree) folded everything in `28688c7` and read its full diff. A fresh
   confirm verifier (Fable, ~79k) on `319c414..28688c7`: 23 CONFIRMED, 0 DISPROVED, nit-floor; its 3 nits are in
@@ -675,7 +675,7 @@ Opus 5.5 at `high`, permission mode auto.
       terminal's four claude.ai connectors, merged as #98 (`54fb4ba`; research 02 §Item F, checked). The desktop figure
       moves only with Alex's own settings (Settings → Claude Code → Browser, claude.ai/customize/connectors).
       If he changes either, step 1's readings measure it.
-    - **(b) The R1 fold, built as draft #113 (Session 25), needs its review.** ~~Digest R1 and fold research 02
+    - **(b) The R1 fold, #113, is reviewed, confirmed at nit-floor and ready (Session 26); next is the token inventory.** ~~Digest R1 and fold research 02
       from the verification report; put its five Alex questions to him first.~~ Done in Session 25: Alex
       answered (the Session 25 entry), and the `implementer` built the fold, which records them as Decisions 6 to 8 (after Session 23's Decision 5) plus the (j) disposition. ~~`copilot-surrogate` (research 02 is `docs/**`) and `spec-grill` R2, a
       verification round per `docs/DEVELOPMENT.md` §Verification rounds, at most two at a time, each in its own
