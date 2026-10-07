@@ -366,9 +366,9 @@ inside the cross-origin panel, and Chrome does not block it — observed live 12
 
 ## Session 30 — 7 October 2026 (CC-004: row 11 planned and grilled; Session 24 archived inside #124)
 
-**CC-004 row 11 has a five-slice plan, grilled once, and its central bug is reproduced: a malformed relayed
-`colorPicked` turns the background black, persists it and logs nothing.** Session 24 is archived as the first
-commit of this session's PR, #124, the first under Decision 5. Nothing merged.
+**CC-004 row 11 has a five-slice plan, grilled twice and ready to build, and its central bug is reproduced: a
+malformed relayed `colorPicked` turns the background black, persists it and logs nothing.** Session 24 is archived
+as the first commit of this session's PR, #124, the first under Decision 5. Alex merged #123 mid-session.
 
 **Setup:** #123 was still open, so `PROGRESS.md` was read from its branch. The tree was clean, the remote branches
 were the three standing ones plus #123's, and the only worktree was the main checkout. The band was 6 entries and
