@@ -490,7 +490,7 @@ reported Opus 5.5 at `high`, permission mode auto.
    the prompts had already taken; what C still offers is one contract in the briefs instead of in each prompt, the
    file-write mechanics and the SUMMARY line. Whether C keeps its place is Alex's call.
 3. **The recorded start readings are not starts.** The inventory read the first turn's meter from the jsonl, 9.7k
-   to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1) is the cure; until then,
+   to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1, in `git show 52b44ea:PROGRESS.md`) is the cure; until then,
    the jsonl gives the true figure after the fact.
 
 ## Session 26 — 7 October 2026 (CC-006: Session 20 archived as #115, #113 reviewed and merged)
@@ -545,7 +545,7 @@ checkout. The band was 6 entries and 24,721 bytes. The pre-push suite was green 
 
 1. **Two units fitted in one session because their reviews overlapped.** Four Fable reviews and one Sonnet fold
    ran in the background, at most two at a time, while the coordinator built the archive: 117k to 161k for both
-   units, against Session 24's 30k for one. Each wrote its report to a scratchpad file and replied in ~1.5k
+   units, against Session 24's 30k for one (in `git show 52b44ea:PROGRESS.md`). Each wrote its report to a scratchpad file and replied in ~1.5k
    characters, the shape item C proposes, and the coordinator read none of the full reports. For C:
    `copilot-surrogate` has no Write tool and wrote its reports with a Bash heredoc.
 2. **Manual worktrees outside the repo avoid Session 25 pattern 2.** `git worktree add ../cc-<name>` keeps
@@ -568,7 +568,7 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 
 **Done:**
 
-- **Alex's answers** to the five questions Session 24 listed, asked in one batch: E's fold leg (B2(c)) yes in
+- **Alex's answers** to the five questions Session 24 listed (in `git show 52b44ea:PROGRESS.md`), asked in one batch: E's fold leg (B2(c)) yes in
   principle, with the threshold from the inventory; drop both the CI commit-subject check (M6) and
   `autoCompactWindow` (L1); approve the verifier's order. On (j) he said to go with the evidence: the delegated
   merge passed on #55 and #69 and was refused on #61 and #100, so the delegation stays and H rewrites `AGENTS.md`
@@ -606,7 +606,7 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 **Major novel patterns Session 25:**
 
 1. **When the previous handoff is unmerged, `main`'s loading block is stale, and reading it first cost ~20k**
-   (144k after the loading reads, against Session 24's 122k). The live check (`gh pr list`) sits in step 3, after
+   (144k after the loading reads, against Session 24's 122k, in `git show 52b44ea:PROGRESS.md`). The live check (`gh pr list`) sits in step 3, after
    the reads. Until item A moves it, run `gh pr list` before step 1's reads: if a `Close Session` PR is open, read
    `PROGRESS.md` from its branch (`git show origin/<branch>:PROGRESS.md`).
 2. **A worktree-isolated subagent fails `npm run lint` in the main checkout while it runs.** The harness puts its
@@ -614,70 +614,9 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
    `test/e2e/fixtures.ts`). `--ignore-pattern '.claude/worktrees/**'` is a stand-in; adding the path to ESLint's
    ignores is a config change with both reviews, not done here.
 3. **A background `implementer` turned the fold into a draft PR for 68k Sonnet tokens and ~3k of coordinator
-   context.** The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`) and Session 24 pattern 2, applied to the build: the next
+   context.** The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`) and Session 24 pattern 2 (in `git show 52b44ea:PROGRESS.md`), applied to the build: the next
    session reviews instead of builds. The brief's "read your full diff" was skipped, so the review must read the
    whole file.
-
-## Session 24 — 6 October 2026 (CC-006: Session 18 archived as #110, R1 verified)
-
-**Every finding in `spec-grill` R1 was re-checked against `eb6099a` by a background verifier, and the report is
-on disk for the fold** (20 CONFIRMED, 3 PARTLY, 0 DISPROVED, 2 OVERTAKEN by Decision 5). The Session 18 archive is open as #110, at nit-floor. Nothing merged
-this session.
-
-**Setup:** #106, #107, #108 and #109 had all merged between 04:09Z and 04:10Z, as merge commits (Alex). No PRs
-were open, the tree was clean, the remote branches were the three standing ones, and the only worktree was the
-main checkout. The band was 6 entries and 23,614 bytes. The pre-push suite was green (36 Vitest, 21
-Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#110](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/110)**,
-  `docs/CC-006-archive-session-18`, `7cbce43` + fold `ecb8cd7`: Session 18 becomes row 18, and four cites of
-  its content point at `git show eb6099a:PROGRESS.md`. `copilot-surrogate` (Fable, ~71k): 33 claims, 1
-  falsified (the first commit's body counted four cites and listed three), 2 LOW and 2 nits, all folded; the
-  coordinator read the fold (decision (r)). The band is 5 entries and 19,976 bytes before this entry.
-- **R1 verified**, by a `general-purpose` agent on Fable (~173k tokens, ~8 minutes) in its own detached worktree at
-  `eb6099a`, dispatched in the background while #110 was built and reviewed. Its report is
-  `docs/research/02-sources/spec-grill-r1-verification.md`, committed by this handoff: a verdict, evidence at
-  `eb6099a` and a proposed fold per finding, Decision 5's rewrite list, and an order. PARTLY: M1, M5 and M8. OVERTAKEN: B1 and L9. Five folds need Alex
-  first: B2(c)'s size threshold for doc folds going to `implementer` (it reverses research 01 Decision 2),
-  M6's CI commit-subject check (only as a stated exception to §Process-rule promotion), L1's
-  `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask, Session 21 pattern 2 in `git show ae49392:PROGRESS.md`), and A with
-  H (answers on (f), (g), (h), (j) (held open per L4), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
-  inventory, C, B alone, A with H, E's archive leg, G, D, I. Not yet read by the coordinator beyond that reply.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1, and 2 with it. #110 was opened at 152k, above 130k and past the soft line.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
-    | ----------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)    | 8%     | 33%    | 19%          | 76k     |
-    | After the loading reads | 9%     | 33%    | 19%          | 122k    |
-    | #110 opened             | 17%    | 34%    | 20%          | 152k    |
-    | Handoff reviewed        | 24%    | 35%    | 21%          | 177k    |
-
-- **Plan usage:** the 5-hour window resets at 09:00Z on 6 October, and the weekly windows at 15:00Z on
-  9 October.
-- **Warning signs:** one, the same as Sessions 22 and 23: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and the loading block had been read. Each subagent had its own detached worktree.
-- **Clarifying question:** none.
-
-**Major novel patterns Session 24:**
-
-1. **Step 1 cannot be obeyed as written, so it has been missed three sessions running.** "Call `get_usage`
-   first, before reading anything" sits inside the block the session has to read to learn it, and the paste
-   prompt (`docs/SESSION-HANDOFF.md` §3) tells it to read that doc too. The fix is to put the call in the paste
-   prompt itself; that is a `docs/SESSION-HANDOFF.md` change, so it belongs with research 02's item A, not here.
-   The late reading cost about 800 tokens in Sessions 23
-   and 24 (75,933 against 75,131 for Session 21's early one), and about 8k in Session 22 (in `git show f5eb1d2:PROGRESS.md`).
-2. **A verifier in the background turned the fold's slowest step into a file.** Dispatched at 122k, it ran
-   beside the archive unit and cost the coordinator only its capped reply, so the next session folds from
-   evidence instead of re-checking 25 findings. The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`), applied to the digest.
-3. **The archive unit alone took the session from 122k to 152k** (edit, suite, one review digest, a fold,
-   the PR), so after a 46k loading read one unit per session is still the shape. Item A is the lever.
 
 ## Next session loading instructions
 
@@ -816,5 +755,5 @@ workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRES
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
