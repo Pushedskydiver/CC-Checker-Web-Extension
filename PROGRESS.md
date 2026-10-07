@@ -3,7 +3,13 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 29)
+## Next workstreams (after Session 30)
+
+Updated 7 October 2026, end of Session 30: **#123's confirm round reached nit-floor, Session 24 is archived inside
+this session's PR, [#124](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/124), with
+`docs/SESSION-HANDOFF.md` rewritten for one PR per session, and CC-004 row 11 has a five-slice plan, grilled twice
+and ready to build (§Row 11's slice plan).** Alex merged #123 at 12:03Z as `30ed283`, a merge commit, and GitHub
+retargeted #124 onto `main`. Nothing in `src/` changed yet. Next: the `implementer` builds row 11.
 
 Updated 7 October 2026, end of Session 29: **the Session 23 archive,
 [#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121), and the first Session 29 handoff,
@@ -292,8 +298,134 @@ pull requests.
   most of them used inside their own file, plus `public/app/*.js` as unused files it cannot resolve from the
   manifest.
 
+### Row 11's slice plan (Session 30, `spec-grill` R1 and R2 folded)
+
+Measured against `52b44ea`. Branch `refactor/CC-004-typed-messages`, cut from `main` once #123 and Session 30's
+PR have merged. One green commit per slice; the pre-push suite is green at every commit. `spec-grill` R1 (Fable,
+~99k) found 0 BLOCKING, 2 MATERIAL, 6 LOW and 3 nits, all folded below. R2 (Fable, ~46k) confirmed every fold and
+found 1 MATERIAL, the closing grep could never print nothing, and 2 nits, folded and checked by hand (the two-round
+cap). Ready for the `implementer`.
+
+**Findings that shape it.** `handleContrastCheck(value, name: string)` silently ignores a `name` that is neither
+colour. Its callers are `color-control.tsx:41`, `color-controls.tsx:45` and the bridge (`context.tsx:150`), and
+four files restate `'background' | 'foreground'` inline (`color-control.tsx:10`, `color-controls.tsx:12` as
+`TColorName`, `color-picker-cta.tsx:7`, `text-input.tsx:8`), while `TPickedColor.key` is already `keyof TColors`.
+The bridge's only check is `message.key && message.rgb` (`context.tsx:167`): any truthy `rgb` reaches
+`rgbToHsl`. Reproduced by the grill on today's build: a relayed `{ type: 'colorPicked', key: 'background', rgb:
+['a', 'b', 'c'] }` turned the background black (`#ratio` 12.72 → 1.32), stored `[0,null,null]`, which
+`readStoredColor` reloads as black, sent `closeColorPicker`, and logged nothing. `toHslTuple` zeroes the NaN hue;
+saturation and lightness stay NaN.
+
+1. **Payload validator, Vitest first, one case at a time** (`AGENTS.md` TDD). `src/utils/parse-picked-color.ts`
+   exports `parsePickedColor(message: unknown): TPickedColor | null`: `type === 'colorPicked'`, `key` is
+   `'background'` or `'foreground'`, `rgb` an array of exactly three numbers. Two kinds of rule, labelled in the
+   code: non-object, wrong length, non-number and NaN would corrupt state; integer and 0 to 255 are the
+   `content.js:69-70` contract (a `Uint8ClampedArray` read), since `chroma.rgb` itself accepts `[256, 0, 0]` and
+   `[1.5, 2, 3]`. Returns a fresh tuple, ignores extra fields. One case per rejection class and one per key
+   accepted, in `src/utils/parse-picked-color.test.ts`. Behaviour-neutral: nothing calls it yet, so slice 2's red
+   is still the reproduction (`docs/TESTING.md`).
+2. **E2e red, then wire.** One Playwright test in the `app` describe, not the patched-manifest one:
+   `sendToActiveTab` relays the malformed pick above, and `#ratio`, `input#background` and
+   `localStorage.background` stay unchanged; then a valid relayed pick (`[255, 0, 0]` to `foreground`) lands, so
+   the test cannot pass on a message that never arrived. Confirm it fails on `main`, then call
+   `parsePickedColor` in the existing `handleMessage`. An invalid message is dropped whole: no state change, no
+   `closeColorPicker`, and one `console.warn` naming the rejected field (the no-console-errors test filters
+   `type() === 'error'`, `extension.spec.ts:593`). `runtime.onMessage` hears only this extension's own contexts,
+   so an invalid pick means `content.js` drifted; Escape still closes the loupe.
+3. **The bridge as its own hook, refactor under green.** `src/hooks/useColorPicked.ts` (camelCase like
+   `useTabbed.ts`, `docs/CONVENTIONS.md:144`): `useColorPicked(onPicked: (picked: TPickedColor) => void)` owns
+   the listener, the relay-only filter (`sender.tab` set → ignored, with the existing comment), the validator,
+   `useEffectEvent` for `onPicked`, the `closeColorPicker` reply after `onPicked` (today's order,
+   `context.tsx:150-154`), and the cleanup. `context.tsx` then holds no `chrome.*`. Proof: the existing picker
+   e2e tests and slice 2's, unchanged and green.
+4. **Typed action API.** `handleContrastCheck(value, name: string)` becomes `setColor(key: TColorKey, value)`,
+   with `export type TColorKey = keyof TColors` in `src/global-types.ts`; `TPickedColor.key` and the four inline
+   unions use it. The argument order swaps too; `tsc` catches a missed caller because the types differ. Proof:
+   `tsc` in `npm run lint`, watched failing on a caller left unconverted (`docs/CONVENTIONS.md` §Verify a gate can
+   fail), and the e2e suite. `updateView` and `reverseColors` keep their names and signatures. **Its own commit:**
+   `ColorTuple` becomes `TColorTuple` (25 uses in 4 files), because `docs/CONVENTIONS.md:140-141` says to rename
+   it when `src/global-types.ts` is next touched; that sentence is rewritten in slice 5.
+5. **Docs, in the same PR.** Every line the change falsifies, found by grep, not this list alone:
+   `docs/ARCHITECTURE.md` §Message flows and §State; `docs/DA-REVIEW.md` §Cross-context consistency and §React
+   components and context; `docs/CONVENTIONS.md:140-146`, `:149`, `:167` and `:168` (the `ColorTuple` rule, the
+   one-camelCase-hook claim, `handleContrastCheck`, "`chrome.*` is confined to `src/context.tsx`, `color-picker-cta.tsx` and `actions.tsx`");
+   `docs/SELF-REVIEW.md:123` and `:347`; `docs/GLOSSARY.md:42`, `:55-56` and `:79`; `README.md:127` (the file tree);
+   `docs/TESTING.md` §Unit tests (a paragraph for the new file); `docs/DEVELOPMENT.md:47`. Counts:
+   `git grep -n -E "36 (Vitest|unit)|21[ -](Playwright|e2e|green|test)"`, and the wrapped forms decision (l) found.
+   Then `git grep -n -P "handleContrastCheck|\bColorTuple\b|TColorName"` prints nothing (`-P`: `\b` matches nothing
+   under `-E` here, and a bare `ColorTuple` would match `TColorTuple`) outside `docs/history/` and
+   `PROGRESS.md`.
+
+**Out of scope:** `public/app/*.js`, a shared `messages.ts` (killed by the grill, above), row 12's reducer or
+store, a typed wrapper for the three messages the iframe sends (`getScreenshot`, `closeColorPicker`,
+`closeChecker`), and renaming `updateView`. Reviews: `da-review` and `copilot-surrogate` (a Vitest file, `test/**`
+and `docs/**` each fire both).
+
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 30 — 7 October 2026 (CC-004: row 11 planned and grilled; Session 24 archived inside #124)
+
+**CC-004 row 11 has a five-slice plan, grilled twice and ready to build, and its central bug is reproduced: a
+malformed relayed `colorPicked` turns the background black, persists it and logs nothing.** Session 24 is archived
+as the first commit of this session's PR, #124, the first under Decision 5. Alex merged #123 mid-session.
+
+**Setup:** #123 was still open, so `PROGRESS.md` was read from its branch. The tree was clean, the remote branches
+were the three standing ones plus #123's, and the only worktree was the main checkout. The band was 6 entries and
+28,719 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `9ce7cfc`. `get_session self` reported
+Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **#123's confirm round** (`copilot-surrogate`, Fable, ~39k, in a detached worktree at `9ce7cfc`): all four folds
+  confirmed, the 25-of-34 count reproduced at `ddaab4e`, nit-floor reached. One new LOW: loading step 3 said the
+  round "waited on trigger 4 (5-hour window at 84%)", but trigger 4 fires at 85%; the rule that held it was §1's
+  "Budget before dispatching". That line is rewritten here, not on #123's branch.
+- **[#124](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/124)**, `docs/CC-006-session-30`,
+  opened stacked on #123 and retargeted onto `main` when #123 merged: `fd5033b` archives Session 24 (row 24, five cites to `git show 52b44ea:PROGRESS.md`) and
+  rewrites `docs/SESSION-HANDOFF.md` §1, §6 and §7 per research 02 §Decision 5 rewrite list items 1 to 5. The band
+  after it was 5 entries and 24,266 bytes, 266 over the byte line; with this entry it is 6, so Session 25 goes
+  next. `copilot-surrogate` (Fable, ~136k, own worktree at `b4322d5`): 74 claims, 1 falsified, 0 above LOW. LOW 1
+  (the start band read 28,749, the pre-fold figure; 28,719 at `9ce7cfc`) and LOW 2 (lines #123's merge overtook)
+  folded, and three nits; one nit declined: §6's `<sha>^` form against the five `52b44ea` cites, which resolve
+  because `52b44ea` is a `main` commit that holds the entry. The coordinator read the fold (decision (r)).
+- **Row 11 planned** from the code (`src/context.tsx`, its callers, `background.js`, `content.js`), as
+  §Row 11's slice plan: validator (Vitest), e2e red then wire, the bridge as `useColorPicked`, `setColor(key,
+value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, built and ran a throwaway e2e):
+  0 BLOCKING, 2 MATERIAL (slice 5's doc list was short; `docs/CONVENTIONS.md:140-141`'s pending `ColorTuple`
+  rename fires in slice 4), 6 LOW, 3 nits, all folded in `ae3fbaf`. R2 (Fable, ~46k, own worktree at `b4322d5`)
+  confirmed every fold and found 1 MATERIAL (the closing `git grep -E` could never print nothing: `ColorTuple`
+  matches inside `TColorTuple`, and `\b` matches nothing under `-E` here) and 2 nits, folded; the coordinator ran
+  the grep forms by hand instead of a third round (the two-round cap).
+- **Merged:** #123 as `30ed283` at 12:03Z on 7 October, a merge commit (Alex). **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 1, at 141k after #123's confirm round finished; the plan was written into the handoff and grilled
+  beside it (Session 29 pattern 1), and the soft line passed at 176k with the fold done.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
+    | ----------------------- | ------ | ------ | ------------ | ------- |
+    | Start (late, step 1)    | 0%     | 50%    | 36%          | 81k     |
+    | After the loading reads | 0%     | 50%    | 36%          | 89k     |
+    | Row 11 code read        | 5%     | 50%    | 37%          | 141k    |
+    | Grill folded, handoff   | 11%    | 51%    | 38%          | 176k    |
+    | Reviews folded          | 20%    | 52%    | 39%          | 208k    |
+
+- **Plan usage:** the 5-hour window resets at 16:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
+- **Warning signs:** one, the same as Sessions 22 to 29: step 1's `get_usage` came after the loading block and
+  `docs/SESSION-HANDOFF.md` had been read. Each reviewer had its own detached worktree in the scratchpad.
+- **Clarifying question:** none.
+
+**Major novel patterns Session 30:**
+
+1. **The archive, a confirm round and reading the code for a plan took 89k to 141k**: `context.tsx`, the two
+   content-side scripts, four callers and three doc sections were the bulk. A plan written at the handoff, with
+   the grill beside it, still let the session move product, which an archive alone never did.
+2. **The grill reproduced the bug before anything was built.** Asked to verify slice 2's red claim by running it,
+   it built the extension and ran one throwaway test, which corrected the plan's mechanism (black and persisted,
+   not NaN) and added the positive control the test needed. Ask a grill to run the cheap experiment.
 
 ## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, product work next)
 
@@ -490,7 +622,7 @@ reported Opus 5.5 at `high`, permission mode auto.
    the prompts had already taken; what C still offers is one contract in the briefs instead of in each prompt, the
    file-write mechanics and the SUMMARY line. Whether C keeps its place is Alex's call.
 3. **The recorded start readings are not starts.** The inventory read the first turn's meter from the jsonl, 9.7k
-   to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1) is the cure; until then,
+   to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1, in `git show 52b44ea:PROGRESS.md`) is the cure; until then,
    the jsonl gives the true figure after the fact.
 
 ## Session 26 — 7 October 2026 (CC-006: Session 20 archived as #115, #113 reviewed and merged)
@@ -545,7 +677,7 @@ checkout. The band was 6 entries and 24,721 bytes. The pre-push suite was green 
 
 1. **Two units fitted in one session because their reviews overlapped.** Four Fable reviews and one Sonnet fold
    ran in the background, at most two at a time, while the coordinator built the archive: 117k to 161k for both
-   units, against Session 24's 30k for one. Each wrote its report to a scratchpad file and replied in ~1.5k
+   units, against Session 24's 30k for one (in `git show 52b44ea:PROGRESS.md`). Each wrote its report to a scratchpad file and replied in ~1.5k
    characters, the shape item C proposes, and the coordinator read none of the full reports. For C:
    `copilot-surrogate` has no Write tool and wrote its reports with a Bash heredoc.
 2. **Manual worktrees outside the repo avoid Session 25 pattern 2.** `git worktree add ../cc-<name>` keeps
@@ -568,7 +700,7 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 
 **Done:**
 
-- **Alex's answers** to the five questions Session 24 listed, asked in one batch: E's fold leg (B2(c)) yes in
+- **Alex's answers** to the five questions Session 24 listed (in `git show 52b44ea:PROGRESS.md`), asked in one batch: E's fold leg (B2(c)) yes in
   principle, with the threshold from the inventory; drop both the CI commit-subject check (M6) and
   `autoCompactWindow` (L1); approve the verifier's order. On (j) he said to go with the evidence: the delegated
   merge passed on #55 and #69 and was refused on #61 and #100, so the delegation stays and H rewrites `AGENTS.md`
@@ -606,7 +738,7 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
 **Major novel patterns Session 25:**
 
 1. **When the previous handoff is unmerged, `main`'s loading block is stale, and reading it first cost ~20k**
-   (144k after the loading reads, against Session 24's 122k). The live check (`gh pr list`) sits in step 3, after
+   (144k after the loading reads, against Session 24's 122k, in `git show 52b44ea:PROGRESS.md`). The live check (`gh pr list`) sits in step 3, after
    the reads. Until item A moves it, run `gh pr list` before step 1's reads: if a `Close Session` PR is open, read
    `PROGRESS.md` from its branch (`git show origin/<branch>:PROGRESS.md`).
 2. **A worktree-isolated subagent fails `npm run lint` in the main checkout while it runs.** The harness puts its
@@ -614,120 +746,46 @@ Playwright) on #111's head `ee4b01e`. Alex merged #110 and #111 mid-start, as `5
    `test/e2e/fixtures.ts`). `--ignore-pattern '.claude/worktrees/**'` is a stand-in; adding the path to ESLint's
    ignores is a config change with both reviews, not done here.
 3. **A background `implementer` turned the fold into a draft PR for 68k Sonnet tokens and ~3k of coordinator
-   context.** The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`) and Session 24 pattern 2, applied to the build: the next
+   context.** The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`) and Session 24 pattern 2 (in `git show 52b44ea:PROGRESS.md`), applied to the build: the next
    session reviews instead of builds. The brief's "read your full diff" was skipped, so the review must read the
    whole file.
 
-## Session 24 — 6 October 2026 (CC-006: Session 18 archived as #110, R1 verified)
-
-**Every finding in `spec-grill` R1 was re-checked against `eb6099a` by a background verifier, and the report is
-on disk for the fold** (20 CONFIRMED, 3 PARTLY, 0 DISPROVED, 2 OVERTAKEN by Decision 5). The Session 18 archive is open as #110, at nit-floor. Nothing merged
-this session.
-
-**Setup:** #106, #107, #108 and #109 had all merged between 04:09Z and 04:10Z, as merge commits (Alex). No PRs
-were open, the tree was clean, the remote branches were the three standing ones, and the only worktree was the
-main checkout. The band was 6 entries and 23,614 bytes. The pre-push suite was green (36 Vitest, 21
-Playwright) on `eb6099a`. `get_session self` reported Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#110](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/110)**,
-  `docs/CC-006-archive-session-18`, `7cbce43` + fold `ecb8cd7`: Session 18 becomes row 18, and four cites of
-  its content point at `git show eb6099a:PROGRESS.md`. `copilot-surrogate` (Fable, ~71k): 33 claims, 1
-  falsified (the first commit's body counted four cites and listed three), 2 LOW and 2 nits, all folded; the
-  coordinator read the fold (decision (r)). The band is 5 entries and 19,976 bytes before this entry.
-- **R1 verified**, by a `general-purpose` agent on Fable (~173k tokens, ~8 minutes) in its own detached worktree at
-  `eb6099a`, dispatched in the background while #110 was built and reviewed. Its report is
-  `docs/research/02-sources/spec-grill-r1-verification.md`, committed by this handoff: a verdict, evidence at
-  `eb6099a` and a proposed fold per finding, Decision 5's rewrite list, and an order. PARTLY: M1, M5 and M8. OVERTAKEN: B1 and L9. Five folds need Alex
-  first: B2(c)'s size threshold for doc folds going to `implementer` (it reverses research 01 Decision 2),
-  M6's CI commit-subject check (only as a stated exception to §Process-rule promotion), L1's
-  `autoCompactWindow` (strike it or reword trigger 7), L4's (j) (closes only on his Session 21 ask, Session 21 pattern 2 in `git show ae49392:PROGRESS.md`), and A with
-  H (answers on (f), (g), (h), (j) (held open per L4), (k), (m), (o) and (u) before A starts). Its proposed order: the fold, the
-  inventory, C, B alone, A with H, E's archive leg, G, D, I. Not yet read by the coordinator beyond that reply.
-- **Merged:** nothing. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1, and 2 with it. #110 was opened at 152k, above 130k and past the soft line.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                  | 5-hour | Weekly | Fable weekly | Context |
-    | ----------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)    | 8%     | 33%    | 19%          | 76k     |
-    | After the loading reads | 9%     | 33%    | 19%          | 122k    |
-    | #110 opened             | 17%    | 34%    | 20%          | 152k    |
-    | Handoff reviewed        | 24%    | 35%    | 21%          | 177k    |
-
-- **Plan usage:** the 5-hour window resets at 09:00Z on 6 October, and the weekly windows at 15:00Z on
-  9 October.
-- **Warning signs:** one, the same as Sessions 22 and 23: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and the loading block had been read. Each subagent had its own detached worktree.
-- **Clarifying question:** none.
-
-**Major novel patterns Session 24:**
-
-1. **Step 1 cannot be obeyed as written, so it has been missed three sessions running.** "Call `get_usage`
-   first, before reading anything" sits inside the block the session has to read to learn it, and the paste
-   prompt (`docs/SESSION-HANDOFF.md` §3) tells it to read that doc too. The fix is to put the call in the paste
-   prompt itself; that is a `docs/SESSION-HANDOFF.md` change, so it belongs with research 02's item A, not here.
-   The late reading cost about 800 tokens in Sessions 23
-   and 24 (75,933 against 75,131 for Session 21's early one), and about 8k in Session 22 (in `git show f5eb1d2:PROGRESS.md`).
-2. **A verifier in the background turned the fold's slowest step into a file.** Dispatched at 122k, it ran
-   beside the archive unit and cost the coordinator only its capped reply, so the next session folds from
-   evidence instead of re-checking 25 findings. The same move as Session 22 pattern 1 (in `git show f5eb1d2:PROGRESS.md`), applied to the digest.
-3. **The archive unit alone took the session from 122k to 152k** (edit, suite, one review digest, a fold,
-   the PR), so after a 46k loading read one unit per session is still the shape. Item A is the lever.
-
 ## Next session loading instructions
 
-Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"). The
-workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
+Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"); steps 1 to
+5 rewritten in Session 30. The workflow block it replaced, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
 
-1. **Call `get_usage` first**, and record `context.tokensUsed` and the MCP tools category. **Then run `git fetch`
-   and `gh pr list`:** if this handoff (`docs/CC-006-product-next`) is still open, read `PROGRESS.md` from its
-   branch, not `main`.
-   Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph, and §The approved
-   plan (CC-004). Not research 01 or 02: both are parked (step 6). Take a second `get_usage` after the reads.
-2. **Archive, inside the session's handoff PR.** With Session 29's entry the band holds 6 entries (Sessions 24 to
-   29). Archive Session 24 (cites: `git grep -n "Session 24"`, and `git grep -n -B1 "^ *24"` for a wrapped one)
-   as the first commit on the session's handoff branch, not its own PR: Decision 5 (Alex, Session 23, research
-   02), the one part of item B still live. The same PR rewrites `docs/SESSION-HANDOFF.md` §6's "An archive is its
-   own small PR" and the other lines in research 02 §Decision 5 rewrite list, items 1 to 5. Measure the band
-   inside the commit command (Session 28 pattern 2). Push the branch after the archive commit, so a session that
-   stops early loses nothing.
+1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
+   `git fetch` and `gh pr list`:** if #124 (`docs/CC-006-session-30`) is still open, read `PROGRESS.md` from its
+   branch, not `main`. Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph,
+   and §Row 11's slice plan. Take a second `get_usage` after the reads.
+2. **Archive Session 25** (cites: `git grep -n "Session 25"`, and `git grep -n -B1 "^ *25"` for a wrapped one) as
+   the first commit on the session's branch, per `docs/SESSION-HANDOFF.md` §6 as #124 rewrote it: one PR per
+   session, measured inside the commit command, pushed straight after. With Session 30's entry the band holds 6
+   entries (Sessions 25 to 30). If #124 has not merged, the session branch stacks on it (§6, Stacking).
+   #123 merged in Session 30 as `30ed283`.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect one open PR unless Alex has merged it: this handoff, `docs/CC-006-product-next`. #121 and #122
-      merged in Session 29. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
-    - This handoff is #123. Its review found 1 MATERIAL, folded in `7ab93b3`; the confirm round it owes waited on
-      trigger 4 (5-hour window at 84%). If #123 is still open, run that round first (one fresh `copilot-surrogate`
-      on the fold's range); if Alex has merged it, no review runs (`docs/SESSION-HANDOFF.md` §4).
+    - Expect one open PR unless Alex has merged it: #124 (`docs/CC-006-session-30`, base `main`). Say whether it
+      merged in the entry, and rewrite every hedge here that the merge overtakes.
+    - #124's own review: see Session 30's entry for whether it ran and what it found. If #124 merged, no review
+      runs (`docs/SESSION-HANDOFF.md` §4).
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      this handoff's if unmerged. `git worktree list`: only the main checkout.
+      #124's if unmerged. `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
    Playwright tests.
-5. **Primary work: CC-004 row 11**: a typed action API, the message bridge as its own hook, real payload
-   validation (`da-review`). Product work resumes now (Alex, Session 29). That overtakes research 01 Decision 6
-   ("All of A to H before CC-004 row 11"): PR G is parked with the rest (step 6).
-    - **Read the code, not the docs:** `src/context.tsx` (colour state, derived values, `localStorage`, the
-      actions, and the `chrome.runtime.onMessage` bridge in one file), the callers of its
-      `handleContrastCheck(value, name: string)`, and `public/app/background.js` and `content.js` for what each message really carries. The
-      contract is `docs/ARCHITECTURE.md` §Message flows and `docs/DA-REVIEW.md` §Cross-context consistency. The
-      brief's original wording is `git show 90fc6a5^1:PROGRESS.md`, §Brief, the `src/context.tsx` bullet.
-    - **Inside `src/` only.** A shared `messages.ts` across the three contexts was killed by the grill (§The
-      approved plan, "What the grill killed"; re-entry is the Safari `browser.*` shim), and `public/app/*.js`
-      stays plain unbundled JS. Row 12 (a reducer or external store) stays deferred: row 11 must not drag it in.
-    - **Plan, then build.** A short plan of slices, each with the test that proves it (TDD per `AGENTS.md`; the
-      e2e suite pins the message flows, and a payload validator can take Vitest cases), then one `spec-grill`
-      round on the plan (`AGENTS.md` trigger table), then the `implementer` builds it on
-      `refactor/CC-004-typed-messages` (read `docs/GIT.md` before naming it). `da-review` is mandatory; whether
-      `copilot-surrogate` joins it is the `AGENTS.md` trigger table's call (a Vitest file or `test/**` fires both, as does
-      a diff over 200 lines).
+5. **Primary work: build CC-004 row 11 from §Row 11's slice plan** (Alex, Session 29: product first).
+    - **The plan is grilled and ready** (R1 and R2 in Session 30, the two-round cap reached). No further round.
+    - **Dispatch the `implementer` at the first checkpoint**, in the background, on
+      `refactor/CC-004-typed-messages` cut from `main` (after #124 merges; otherwise ask Alex before stacking
+      code on a docs PR). The brief is the plan: five slices, one green commit each, slice 2's test
+      watched red on `main` first, slice 4's rename as its own commit. It never pushes; the coordinator does.
+    - **Then `da-review` and `copilot-surrogate`**, each in its own worktree outside the repo, at most two at a
+      time; fold, confirm round where the rule calls for one, PR, Alex merges.
     - **Model:** Opus 5.5 at `high` for the coordinator; the `implementer` on Sonnet 5.5 at `high`, reviewers on
-      Fable 5.1 at `high`, at most two at a time, each in its own worktree outside the repo. Pass `model` on every
-      dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and §7.
+      Fable 5.1 at `high`. Pass `model` on every dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and
+      §7.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
@@ -816,5 +874,5 @@ workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRES
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.

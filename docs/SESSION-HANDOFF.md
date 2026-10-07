@@ -25,9 +25,9 @@ a dial, reviewed at **Session 20** against the readings this doc asks for.
   far past where quality holds. Trigger 6 is desktop only: the terminal statusline has no per-model figure.
 - **A unit** is one PR or one proposal, with its own review round, and its confirm round where
   `docs/DEVELOPMENT.md` §Verification rounds calls for one. A round digested inside a
-  unit still in hand is not a boundary.
+  unit still in hand is not a boundary. The archive commit is not a unit: it rides in the session PR (§6).
 - **Why 130k for trigger 1.** Session starts in `PROGRESS.md` ran 67k to 107k, so a 100k floor could fire
-  even after a small archive PR. No recorded boundary has yet fallen between 100k and 130k, so the readings
+  even after a small archive PR, when an archive was still a PR of its own. No recorded boundary has yet fallen between 100k and 130k, so the readings
   do not separate the two; at current start sizes one or two units per session is the expected shape. 130k
   is the dial, and Session 20 reads it against the readings.
 - **"The unit in hand" includes that unit's own review round and any confirm round the rule calls for.** Session 10's 171k handoff was over
@@ -121,10 +121,12 @@ band** runs from the newest `## Session` heading to the loading block. An entry:
   **more than five entries or exceeds 24,000 bytes.** Measure with
   `awk '/^## Session [0-9]/{p=1} /^## Next session loading instructions/{p=0} p' PROGRESS.md | wc -c`. 24,000
   is ~10k tokens at the measured 2.2 to 2.5 bytes a token (22k to 25k bytes). Check at session start, before
-  picking anything up. An archive is its own
-  small PR.
+  picking anything up.
+- **One PR per session** (Decision 5, `docs/research/02-workflow-optimisation.md`): the archive is the first
+  commit on the session's branch and the handoff its last. Push the branch after the archive commit, so a
+  session that stops before its handoff loses nothing (§3 item 3).
 - **Repoint cites** of an archived entry's content to `git show <sha>^:PROGRESS.md`, where `<sha>` is the
-  archive PR's first commit on `main` (its merge commit or its first branch commit under the merge-commit
+  session PR's first commit on `main` (its merge commit or its first branch commit under the merge-commit
   button, its first commit there under rebase or squash). That
   parent still holds the entry under any merge button. Never a branch hash, which a rebase re-hashes.
 - **Retired sections.** A block in `PROGRESS.md` that is record rather than state (a superseded brief, a
@@ -142,7 +144,7 @@ State **both**. Opus 5.5 defaults to `medium`, and Session 9 arrived on it.
 | ------------------------------------------------------------------------------- | ----------- | --------- |
 | Research, proposals, plans, orchestrating a PR through review                   | Opus 5.5    | high      |
 | Hard design judgement with conflicting evidence (e.g. the Safari port)          | Fable 5.1   | high      |
-| Mechanical: a Dependabot merge, a count sweep, an archive PR                    | Sonnet 5.5  | medium    |
+| Mechanical: a Dependabot merge, a count sweep                                   | Sonnet 5.5  | medium    |
 | Subagents: implementer Sonnet at `high`, reviewers Fable at `high` (their pins) | frontmatter | as pinned |
 
 ## 8. Keeping this honest
