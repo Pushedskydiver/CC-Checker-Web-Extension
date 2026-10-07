@@ -292,6 +292,49 @@ pull requests.
   most of them used inside their own file, plus `public/app/*.js` as unused files it cannot resolve from the
   manifest.
 
+### Row 11's slice plan (Session 30, before `spec-grill`)
+
+Measured against `52b44ea`. Branch `refactor/CC-004-typed-messages`, cut from `main` once #123 and Session 30's
+PR have merged. One green commit per slice; the pre-push suite is green at every commit.
+
+**Findings that shape it.** `handleContrastCheck(value, name: string)` silently ignores a `name` that is neither
+colour, and its three callers each restate `'background' | 'foreground'` inline (`color-control.tsx:10`,
+`color-controls.tsx:12` as `TColorName`, `color-picker-cta.tsx:7`), while `TPickedColor.key` is already
+`keyof TColors`. The bridge's only check is `message.key && message.rgb` (`context.tsx:167`): any truthy `rgb`
+reaches `rgbToHsl`, so a relayed `{ type: 'colorPicked', key: 'background', rgb: ['a', 'b', 'c'] }` should
+write NaN into state and `localStorage` (slice 2 proves it red, or this plan is wrong).
+
+1. **Payload validator, Vitest first.** `src/utils/parse-picked-color.ts` exports
+   `parsePickedColor(message: unknown): TPickedColor | null`: `type === 'colorPicked'`, `key` is `'background'`
+   or `'foreground'`, `rgb` an array of exactly three integers in 0 to 255 (the loupe reads them from a
+   `Uint8ClampedArray`). Returns a fresh tuple, ignores extra fields. One Vitest case per rejection class
+   (non-object or null, wrong `type`, missing or unknown `key`, `rgb` not an array, wrong length, a non-number,
+   NaN, a non-integer, out of range) and one per key accepted, in `src/utils/parse-picked-color.test.ts`.
+2. **E2e red, then wire.** One Playwright test: `sendToActiveTab` relays the malformed pick above (the iframe sees
+   `sender.tab` undefined, as for a real relay); `#ratio`, `input#background` and `localStorage` are unchanged.
+   Confirm it fails on `main`, then call `parsePickedColor` in the existing `handleMessage`. An invalid message
+   is dropped whole, as an unmatched one is today: no state change and no `closeColorPicker`. That is a choice
+   (Escape still closes the loupe); the grill may argue for closing it.
+3. **The bridge as its own hook, refactor under green.** `src/hooks/useColorPicked.ts`:
+   `useColorPicked(onPicked: (picked: TPickedColor) => void)` owns the listener, the relay-only filter
+   (`sender.tab` set → ignored, with the existing comment), the validator, `useEffectEvent` for `onPicked`, the
+   `closeColorPicker` reply after a valid pick, and the cleanup. `context.tsx` then holds no `chrome.*`. Proof:
+   the existing picker e2e tests and slice 2's, unchanged and green.
+4. **Typed action API.** `handleContrastCheck(value, name: string)` becomes `setColor(key: TColorKey, value:
+ColorTuple)`, with `export type TColorKey = keyof TColors` in `src/global-types.ts`; `TPickedColor.key` and
+   the three inline unions use it. `updateView` and `reverseColors` keep their names and signatures. Proof:
+   `tsc` in `npm run lint` (a caller passing a string no longer compiles) and the e2e suite.
+5. **Docs, in the same PR.** `docs/ARCHITECTURE.md` §Message flows (the `colorPicked` and `closeColorPicker`
+   rows name `src/context.tsx`) and §State; `docs/DA-REVIEW.md` §Cross-context consistency (its table names
+   `src/context.tsx` as handler and sender) and §React components and context; the Vitest and Playwright counts
+   wherever they are stated (`git grep -n -E "36 (Vitest|unit)|21 (Playwright|e2e|green)"`, and the wrapped forms
+   decision (l) found).
+
+**Out of scope:** `public/app/*.js`, a shared `messages.ts` (killed by the grill, above), row 12's reducer or
+store, a typed wrapper for the three messages the iframe sends (`getScreenshot`, `closeColorPicker`,
+`closeChecker`), and renaming `updateView`. Reviews: `da-review` and `copilot-surrogate` (a Vitest file, `test/**`
+and `docs/**` each fire both).
+
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
