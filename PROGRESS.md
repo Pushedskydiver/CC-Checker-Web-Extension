@@ -700,6 +700,9 @@ workflow block it replaces, with C's settled brief, is `git show 2539cfe:PROGRES
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
     - Expect one open PR unless Alex has merged it: this handoff, `docs/CC-006-product-next`. #121 and #122
       merged in Session 29. Say which merged in the entry, and rewrite every hedge here that the merges overtake.
+    - This handoff is #123. Its review found 1 MATERIAL, folded in `7ab93b3`; the confirm round it owes waited on
+      trigger 4 (5-hour window at 84%). If #123 is still open, run that round first (one fresh `copilot-surrogate`
+      on the fold's range); if Alex has merged it, no review runs (`docs/SESSION-HANDOFF.md` §4).
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
       this handoff's if unmerged. `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
