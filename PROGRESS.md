@@ -305,6 +305,7 @@ checkout. The band was 6 entries and 24,721 bytes. The pre-push suite was green 
     | Archive review dispatched | 13%    | 40%    | 27%          | 140k    |
     | Confirm round running     | 22%    | 41%    | 29%          | 154k    |
     | #113 ready, handoff       | 25%    | 41%    | 29%          | 161k    |
+    | Handoff reviewed, pushed  | 30%    | 42%    | 30%          | 189k    |
 
 - **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
 - **Warning signs:** one, the same as Sessions 22 to 25: step 1's `get_usage` came after
