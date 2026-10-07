@@ -292,43 +292,60 @@ pull requests.
   most of them used inside their own file, plus `public/app/*.js` as unused files it cannot resolve from the
   manifest.
 
-### Row 11's slice plan (Session 30, before `spec-grill`)
+### Row 11's slice plan (Session 30, `spec-grill` R1 folded)
 
 Measured against `52b44ea`. Branch `refactor/CC-004-typed-messages`, cut from `main` once #123 and Session 30's
-PR have merged. One green commit per slice; the pre-push suite is green at every commit.
+PR have merged. One green commit per slice; the pre-push suite is green at every commit. `spec-grill` R1 (Fable,
+~99k) found 0 BLOCKING, 2 MATERIAL, 6 LOW and 3 nits, all folded below; a confirm round on this text is owed.
 
 **Findings that shape it.** `handleContrastCheck(value, name: string)` silently ignores a `name` that is neither
-colour, and its three callers each restate `'background' | 'foreground'` inline (`color-control.tsx:10`,
-`color-controls.tsx:12` as `TColorName`, `color-picker-cta.tsx:7`), while `TPickedColor.key` is already
-`keyof TColors`. The bridge's only check is `message.key && message.rgb` (`context.tsx:167`): any truthy `rgb`
-reaches `rgbToHsl`, so a relayed `{ type: 'colorPicked', key: 'background', rgb: ['a', 'b', 'c'] }` should
-write NaN into state and `localStorage` (slice 2 proves it red, or this plan is wrong).
+colour. Its callers are `color-control.tsx:41`, `color-controls.tsx:45` and the bridge (`context.tsx:150`), and
+four files restate `'background' | 'foreground'` inline (`color-control.tsx:10`, `color-controls.tsx:12` as
+`TColorName`, `color-picker-cta.tsx:7`, `text-input.tsx:8`), while `TPickedColor.key` is already `keyof TColors`.
+The bridge's only check is `message.key && message.rgb` (`context.tsx:167`): any truthy `rgb` reaches
+`rgbToHsl`. Reproduced by the grill on today's build: a relayed `{ type: 'colorPicked', key: 'background', rgb:
+['a', 'b', 'c'] }` turned the background black (`#ratio` 12.72 → 1.32), stored `[0,null,null]`, which
+`readStoredColor` reloads as black, sent `closeColorPicker`, and logged nothing. `toHslTuple` zeroes the NaN hue;
+saturation and lightness stay NaN.
 
-1. **Payload validator, Vitest first.** `src/utils/parse-picked-color.ts` exports
-   `parsePickedColor(message: unknown): TPickedColor | null`: `type === 'colorPicked'`, `key` is `'background'`
-   or `'foreground'`, `rgb` an array of exactly three integers in 0 to 255 (the loupe reads them from a
-   `Uint8ClampedArray`). Returns a fresh tuple, ignores extra fields. One Vitest case per rejection class
-   (non-object or null, wrong `type`, missing or unknown `key`, `rgb` not an array, wrong length, a non-number,
-   NaN, a non-integer, out of range) and one per key accepted, in `src/utils/parse-picked-color.test.ts`.
-2. **E2e red, then wire.** One Playwright test: `sendToActiveTab` relays the malformed pick above (the iframe sees
-   `sender.tab` undefined, as for a real relay); `#ratio`, `input#background` and `localStorage` are unchanged.
-   Confirm it fails on `main`, then call `parsePickedColor` in the existing `handleMessage`. An invalid message
-   is dropped whole, as an unmatched one is today: no state change and no `closeColorPicker`. That is a choice
-   (Escape still closes the loupe); the grill may argue for closing it.
-3. **The bridge as its own hook, refactor under green.** `src/hooks/useColorPicked.ts`:
-   `useColorPicked(onPicked: (picked: TPickedColor) => void)` owns the listener, the relay-only filter
-   (`sender.tab` set → ignored, with the existing comment), the validator, `useEffectEvent` for `onPicked`, the
-   `closeColorPicker` reply after a valid pick, and the cleanup. `context.tsx` then holds no `chrome.*`. Proof:
-   the existing picker e2e tests and slice 2's, unchanged and green.
-4. **Typed action API.** `handleContrastCheck(value, name: string)` becomes `setColor(key: TColorKey, value:
-ColorTuple)`, with `export type TColorKey = keyof TColors` in `src/global-types.ts`; `TPickedColor.key` and
-   the three inline unions use it. `updateView` and `reverseColors` keep their names and signatures. Proof:
-   `tsc` in `npm run lint` (a caller passing a string no longer compiles) and the e2e suite.
-5. **Docs, in the same PR.** `docs/ARCHITECTURE.md` §Message flows (the `colorPicked` and `closeColorPicker`
-   rows name `src/context.tsx`) and §State; `docs/DA-REVIEW.md` §Cross-context consistency (its table names
-   `src/context.tsx` as handler and sender) and §React components and context; the Vitest and Playwright counts
-   wherever they are stated (`git grep -n -E "36 (Vitest|unit)|21 (Playwright|e2e|green)"`, and the wrapped forms
-   decision (l) found).
+1. **Payload validator, Vitest first, one case at a time** (`AGENTS.md` TDD). `src/utils/parse-picked-color.ts`
+   exports `parsePickedColor(message: unknown): TPickedColor | null`: `type === 'colorPicked'`, `key` is
+   `'background'` or `'foreground'`, `rgb` an array of exactly three numbers. Two kinds of rule, labelled in the
+   code: non-object, wrong length, non-number and NaN would corrupt state; integer and 0 to 255 are the
+   `content.js:69-70` contract (a `Uint8ClampedArray` read), since `chroma.rgb` itself accepts `[256, 0, 0]` and
+   `[1.5, 2, 3]`. Returns a fresh tuple, ignores extra fields. One case per rejection class and one per key
+   accepted, in `src/utils/parse-picked-color.test.ts`. Behaviour-neutral: nothing calls it yet, so slice 2's red
+   is still the reproduction (`docs/TESTING.md`).
+2. **E2e red, then wire.** One Playwright test in the `app` describe, not the patched-manifest one:
+   `sendToActiveTab` relays the malformed pick above, and `#ratio`, `input#background` and
+   `localStorage.background` stay unchanged; then a valid relayed pick (`[255, 0, 0]` to `foreground`) lands, so
+   the test cannot pass on a message that never arrived. Confirm it fails on `main`, then call
+   `parsePickedColor` in the existing `handleMessage`. An invalid message is dropped whole: no state change, no
+   `closeColorPicker`, and one `console.warn` naming the rejected field (the no-console-errors test filters
+   `type() === 'error'`, `extension.spec.ts:593`). `runtime.onMessage` hears only this extension's own contexts,
+   so an invalid pick means `content.js` drifted; Escape still closes the loupe.
+3. **The bridge as its own hook, refactor under green.** `src/hooks/useColorPicked.ts` (camelCase like
+   `useTabbed.ts`, `docs/CONVENTIONS.md:144`): `useColorPicked(onPicked: (picked: TPickedColor) => void)` owns
+   the listener, the relay-only filter (`sender.tab` set → ignored, with the existing comment), the validator,
+   `useEffectEvent` for `onPicked`, the `closeColorPicker` reply after `onPicked` (today's order,
+   `context.tsx:150-154`), and the cleanup. `context.tsx` then holds no `chrome.*`. Proof: the existing picker
+   e2e tests and slice 2's, unchanged and green.
+4. **Typed action API.** `handleContrastCheck(value, name: string)` becomes `setColor(key: TColorKey, value)`,
+   with `export type TColorKey = keyof TColors` in `src/global-types.ts`; `TPickedColor.key` and the four inline
+   unions use it. The argument order swaps too; `tsc` catches a missed caller because the types differ. Proof:
+   `tsc` in `npm run lint`, watched failing on a caller left unconverted (`docs/CONVENTIONS.md` §Verify a gate can
+   fail), and the e2e suite. `updateView` and `reverseColors` keep their names and signatures. **Its own commit:**
+   `ColorTuple` becomes `TColorTuple` (21 uses in 4 files), because `docs/CONVENTIONS.md:140-141` says to rename
+   it when `src/global-types.ts` is next touched; that sentence is rewritten in slice 5.
+5. **Docs, in the same PR.** Every line the change falsifies, found by grep, not this list alone:
+   `docs/ARCHITECTURE.md` §Message flows and §State; `docs/DA-REVIEW.md` §Cross-context consistency and §React
+   components and context; `docs/CONVENTIONS.md:140-146`, `:149`, `:167` and `:168` (the `ColorTuple` rule, the
+   one-camelCase-hook claim, `handleContrastCheck`, "`chrome.*` is confined to `src/context.tsx`");
+   `docs/SELF-REVIEW.md:123` and `:347`; `docs/GLOSSARY.md:42` and `:79`; `README.md:127` (the file tree);
+   `docs/TESTING.md` §Unit tests (a paragraph for the new file); `docs/DEVELOPMENT.md:47`. Counts:
+   `git grep -n -E "36 (Vitest|unit)|21[ -](Playwright|e2e|green|test)"`, and the wrapped forms decision (l) found.
+   Then `git grep -n -E "handleContrastCheck|ColorTuple|TColorName"` prints nothing outside `docs/history/` and
+   `PROGRESS.md`.
 
 **Out of scope:** `public/app/*.js`, a shared `messages.ts` (killed by the grill, above), row 12's reducer or
 store, a typed wrapper for the three messages the iframe sends (`getScreenshot`, `closeColorPicker`,
