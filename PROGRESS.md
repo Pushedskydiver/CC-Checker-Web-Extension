@@ -3,7 +3,13 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 30)
+## Next workstreams (after Session 31)
+
+Updated 16 October 2026, end of Session 31: **CC-004 row 11 is built, reviewed to nit-floor and merged as
+[#126](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/126) (`bd44e35`, a merge commit, Alex,
+16:25Z), so CC-004 is done apart from row 12, which the plan defers.** #124 had merged as `903bceb` and Dependabot #125 as `4587bfe` (the
+delegation) before anything was cut. Next (Alex, Session 31): research a Safari port **and** a Firefox port,
+including whether Safari needs its own repo.
 
 Updated 7 October 2026, end of Session 30: **#123's confirm round reached nit-floor, Session 24 is archived inside
 this session's PR, [#124](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/124), with
@@ -202,8 +208,8 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 
 1. **Code-quality deep dive, CC-004.** The approved order, and what the grill killed, are in §The approved
    plan below. PRs 1 to 9 and row 10's first half (the atoms, #68) merged, and row 10's second half as
-   [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72) (`61b5d43`). Row 11 comes after
-   the PCR research (item 6) has reported — Alex's order, 28 September 2026. One PR at a
+   [#72](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/72) (`61b5d43`). Row 11 merged as
+   [#126](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/126) (`bd44e35`, Session 31); row 12 stays deferred. One PR at a
    time, `da-review` on every `src/**` change, both reviews wherever the
    `AGENTS.md` trigger table says so, the e2e suite as the gate.
 2. ~~**Store review of 2.1.0.**~~ **Done.** The store published 2.1.0 on 12 September 2026, the day it was
@@ -212,7 +218,9 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
 3. ~~**Unit tests for `src/utils/color-utils.ts`** (vitest) — folds naturally into workstream 1.~~ Absorbed:
    it is PR 7 of the approved plan, and it carries the Vitest infrastructure, a `ci.yml` step and a twelve-file
    documentation sweep with it.
-4. **Safari** — stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari. It is now also the
+4. **Safari, and now Firefox: the next session's primary work** (Alex, Session 31: "Let's look at safari and
+   Firefox too"; he thinks Safari "may need its own repo" and wants that researched). Research first, nothing
+   built. Stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari. It is now also the
    re-entry condition for giving `public/app/*.js` a build and a shared `messages.ts`.
 5. **Wake the sibling web app.** Not started. Alex answered a six-question list "yes to all six" on
    12 September 2026, which accepts the premise that the sibling's missing fixes are worth making; **that it
@@ -256,7 +264,7 @@ pull requests.
 | 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
 | 9   | ✅ Pin the poor-contrast colour switch with a test that can actually fail (#65, `25cf7ab`)                | both               | —     |
 | 10  | ✅ Move the poor-contrast variant into CSS — atoms (#68, `41e36c4`), header and tabs (#72, `61b5d43`)     | da/both            | 9     |
-| 11  | Typed action API, message bridge as its own hook, real payload validation                                 | da-review          | —     |
+| 11  | ✅ Typed action API, message bridge as its own hook, real payload validation — built as #126, open        | da-review          | —     |
 | 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
@@ -363,6 +371,80 @@ and `docs/**` each fire both).
 
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
+
+## Session 31 — 16 October 2026 (CC-004: row 11 merged as #126; Sessions 25 and 26 archived)
+
+**CC-004 row 11 is built, reviewed to nit-floor and merged as #126, and its bug is fixed: a malformed relayed
+`colorPicked` is now dropped whole instead of turning the background black.** Alex merged it at 16:25Z. Sessions 25 and 26 are
+archived as the first two commits of this session's PR, on `docs/CC-006-session-31`.
+
+**Setup:** #124 had merged as `903bceb`, a merge commit, so `main`'s loading block was current. The tree was
+clean, the only worktree was the main checkout, and one PR was open that the block did not expect: Dependabot
+#125 (nine dev-dependency bumps, Playwright 1.63 → 1.64), green and clean. Merged under the delegation with
+`gh pr merge 125 --merge --admin --delete-branch`: the first two attempts timed out at the TLS handshake, and the
+third reported the PR already merged, as `4587bfe`, so the first had landed server side. The auto-mode classifier did not
+refuse it. After `npm install` and `npx playwright install chromium`, the pre-push suite was green (36 Vitest,
+21 Playwright) on `4587bfe`. `get_session self` reported Opus 5.5 at `high`, permission mode auto.
+
+**Done:**
+
+- **Archive, `94595a8` and `c24ba57`:** Session 25, then Session 26, became rows 25 and 26. After Session 25 the
+  band was 5 entries and 24,309 bytes, still over §6's 24,000-byte line (Session 30 had left a 24,266 overshoot),
+  so Session 26 went too: 4 entries and 19,692 bytes. Their cites point at `git show 4587bfe:PROGRESS.md`.
+  `c24ba57`'s message says the repointed cite is in Session 28's entry; it is in Session 29's.
+- **[#126](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/126)**,
+  `refactor/CC-004-typed-messages`, cut from `4587bfe`, head `78f3f64`.
+    - **The build:** the `implementer` (Sonnet, ~171k, ~26 minutes, a branch worktree at `../cc-typed-messages`)
+      built the plan's five slices as six commits, slice 4's rename on its own. Slice 2's red, on the unwired build:
+      `#000000` at `extension.spec.ts:660`. Slice 4's `tsc` failure: `TS2345` at `color-controls.tsx(45,12)`.
+      Choices it made: the warn prints the received `key` and `rgb`, not "the rejected field", because the
+      validator returns only `TPickedColor | null`, and one `isByte` replaces a separate NaN rule.
+    - **R1:** `da-review` (Fable, ~106k): 0 BLOCKING, 0 MATERIAL, 3 LOW, and it reproduced both reds by mutation.
+      `copilot-surrogate` (Fable, ~231k): 95 claims, 9 lines falsified, 0 BLOCKING, 2 MATERIAL (F1, `PROGRESS.md`'s
+      loading counts; F2, `~8s` for an e2e run measured at 9.7–12.9s), 6 LOW. Each reviewer had its own detached
+      worktree in the scratchpad.
+    - **Fold `e21c271`:** `parsePickedColor` skipped array holes (`every` skips them), so the channels are now
+      destructured first, with a 24th case watched red. F2 to F6 were folded; F1 belongs to this handoff; F7 and
+      F8 are decisions (m) and (u); LOW 2 needed no action.
+    - **Confirm round:** a fresh `da-review` (Fable, ~81k): every fold CONFIRMED. It found one count the fold's grep
+      missed (`docs/TESTING.md:12`, written "(23, added"), folded in `78f3f64` and read by the coordinator. Nit-floor.
+      It contested deferring F1 under `docs/SELF-REVIEW.md` §Claims and consistency (decision (k)); this handoff
+      updates the counts.
+    - **Suite at `78f3f64`:** 60 Vitest, `22 passed (9.2s)`. CI `Lint, build, e2e` green (1m4s).
+- **Alex's direction for what follows CC-004:** Safari and Firefox together, researched first, including whether
+  Safari needs its own repo.
+- **Merged:** #125 as `4587bfe` (delegated, the coordinator); #126 as `bd44e35`, a merge commit (Alex, 16:25Z).
+  **Uploaded:** no; nothing was version-bumped.
+
+**Handoff facts:**
+
+- **Trigger:** 1 with 2. #126's unit finished at ~170k, past the soft line, which it crossed at 157k during the fold.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                     | 5-hour | Weekly | Fable weekly | Context |
+    | -------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (late, step 1)       | 1%     | 36%    | 0%           | 84k     |
+    | After the loading reads    | 1%     | 36%    | 0%           | 93k     |
+    | Archive done, build out    | 3%     | 37%    | 0%           | 114k    |
+    | Build verified, two agents | 8%     | 0%     | 0%           | 131k    |
+    | Fold done, confirm round   | 2%     | 3%     | 3%           | 157k    |
+    | #126 opened, handoff       | 7%     | 3%     | 4%           | 180k    |
+
+- **Plan usage:** the weekly windows reset at 15:00Z on 16 October, mid-session, and next at 15:00Z on
+  23 October; the 5-hour window resets at 20:30Z on 16 October.
+- **Warning signs:** one, the same as Sessions 22 to 30: step 1's `get_usage` came after the loading block and
+  `docs/SESSION-HANDOFF.md` had been read. Every subagent had its own worktree outside the repo.
+- **Clarifying question:** one, not the previous entry's to answer: what follows CC-004 (Alex: Safari and Firefox).
+
+**Major novel patterns Session 31:**
+
+1. **A whole product PR fitted in one session, beside a two-entry archive,** because the plan arrived grilled:
+   dispatch at ~114k, build verified at 131k, two reviews, a fold, a confirm round and the PR by ~170k. Session 30's
+   pattern 1, a plan written into the handoff, paid off.
+2. **A count grep needs every written form.** `\b59\b` and `23 (more|cases)` both missed "(23, added", and so did
+   the implementer's sweep. Decision (l)'s drift again, the fourth time; grep the old number bare
+   (`git grep -n -P "\b23\b"`) and read each hit.
+3. **A timed-out `gh pr merge` can still have merged.** Check `gh pr view <n> --json state` before retrying.
 
 ## Session 30 — 7 October 2026 (CC-004: row 11 planned and grilled; Session 24 archived inside #124)
 
@@ -627,40 +709,37 @@ reported Opus 5.5 at `high`, permission mode auto.
 
 ## Next session loading instructions
 
-Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"); steps 1 to
-5 rewritten in Session 30. The workflow block it replaced, with C's settled brief, is `git show 2539cfe:PROGRESS.md`.
+Rewritten in Session 31 for the Safari and Firefox research (Alex, Session 31). Steps 6 and 7 are carried.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** if #124 (`docs/CC-006-session-30`) is still open, read `PROGRESS.md` from its
-   branch, not `main`. Read only: this block (step 7 on demand), the newest entry, the first "Updated" paragraph,
-   and §Row 11's slice plan. Take a second `get_usage` after the reads.
-2. **Archive Session 25** (cites: `git grep -n "Session 25"`, and `git grep -n -B1 "^ *25"` for a wrapped one) as
-   the first commit on the session's branch, per `docs/SESSION-HANDOFF.md` §6 as #124 rewrote it: one PR per
-   session, measured inside the commit command, pushed straight after. With Session 30's entry the band holds 6
-   entries (Sessions 25 to 30). If #124 has not merged, the session branch stacks on it (§6, Stacking).
-   #123 merged in Session 30 as `30ed283`.
+   `git fetch` and `gh pr list`:** if this session's PR (`docs/CC-006-session-31`) is still open, read
+   `PROGRESS.md` from its branch, not `main`. Read only: this block (step 7 on demand), the newest entry and the
+   first "Updated" paragraph. Take a second `get_usage` after the reads.
+2. **Archive Session 27** (`docs/SESSION-HANDOFF.md` §6): with Session 31's entry the band is 5 entries and
+   25,478 bytes at the handoff, over the 24,000-byte line. Re-measure; archive until it is under. The archive is the session
+   branch's first commit, pushed straight after.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect one open PR unless Alex has merged it: #124 (`docs/CC-006-session-30`, base `main`). Say whether it
-      merged in the entry, and rewrite every hedge here that the merge overtakes.
-    - #124's own review: see Session 30's entry for whether it ran and what it found. If #124 merged, no review
-      runs (`docs/SESSION-HANDOFF.md` §4).
+    - Expect one open PR unless Alex has merged it: this session's (`docs/CC-006-session-31`). #126 merged in
+      Session 31 as `bd44e35`. Say whether it merged in the entry and rewrite every hedge it overtakes.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      #124's if unmerged. `git worktree list`: only the main checkout.
+      the open PR's branch. `git worktree list`: only the main checkout.
 4. Run the pre-push suite before touching anything:
-   `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 36 Vitest cases and 21
+   `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 60 Vitest cases and 22
    Playwright tests.
-5. **Primary work: build CC-004 row 11 from §Row 11's slice plan** (Alex, Session 29: product first).
-    - **The plan is grilled and ready** (R1 and R2 in Session 30, the two-round cap reached). No further round.
-    - **Dispatch the `implementer` at the first checkpoint**, in the background, on
-      `refactor/CC-004-typed-messages` cut from `main` (after #124 merges; otherwise ask Alex before stacking
-      code on a docs PR). The brief is the plan: five slices, one green commit each, slice 2's test
-      watched red on `main` first, slice 4's rename as its own commit. It never pushes; the coordinator does.
-    - **Then `da-review` and `copilot-surrogate`**, each in its own worktree outside the repo, at most two at a
-      time; fold, confirm round where the rule calls for one, PR, Alex merges.
-    - **Model:** Opus 5.5 at `high` for the coordinator; the `implementer` on Sonnet 5.5 at `high`, reviewers on
-      Fable 5.1 at `high`. Pass `model` on every dispatch. Lines and budget: `docs/SESSION-HANDOFF.md` §1, §2 and
-      §7.
+5. **Primary work: research a Safari port and a Firefox port** (Alex, Session 31). Research and a written
+   proposal, no code.
+    - **Questions Alex asked:** whether Safari needs its own repo (he thinks it may), and what Firefox needs.
+      Start from `docs/ARCHITECTURE.md` §Safari and other browsers, which says Firefox "is not a target and nothing
+      has been checked against it".
+    - **Also answer:** what each store or distribution path needs; which of `activeTab`, `captureVisibleTab`,
+      the service-worker relay, `execCommand('copy')` and the iframe panel hold on each engine; and whether
+      `public/app/*.js` then needs a build and a shared `messages.ts` (§Next workstreams item 4).
+    - **Shape:** one research file under `docs/research/` (03), with sources cited and every claim about an engine
+      checked against its documentation. Then `spec-grill` and `copilot-surrogate` on it, each in its own worktree
+      outside the repo. **Ask Alex for a ticket key**: none is assigned, and `docs/GIT.md` says keys are his.
+    - **Model:** Fable 5.1 at `high` (`docs/SESSION-HANDOFF.md` §7 names the Safari port as hard design
+      judgement); reviewers on Fable at `high`. Pass `model` on every dispatch.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
