@@ -611,6 +611,67 @@ test.describe('app', () => {
 		await page.waitForTimeout(300);
 		expect(errors).toEqual([]);
 	});
+
+	test('a malformed relayed colorPicked is dropped whole, and a valid one still lands', async ({
+		page,
+		openChecker,
+		sendToActiveTab,
+		serviceWorker,
+	}) => {
+		const warnings: string[] = [];
+		const errors: string[] = [];
+		page.on('console', (m) => {
+			if (m.type() === 'warning') warnings.push(m.text());
+			if (m.type() === 'error') errors.push(m.text());
+		});
+		page.on('pageerror', (e) => errors.push(String(e)));
+		const frame = await openChecker();
+		await serviceWorker.evaluate(() => {
+			(globalThis as unknown as { __closes: number }).__closes = 0;
+			chrome.runtime.onMessage.addListener((m) => {
+				if (m.type === 'closeColorPicker')
+					(globalThis as unknown as { __closes: number }).__closes++;
+			});
+		});
+		await frame.fill('input#background', '#336699');
+		await expect(frame.locator('input#background')).toHaveValue('#336699');
+		const storedBackground = await frame.evaluate(() =>
+			localStorage.getItem('background'),
+		);
+		expect(storedBackground).not.toBeNull();
+
+		// 7 October 2026: this turned the background black, stored [0, null, null]
+		// (which readStoredColor reloads as black), sent closeColorPicker and
+		// logged nothing.
+		await sendToActiveTab({
+			type: 'colorPicked',
+			key: 'background',
+			rgb: ['a', 'b', 'c'],
+		});
+		// Messages arrive in order, so once this one has landed the malformed one
+		// has been handled. A negative cannot be waited for.
+		await sendToActiveTab({
+			type: 'colorPicked',
+			key: 'foreground',
+			rgb: [255, 0, 0],
+		});
+		await expect(frame.locator('input#foreground')).toHaveValue('#ff0000');
+
+		await expect(frame.locator('input#background')).toHaveValue('#336699');
+		expect(
+			await frame.evaluate(() => localStorage.getItem('background')),
+		).toBe(storedBackground);
+		expect(errors).toEqual([]);
+		expect(warnings).toHaveLength(1);
+		// Names the offending value, so a drifted sender can be found from the log.
+		expect(warnings[0]).toContain('["a","b","c"]');
+		// Only the valid pick closes the picker.
+		expect(
+			await serviceWorker.evaluate(
+				() => (globalThis as unknown as { __closes: number }).__closes,
+			),
+		).toBe(1);
+	});
 });
 
 test.describe('colour picker (needs captureVisibleTab)', () => {

@@ -15,6 +15,7 @@ import {
 	isHex,
 	rgbToHsl,
 } from './utils/color-utils';
+import { parsePickedColor } from './utils/parse-picked-color';
 
 import type {
 	ColorTuple,
@@ -156,7 +157,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 
 	useEffect(() => {
 		function handleMessage(
-			message: { type: string } & Partial<TPickedColor>,
+			message: { type: string; key?: unknown; rgb?: unknown },
 			sender: chrome.runtime.MessageSender,
 		) {
 			// The content script's broadcast and the service worker's relay both
@@ -164,9 +165,22 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 			// so that is the one handled; the direct copy (sender.tab set) is ignored.
 			if (sender.tab) return;
 
-			if (message.type === 'colorPicked' && message.key && message.rgb) {
-				handlePickedColor({ key: message.key, rgb: message.rgb });
+			if (message.type !== 'colorPicked') return;
+
+			// runtime.onMessage hears only this extension's own contexts, so an invalid
+			// pick means content.js drifted. Dropped whole: no state change and no
+			// closeColorPicker (Escape still closes the loupe).
+			const picked = parsePickedColor(message);
+
+			if (!picked) {
+				console.warn(
+					`Dropped a colorPicked message with an invalid payload: key=${JSON.stringify(message.key)} rgb=${JSON.stringify(message.rgb)}`,
+				);
+
+				return;
 			}
+
+			handlePickedColor(picked);
 		}
 
 		chrome.runtime.onMessage.addListener(handleMessage);
