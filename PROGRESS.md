@@ -220,7 +220,7 @@ dependency was gone. **2.1.0 is published**: the public listing read `Version 2.
    documentation sweep with it.
 4. **Safari, and now Firefox: the next session's primary work** (Alex, Session 31: "Let's look at safari and
    Firefox too"; he thinks Safari "may need its own repo" and wants that researched). Research first, nothing
-   built. Stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari. It is now also the
+   built. Stated goal, nothing started. Start from `docs/ARCHITECTURE.md` §Safari and other browsers. It is now also the
    re-entry condition for giving `public/app/*.js` a build and a shared `messages.ts`.
 5. **Wake the sibling web app.** Not started. Alex answered a six-question list "yes to all six" on
    12 September 2026, which accepts the premise that the sibling's missing fixes are worth making; **that it
@@ -264,7 +264,7 @@ pull requests.
 | 8   | ✅ Extract the hex-input parser to `src/utils/`, with tests (#62, `f046ccf`)                              | both ~~da-review~~ | 7     |
 | 9   | ✅ Pin the poor-contrast colour switch with a test that can actually fail (#65, `25cf7ab`)                | both               | —     |
 | 10  | ✅ Move the poor-contrast variant into CSS — atoms (#68, `41e36c4`), header and tabs (#72, `61b5d43`)     | da/both            | 9     |
-| 11  | ✅ Typed action API, message bridge as its own hook, real payload validation — built as #126, open        | da-review          | —     |
+| 11  | ✅ Typed action API, message bridge as its own hook, real payload validation (#126, `bd44e35`)            | da-review          | —     |
 | 12  | Deferred: context reducer or external store, justified by its own unit tests (both, same reason as row 8) | da-review          | 7, 11 |
 
 **What the grill killed, each recorded with a re-entry condition rather than built:**
@@ -306,13 +306,14 @@ pull requests.
   most of them used inside their own file, plus `public/app/*.js` as unused files it cannot resolve from the
   manifest.
 
-### Row 11's slice plan (Session 30, `spec-grill` R1 and R2 folded)
+### Row 11's slice plan (Session 30, `spec-grill` R1 and R2 folded; built and merged as #126)
 
 Measured against `52b44ea`. Branch `refactor/CC-004-typed-messages`, cut from `main` once #123 and Session 30's
 PR have merged. One green commit per slice; the pre-push suite is green at every commit. `spec-grill` R1 (Fable,
 ~99k) found 0 BLOCKING, 2 MATERIAL, 6 LOW and 3 nits, all folded below. R2 (Fable, ~46k) confirmed every fold and
 found 1 MATERIAL, the closing grep could never print nothing, and 2 nits, folded and checked by hand (the two-round
-cap). Ready for the `implementer`.
+cap). **Built and merged as #126 (`bd44e35`, Session 31): record, not state.** The findings below describe the
+code before #126; it moves to `docs/history/SESSIONS.md` §Retired sections at a later archive.
 
 **Findings that shape it.** `handleContrastCheck(value, name: string)` silently ignores a `name` that is neither
 colour. Its callers are `color-control.tsx:41`, `color-controls.tsx:45` and the bridge (`context.tsx:150`), and
@@ -418,7 +419,7 @@ refuse it. After `npm install` and `npx playwright install chromium`, the pre-pu
 
 **Handoff facts:**
 
-- **Trigger:** 1 with 2. #126's unit finished at ~170k, past the soft line, which it crossed at 157k during the fold.
+- **Trigger:** 1 with 2. #126's unit finished between 157k and 180k, past the soft line, which it crossed at 157k during the fold.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment                     | 5-hour | Weekly | Fable weekly | Context |
@@ -439,10 +440,10 @@ refuse it. After `npm install` and `npx playwright install chromium`, the pre-pu
 **Major novel patterns Session 31:**
 
 1. **A whole product PR fitted in one session, beside a two-entry archive,** because the plan arrived grilled:
-   dispatch at ~114k, build verified at 131k, two reviews, a fold, a confirm round and the PR by ~170k. Session 30's
+   dispatch at ~114k, build verified at 131k, two reviews, a fold, a confirm round and the PR by 180k. Session 30's
    pattern 1, a plan written into the handoff, paid off.
-2. **A count grep needs every written form.** `\b59\b` and `23 (more|cases)` both missed "(23, added", and so did
-   the implementer's sweep. Decision (l)'s drift again, the fourth time; grep the old number bare
+2. **A count grep needs every written form.** `\b59\b` and `23 (more|cases)` both missed "(23, added", which the
+   implementer's sweep had written correctly at `f8c9929`; the fold's grep missed it when the count became 24. Decision (l)'s drift again, the fourth time; grep the old number bare
    (`git grep -n -P "\b23\b"`) and read each hit.
 3. **A timed-out `gh pr merge` can still have merged.** Check `gh pr view <n> --json state` before retrying.
 
@@ -780,7 +781,7 @@ Rewritten in Session 31 for the Safari and Firefox research (Alex, Session 31). 
    ~~Whether that rule persists into this session is unknown;~~ It did not persist: #100 was refused in Session 21; if a delegated Dependabot merge is
    refused again, surface it and ask rather than assuming the rule is gone or working around it
    another way. Session 9's #69 merged first time with the same command; Session 21's #100 was refused again
-   (6 October 2026), and Alex merged it. Session 25: Alex left (j) to the coordinator's judgement on that
+   (6 October 2026), and Alex merged it. Session 25 (in `git show 4587bfe:PROGRESS.md`): Alex left (j) to the coordinator's judgement on that
    evidence, and research 02 (#113) records the disposition: keep the delegation, and item H rewrites `AGENTS.md`
    §PR workflow and `docs/GIT.md` §Who merges to say a refusal goes to Alex; **(k)** `docs/SELF-REVIEW.md` §Claims and consistency's generic "same PR" line for
    `PROGRESS.md` updates is contradicted by this repo's own history — thirteen close-out PRs by Session 8 (#36 and #41 on 11 September, then CC-004's #46, #49, #51, #53, #57,
@@ -793,7 +794,7 @@ Rewritten in Session 31 for the Safari and Firefox research (Alex, Session 31). 
    doc-staleness pattern has now hit twice — PR 7's count bump (22 → 25) and PR 8's second file
    (25 → 36) — meeting `docs/DEVELOPMENT.md` §Process-rule promotion's two-incident bar for promoting a rule.
    Whether that becomes "derive the count from script/CI output instead of restating it in up to
-   seven files" or stays accepted drift is Alex's call, not made this session. **Session 8 made it three**: PR 9's
+   seven files" or stays accepted drift is Alex's call, not made this session. **Session 31 made it four** (#126's `docs/TESTING.md:12`, found by its confirm round). **Session 8 made it three**: PR 9's
    e2e count (20 → 21) went stale in seven files, and the sweep's own grep missed two of them
    ("20 green tests", "20-test"); **(m)** a date drift, found in PR 9's review and left
    untouched there: five files say the colour-utility unit tests reached 25 cases on **17** September,
