@@ -485,7 +485,7 @@ permission mode auto.
    inventory's §C and §E and the briefs' report lines to settle C's brief ran beside the archive, and the two
    took the session from 123k to 159k, past the soft line before the `implementer` could be dispatched.
    Settling a brief in the handoff, as here, lets the next session dispatch at its first checkpoint, beside the
-   archive unit (Session 26 pattern 1).
+   archive unit (Session 26 pattern 1, in `git show 4587bfe:PROGRESS.md`).
 2. **Read a section, not a file, when a brief needs one paragraph.** A `sed` range over `docs/DA-REVIEW.md` from
    §Reporting channel to the next `## ` heading printed most of the file (~6k), because the sections are `###`.
    Match the heading level, or `grep -n` first.
@@ -625,67 +625,6 @@ reported Opus 5.5 at `high`, permission mode auto.
    to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1, in `git show 52b44ea:PROGRESS.md`) is the cure; until then,
    the jsonl gives the true figure after the fact.
 
-## Session 26 — 7 October 2026 (CC-006: Session 20 archived as #115, #113 reviewed and merged)
-
-**Research 02's R1 fold, #113, passed `spec-grill` R2 and `copilot-surrogate`, was folded by the `implementer`,
-reached nit-floor in a confirm round, and merged as `1ea1611` (Alex).** The Session 20 archive is open as #115, at
-nit-floor.
-
-**Setup:** #112 (`e276fd4`) and the Session 25 handoff #114 (`67fde5d`) had merged on 6 October, as merge
-commits (Alex), so `main`'s loading block was current. Draft #113 was the only open PR, the tree was clean, the
-remote branches were the three standing ones plus `docs/CC-006-fold-r1`, and the only worktree was the main
-checkout. The band was 6 entries and 24,721 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on
-`67fde5d`. `get_session self` reported Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#115](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/115)**, `docs/CC-006-archive-session-20`, `ee31136`: Session 20 becomes row 20, three cites of its
-  pattern 2 point at `git show 67fde5d:PROGRESS.md`, and step 5(d) points at `9d242b0` for Sessions 14 to 20.
-  `copilot-surrogate` (Fable, ~91k): 35 claims, 0 falsified, nit-floor with 1 LOW outside the diff (folded on
-  #113) and 2 nits declined. The band is 5 entries and 21,523 bytes before this entry.
-- **[#113](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/113)**, `docs/CC-006-fold-r1`, `319c414` + `28688c7` + `d1c6625`, merged as `1ea1611`. `spec-grill` R2 (Fable,
-  ~121k): 23 CONFIRMED, 0 DISPROVED, 2 N/A (B1, L9), and 6 new LOW. `copilot-surrogate` (Fable, ~126k): 98
-  claims, 3 falsified, 2 MATERIAL (Item D called R1 and its verification `spec-grill`'s first two real runs, but `docs/history/SESSIONS.md`
-  records six earlier; row B said "§6 and §7 only" against a §1 rewrite) and 1 LOW. The `implementer` (Sonnet,
-  ~69k, ~2 minutes, its own branch worktree) folded everything in `28688c7` and read its full diff. A fresh
-  confirm verifier (Fable, ~79k) on `319c414..28688c7`: 23 CONFIRMED, 0 DISPROVED, nit-floor; its 3 nits are in
-  `28688c7`'s commit message and are recorded in #113's body. `d1c6625` corrects §Item F's `/context` premise
-  (#115's LOW), read by the coordinator (decision (r)).
-- **Merged:** #113, as `1ea1611`, a merge commit (Alex, 07:06Z, while the handoff was in review). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line, crossed at 154k during #113's confirm round, with trigger 1 when that unit
-  finished; nothing new was started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                    | 5-hour | Weekly | Fable weekly | Context |
-    | ------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)      | 0%     | 38%    | 25%          | 81k     |
-    | After the loading reads   | 1%     | 38%    | 25%          | 117k    |
-    | Archive review dispatched | 13%    | 40%    | 27%          | 140k    |
-    | Confirm round running     | 22%    | 41%    | 29%          | 154k    |
-    | #113 ready, handoff       | 25%    | 41%    | 29%          | 161k    |
-    | Handoff reviewed, pushed  | 30%    | 42%    | 30%          | 189k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 25: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and the loading block had been read. Every subagent had its own worktree.
-- **Clarifying question:** none.
-
-**Major novel patterns Session 26:**
-
-1. **Two units fitted in one session because their reviews overlapped.** Four Fable reviews and one Sonnet fold
-   ran in the background, at most two at a time, while the coordinator built the archive: 117k to 161k for both
-   units, against Session 24's 30k for one (in `git show 52b44ea:PROGRESS.md`). Each wrote its report to a scratchpad file and replied in ~1.5k
-   characters, the shape item C proposes, and the coordinator read none of the full reports. For C:
-   `copilot-surrogate` has no Write tool and wrote its reports with a Bash heredoc.
-2. **Manual worktrees outside the repo avoid Session 25 pattern 2** (in `git show 4587bfe:PROGRESS.md`). `git worktree add ../cc-<name>` keeps
-   `eslint .` clean, and a branch worktree, not a detached one, lets the `implementer` commit to the PR's branch
-   without touching the main checkout.
-3. **An off-diff finding goes to the PR that owns the file.** #115's LOW was in research 02, so it was folded on
-   #113 and cited in both bodies, which kept #115's scope to the archive.
-
 ## Next session loading instructions
 
 Rewritten in Session 29 for product work (Alex: "rewrite the loading instructions for product work"); steps 1 to
@@ -810,5 +749,5 @@ Rewritten in Session 29 for product work (Alex: "rewrite the loading instruction
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Session 25, 16 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
