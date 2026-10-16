@@ -195,21 +195,22 @@ next scroll fetched a fresh screenshot and `updateImage` re-showed a loupe nobod
 
 The extension is three programs that agree by string. The `type` field is the schema, and three
 switches read it: `background.js`, `content.js`, and the `handleMessage` effect in
-`src/context.tsx`. Keep this table true; it is the contract.
+`src/hooks/useColorPicked.ts`. Keep this table true; it is the contract.
 
-| Message                  | Sent by                                                                    | Relayed by                                                                 | Handled by                     |
-| ------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------ |
-| `initChecker`            | `background.js` on toolbar click; `test/e2e/fixtures.ts` `sendToActiveTab` | —                                                                          | `content.js`                   |
-| `getScreenshot {key}`    | `src/components/01-atoms/color-picker-cta/color-picker-cta.tsx`            | `background.js` captures the sender's window, forwards `{type, key, data}` | `content.js` `getScreenshot`   |
-| `updateScreenShot`       | `content.js` on scroll or resize                                           | `background.js`, as above                                                  | `content.js` `updateImage`     |
-| `colorPicked {key, rgb}` | `content.js` on loupe click                                                | `background.js` to the sender's tab                                        | `src/context.tsx` — relay only |
-| `closeColorPicker`       | `color-picker-cta.tsx` on Escape; `src/context.tsx` after a pick           | `background.js`                                                            | `content.js`                   |
-| `closeChecker`           | `src/components/02-molecules/actions/actions.tsx`                          | `background.js`                                                            | `content.js`                   |
+| Message                  | Sent by                                                                    | Relayed by                                                                 | Handled by                    |
+| ------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------- |
+| `initChecker`            | `background.js` on toolbar click; `test/e2e/fixtures.ts` `sendToActiveTab` | —                                                                          | `content.js`                  |
+| `getScreenshot {key}`    | `src/components/01-atoms/color-picker-cta/color-picker-cta.tsx`            | `background.js` captures the sender's window, forwards `{type, key, data}` | `content.js` `getScreenshot`  |
+| `updateScreenShot`       | `content.js` on scroll or resize                                           | `background.js`, as above                                                  | `content.js` `updateImage`    |
+| `colorPicked {key, rgb}` | `content.js` on loupe click                                                | `background.js` to the sender's tab                                        | `useColorPicked` — relay only |
+| `closeColorPicker`       | `color-picker-cta.tsx` on Escape; `useColorPicked` after a pick            | `background.js`                                                            | `content.js`                  |
+| `closeChecker`           | `src/components/02-molecules/actions/actions.tsx`                          | `background.js`                                                            | `content.js`                  |
 
 - **Message names.** Grep all three switches for every `type` the diff adds, removes or renames.
-- **Sender filtering.** `context.tsx` handles only the relay (`sender.tab` undefined). Until
-  4 September 2026 it handled the direct broadcast too, so every pick was applied twice. A new
-  iframe-side handler decides relay-or-direct and says why.
+- **Sender filtering.** `useColorPicked` handles only the relay (`sender.tab` undefined). Until
+  4 September 2026 `context.tsx` handled the direct broadcast too, so every pick was applied twice. A new
+  iframe-side handler decides relay-or-direct and says why, and validates its payload the way
+  `parsePickedColor` does for `colorPicked`.
 - **Frame targeting.** `tabs.sendMessage(tabId, …)` without a `frameId` reaches every frame. On
   4 September 2026 `all_frames: true` plus tab-addressed messages injected a full checker into every
   embedded iframe. The guard is `window.self === window.top` in `content.js` plus the manifest entry
@@ -262,7 +263,7 @@ switches read it: `background.js`, `content.js`, and the `handleMessage` effect 
 - **Listener teardown order.** `closeChecker` calls `closeColorPicker` first, then removes the DOM.
   Every `addEventListener` in `getScreenshot` has a `removeEventListener` in `closeColorPicker` with
   the same function reference, and `clearTimeout(scrollStopDelay)` runs before the wrapper goes. In
-  React: the `onMessage` effect in `src/context.tsx` removes its listener, `copy-cta.tsx` clears its
+  React: the `onMessage` effect in `src/hooks/useColorPicked.ts` removes its listener, `copy-cta.tsx` clears its
   timer on unmount, `color-picker-cta.tsx` aborts its Escape listener via `AbortController`. A new
   listener without its symmetric removal is a finding.
 - **Recovery before risk.** `showErrorPopup` schedules the popup reset _before_ the call that can

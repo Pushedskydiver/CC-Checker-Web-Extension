@@ -95,7 +95,7 @@ a generic checklist.
   for every user; make it say so.
 - **What happens inside an iframe? In incognito? In Safari?** The tab is not one document.
   `tabs.sendMessage` without a `frameId` reaches every frame; only the top frame hosts the checker
-  and only the service-worker relay reaches the iframe in incognito windows (`src/context.tsx`
+  and only the service-worker relay reaches the iframe in incognito windows (`src/hooks/useColorPicked.ts`
   ignores the content script's direct broadcast for that reason). Safari lacks `openPopup` and
   `use_dynamic_url`, prefers `browser.*`, packages through Xcode, and has unverified
   `captureVisibleTab` and `activeTab` semantics. A spec that says "the tab" without saying which

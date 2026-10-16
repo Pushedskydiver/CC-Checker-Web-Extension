@@ -96,7 +96,8 @@ directives and is the source of truth; in words, dispatch when any of these hold
 
     ```bash
     grep -ohE "'(initChecker|getScreenshot|updateScreenShot|colorPicked|closeColorPicker|closeChecker)'" \
-      public/app/background.js public/app/content.js src/context.tsx -r src/components | sort | uniq -c
+      public/app/background.js public/app/content.js src/hooks/useColorPicked.ts \
+      src/utils/parse-picked-color.ts -r src/components | sort | uniq -c
     ```
 
 - **Path claim.** Paths exist, in the repo's case: kebab-case directories, numbered atomic tiers,

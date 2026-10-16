@@ -53,7 +53,7 @@ not: without an explicit `min`, the browser counts steps from the slider's _init
 lightness could never reach exactly 0 or 1 and a slider pushed to the end gave `#fefefe` instead of
 `#ffffff`. That is the shape — the comment carries the mechanism a future reader cannot reconstruct
 from the value. Comments to match: the header of `toHslTuple` in `src/utils/color-utils.ts`, the
-`sender.tab` guard in `src/context.tsx`, the `postcssSortMediaQueries` line in `vite.config.ts`,
+`sender.tab` guard in `src/hooks/useColorPicked.ts`, the `postcssSortMediaQueries` line in `vite.config.ts`,
 the top-frame guard at the bottom of `public/app/content.js`.
 
 ### Name the incident and its date
@@ -137,16 +137,16 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   (`TWcag`, `TCtaShared`, `TTextSize`, `TTextWeight` — two of them unions, not prop types, so the
   prefix is for every declared type, not only props). Three predated it; `src/context.tsx`'s two
   became `TColourContrastProvider` and `TColourContrastContext` when CC-004 row 10 next touched that
-  file (24 September 2026). `ColorTuple` in `src/global-types.ts` is the one left: rename it when
-  that file is next touched, not in a drive-by.
+  file (24 September 2026). The un-prefixed tuple type in `src/global-types.ts` was the last; it became
+  `TColorTuple`, in its own commit, when CC-004 row 11 next touched that file (16 October 2026).
 - **`type` for props; `interface` only where it already is** (`src/context.tsx` and `TWcag` in
   `src/components/02-molecules/wcag/wcag.tsx`). Not enforced.
-- **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` is the one
-  camelCase filename in `src/` (verified 4 September 2026), deliberately, because the file is the
-  hook.
+- **Hooks live in `src/hooks/`**, one per file, named after the hook — `useTabbed.ts` and `useColorPicked.ts`
+  are the camelCase filenames in `src/` (the first verified 4 September 2026, the second added
+  16 October 2026), deliberately, because the file is the hook.
 - **Never mutate state you were handed.** The NaN-hue bug was an effect writing
   `foreground[0] = NaN` into the tuple that context owned. `ColourControl.handleChange` shows the
-  shape: copy into a fresh `ColorTuple`, change one channel, hand it to `handleContrastCheck`.
+  shape: copy into a fresh `TColorTuple`, change one channel, hand it to `setColor(id, value)`.
 - **No `setState` inside an effect.** `react-hooks/set-state-in-effect` (in
   `eslint-plugin-react-hooks` 7's recommended set) rejects it; a planted `setN(1)` in a `useEffect`
   was confirmed to fail on 4 September 2026. The effects in the tree do five things only:
@@ -154,8 +154,8 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `document.body`, write the `data-contrast` and `data-background` attributes the poor-contrast
   CSS selects on onto `document.body`, clear a timer on unmount, and abort the picker's Escape
   listener on unmount.
-  The picked-colour handler is a `useEffectEvent`
-  so the listener registers once and still sees current state.
+  The picked-colour callback is a `useEffectEvent` inside
+  `useColorPicked`, so the listener registers once and still sees current state.
 - **Derive, don't store.** `contrast`, `level` and both hex strings are computed on every render
   from the two HSL tuples in `src/context.tsx`, and so are `isPoorContrast` and `isBackgroundDark`,
   which stay inside the provider to become the `data-contrast` and `data-background` attributes.
@@ -164,15 +164,17 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   `background` and `foreground`; `saveColors` writes `colors`. Reads happen once, lazily, in
   `useState` initialisers through `readStoredColor` / `readStoredColors`, which validate the shape
   and fall back to the defaults rather than throw in render. A component that wants to change a
-  colour calls `handleContrastCheck`, `reverseColors` or `saveColors` — never `localStorage`.
-- **`chrome.*` is confined to `src/context.tsx`, `color-picker-cta.tsx` and `actions.tsx`**
-  (grep, 4 September 2026). The app sends `getScreenshot`, `closeColorPicker` and `closeChecker`
+  colour calls `setColor`, `reverseColors` or `saveColors` — never `localStorage`.
+- **`chrome.*` is confined to `src/hooks/useColorPicked.ts`, `color-picker-cta.tsx` and `actions.tsx`**
+  (grep, 4 September 2026; `context.tsx` left it on 16 October 2026). The app sends `getScreenshot`, `closeColorPicker` and `closeChecker`
   and receives only `colorPicked`. Any receiver must be **relay-aware**: the content script's
   broadcast and the service worker's relay both arrive, `sender.tab` is set only on the direct
   copy, and only the relay reaches the iframe in incognito windows — so the direct copy is
-  ignored. Handling both handled every pick twice.
+  ignored. Handling both handled every pick twice. A relayed pick is then checked by
+  `parsePickedColor` (`src/utils/parse-picked-color.ts`); an invalid one is dropped whole, with one
+  `console.warn`.
 - **Message types are strings shared by three files that cannot import each other**
-  (`src/context.tsx`, `public/app/background.js`, `public/app/content.js`). Adding or renaming
+  (`src/hooks/useColorPicked.ts`, `public/app/background.js`, `public/app/content.js`). Adding or renaming
   one means grepping all three; there is no enum to lean on.
 - **Conditional classes go through `clsx`.** The poor-contrast variant is not one of them: it is
   CSS, a rule per theme on the component's own class, selecting on the attributes the provider
@@ -340,9 +342,10 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **Two runners.** Vitest is 36 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026)
-  and `src/utils/parse-color-input.test.ts` (11, 22 September 2026); the e2e suite covers the rest:
-  21 Playwright tests in
+- **Two runners.** Vitest is 59 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026),
+  `src/utils/parse-color-input.test.ts` (11, 22 September 2026) and
+  `src/utils/parse-picked-color.test.ts` (23, 16 October 2026); the e2e suite covers the rest:
+  22 Playwright tests in
   `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content script
   → service worker → iframe flow; the picker tests use the patched-manifest fixture (`test.use({

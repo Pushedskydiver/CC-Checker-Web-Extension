@@ -1,15 +1,16 @@
 # Testing
 
-Two suites. `test/e2e/extension.spec.ts` (21 tests, Playwright Test) loads the built
+Two suites. `test/e2e/extension.spec.ts` (22 tests, Playwright Test) loads the built
 extension from `build/` into a headless Chromium profile and drives it through the real content
 script → service worker → iframe message flow. `test/e2e/fixtures.ts` is the harness and the
 primary source for how it works — read its `Fixtures` type and two doc comments (lines 28–43)
 first; `playwright.config.ts` holds the timings. The suite was written on 4 September 2026
 alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
 
-`src/utils/*.test.ts` (36 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
-browser and no `chrome.*`: `color-utils.test.ts` (25, added 17 September 2026) and
-`parse-color-input.test.ts` (11, added 22 September 2026) — §Unit tests below.
+`src/utils/*.test.ts` (59 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
+browser and no `chrome.*`: `color-utils.test.ts` (25, added 17 September 2026),
+`parse-color-input.test.ts` (11, added 22 September 2026) and `parse-picked-color.test.ts` (23, added
+16 October 2026) — §Unit tests below.
 
 **Adapted from nas-stacks' and moe's `docs/TESTING.md`.** Dropped wholesale, because this repo has
 no equivalent and inventing one would be dishonest: the mutation gate and its control-run rules,
@@ -248,6 +249,24 @@ failing to load from the extension origin, and — since the copy clicks were ad
 2026 — a clipboard attempt Chromium reports as a permissions-policy violation, which
 `copy-to-clipboard` 4.x made on every click.
 
+### app › a malformed relayed colorPicked is dropped whole, and a valid one still lands
+
+Types `#336699` into the background, relays `{ type: 'colorPicked', key: 'background', rgb: ['a', 'b',
+'c'] }` through `sendToActiveTab`, then a valid `[255, 0, 0]` pick for the foreground, which is also the
+synchronisation point: messages arrive in order, and a negative cannot be waited for. Then the
+foreground reads `#ff0000`; the background input and `localStorage.background` are what they were;
+exactly one `console.warn` names `["a","b","c"]`; no console or page error; and the worker saw exactly
+one `closeColorPicker`, the valid pick's. Not in the patched-manifest group, because relaying a message
+needs no `captureVisibleTab`. Reproduces the 7 October 2026 grill finding: on the unwired build the
+background turned `#000000` (CC-004 row 11). Watched failing, 16 October 2026, with `npx vite build`
+then `npx playwright test -g "malformed relayed"` per mutant: `parsePickedColor` dropped from the
+handler, the `console.warn` removed, the `return` after it removed (a null reaches the effect event and
+throws, which is why the test collects console errors), the `message.type` early return removed and, in `useColorPicked`, the `useEffectEvent` swapped for the callback
+read straight inside the `[]` effect: that stale closure writes the initial background back over
+`#336699`, and this is the only test that fails on it. Not pinned: the order of `onPicked` and the
+`closeColorPicker` reply (both run in one synchronous call) and the listener's removal on unmount (the
+provider only unmounts with the iframe).
+
 ### colour picker (needs captureVisibleTab) › picks a colour from the page and closes the loupe
 
 Loupe visible and cursor `none` during a pick; clicking `#red` sets `#ff0000`; loupe hidden, cursor
@@ -274,7 +293,7 @@ of them:
   shipped manifest can capture a screenshot after a click has only ever been checked by hand.
 - **The error popup UI.** `isRestrictedUrl` is tested; `showErrorPopup` — binding `error.html` to
   the tab, `chrome.action.openPopup()`, the 500ms unbind — is not. Playwright cannot open a popup.
-- **Incognito.** The `sender.tab` relay-only handling in `src/context.tsx` exists for incognito
+- **Incognito.** The `sender.tab` relay-only handling in `src/hooks/useColorPicked.ts` exists for incognito
   windows; the suite runs in a normal profile.
 - **The hex-copy button's clipboard value.** The share button's is asserted, and so is the refused
   copy, both since 12 September 2026. The `CopyCta` inside `TextInput` is not: it is the same
@@ -390,13 +409,14 @@ make test order a hidden input. Never share a context across tests to save time.
 Bump these in the same commit as the intentional growth. A drop without an intentional change is
 a red flag.
 
-| Suite                                 | Count    | Time                                                                                                                              | Command                                    | Measured          |
-| ------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
-| `test/e2e/extension.spec.ts`          | 21 tests | 8.5–8.9s locally, 4 workers (three runs, 22 September 2026); 18.1s on `ubuntu-latest`, 2 workers, at 20 tests (12 September 2026) | `npm run test:e2e` (after `npm run build`) | 22 September 2026 |
-| `src/utils/color-utils.test.ts`       | 25 cases | ~100ms locally; 175ms on `ubuntu-latest`                                                                                          | `npm run test:unit`                        | 18 September 2026 |
-| `src/utils/parse-color-input.test.ts` | 11 cases | ~100ms locally, shared with the row above (one Vitest run)                                                                        | `npm run test:unit`                        | 22 September 2026 |
+| Suite                                  | Count    | Time                                                                                                                                                                  | Command                                    | Measured          |
+| -------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------- |
+| `test/e2e/extension.spec.ts`           | 22 tests | 9.7–12.9s locally, 4 workers (five runs, 16 October 2026; 8.5–8.9s at 21 tests on 22 September); 18.1s on `ubuntu-latest`, 2 workers, at 20 tests (12 September 2026) | `npm run test:e2e` (after `npm run build`) | 16 October 2026   |
+| `src/utils/color-utils.test.ts`        | 25 cases | ~100ms locally; 175ms on `ubuntu-latest`                                                                                                                              | `npm run test:unit`                        | 18 September 2026 |
+| `src/utils/parse-color-input.test.ts`  | 11 cases | ~100ms locally, shared with the row above (one Vitest run)                                                                                                            | `npm run test:unit`                        | 22 September 2026 |
+| `src/utils/parse-picked-color.test.ts` | 23 cases | ~100ms locally, shared with the rows above (one Vitest run)                                                                                                           | `npm run test:unit`                        | 16 October 2026   |
 
-Groups: 1 service worker, 3 content script, 14 app, 3 colour picker (patched manifest).
+Groups: 1 service worker, 3 content script, 15 app, 3 colour picker (patched manifest).
 
 ---
 
@@ -457,6 +477,20 @@ normalised, all three shorthand lengths (3, 4, 5 digits) left alone, a 6-digit v
 character chroma cannot parse, an 8-digit `#rrggbbaa` value (chroma accepts it and drops the alpha,
 so the length check has to reject it explicitly — this case was added during `da-review`, the
 gate watched failing with the length check removed), and the empty string.
+
+`src/utils/parse-picked-color.test.ts`, added 16 October 2026 (CC-004 row 11), is 23 cases over
+`parsePickedColor`, the validator `useColorPicked` runs on every relayed `colorPicked`. Two kinds of
+rule, labelled in the code: a non-object, a wrong `type`, a `key` other than `background` or
+`foreground`, an `rgb` that is missing, a string, an object, or not exactly three entries, and a
+channel that is a string, `null` or NaN, would corrupt state; a channel outside the integers 0 to 255
+(negative, 256, Infinity, 1.5) is `content.js`'s contract (a `Uint8ClampedArray` read), since `chroma.rgb`
+itself accepts `[256, 0, 0]` and `[1.5, 2, 3]`. Accepted: both keys, the limits 0 and 255, a fresh tuple
+(not the message's own array) and extra fields ignored. The first draft had a separate `isNumber` rule
+for the corrupting class; mutation runs showed `Number.isInteger` already rejects every non-number and
+NaN, so deleting `isNumber` kept all 23 cases green, and it was folded into the single `isByte` check.
+Every other check was then broken by hand (type, each key, length, non-object, integer, both bounds and the
+fresh tuple) and each mutant went red. The e2e test above is what
+shows the validator is wired in.
 
 ## Future
 

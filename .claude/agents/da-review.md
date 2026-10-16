@@ -54,7 +54,7 @@ authoritative; this list is what to look for while walking the diff. Every incid
 4 September 2026, the day the CRA → Vite migration was verified end to end.
 
 - **Cross-context message drift.** Three switches read the `type` field: `background.js`,
-  `content.js`, and the `handleMessage` effect in `src/context.tsx`. A type added, removed or
+  `content.js`, and the `handleMessage` effect in `src/hooks/useColorPicked.ts`. A type added, removed or
   renamed in one without the matching `case` in the others falls through `default:` and vanishes
   — no error, no log. Grep all three for every type the diff touches, and check the message table
   in `docs/DA-REVIEW.md` §Cross-context consistency still holds. Note the casing trap already in
@@ -78,7 +78,7 @@ authoritative; this list is what to look for while walking the diff. Every incid
   `closeColorPicker` with the same function reference, and `closeChecker` calls `closeColorPicker`
   _before_ removing the DOM. On 4 September 2026 it did not: the scroll listener stayed live, the
   next scroll fetched a fresh screenshot, and `updateImage` re-showed a loupe nobody could dismiss.
-  In React, the `onMessage` effect in `src/context.tsx` removes its listener, `copy-cta.tsx` clears
+  In React, the `onMessage` effect in `src/hooks/useColorPicked.ts` removes its listener, `copy-cta.tsx` clears
   its timer, `color-picker-cta.tsx` aborts its Escape listener. A new listener or timer without its
   symmetric removal is a finding.
 - **Cascade order is emitted, not authored.** `postcss-sort-media-queries` reorders every module at

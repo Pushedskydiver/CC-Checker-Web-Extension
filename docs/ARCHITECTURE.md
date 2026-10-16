@@ -73,14 +73,14 @@ Every message is `{ type, ... }` on `chrome.runtime.sendMessage` (to the service
   The content script's `colorPicked` broadcast also arrives directly (`sender.tab` set) and is
   ignored. Before 4 September 2026 both copies were handled and every pick applied twice.
 
-| Type               | Sender → receiver                                              | Payload                                                          | Effect                                                                                                           |
-| ------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `initChecker`      | Service worker → content script                                | `{ message: 'clicked_browser_action', type }`                    | `initChecker()`: no-op if `[data-cc-checker]` exists, else `addIframe()` then `addCanvas()`                      |
-| `closeChecker`     | Iframe → service worker → content script                       | `{ type }`                                                       | `closeChecker()`: `closeColorPicker()` first, then remove loupe, iframe and `<style data-cc-styles>`             |
-| `getScreenshot`    | Iframe → service worker → content script                       | Out: `{ type, key }`; back: `{ type, key, data }` (PNG data URL) | `getScreenshot()`: store `key`, load image, show loupe, hide cursor, add mousemove/scroll/resize/click listeners |
-| `updateScreenShot` | Content script → service worker → content script               | Out: `{ type }`; back: `{ type, key: undefined, data }`          | `updateImage()`: replace the image and show the loupe again                                                      |
-| `colorPicked`      | Content script → service worker → iframe (direct copy ignored) | `{ type, key, rgb: [r, g, b] }`                                  | `handlePickedColor`: `handleContrastCheck(rgbToHsl(rgb), key)`, then send `closeColorPicker`                     |
-| `closeColorPicker` | Iframe → service worker → content script                       | `{ type }`                                                       | `closeColorPicker()`: clear the scroll debounce, remove listeners, restore cursor, hide loupe                    |
+| Type               | Sender → receiver                                              | Payload                                                          | Effect                                                                                                                                                               |
+| ------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initChecker`      | Service worker → content script                                | `{ message: 'clicked_browser_action', type }`                    | `initChecker()`: no-op if `[data-cc-checker]` exists, else `addIframe()` then `addCanvas()`                                                                          |
+| `closeChecker`     | Iframe → service worker → content script                       | `{ type }`                                                       | `closeChecker()`: `closeColorPicker()` first, then remove loupe, iframe and `<style data-cc-styles>`                                                                 |
+| `getScreenshot`    | Iframe → service worker → content script                       | Out: `{ type, key }`; back: `{ type, key, data }` (PNG data URL) | `getScreenshot()`: store `key`, load image, show loupe, hide cursor, add mousemove/scroll/resize/click listeners                                                     |
+| `updateScreenShot` | Content script → service worker → content script               | Out: `{ type }`; back: `{ type, key: undefined, data }`          | `updateImage()`: replace the image and show the loupe again                                                                                                          |
+| `colorPicked`      | Content script → service worker → iframe (direct copy ignored) | `{ type, key, rgb: [r, g, b] }`                                  | `useColorPicked`: `parsePickedColor`, then `setColor(key, rgbToHsl(rgb))`, then send `closeColorPicker`; an invalid payload is dropped whole with one `console.warn` |
+| `closeColorPicker` | Iframe → service worker → content script                       | `{ type }`                                                       | `closeColorPicker()`: clear the scroll debounce, remove listeners, restore cursor, hide loupe                                                                        |
 
 All `tabs.sendMessage` calls in the service worker use the promise form with `.catch(() => undefined)`;
 a tab that navigated or closed is not an error worth surfacing.
@@ -131,7 +131,7 @@ index.html (iframe)                background.js                        content.
  |  (direct copy: sender.tab set →    | relay: tabs.sendMessage(colorPicked) |
  |   ignored)                         |                                      |
  |<-----------------------------------|                                      |
- | handleContrastCheck(rgbToHsl, key) |                                      |
+ | setColor(key, rgbToHsl)            |                                      |
  | runtime.sendMessage(closeColorPicker)                                     |
  |----------------------------------->|------------------------------------->| closeColorPicker(): remove
  |                                    |                                      |  listeners, cursor: auto, hide
@@ -179,11 +179,12 @@ to prove the order.
 ## State
 
 `src/context.tsx` owns all of it. `ColourContrastProvider` holds three pieces of state — `background`
-and `foreground` as HSL `ColorTuple`s (`[h, s, l]`) and `colors`, the saved hex pairs — and derives
+and `foreground` as HSL `TColorTuple`s (`[h, s, l]`) and `colors`, the saved hex pairs — and derives
 the rest on every render: `backgroundHex`/`foregroundHex` (`hslToHex`), `contrast`
 (`chroma.contrast`), `level` (`getLevel`), `isPoorContrast` (`contrast < 3`) and `isBackgroundDark`
-(`lab.l < 60`). Nothing derived is stored. The picked-colour listener is registered once (`useEffect`
-with `[]`) and calls a `useEffectEvent`, so it always sees current state without re-subscribing.
+(`lab.l < 60`). Nothing derived is stored. The picked-colour listener lives in the `useColorPicked` hook (`src/hooks/useColorPicked.ts`), which
+registers it once (`useEffect` with `[]`) and calls a `useEffectEvent`, so it always sees current state
+without re-subscribing; the provider passes it a callback that calls `setColor(key, value)`.
 
 `localStorage` of the extension origin is the store, written synchronously before each `setState`:
 
@@ -322,7 +323,7 @@ build/
 ## Testing seam
 
 Everything that needs a browser or `chrome.*` is a Playwright end-to-end test in `test/e2e/`
-(`fixtures.ts`, `extension.spec.ts`), configured by `playwright.config.ts`: 21 tests, 4 workers
+(`fixtures.ts`, `extension.spec.ts`), configured by `playwright.config.ts`: 22 tests, 4 workers
 locally and 2 in CI, one retry in CI, traces kept on failure. The pure functions in `src/utils/` have
 Vitest unit tests instead (`docs/TESTING.md` §Unit tests).
 
