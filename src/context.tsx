@@ -11,7 +11,7 @@ import {
 	rgbToHsl,
 } from './utils/color-utils';
 
-import type { ColorTuple, TColors, TLevels } from './global-types';
+import type { ColorTuple, TColorKey, TColors, TLevels } from './global-types';
 
 /** Must match the `--background-color` / `--foreground-color` defaults in styles/globals.css. */
 export const DEFAULT_BACKGROUND = '#ffe66d';
@@ -28,7 +28,7 @@ export interface TColourContrastContext {
 	foreground: ColorTuple;
 	contrast: number;
 	level: TLevels;
-	handleContrastCheck: (value: ColorTuple, name: string) => void;
+	setColor: (key: TColorKey, value: ColorTuple) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
 	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
@@ -109,9 +109,9 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 		setForeground(fg);
 	}
 
-	function handleContrastCheck(value: ColorTuple, name: string) {
-		if (name === 'background') updateView(value, foreground);
-		if (name === 'foreground') updateView(background, value);
+	function setColor(key: TColorKey, value: ColorTuple) {
+		if (key === 'background') updateView(value, foreground);
+		if (key === 'foreground') updateView(background, value);
 	}
 
 	function reverseColors() {
@@ -137,7 +137,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 	}
 
 	useColorPicked(({ key, rgb }) => {
-		handleContrastCheck(rgbToHsl(rgb), key);
+		setColor(key, rgbToHsl(rgb));
 	});
 
 	useEffect(() => {
@@ -161,7 +161,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 				foreground,
 				contrast,
 				level,
-				handleContrastCheck,
+				setColor,
 				reverseColors,
 				saveColors,
 				updateView,

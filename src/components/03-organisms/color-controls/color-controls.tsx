@@ -9,31 +9,31 @@ import { Tabbed } from '../tabbed/tabbed';
 
 import styles from './color-controls.module.css';
 
-type TColorName = 'background' | 'foreground';
+import type { TColorKey } from '~/global-types';
 
 export const ColorControls = () => {
-	const { background, foreground, handleContrastCheck } = useColourContrast();
+	const { background, foreground, setColor } = useColourContrast();
 
 	// While the user is typing, the input shows their draft; otherwise it shows
 	// the canonical hex of the current colour.
 	const [bgDraft, setBgDraft] = useState<string | null>(null);
 	const [fgDraft, setFgDraft] = useState<string | null>(null);
 
-	const drafts: Record<TColorName, string | null> = {
+	const drafts: Record<TColorKey, string | null> = {
 		background: bgDraft,
 		foreground: fgDraft,
 	};
-	const setDraft: Record<TColorName, (value: string | null) => void> = {
+	const setDraft: Record<TColorKey, (value: string | null) => void> = {
 		background: setBgDraft,
 		foreground: setFgDraft,
 	};
-	const hex: Record<TColorName, string> = {
+	const hex: Record<TColorKey, string> = {
 		background: hslToHex(background),
 		foreground: hslToHex(foreground),
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const name = e.target.id as TColorName;
+		const name = e.target.id as TColorKey;
 		const complete = toCompleteHex(e.target.value);
 
 		if (complete === null) {
@@ -42,11 +42,11 @@ export const ColorControls = () => {
 		}
 
 		setDraft[name](null);
-		handleContrastCheck(colorToHsl(complete), name);
+		setColor(name, colorToHsl(complete));
 	};
 
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-		setDraft[e.target.id as TColorName](null);
+		setDraft[e.target.id as TColorKey](null);
 	};
 
 	return (
