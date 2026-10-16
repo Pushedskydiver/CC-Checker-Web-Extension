@@ -173,9 +173,9 @@ bundler`. `verbatimModuleSyntax` is on and `@typescript-eslint/consistent-type-i
   ignored. Handling both handled every pick twice. A relayed pick is then checked by
   `parsePickedColor` (`src/utils/parse-picked-color.ts`); an invalid one is dropped whole, with one
   `console.warn`.
-- **Message types are strings shared by three files that cannot import each other**
-  (`src/hooks/useColorPicked.ts`, `public/app/background.js`, `public/app/content.js`). Adding or renaming
-  one means grepping all three; there is no enum to lean on.
+- **Message types are strings shared by three execution contexts that cannot import each other**
+  (the iframe's `src/`, `public/app/background.js`, `public/app/content.js`). Adding or renaming
+  one means grepping `src/` and `public/app/`; there is no enum to lean on.
 - **Conditional classes go through `clsx`.** The poor-contrast variant is not one of them: it is
   CSS, a rule per theme on the component's own class, selecting on the attributes the provider
   writes to `body` — `:global(body[data-contrast='poor'][data-background='light']) .x` (black) and
@@ -342,9 +342,9 @@ Worth knowing about the members:
 - **`npm run build` prints `A PostCSS plugin did not pass the 'from' option`.** Benign: Vite's
   bundled postcss-modules re-parses files pulled in by cross-file `composes`; it is not the inline
   plugins and not something to "fix" in `vite.config.ts`.
-- **Two runners.** Vitest is 59 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026),
+- **Two runners.** Vitest is 60 cases across `src/utils/color-utils.test.ts` (25, 17 September 2026),
   `src/utils/parse-color-input.test.ts` (11, 22 September 2026) and
-  `src/utils/parse-picked-color.test.ts` (23, 16 October 2026); the e2e suite covers the rest:
+  `src/utils/parse-picked-color.test.ts` (24, 16 October 2026); the e2e suite covers the rest:
   22 Playwright tests in
   `test/e2e/`, loading `build/` into a
   headless Chromium (`channel: 'chromium'`, `--load-extension`) and driving the real content script

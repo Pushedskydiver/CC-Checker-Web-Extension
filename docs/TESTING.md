@@ -7,7 +7,7 @@ primary source for how it works — read its `Fixtures` type and two doc comment
 first; `playwright.config.ts` holds the timings. The suite was written on 4 September 2026
 alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
 
-`src/utils/*.test.ts` (59 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
+`src/utils/*.test.ts` (60 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
 browser and no `chrome.*`: `color-utils.test.ts` (25, added 17 September 2026),
 `parse-color-input.test.ts` (11, added 22 September 2026) and `parse-picked-color.test.ts` (23, added
 16 October 2026) — §Unit tests below.
@@ -414,7 +414,7 @@ a red flag.
 | `test/e2e/extension.spec.ts`           | 22 tests | 9.7–12.9s locally, 4 workers (five runs, 16 October 2026; 8.5–8.9s at 21 tests on 22 September); 18.1s on `ubuntu-latest`, 2 workers, at 20 tests (12 September 2026) | `npm run test:e2e` (after `npm run build`) | 16 October 2026   |
 | `src/utils/color-utils.test.ts`        | 25 cases | ~100ms locally; 175ms on `ubuntu-latest`                                                                                                                              | `npm run test:unit`                        | 18 September 2026 |
 | `src/utils/parse-color-input.test.ts`  | 11 cases | ~100ms locally, shared with the row above (one Vitest run)                                                                                                            | `npm run test:unit`                        | 22 September 2026 |
-| `src/utils/parse-picked-color.test.ts` | 23 cases | ~100ms locally, shared with the rows above (one Vitest run)                                                                                                           | `npm run test:unit`                        | 16 October 2026   |
+| `src/utils/parse-picked-color.test.ts` | 24 cases | ~100ms locally, shared with the rows above (one Vitest run)                                                                                                           | `npm run test:unit`                        | 16 October 2026   |
 
 Groups: 1 service worker, 3 content script, 15 app, 3 colour picker (patched manifest).
 
@@ -478,16 +478,17 @@ character chroma cannot parse, an 8-digit `#rrggbbaa` value (chroma accepts it a
 so the length check has to reject it explicitly — this case was added during `da-review`, the
 gate watched failing with the length check removed), and the empty string.
 
-`src/utils/parse-picked-color.test.ts`, added 16 October 2026 (CC-004 row 11), is 23 cases over
+`src/utils/parse-picked-color.test.ts`, added 16 October 2026 (CC-004 row 11), is 24 cases over
 `parsePickedColor`, the validator `useColorPicked` runs on every relayed `colorPicked`. Two kinds of
 rule, labelled in the code: a non-object, a wrong `type`, a `key` other than `background` or
 `foreground`, an `rgb` that is missing, a string, an object, or not exactly three entries, and a
-channel that is a string, `null` or NaN, would corrupt state; a channel outside the integers 0 to 255
+channel that is a string, `null`, NaN or a hole (`every` skips holes, so the channels are destructured
+first), would corrupt state; a channel outside the integers 0 to 255
 (negative, 256, Infinity, 1.5) is `content.js`'s contract (a `Uint8ClampedArray` read), since `chroma.rgb`
 itself accepts `[256, 0, 0]` and `[1.5, 2, 3]`. Accepted: both keys, the limits 0 and 255, a fresh tuple
 (not the message's own array) and extra fields ignored. The first draft had a separate `isNumber` rule
 for the corrupting class; mutation runs showed `Number.isInteger` already rejects every non-number and
-NaN, so deleting `isNumber` kept all 23 cases green, and it was folded into the single `isByte` check.
+NaN, so deleting `isNumber` kept every case green, and it was folded into the single `isByte` check.
 Every other check was then broken by hand (type, each key, length, non-object, integer, both bounds and the
 fresh tuple) and each mutant went red. The e2e test above is what
 shows the validator is wired in.

@@ -25,9 +25,10 @@ export const parsePickedColor = (message: unknown): TPickedColor | null => {
 	if (type !== 'colorPicked') return null;
 	if (key !== 'background' && key !== 'foreground') return null;
 	if (!Array.isArray(rgb) || rgb.length !== 3) return null;
-	if (!rgb.every(isByte)) return null;
+	// Destructured before the check: `every` skips holes, so `[1, , 3]` would pass.
+	const [r, g, b] = rgb as unknown[];
 
-	const [r, g, b] = rgb as [number, number, number];
+	if (![r, g, b].every(isByte)) return null;
 
-	return { key, rgb: [r, g, b] };
+	return { key, rgb: [r, g, b] as [number, number, number] };
 };

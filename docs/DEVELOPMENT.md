@@ -41,15 +41,15 @@ reaches users_; everything keyed to npm publishing or container deploys is named
 Every command below exists in `package.json` and was run on 4 September 2026. There is no task
 runner and no dev server: the app needs `chrome.*` APIs, so it only runs loaded as an extension.
 
-| Command             | What it proves                                                                                                                                         | Cost           |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass          | ~4s            |
-| `npm run test:unit` | the 59 Vitest cases over `src/utils/color-utils.ts`, `src/utils/parse-color-input.ts` and `src/utils/parse-picked-color.ts` pass; no browser, no build | ~0.1s          |
-| `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                            | under 1s       |
-| `npm run test:e2e`  | the built extension loads in headless Chromium and the 22 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included                      | ~8s, 4 workers |
-| `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                                        | ~8s            |
-| `npm run watch`     | rebuilds `build/` on save for manual testing                                                                                                           | continuous     |
-| `npm run package`   | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                           | seconds        |
+| Command             | What it proves                                                                                                                                         | Cost            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- |
+| `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass          | ~4s             |
+| `npm run test:unit` | the 60 Vitest cases over `src/utils/color-utils.ts`, `src/utils/parse-color-input.ts` and `src/utils/parse-picked-color.ts` pass; no browser, no build | ~0.1s           |
+| `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                            | under 1s        |
+| `npm run test:e2e`  | the built extension loads in headless Chromium and the 22 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included                      | ~10s, 4 workers |
+| `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                                        | ~10s            |
+| `npm run watch`     | rebuilds `build/` on save for manual testing                                                                                                           | continuous      |
+| `npm run package`   | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                           | seconds         |
 
 The pre-push suite, which must be green before every push:
 

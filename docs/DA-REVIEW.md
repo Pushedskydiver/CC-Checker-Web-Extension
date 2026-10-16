@@ -105,14 +105,14 @@ trigger-gated** — routed so the checklist gets finished, not optional once the
 
 **Trigger-gated — read the section when its trigger fires, and not otherwise:**
 
-| Trigger                                                                                                      | Discipline                                              |
-| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
-| `public/app/**`, `src/context.tsx`, any `chrome.runtime.sendMessage` / `onMessage` change                    | [Cross-context consistency](#cross-context-consistency) |
-| `public/manifest.json`, or the manifest patching in `test/e2e/fixtures.ts`                                   | [Permission audit](#permission-audit)                   |
-| A `@media` block, the PostCSS block in `vite.config.ts`, any `addEventListener` / `removeEventListener` pair | [Cascade and order audit](#cascade-and-order-audit)     |
-| A file or directory added, renamed or moved; a new import path                                               | [Case-sensitivity audit](#case-sensitivity-audit)       |
-| `test/**`, `src/**/*.test.ts`, `playwright.config.ts` or `vitest.config.ts` changed                          | [Test permissiveness audit](#test-permissiveness-audit) |
-| Code became unreachable, or a class, token or message lost its last reference                                | [Dead-code hygiene](#dead-code-hygiene--list-and-ask)   |
+| Trigger                                                                                                                                  | Discipline                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `public/app/**`, `src/hooks/useColorPicked.ts`, `src/utils/parse-picked-color.ts`, any `chrome.runtime.sendMessage` / `onMessage` change | [Cross-context consistency](#cross-context-consistency) |
+| `public/manifest.json`, or the manifest patching in `test/e2e/fixtures.ts`                                                               | [Permission audit](#permission-audit)                   |
+| A `@media` block, the PostCSS block in `vite.config.ts`, any `addEventListener` / `removeEventListener` pair                             | [Cascade and order audit](#cascade-and-order-audit)     |
+| A file or directory added, renamed or moved; a new import path                                                                           | [Case-sensitivity audit](#case-sensitivity-audit)       |
+| `test/**`, `src/**/*.test.ts`, `playwright.config.ts` or `vitest.config.ts` changed                                                      | [Test permissiveness audit](#test-permissiveness-audit) |
+| Code became unreachable, or a class, token or message lost its last reference                                                            | [Dead-code hygiene](#dead-code-hygiene--list-and-ask)   |
 
 ### Verification-claim audit
 

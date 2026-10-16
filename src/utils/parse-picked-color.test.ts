@@ -68,6 +68,7 @@ describe('parsePickedColor', () => {
 		['a numeric string', ['1', '2', '3']],
 		['null', [1, null, 3]],
 		['NaN', [1, Number.NaN, 3]],
+		['a hole', Object.assign(new Array<number>(3), { 0: 1, 2: 3 })],
 	])('rejects an rgb channel that is %s', (_label, rgb) => {
 		expect(
 			parsePickedColor({ type: 'colorPicked', key: 'background', rgb }),
