@@ -1,11 +1,6 @@
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useEffectEvent,
-	useState,
-} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
+import { useColorPicked } from './hooks/useColorPicked';
 import {
 	colorToHsl,
 	getContrast,
@@ -16,12 +11,7 @@ import {
 	rgbToHsl,
 } from './utils/color-utils';
 
-import type {
-	ColorTuple,
-	TColors,
-	TLevels,
-	TPickedColor,
-} from './global-types';
+import type { TColorTuple, TColorKey, TColors, TLevels } from './global-types';
 
 /** Must match the `--background-color` / `--foreground-color` defaults in styles/globals.css. */
 export const DEFAULT_BACKGROUND = '#ffe66d';
@@ -34,14 +24,14 @@ export interface TColourContrastProvider {
 
 export interface TColourContrastContext {
 	colors: TColors[];
-	background: ColorTuple;
-	foreground: ColorTuple;
+	background: TColorTuple;
+	foreground: TColorTuple;
 	contrast: number;
 	level: TLevels;
-	handleContrastCheck: (value: ColorTuple, name: string) => void;
+	setColor: (key: TColorKey, value: TColorTuple) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
-	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
+	updateView: (bg: TColorTuple, fg: TColorTuple) => void;
 }
 
 const ColourContrastContext = createContext<TColourContrastContext | undefined>(
@@ -56,7 +46,7 @@ const isNumberOrNull = (value: unknown): value is number | null =>
  * of numbers (an older build's shape, a hand-edited value) falls back to the
  * default rather than throwing inside render.
  */
-function readStoredColor(key: string, fallbackHex: string): ColorTuple {
+function readStoredColor(key: string, fallbackHex: string): TColorTuple {
 	const fallback = colorToHsl(fallbackHex);
 
 	try {
@@ -97,10 +87,10 @@ function readStoredColors(): TColors[] {
 
 const ColourContrastProvider = (props: TColourContrastProvider) => {
 	const [colors, setColors] = useState<TColors[]>(readStoredColors);
-	const [background, setBackground] = useState<ColorTuple>(() =>
+	const [background, setBackground] = useState<TColorTuple>(() =>
 		readStoredColor('background', DEFAULT_BACKGROUND),
 	);
-	const [foreground, setForeground] = useState<ColorTuple>(() =>
+	const [foreground, setForeground] = useState<TColorTuple>(() =>
 		readStoredColor('foreground', DEFAULT_FOREGROUND),
 	);
 
@@ -111,7 +101,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 	const isPoorContrast = contrast < 3;
 	const isBackgroundDark = isDark(background);
 
-	function updateView(bg: ColorTuple, fg: ColorTuple) {
+	function updateView(bg: TColorTuple, fg: TColorTuple) {
 		localStorage.setItem('background', JSON.stringify(bg));
 		localStorage.setItem('foreground', JSON.stringify(fg));
 
@@ -119,9 +109,9 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 		setForeground(fg);
 	}
 
-	function handleContrastCheck(value: ColorTuple, name: string) {
-		if (name === 'background') updateView(value, foreground);
-		if (name === 'foreground') updateView(background, value);
+	function setColor(key: TColorKey, value: TColorTuple) {
+		if (key === 'background') updateView(value, foreground);
+		if (key === 'foreground') updateView(background, value);
 	}
 
 	function reverseColors() {
@@ -146,35 +136,9 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 		setColors(next);
 	}
 
-	const handlePickedColor = useEffectEvent(({ key, rgb }: TPickedColor) => {
-		handleContrastCheck(rgbToHsl(rgb), key);
-
-		chrome.runtime.sendMessage({
-			type: 'closeColorPicker',
-		});
+	useColorPicked(({ key, rgb }) => {
+		setColor(key, rgbToHsl(rgb));
 	});
-
-	useEffect(() => {
-		function handleMessage(
-			message: { type: string } & Partial<TPickedColor>,
-			sender: chrome.runtime.MessageSender,
-		) {
-			// The content script's broadcast and the service worker's relay both
-			// arrive here. Only the relay reaches this iframe in incognito windows,
-			// so that is the one handled; the direct copy (sender.tab set) is ignored.
-			if (sender.tab) return;
-
-			if (message.type === 'colorPicked' && message.key && message.rgb) {
-				handlePickedColor({ key: message.key, rgb: message.rgb });
-			}
-		}
-
-		chrome.runtime.onMessage.addListener(handleMessage);
-
-		return () => {
-			chrome.runtime.onMessage.removeListener(handleMessage);
-		};
-	}, []);
 
 	useEffect(() => {
 		document.body.style.setProperty('--background-color', backgroundHex);
@@ -197,7 +161,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 				foreground,
 				contrast,
 				level,
-				handleContrastCheck,
+				setColor,
 				reverseColors,
 				saveColors,
 				updateView,

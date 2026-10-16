@@ -3,8 +3,10 @@ import { useEffect, useRef } from 'react';
 import { ActionCta } from '../action-cta/action-cta';
 import { Eyedropper } from '../icon/icon';
 
+import type { TColorKey } from '~/global-types';
+
 export type TColorPickerCta = {
-	id: 'background' | 'foreground';
+	id: TColorKey;
 };
 
 export const ColorPickerCta = ({ id }: TColorPickerCta) => {

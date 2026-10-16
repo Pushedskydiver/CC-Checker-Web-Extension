@@ -41,15 +41,15 @@ reaches users_; everything keyed to npm publishing or container deploys is named
 Every command below exists in `package.json` and was run on 4 September 2026. There is no task
 runner and no dev server: the app needs `chrome.*` APIs, so it only runs loaded as an extension.
 
-| Command             | What it proves                                                                                                                                | Cost           |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass | ~4s            |
-| `npm run test:unit` | the 36 Vitest cases over `src/utils/color-utils.ts` and `src/utils/parse-color-input.ts` pass; no browser, no build                           | ~0.1s          |
-| `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                   | under 1s       |
-| `npm run test:e2e`  | the built extension loads in headless Chromium and the 21 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included             | ~8s, 4 workers |
-| `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                               | ~8s            |
-| `npm run watch`     | rebuilds `build/` on save for manual testing                                                                                                  | continuous     |
-| `npm run package`   | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                  | seconds        |
+| Command             | What it proves                                                                                                                                         | Cost            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- |
+| `npm run lint`      | `lint:ts` (tsc over `tsconfig.json` and `tsconfig.node.json`), `lint:js` (ESLint), `lint:css` (Stylelint), `format:check` (Prettier) all pass          | ~4s             |
+| `npm run test:unit` | the 60 Vitest cases over `src/utils/color-utils.ts`, `src/utils/parse-color-input.ts` and `src/utils/parse-picked-color.ts` pass; no browser, no build | ~0.1s           |
+| `npm run build`     | Vite emits `build/` — one JS file, one CSS file, `public/` and the manifest copied verbatim                                                            | under 1s        |
+| `npm run test:e2e`  | the built extension loads in headless Chromium and the 22 Playwright tests in `test/e2e/` pass, eyedropper and clipboard included                      | ~10s, 4 workers |
+| `npm test`          | `build` then `test:e2e` — use it when unsure the build is fresh                                                                                        | ~10s            |
+| `npm run watch`     | rebuilds `build/` on save for manual testing                                                                                                           | continuous      |
+| `npm run package`   | `build`, then zips `build/` to `cc-checker-<version>.zip`, dotfiles excluded                                                                           | seconds         |
 
 The pre-push suite, which must be green before every push:
 
@@ -61,7 +61,7 @@ Playwright's Chromium is installed once per machine, and again after a `@playwri
 build changes with the package): `npx playwright install chromium`. Prettier
 takes its config from `.editorconfig`; there is no `.prettierrc`.
 
-**What the e2e suite does not cover**, so nobody mistakes 21 green tests for a tested release: a
+**What the e2e suite does not cover**, so nobody mistakes 22 green tests for a tested release: a
 real toolbar click and the `activeTab` grant behind it (the picker tests run a manifest copy with
 `host_permissions: ["<all_urls>"]` because Playwright cannot click the toolbar), the error popup,
 incognito, a real (not stubbed) refusal of the copy command, the Web Store package, and Safari — the share button's
