@@ -4,7 +4,7 @@ import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
 import styles from './color-control.module.css';
 
-import type { ColorTuple, TColorKey } from '~/global-types';
+import type { TColorTuple, TColorKey } from '~/global-types';
 
 export type TColourControl = {
 	id: TColorKey;
@@ -34,7 +34,7 @@ export const ColourControl = ({ id, type }: TColourControl) => {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const channel = Number(e.target.dataset.channel) as 0 | 1 | 2;
-		const next: ColorTuple = [value[0], value[1], value[2]];
+		const next: TColorTuple = [value[0], value[1], value[2]];
 
 		next[channel] = parseFloat(e.target.value);
 

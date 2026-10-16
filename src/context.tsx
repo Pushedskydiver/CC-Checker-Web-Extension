@@ -11,7 +11,7 @@ import {
 	rgbToHsl,
 } from './utils/color-utils';
 
-import type { ColorTuple, TColorKey, TColors, TLevels } from './global-types';
+import type { TColorTuple, TColorKey, TColors, TLevels } from './global-types';
 
 /** Must match the `--background-color` / `--foreground-color` defaults in styles/globals.css. */
 export const DEFAULT_BACKGROUND = '#ffe66d';
@@ -24,14 +24,14 @@ export interface TColourContrastProvider {
 
 export interface TColourContrastContext {
 	colors: TColors[];
-	background: ColorTuple;
-	foreground: ColorTuple;
+	background: TColorTuple;
+	foreground: TColorTuple;
 	contrast: number;
 	level: TLevels;
-	setColor: (key: TColorKey, value: ColorTuple) => void;
+	setColor: (key: TColorKey, value: TColorTuple) => void;
 	reverseColors: () => void;
 	saveColors: () => void;
-	updateView: (bg: ColorTuple, fg: ColorTuple) => void;
+	updateView: (bg: TColorTuple, fg: TColorTuple) => void;
 }
 
 const ColourContrastContext = createContext<TColourContrastContext | undefined>(
@@ -46,7 +46,7 @@ const isNumberOrNull = (value: unknown): value is number | null =>
  * of numbers (an older build's shape, a hand-edited value) falls back to the
  * default rather than throwing inside render.
  */
-function readStoredColor(key: string, fallbackHex: string): ColorTuple {
+function readStoredColor(key: string, fallbackHex: string): TColorTuple {
 	const fallback = colorToHsl(fallbackHex);
 
 	try {
@@ -87,10 +87,10 @@ function readStoredColors(): TColors[] {
 
 const ColourContrastProvider = (props: TColourContrastProvider) => {
 	const [colors, setColors] = useState<TColors[]>(readStoredColors);
-	const [background, setBackground] = useState<ColorTuple>(() =>
+	const [background, setBackground] = useState<TColorTuple>(() =>
 		readStoredColor('background', DEFAULT_BACKGROUND),
 	);
-	const [foreground, setForeground] = useState<ColorTuple>(() =>
+	const [foreground, setForeground] = useState<TColorTuple>(() =>
 		readStoredColor('foreground', DEFAULT_FOREGROUND),
 	);
 
@@ -101,7 +101,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 	const isPoorContrast = contrast < 3;
 	const isBackgroundDark = isDark(background);
 
-	function updateView(bg: ColorTuple, fg: ColorTuple) {
+	function updateView(bg: TColorTuple, fg: TColorTuple) {
 		localStorage.setItem('background', JSON.stringify(bg));
 		localStorage.setItem('foreground', JSON.stringify(fg));
 
@@ -109,7 +109,7 @@ const ColourContrastProvider = (props: TColourContrastProvider) => {
 		setForeground(fg);
 	}
 
-	function setColor(key: TColorKey, value: ColorTuple) {
+	function setColor(key: TColorKey, value: TColorTuple) {
 		if (key === 'background') updateView(value, foreground);
 		if (key === 'foreground') updateView(background, value);
 	}

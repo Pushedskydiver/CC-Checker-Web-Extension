@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
 
-import type { ColorTuple, TLevels } from '~/global-types';
+import type { TColorTuple, TLevels } from '~/global-types';
 
 /**
  * chroma returns a NaN hue for greys, and `JSON.stringify` turns that NaN into
@@ -8,7 +8,7 @@ import type { ColorTuple, TLevels } from '~/global-types';
  * to a grey instead of the red the user asked for, so hue is normalised to 0
  * at every boundary where a tuple is created.
  */
-const toHslTuple = (hsl: readonly number[]): ColorTuple => {
+const toHslTuple = (hsl: readonly number[]): TColorTuple => {
 	const [h, s = 0, l = 0] = hsl;
 
 	return [Number.isFinite(h) ? (h as number) : 0, s, l];
@@ -23,25 +23,25 @@ export const isHex = (hex: string): boolean => {
 	}
 };
 
-export const isDark = (hsl: ColorTuple): boolean => {
+export const isDark = (hsl: TColorTuple): boolean => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).get('lab.l') < 60;
 };
 
-export const colorToHsl = (hex: string): ColorTuple => {
+export const colorToHsl = (hex: string): TColorTuple => {
 	return toHslTuple(chroma(hex).hsl());
 };
 
-export const hslToHex = (hsl: ColorTuple): string => {
+export const hslToHex = (hsl: TColorTuple): string => {
 	return chroma.hsl(hsl[0], hsl[1], hsl[2]).hex();
 };
 
-export const hslToRgb = (hsl: ColorTuple): ColorTuple => {
+export const hslToRgb = (hsl: TColorTuple): TColorTuple => {
 	const [r, g, b] = chroma.hsl(hsl[0], hsl[1], hsl[2]).rgb();
 
 	return [r, g, b];
 };
 
-export const rgbToHsl = (rgb: ColorTuple): ColorTuple => {
+export const rgbToHsl = (rgb: TColorTuple): TColorTuple => {
 	return toHslTuple(chroma.rgb(rgb[0], rgb[1], rgb[2]).hsl());
 };
 
