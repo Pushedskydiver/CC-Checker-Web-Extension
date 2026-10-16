@@ -9,7 +9,7 @@ alongside the fixes it guards and is green as of that date (18 passed, 7.3s).
 
 `src/utils/*.test.ts` (60 tests, Vitest, `npm run test:unit`, ~100ms) covers pure functions with no
 browser and no `chrome.*`: `color-utils.test.ts` (25, added 17 September 2026),
-`parse-color-input.test.ts` (11, added 22 September 2026) and `parse-picked-color.test.ts` (23, added
+`parse-color-input.test.ts` (11, added 22 September 2026) and `parse-picked-color.test.ts` (24, added
 16 October 2026) — §Unit tests below.
 
 **Adapted from nas-stacks' and moe's `docs/TESTING.md`.** Dropped wholesale, because this repo has
