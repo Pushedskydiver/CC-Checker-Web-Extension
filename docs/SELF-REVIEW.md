@@ -21,7 +21,7 @@ The Red Flags list and the severity labels (BLOCKING / MATERIAL / LOW) live in
 **Adapted from the `docs/SELF-REVIEW.md` in chief-clancy, moe, nas-stacks and tamaclaude** — the
 structure and the disciplines, not the subject matter: their shell, Python, compose, monorepo and
 mutation-gate sections have no equivalent in a three-context browser extension whose tests are an
-e2e suite and 36 Vitest cases over the colour utilities and the hex-input parser. nas-stacks attached a real incident to every rule it could; this checklist does the
+e2e suite and 60 Vitest cases over the colour utilities, the hex-input parser and the picked-colour validator. nas-stacks attached a real incident to every rule it could; this checklist does the
 same, and every incident below is from the verification of the Vite migration on 4 September 2026.
 
 This is a **living document**. When something slips past DA + self-review + CI and shows up as a
@@ -120,7 +120,7 @@ Read `git diff main...HEAD` top to bottom. For each file:
 - **Frame guard.** Everything in `content.js` that registers a listener sits inside
   `if (window.self === window.top)`. The service worker addresses the _tab_, so every frame receives
   every message; the guard is the only thing keeping the panel out of child iframes.
-- **Sender filter.** The app's `onMessage` handler in `src/context.tsx` returns early when
+- **Sender filter.** The app's `onMessage` handler in `src/hooks/useColorPicked.ts` returns early when
   `sender.tab` is set, so it handles the service-worker relay and ignores the content script's direct
   broadcast — before 4 September 2026 each pick was handled twice. A new handler in `src/` follows
   the same rule; a new relay case in `background.js` sits below the `tabId === undefined` return.
@@ -216,7 +216,8 @@ string }` under `vite/client`, so `styles.main` with no `.main` in the sibling f
 
 `test/e2e/` is Playwright against the built `build/`, 18 tests on 4 September 2026, ~7s on 4
 workers. `src/utils/color-utils.test.ts` is 25 Vitest cases since 17 September 2026 and
-`src/utils/parse-color-input.test.ts` is 11 more since 22 September 2026, 36 total
+`src/utils/parse-color-input.test.ts` is 11 more since 22 September 2026, and
+`src/utils/parse-picked-color.test.ts` 24 more since 16 October 2026, 60 total
 (`docs/TESTING.md`).
 
 - **A new behaviour has a test that failed before the change.** Check out the parent commit, run
@@ -296,8 +297,8 @@ workers. `src/utils/color-utils.test.ts` is 25 Vitest cases since 17 September 2
   read from the host DOM, from a `message` payload, or from `localStorage` (which the extension
   origin owns but an older build or a hand edit can have shaped differently) is trusted as-is:
   `readStoredColor` and `readStoredColors` in `src/context.tsx` validate shape and fall back to the
-  defaults rather than throw in render. A new message field is checked before use, the way the
-  `colorPicked` handler checks `message.key && message.rgb`.
+  defaults rather than throw in render. A new message field is checked before use, the way
+  `parsePickedColor` checks a `colorPicked` payload's `key` and three-integer `rgb`.
 - **The share URL carries two hex values and nothing else.** `Generate share URL` links to
   `https://colourcontrast.cc/?background=<hex>&foreground=<hex>`; no page URL, title or screenshot
   goes with it.
@@ -344,7 +345,7 @@ Sections in the source checklists with no equivalent here, and what would bring 
   single package, nothing published to npm, no lint-staged hook, no `knip`. Re-entry: a second
   package or an npm publish.
 - **Zod at trust boundaries** (tamaclaude) — no schema library; the boundary checks are hand-written
-  guards in `src/context.tsx`. Re-entry: a third message shape that the guards cannot express
+  guards in `src/utils/parse-picked-color.ts` and `src/context.tsx`. Re-entry: a third message shape that the guards cannot express
   readably.
 
 ## See also

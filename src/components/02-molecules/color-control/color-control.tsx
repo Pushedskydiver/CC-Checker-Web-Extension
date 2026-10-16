@@ -4,17 +4,17 @@ import { RangeInput } from '~/components/01-atoms/range-input/range-input';
 
 import styles from './color-control.module.css';
 
-import type { ColorTuple } from '~/global-types';
+import type { TColorTuple, TColorKey } from '~/global-types';
 
 export type TColourControl = {
-	id: 'background' | 'foreground';
+	id: TColorKey;
 	type?: 'hsl' | 'rgb';
 };
 
 const HSL_STEP = 1 / 256;
 
 export const ColourControl = ({ id, type }: TColourControl) => {
-	const { background, foreground, handleContrastCheck } = useColourContrast();
+	const { background, foreground, setColor } = useColourContrast();
 
 	const isRgb = type === 'rgb';
 	const hsl = id === 'background' ? background : foreground;
@@ -34,11 +34,11 @@ export const ColourControl = ({ id, type }: TColourControl) => {
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const channel = Number(e.target.dataset.channel) as 0 | 1 | 2;
-		const next: ColorTuple = [value[0], value[1], value[2]];
+		const next: TColorTuple = [value[0], value[1], value[2]];
 
 		next[channel] = parseFloat(e.target.value);
 
-		handleContrastCheck(isRgb ? rgbToHsl(next) : next, id);
+		setColor(id, isRgb ? rgbToHsl(next) : next);
 	};
 
 	return (

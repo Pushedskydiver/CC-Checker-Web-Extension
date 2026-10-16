@@ -92,8 +92,9 @@ incognito, a real (rather than stubbed) refusal of the copy command, the zip tha
 anything
 about Safari. The pure colour utilities in `src/utils/color-utils.ts` have 25 Vitest tests as of
 17 September 2026, and the hex-input parser in `src/utils/parse-color-input.ts` has 11 more as of
-22 September 2026 (`npm run test:unit`, 36 total). Fixtures, the patched-manifest option, and how to
-add a test are in [docs/TESTING.md](docs/TESTING.md).
+22 September 2026, and the `colorPicked` payload validator in `src/utils/parse-picked-color.ts` has 24
+more as of 16 October 2026 (`npm run test:unit`, 60 total). Fixtures, the patched-manifest option, and
+how to add a test are in [docs/TESTING.md](docs/TESTING.md).
 
 ## Releasing
 
@@ -123,7 +124,9 @@ src/app.tsx                       provider + Header + MainLayout(Score, ColorCon
 src/context.tsx                   ColourContrastProvider / useColourContrast — all colour state
 src/utils/color-utils.ts          chroma-js wrappers, hue normalisation, getLevel, roundTo
 src/utils/parse-color-input.ts    the hex text-input parser, toCompleteHex
+src/utils/parse-picked-color.ts   the colorPicked payload validator, parsePickedColor
 src/utils/copy-text.ts            execCommand copy with selection restore and a prompt on refusal
+src/hooks/useColorPicked.ts       the colorPicked listener: relay-only filter, validator, closeColorPicker reply
 src/hooks/useTabbed.ts            WAI-ARIA tabs keyboard logic
 src/components/                   01-atoms … 04-layouts; each dir holds <name>.tsx (+ <name>.module.css when styled)
 src/styles/                       globals.css and the @value breakpoint/container/typography modules

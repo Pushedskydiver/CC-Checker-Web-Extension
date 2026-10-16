@@ -1,9 +1,11 @@
-export type ColorTuple = [number, number, number];
+export type TColorTuple = [number, number, number];
 
 export type TColors = {
 	background: string;
 	foreground: string;
 };
+
+export type TColorKey = keyof TColors;
 
 export type TLevels = {
 	AALarge: 'Pass' | 'Fail';
@@ -13,6 +15,6 @@ export type TLevels = {
 };
 
 export type TPickedColor = {
-	key: keyof TColors;
-	rgb: ColorTuple;
+	key: TColorKey;
+	rgb: TColorTuple;
 };

@@ -4,8 +4,10 @@ import { Text } from '../text/text';
 
 import styles from './text-input.module.css';
 
+import type { TColorKey } from '~/global-types';
+
 export type TTextInput = {
-	id: 'background' | 'foreground';
+	id: TColorKey;
 	labelText: string;
 	value: string;
 } & Pick<
