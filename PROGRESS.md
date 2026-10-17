@@ -412,8 +412,11 @@ checkout. The band was 5 entries and 25,572 bytes. The pre-push suite was green 
 - **Reviews, dispatched at 244k and still running at the handoff:** `spec-grill` R1 and `copilot-surrogate`, both
   Fable at `high`, each in a detached worktree in the scratchpad (`wt-grill`, `wt-surrogate`, at `be835b7`),
   writing to `scratchpad/grill-r1.md` and `scratchpad/surrogate-r1.md` with replies capped at 1,500
-  characters. Re-runnable: their input is `be835b7`. If they finish before this handoff pushes, their reports are
-  committed to `docs/research/03-sources/` and this line is corrected in the same commit.
+  characters. Re-runnable: their input is `be835b7`. The surrogate finished after the handoff pushed: 0 BLOCKING,
+  4 MATERIAL (the item 4 re-entry condition misquoted; `background.js` line cites wrong; "forum posts never
+  VERIFIED" false for two Safari rows; the revoked-site error-popup behaviour stated as fact while F5 is
+  UNVERIFIED), 10 LOW, 2 nits, committed unfolded as `docs/research/03-sources/surrogate-r1.md`. The grill was
+  still running; its report, if it lands, is committed the same way.
 - **Merged:** nothing. **Uploaded:** no.
 
 **Handoff facts:**
