@@ -614,7 +614,7 @@ permission mode auto.
 - **[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121)**,
   `docs/CC-006-archive-session-23`, `a62ec25`: Session 23 becomes row 23, one cite of its content (Session 28's
   "Session 23 pattern 2") points at `git show ddaab4e:PROGRESS.md`, and step 5(d) says where its readings are.
-  The band figure was measured inside the commit command (Session 28 pattern 2). `copilot-surrogate` (Fable,
+  The band figure was measured inside the commit command (Session 28 pattern 2, in `git show 6821ca5:PROGRESS.md`). `copilot-surrogate` (Fable,
   ~102k), in a detached worktree in the scratchpad: 53 claims, 0 falsified, nit-floor with 2 nits, both declined
   (#121's body says why). The band is 5 entries and 23,526 bytes before this entry. The reviewer followed item
   C's contract again.
@@ -666,60 +666,6 @@ permission mode auto.
    product changes in the entry, not only the PRs.
 4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
    of their opening, and a commit pushed afterwards landed on a branch nobody would merge.
-
-## Session 28 — 7 October 2026 (CC-006: Session 22 archived as #119, Alex answers the inventory's questions)
-
-**Alex set Decision 6's threshold at 7 or more hunks or 33 or more changed lines, kept item C next but re-scoped
-to one contract in the briefs, and put the inventory's corrections to research 02 in C's PR.** The Session 22
-archive, #119, reached nit-floor and Alex merged it in-session as `bcd5bc1`, a merge commit.
-
-**Setup:** #117 (`55f9230`) and the Session 27 handoff #118 (`f5eb1d2`) had merged at 08:03Z on 7 October, as
-merge commits (Alex), so `main`'s loading block was current. No PRs were open, the tree was clean, the remote
-branches were the three standing ones, and the only worktree was the main checkout. The band was 6 entries and
-27,902 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `f5eb1d2`. `get_session self` reported
-Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119)**,
-  `docs/CC-006-archive-session-22`, `6ea88a6`: Session 22 becomes row 22, and four cites of its content point at
-  `git show f5eb1d2:PROGRESS.md`. `copilot-surrogate` (Fable, ~82k), in a detached worktree in the scratchpad:
-  39 claims, 1 falsified, nit-floor with 1 LOW and 1 nit. The LOW was the PR body's "fifth incident" (Session 23
-  pattern 2, in `git show ddaab4e:PROGRESS.md`, had counted the fifth); folded in the body, no file change. The nit was declined (#119's body says
-  why). The band is 5 entries and 23,963 bytes before this entry; the commit message's 23,960 predates a
-  three-byte fix, as the body says. The reviewer followed item C's contract again.
-- **Alex's answers** (loading step 5(b)): the three above, put to him while the reviewer ran; recorded in memory
-  `project-workflow-optimisation.md`, and in research 02 by C's PR.
-- **Merged:** #119 as `bcd5bc1` at 08:11Z (Alex). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1. The archive unit finished at 146k, above 130k; C was not started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                       | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)         | 54%    | 45%    | 32%          | 77k     |
-    | After the loading reads      | 54%    | 45%    | 32%          | 112k    |
-    | Reviewer running, Alex asked | 57%    | 46%    | 32%          | 139k    |
-    | Archive folded, handoff      | 59%    | 46%    | 33%          | 146k    |
-    | Handoff reviewed, pushed     | 62%    | 46%    | 33%          | 168k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 27: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and part of the loading block had been read. The reviewer had its own detached
-  worktree outside the repo.
-- **Clarifying question:** none beyond the three step 5(b) planned.
-
-**Major novel patterns Session 28:**
-
-1. **The loading reads plus one archive unit reach trigger 1 on their own.** 77k to 112k for the reads, then
-   112k to 146k for the archive with one reviewer, as Session 27 went 119k to 142k (in `git show 6821ca5:PROGRESS.md`). While each archive is its own
-   unit, a session does the archive and one question round and hands off; item B (the archive inside the session
-   PR) and item A (smaller reads) are what change that.
-2. **Measure the band in the same command as the commit.** A three-byte wording fix after the measurement made
-   the commit message's figure stale, the sixth incident of Session 18 pattern 1 (in `git show eb6099a:PROGRESS.md`).
-   Running the `awk` inside the commit command, after the last edit, closes it.
 
 ## Next session loading instructions
 
@@ -848,5 +794,5 @@ prune` once their folder is gone, or `git worktree remove --force <path>`.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
