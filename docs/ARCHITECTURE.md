@@ -366,8 +366,9 @@ for it, and none of the following has been tried:
   2026; this bullet said "not available" until then). `showErrorPopup` guards it with `typeof` for older
   builds, and unbinding with `setPopup({ popup: '' })` is undocumented there (only `null`, from Safari 18),
   so the path has not been exercised.
-- `web_accessible_resources[].use_dynamic_url` is Chrome-only in effect: Firefox does not support the key,
-  and Safari's extension host changes on every launch whatever the manifest says. The iframe URL and the
+- `web_accessible_resources[].use_dynamic_url` is Chromium-only in effect (Chrome 130 and later, and Edge,
+  which mirrors it): Firefox does not support the key, and Safari's extension host changes on every launch
+  whatever the manifest says. The iframe URL and the
   static-origin subresource behaviour above must be re-verified.
 - Safari packages extensions through Xcode (`xcrun safari-web-extension-packager`, the renamed
   converter); there is no script for it.

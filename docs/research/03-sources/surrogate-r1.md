@@ -1,4 +1,4 @@
-_Recorded verbatim from the Session 32 `copilot-surrogate` run on `be835b7` (Fable 5.1, 17 October 2026): 0 BLOCKING, 4 MATERIAL, 10 LOW, 2 nits. Folded in Session 33; the fold and its confirm round are in `PROGRESS.md` §Session 33._
+_Recorded verbatim from the Session 32 `copilot-surrogate` run on `be835b7` (Fable 5.1, 17 October 2026): 0 BLOCKING, 4 MATERIAL, 9 LOW, 3 nits (its own §Counts says 10 and 2; the sixteen findings grade 4/9/3). Folded in Session 33; the fold and its confirm round are in `PROGRESS.md` §Session 33._
 
 # copilot-surrogate R1 — docs/research/03-safari-firefox-ports.md (be835b7)
 

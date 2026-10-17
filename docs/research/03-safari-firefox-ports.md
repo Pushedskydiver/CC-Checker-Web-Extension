@@ -28,12 +28,14 @@ rules. Other forum posts are cited only as secondary and never as VERIFIED.
 
 - `03-sources/safari.md`: 143 rows, 129 VERIFIED, 11 UNVERIFIED, 3 SOURCES DISAGREE.
 - `03-sources/firefox.md`: 168 rows, 151 VERIFIED, 13 UNVERIFIED, 4 SOURCES DISAGREE (seven VERIFIED rows carry an
-  UNVERIFIED tail, where its footer estimates "about ten"; all are repeated in its Open points).
+  UNVERIFIED tail, where its footer estimates "about ten"; four of them its Open points repeat, and rows 113, 146
+  and 169 are not there, 169 being F9 below).
 
 The coordinator re-fetched two of the Firefox report's load-bearing pages itself (MDN's `background` key page and
 its `activeTab` page) and found the quotes exact, and fetched the Playwright and GitHub billing facts in
 §Distribution directly. Every engine claim below is one of those rows, cited by URL where it carries a decision;
-anything UNVERIFIED is in §What must be run, not asserted as fact. Nothing in the repo was changed by the research.
+anything UNVERIFIED is in §What must be run, not asserted as fact. Nothing in the repo was changed by the research itself; its fold rewrote three `docs/ARCHITECTURE.md` sentences
+(§Corrections).
 
 ## The two questions Alex asked
 
@@ -99,8 +101,8 @@ it, as now.
 
 ## The mechanisms, engine by engine
 
-`docs/ARCHITECTURE.md` §The one decision lists four consequences of the iframe design; the eight rows below are
-the mechanisms they rest on, plus the store, which the `spec-grill` R1 (M6) added. Chrome is today's behaviour; the other two columns
+`docs/ARCHITECTURE.md` §The one decision lists four consequences of the iframe design; the nine rows below are
+the mechanisms they rest on, the last being the store, which the `spec-grill` R1 (M6) added. Chrome is today's behaviour; the other two columns
 are what the documentation says, with the open points named.
 
 | Mechanism                                                                     | Firefox                                                                                                                                                                                                                                                                                                                                                                                                                                           | Safari (macOS; iOS where it differs)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -110,7 +112,7 @@ are what the documentation says, with the open points named.
 | The background relay, addressed by `sender.tab`                               | The background is an event page, not a worker (§What does Firefox need, item 1). `sender.tab` is "only present when the connection was opened from a tab (including content scripts)"; whether a message from the `moz-extension://` iframe embedded in a tab carries it is undocumented and uncovered by Firefox's own tests: experiment F2.                                                                                                     | Service worker since 15.4, but with both background keys Safari runs the page. WebKit populates `sender.tab` whenever the sending page maps to a tab (`WebExtensionContextAPIRuntimeCocoa.mm`), which an iframe in a tab does; Safari's own behaviour untested: experiment S3. Messages are capped at 64 MiB of JSON, far above a PNG of the viewport.                                                                                                                                                                                                     |
 | `document.execCommand('copy')` inside the cross-origin iframe                 | Documented to work in extensions "without special permission in short-lived event handlers triggered by user actions" (MDN, Interact with the clipboard). Firefox supports neither the `Permissions-Policy` header nor the `clipboard-write` directive, so Chrome's `allow` story has no counterpart; `writeText` in the iframe is untested.                                                                                                      | WebKit gates copy on `processingUserGesture()` and `writeText` on transient activation, with no origin or policy check in either path; its Permissions-Policy token list has no clipboard entry. Untested in the iframe: experiment S4.                                                                                                                                                                                                                                                                                                                    |
 | The iframe panel (`web_accessible_resources` + `getURL`)                      | MV3 object form since 109; "any path can be included" in `matches`. Firefox's own mochitest loads an extension page in an iframe created by a content script, with full extension privileges (bug 1258347, fixed in 49).                                                                                                                                                                                                                          | `safari-web-extension://<UUID>`, and "the host of your extension URL changes across every launch of Safari" (WWDC20), so `use_dynamic_url` is "always dynamic" and WebKit does not even read the key. An Apple engineer gave exactly this recipe in June 2025: list the HTML under `web_accessible_resources`, build the iframe with `getURL()`.                                                                                                                                                                                                           |
-| `action.openPopup` for the error popup                                        | Since 109; a user gesture is required before 149. Whether an awaited `setPopup` then `openPopup` inside `onClicked` still counts as the gesture is untested (F6).                                                                                                                                                                                                                                                                                 | Since Safari 16 ("Added the ability to open a Safari Web Extension popover programmatically"). `docs/ARCHITECTURE.md` says it "is not available"; that is stale. `setPopup({ popup: null })` is accepted from 18; the repo passes `''`, untested (S5).                                                                                                                                                                                                                                                                                                     |
+| `action.openPopup` for the error popup                                        | Since 109; a user gesture is required before 149. Whether an awaited `setPopup` then `openPopup` inside `onClicked` still counts as the gesture is untested (F6).                                                                                                                                                                                                                                                                                 | Since Safari 16 ("Added the ability to open a Safari Web Extension popover programmatically"). `docs/ARCHITECTURE.md` said it "is not available" until this PR rewrote it (§Corrections). `setPopup({ popup: null })` is accepted from 18; the repo passes `''`, untested (S5).                                                                                                                                                                                                                                                                            |
 | The `chrome.*` namespace                                                      | Supported "for APIs that are compatible with Chrome", with callbacks. Whether callback-less `chrome.tabs.*` and `chrome.action.*` calls return Promises, which `background.js` relies on at five sites (lines 26, 58, 84, 33 and 43), is not stated anywhere read: experiment F1. Chrome itself exposes `browser.*` from Chrome 148, so a `globalThis.browser ?? chrome` shim is the fallback.                                                    | "Safari web extensions support both the `chrome.*` and `browser.*` namespaces" and "both the callback and `Promise` approaches" (Apple's compatibility page). Whether `chrome.*` without a callback returns a Promise is not said separately (`safari.md` row 41, UNVERIFIED): experiment S8.                                                                                                                                                                                                                                                              |
 | The manifest content script on `<all_urls>`                                   | An opt-in host permission in MV3: "Registered content scripts are only executed if the extension is granted host permissions for the domain." Shown and granted at install from Firefox 127 (not before), revocable per site afterwards. On a revoked site the manifest script does not run (`firefox.md` row 130); whether the click's `activeTab` grant then injects it, or `initChecker` finds no listener and the error popup appears, is F5. | Does not run until the user grants the site: "the user will see your extension's toolbar icon badge the first time they visit a web site" (WWDC20), and WebKit adds static scripts only for granted patterns. The first click on each new site is the grant; whether the script is injected in time for the same click's `initChecker` is undocumented: experiment S1. `tab.url` in `onClicked` may also be absent until the grant (`safari.md` row 65), and `isRestrictedUrl(undefined)` is `true`, so the error popup would show instead: experiment S7. |
 | `localStorage` on the extension origin (`background`, `foreground`, `colors`) | The `moz-extension://` UUID is per browser instance; whether it is stable across restarts within a profile is undocumented (`firefox.md` row 169, UNVERIFIED): experiment F9.                                                                                                                                                                                                                                                                     | The host changes on every launch (WWDC20) and WebKit's `moveLocalStorageIfNeeded` migrates origin-keyed storage with it, but current Safari's behaviour is not re-documented since 2020 (`safari.md` rows 105 and 113, UNVERIFIED): experiment S9.                                                                                                                                                                                                                                                                                                         |
@@ -125,8 +127,8 @@ possibly empty `tab.url` before it (S7).
 
 The pattern MDN documents for "run on click" is `permissions: ["activeTab", "scripting"]` and
 `scripting.executeScript({ target: { tabId }, files: ["app/content.js"] })` inside `action.onClicked`, then
-`tabs.sendMessage(initChecker)` (MDN's `activeTab` page example; `scripting.executeScript` works "either
-explicitly as a host permission or using the `activeTab` permission"). Apple documents no such pattern; WebKit
+`tabs.sendMessage(initChecker)` (MDN's `activeTab` page example; MDN's `scripting.executeScript` page: it works
+"either explicitly as a host permission or using the `activeTab` permission"). Apple documents no such pattern; WebKit
 lists `scripting` among its supported permissions (`safari.md` row 219), and App Review guideline 4.4.2 pushes the
 same way. Chrome's permission list shows no install warning for `scripting` or `activeTab` (read 17 October 2026).
 
@@ -134,8 +136,8 @@ Three shapes, for decision (a). The `spec-grill` R1 (B1, B2) showed that the fir
 not been thought through, and proposed the third:
 
 1. **On-click injection everywhere, no manifest script.** One code path, but a Chrome behaviour change for every
-   existing user, and every one of the 22 e2e tests loses its resident content script: `test/e2e/fixtures.ts`'s
-   `page` fixture waits for `document_idle`, `openChecker` sends `initChecker` to a tab it assumes already hosts
+   existing user, and 21 of the 22 e2e tests lose their resident content script (the service-worker test uses no
+   page): `test/e2e/fixtures.ts`'s `page` fixture waits for `load` and then 300 ms for `document_idle`, `openChecker` sends `initChecker` to a tab it assumes already hosts
    the script, and the harness never clicks the toolbar, so `activeTab` is never granted (`docs/ARCHITECTURE.md`
    §Testing seam). Injecting from the harness would need `host_permissions: ["<all_urls>"]` on every test, not the
    three picker tests, which hollows out `docs/TESTING.md` §Why the patched manifest and leaves the shipped flow
@@ -154,21 +156,27 @@ Consequences under shape 3 (shapes 1 and 2 share the first two):
 
 - **`content.js` must survive being run twice in one document, and today it cannot.** `scripting.executeScript`
   evaluates the file as a classic script in the tab's isolated world; its top-level `const IFRAME_HEIGHT`,
-  `const LOUPE_SIZE`, `let scrollStopDelay`, `let keyValue`, `const image` and `const css` would be re-declared in
+  `const LOUPE_SIZE`, `let scrollStopDelay`, `let keyValue`, `const image`, `const css` and `const getCanvasWrapper` would be re-declared in
   the same global lexical environment, and the second run fails at instantiation with a `SyntaxError` before any
   guard can run. The file gets wrapped in an IIFE (or a block) and a flag on the isolated-world global
   (`globalThis.__ccCheckerInstalled`, say) keyed on the listener's existence, never on the DOM: after
   `closeChecker` there is no `[data-cc-checker]` but the first `onMessage` listener is still registered, so a
   DOM-keyed guard would register a second one and every later message would be handled twice, the defect class
-  `docs/REVIEW-PATTERNS.md` §6 records. Under shape 3 the re-run happens only when the ping found no listener, so
-  the wrap is belt and braces; it is still required, because an extension update orphans the old listener and the
-  next click's ping fails.
+  `docs/REVIEW-PATTERNS.md` §6 records. Under shape 3 the realistic double run is Chrome-only: a click before
+  `document_idle` on a loading page, where the ping rejects (no listener yet), `executeScript` injects at idle,
+  and the manifest script runs at idle too, two copies in one isolated world. (An extension update also orphans the old listener so
+  the next ping fails; whether that re-run lands in the same world is UNCHECKED.) So the wrap is required, and
+  since no ordinary click under shape 3 runs the file twice, F8 and the Chrome inject-path test call
+  `scripting.executeScript` twice explicitly and assert one iframe and one `closeColorPicker` relay per pick.
 - **`document.body` may not exist yet.** The manifest entry's `run_at: document_idle` guarantees a body today;
   `addIframe` and `addCanvas` append to it unguarded. The on-click variant guards for it or waits for
   `DOMContentLoaded`.
-- **The inject path needs its own test on Chrome.** A fourth patched-manifest test (no `content_scripts`,
-  `host_permissions: ["<all_urls>"]` so `executeScript` is legal without the click) covers it, and
-  `docs/TESTING.md` §Why the patched manifest says so.
+- **The inject path needs its own test on Chrome, and a seam to reach it.** The harness never fires
+  `action.onClicked` (`docs/ARCHITECTURE.md` §Testing seam), so `background.js` hoists the click body into a
+  global `handleActionClick(tab)` registered with `chrome.action.onClicked.addListener(handleActionClick)`, and a
+  fourth patched-manifest test (no `content_scripts`, `host_permissions: ["<all_urls>"]` so `executeScript` is
+  legal without the click) calls it through `serviceWorker.evaluate`, as the first e2e test calls
+  `isRestrictedUrl`. `docs/TESTING.md` §Why the patched manifest names both.
 - The content script is no longer resident on every page the user visits in Firefox and Safari; the `<all_urls>`
   entry in `web_accessible_resources` stays as is, because the iframe is still built from any site.
 - Chrome's install-time warning for the `<all_urls>` content script stays under shape 3, since Chrome's manifest
@@ -189,7 +197,8 @@ Consequences under shape 3 (shapes 1 and 2 share the first two):
   extensions, bug 1851083) and 140 (the data-collection key recognised without a warning).
   `strict_min_version: "140.0"` admits every behaviour above with no warnings; `"128.0"` is the floor at which
   nothing errors, but ESR 128's last release was 128.15 on 16 September 2025 and ESR 140 has been the only ESR
-  since 14 October 2025, itself succeeded by ESR 153 on 13 October 2026 (Mozilla's release calendar at
+  since 14 October 2025; ESR 153 has shipped since 21 July 2026 and 140's last release was 140.17 on 29 September
+  2026 (Mozilla's release calendar at
   <https://whattrainisitnow.com/calendar/>, read 17 October 2026), so `128.0` admits only browsers Mozilla no
   longer updates. Decision (b), now with one defensible answer.
 - **Safari.** 15.4 is the MV3 floor (Apple: "Safari 15.4 and later supports manifest versions 2 and 3"); 16 adds
@@ -243,33 +252,34 @@ globalThis.browser ?? chrome;` at the top of both plain scripts and a `src/utils
 ## What must be run before any code
 
 Each is a load-bearing behaviour the documentation does not settle. This Mac has Safari 27.0 on macOS 27.0 and
-Firefox 152.0.3 (read 17 October 2026), so every row runs here: Firefox from `about:debugging` (Load Temporary
+Firefox 152.0.3 (read 17 October 2026; six releases behind the calendar's 158.0, so update Firefox first), so every
+row runs here: Firefox from `about:debugging` (Load Temporary
 Add-on, a built folder with the patched manifest; not re-checked here), Safari from the Develop menu ("Add
 Temporary Extension…", 18.4 and later). Results go to `03-sources/experiments.md`, each with the browser version,
 and this file's open rows are then rewritten in place with a dated note, as research 02's fold was, not deleted.
 F8 and S1 run the recommended shape 3 flow against a patched manifest (`permissions: ["activeTab", "scripting"]`,
 no `content_scripts`); F5 runs the status quo, which shape 3 keeps on Chrome.
 
-| #   | Browser | Question                                                                                                                                                                                                                                        | Decides                                                                                         |
-| --- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| F1  | Firefox | Do callback-less `chrome.tabs.*` and `chrome.action.*` calls return Promises? (`background.js` lines 26 and 58 `sendMessage`, 84 `captureVisibleTab`, 33 and 43 `action.*`.)                                                                    | Whether the shim is needed; and that the file loads as a page at all.                           |
-| F2  | Firefox | Does a `runtime.sendMessage` from the `moz-extension://` iframe inside a tab arrive with `sender.tab` set?                                                                                                                                      | Whether the relay works unchanged, or the iframe needs a tab id handshake (decision (j)).       |
-| F3  | Firefox | Is `use_dynamic_url` in an MV3 `web_accessible_resources` entry an install error or a warning on current Firefox?                                                                                                                               | Whether the Firefox patch must delete the key or may leave it; (c) is per-browser either way.   |
-| F4  | Firefox | Does `execCommand('copy')` return `true` in the iframe's click handler? Does `navigator.clipboard.writeText` also work there?                                                                                                                   | Whether `copyText` is enough as is.                                                             |
-| F5  | Firefox | With the manifest script kept, does a toolbar click under `activeTab` reach a site whose host permission was revoked, or does `initChecker` reject?                                                                                             | The revoked-site row above; under shape 3 the rejection is what triggers the inject.            |
-| F6  | Firefox | Does `showErrorPopup`'s awaited `setPopup` then `openPopup` still count as the click's gesture on Firefox below 149?                                                                                                                            | Whether the error popup shows; if not, decision (k).                                            |
-| F7  | Firefox | Does `captureVisibleTab` under `activeTab` return the viewport at device pixels (image width equals `innerWidth * devicePixelRatio`), and does a known block sample to its colour?                                                              | Whether the loupe's `devicePixelRatio` maths holds (`firefox.md` row 114, UNVERIFIED).          |
-| F8  | Firefox | With no `content_scripts` and `activeTab` + `scripting`, does `scripting.executeScript` from `onClicked` inject `content.js`, and does `initChecker` then open the checker? Also a second click on the same document, and after `closeChecker`. | Shape 3's flow on Firefox, and the idempotent wrap.                                             |
-| F9  | Firefox | Set colours, quit Firefox, relaunch, reopen: are `background`, `foreground` and `colors` still there?                                                                                                                                           | Whether the `moz-extension://` origin, and so `localStorage`, is stable within a profile.       |
-| S1  | Safari  | With no `content_scripts` and `activeTab` + `scripting`, does the first click on an ungranted site inject and open the checker? And with the manifest script instead, is it injected in time for the same click's `initChecker`?                | Decision (a) on Safari, and the first-use flow in the README.                                   |
-| S2  | Safari  | Does `captureVisibleTab` succeed under the temporary `activeTab` grant on macOS, and does the loupe's `devicePixelRatio` maths hold? Then on an iPhone.                                                                                         | Whether the eyedropper ports; whether iOS is viable at all.                                     |
-| S3  | Safari  | Does the iframe's `runtime.sendMessage` carry `sender.tab`?                                                                                                                                                                                     | As F2.                                                                                          |
-| S4  | Safari  | Does `execCommand('copy')` work in the iframe's click handler; is the extension origin a secure context for `navigator.clipboard`?                                                                                                              | As F4.                                                                                          |
-| S5  | Safari  | Does `setPopup({ popup: '' })` unbind the error popup (only `null` is documented, from 18)?                                                                                                                                                     | A one-token change in `background.js` if not; if the popup never shows, decision (k).           |
-| S6  | CI      | Do `xcrun safari-web-extension-packager --no-open --no-prompt` and `xcodebuild` run on `macos-15`?                                                                                                                                              | Whether Safari gets a CI job, and when.                                                         |
-| S7  | Safari  | In `action.onClicked` on a site not yet granted, is `tab.url` populated?                                                                                                                                                                        | Whether `isRestrictedUrl` needs a Safari path (§The one design change).                         |
-| S8  | Safari  | Does `chrome.tabs.captureVisibleTab(...)` with no callback return a Promise?                                                                                                                                                                    | As F1; `background.js` lines 83 to 88 would throw on every pick otherwise (`safari.md` row 41). |
-| S9  | Safari  | Set colours, quit Safari, relaunch, reopen: still there?                                                                                                                                                                                        | Whether WebKit's storage migration survives the per-launch host (`safari.md` rows 105 and 113). |
+| #   | Browser | Question                                                                                                                                                                                                                                                                                                                                        | Decides                                                                                         |
+| --- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| F1  | Firefox | Do callback-less `chrome.tabs.*` and `chrome.action.*` calls return Promises? (`background.js` lines 26 and 58 `sendMessage`, 84 `captureVisibleTab`, 33 and 43 `action.*`.)                                                                                                                                                                    | Whether the shim is needed; and that the file loads as a page at all.                           |
+| F2  | Firefox | Does a `runtime.sendMessage` from the `moz-extension://` iframe inside a tab arrive with `sender.tab` set?                                                                                                                                                                                                                                      | Whether the relay works unchanged, or the iframe needs a tab id handshake (decision (j)).       |
+| F3  | Firefox | Is `use_dynamic_url` in an MV3 `web_accessible_resources` entry an install error or a warning on current Firefox?                                                                                                                                                                                                                               | Whether the Firefox patch must delete the key or may leave it; (c) is per-browser either way.   |
+| F4  | Firefox | Does `execCommand('copy')` return `true` in the iframe's click handler? Does `navigator.clipboard.writeText` also work there?                                                                                                                                                                                                                   | Whether `copyText` is enough as is.                                                             |
+| F5  | Firefox | With the manifest script kept, does a toolbar click under `activeTab` reach a site whose host permission was revoked, or does `initChecker` reject?                                                                                                                                                                                             | The revoked-site row above; under shape 3 the rejection is what triggers the inject.            |
+| F6  | Firefox | Does `showErrorPopup`'s awaited `setPopup` then `openPopup` still count as the click's gesture on Firefox below 149?                                                                                                                                                                                                                            | Whether the error popup shows; if not, decision (k).                                            |
+| F7  | Firefox | Does `captureVisibleTab` under `activeTab` return the viewport at device pixels (image width equals `innerWidth * devicePixelRatio`), and does a known block sample to its colour?                                                                                                                                                              | Whether the loupe's `devicePixelRatio` maths holds (`firefox.md` row 114, UNVERIFIED).          |
+| F8  | Firefox | With no `content_scripts` and `activeTab` + `scripting`, does `scripting.executeScript` from `onClicked` inject `content.js`, and does `initChecker` then open the checker? Record whether the ping resolves, rejects or never settles, and its latency; then call `executeScript` twice on one document, and once more after `closeChecker`.   | Shape 3's flow on Firefox, and the idempotent wrap.                                             |
+| F9  | Firefox | Set colours, quit Firefox, relaunch, reopen: are `background`, `foreground` and `colors` still there?                                                                                                                                                                                                                                           | Whether the `moz-extension://` origin, and so `localStorage`, is stable within a profile.       |
+| S1  | Safari  | With no `content_scripts` and `activeTab` + `scripting`, does the first click on an ungranted site inject and open the checker, and does the ping resolve, reject or never settle first (no source row covers the no-listener case on Safari)? And with the manifest script instead, is it injected in time for the same click's `initChecker`? | Decision (a) on Safari, and the first-use flow in the README.                                   |
+| S2  | Safari  | Does `captureVisibleTab` succeed under the temporary `activeTab` grant on macOS, and does the loupe's `devicePixelRatio` maths hold? Then on an iPhone.                                                                                                                                                                                         | Whether the eyedropper ports; whether iOS is viable at all.                                     |
+| S3  | Safari  | Does the iframe's `runtime.sendMessage` carry `sender.tab`?                                                                                                                                                                                                                                                                                     | As F2.                                                                                          |
+| S4  | Safari  | Does `execCommand('copy')` work in the iframe's click handler; is the extension origin a secure context for `navigator.clipboard`?                                                                                                                                                                                                              | As F4.                                                                                          |
+| S5  | Safari  | Does `setPopup({ popup: '' })` unbind the error popup (only `null` is documented, from 18)?                                                                                                                                                                                                                                                     | A one-token change in `background.js` if not; if the popup never shows, decision (k).           |
+| S6  | CI      | Do `xcrun safari-web-extension-packager --no-open --no-prompt` and `xcodebuild` run on `macos-15`?                                                                                                                                                                                                                                              | Whether Safari gets a CI job, and when.                                                         |
+| S7  | Safari  | In `action.onClicked` on a site not yet granted, is `tab.url` populated?                                                                                                                                                                                                                                                                        | Whether `isRestrictedUrl` needs a Safari path (§The one design change).                         |
+| S8  | Safari  | Does `chrome.tabs.captureVisibleTab(...)` with no callback return a Promise?                                                                                                                                                                                                                                                                    | As F1; `background.js` lines 83 to 88 would throw on every pick otherwise (`safari.md` row 41). |
+| S9  | Safari  | Set colours, quit Safari, relaunch, reopen: still there?                                                                                                                                                                                                                                                                                        | Whether WebKit's storage migration survives the per-launch host (`safari.md` rows 105 and 113). |
 
 ## Proposal
 
@@ -282,14 +292,16 @@ Chrome release.
    `03-sources/experiments.md`, and this file's open rows rewritten in place, dated. Decision (j) at the end.
 1. **Phase 1a: Chrome (two PRs, then a release).** First the idempotent `content.js` (the IIFE wrap, the
    listener-keyed flag, the `document.body` guard; no behaviour change, the e2e suite proves it). Then
-   `background.js`'s ping-then-inject with `scripting` in the manifest, the shim if F1 or S8 needs it, and the
-   patched-manifest test for the inject path, with `docs/TESTING.md` §Why the patched manifest rewritten to say
-   what it now covers. Two execution contexts, so two PRs (`docs/DEVELOPMENT.md` §One change in flight). Released
+   `background.js`'s ping-then-inject with `scripting` in the manifest, `handleActionClick` as the seam, and the
+   patched-manifest test for the inject path (two explicit injections), with `docs/TESTING.md` §Why the patched
+   manifest rewritten to say what it now covers. The shim's lines, if F1 or S8 needs them, wait for 1b: Chrome
+   does not need them, and whether `globalThis.browser` is the same object as `chrome` on Chrome 148 and later is
+   UNCHECKED. Two execution contexts, so two PRs (`docs/DEVELOPMENT.md` §One change in flight). Released
    as 2.2.0 (both version fields, the public listing read first, `docs/GIT.md` §Releases), with an observation
    window before 1b builds on it, since the only rollback is another upload. User-visible failure if the inject
    path is wrong on some Chrome: the error popup, which is today's behaviour on an un-scripted tab.
-2. **Phase 1b: Firefox (one or two PRs).** Decisions (b) to (d) built: the manifest script and `build-firefox/`,
-   `web-ext lint` in CI, the per-browser `error.html` wording, the source-submission README, an AMO account and
+2. **Phase 1b: Firefox (one or two PRs).** Decisions (b) to (d) built: the shim if F1 or S8 needs it, the
+   manifest script and `build-firefox/`, `web-ext lint` in CI, the per-browser `error.html` wording, the source-submission README, an AMO account and
    the first listed version. Definition of done, since nothing automated runs it: a loaded temporary add-on walked
    through the mechanisms table (open, pick, copy, close and reopen, the error popup, a private window, storage
    after a restart), with the Firefox version in the PR body, as `AGENTS.md` names load-unpacked for Chrome.
@@ -345,9 +357,8 @@ Three `docs/ARCHITECTURE.md` sentences are rewritten in this PR (decision (i)); 
 makes them true.
 
 - `docs/ARCHITECTURE.md` §Safari and other browsers, rewritten here: `chrome.action.openPopup` **is** available
-  from Safari 16; the converter is now `safari-web-extension-packager`; `use_dynamic_url` is Chrome-only in effect
-  rather than "Chromium-only" (BCD: effective from Chrome 130, "always dynamic" in Safari, unsupported in
-  Firefox). Left for phase 1: Safari's `activeTab` and `captureVisibleTab` are now documented and the per-site
+  from Safari 16; the converter is now `safari-web-extension-packager`; "Chromium-only" for `use_dynamic_url` now says why
+  (BCD: effective from Chrome 130, mirrored by Edge, "always dynamic" in Safari, unsupported in Firefox). Left for phase 1: Safari's `activeTab` and `captureVisibleTab` are now documented and the per-site
   grant model is the real difference; "Firefox is not a target" changes when (h) is decided.
 - `docs/ARCHITECTURE.md` §Deliberately not changed: the clipboard re-entry says "Safari has no `featurePolicy`",
   which BCD's `api/Document.json` confirms (`featurePolicy` is `version_added: false` for Safari; Firefox has it
@@ -366,4 +377,5 @@ makes them true.
   Session 33, for the fold: <https://developer.chrome.com/docs/extensions/reference/permissions-list>,
   <https://whattrainisitnow.com/calendar/>,
   <https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/incognito>.
-- `03-sources/grill-r1.md` and `03-sources/surrogate-r1.md`: the two R1 reviews of `be835b7`, verbatim.
+- `03-sources/grill-r1.md` and `03-sources/surrogate-r1.md`: the two R1 reviews of `be835b7`, verbatim;
+  `03-sources/grill-r2.md` and `03-sources/surrogate-r2.md`: the confirm round on the fold, `6a738ac`, verbatim.
