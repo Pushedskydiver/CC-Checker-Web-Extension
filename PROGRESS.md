@@ -627,86 +627,12 @@ Opus 5.5 at `high`, permission mode auto.
 **Major novel patterns Session 28:**
 
 1. **The loading reads plus one archive unit reach trigger 1 on their own.** 77k to 112k for the reads, then
-   112k to 146k for the archive with one reviewer, as Session 27 went 119k to 142k. While each archive is its own
+   112k to 146k for the archive with one reviewer, as Session 27 went 119k to 142k (in `git show 6821ca5:PROGRESS.md`). While each archive is its own
    unit, a session does the archive and one question round and hands off; item B (the archive inside the session
    PR) and item A (smaller reads) are what change that.
 2. **Measure the band in the same command as the commit.** A three-byte wording fix after the measurement made
    the commit message's figure stale, the sixth incident of Session 18 pattern 1 (in `git show eb6099a:PROGRESS.md`).
    Running the `awk` inside the commit command, after the last edit, closes it.
-
-## Session 27 — 7 October 2026 (CC-006: Session 21 archived as #117, token inventory run)
-
-**The token inventory measured all seven rows, and its report is committed by this handoff: reviewer replies have
-been capped in the dispatch prompts since Session 19 (median 2,577 B, n=28, against 10,295 B, n=92, before), so most
-of item C's saving has already happened.** The Session 21 archive is open as #117, at nit-floor. Nothing merged
-in-session.
-
-**Setup:** #115 (`a23d3a6`) and the Session 26 handoff #116 (`ae49392`) had merged at 07:18Z and 07:19Z on
-7 October, as merge commits (Alex), so `main`'s loading block was current. No PRs were open, the tree was clean, the
-remote branches were the three standing ones, and the only worktree was the main checkout. The band was 6 entries
-and 26,103 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `ae49392`. `get_session self`
-reported Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#117](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/117)**,
-  `docs/CC-006-archive-session-21`, `713b609`: Session 21 becomes row 21, two cites of its content point at
-  `git show ae49392:PROGRESS.md`, and step 5(d) says where its readings are. `copilot-surrogate` (Fable, ~97k):
-  34 claims, 0 falsified, nit-floor with 2 nits, both declined (#117's body says why). The band is 5 entries and
-  22,268 bytes before this entry. The dispatch tried item C's contract (report to a scratchpad file by Bash
-  heredoc, a capped reply with a SUMMARY line), and the reviewer followed it.
-- **The token inventory** (research 02 §Inventory brief, plus per-file bytes for Alex's Session 21 ask), by a
-  `general-purpose` agent on Opus 5.5 (~286k tokens, ~21 minutes) in the background, read-only at `ae49392` with
-  `git show`, so no worktree. Its report is `docs/research/02-sources/inventory.md`, with its scripts in
-  `inventory-scripts/`, committed by this handoff. The coordinator read its reply, §Proposed threshold and
-  §Decisions this feeds, not the rest; nothing has been reviewed. As the agent states them, each figure produced
-  twice at 2.24 bytes a token:
-    - **A:** ~19.9k tokens a start if a session reads only the newest entry and the loading block; 14.8k if the
-      "Next workstreams" block stays read with its stack collapsed.
-    - **C:** a digest costs ~1.8k tokens; the cap C writes should sit at or below the observed maximum, 4,044 B.
-    - **D:** turns per dispatch, median and maximum: `copilot-surrogate` 9 and 30, `da-review` 10 and 19,
-      `spec-grill` 12.5 and 16, `implementer` 14 and 45.
-    - **E:** proposed threshold for Decision 6: 7 or more hunks, or 33 or more changed lines. It saves ~1.7k
-      coordinator tokens a fold at ~68k Sonnet tokens a run, so (c) pays only for large planned folds.
-    - **F:** 19,720 to 19,855 MCP tokens a start, unmoved since Session 20; no desktop saving.
-    - **G:** 28,856 B of retold incidents outside their owners plus 4,131 B of count lines, nearly all in
-      on-demand docs, so the saving is per read, not per start.
-    - **Against research 02:** row C's 8.9–11.4 KB replies are stale; E's ~25k `implementer` read measured 29.6k
-      and 37.0k; the "Updated" stack at `eb6099a` is 9,871 B, not 9,911; and the recorded start readings run
-      9.7k to 17.8k late (the first turn's meter is 60.3k to 66.8k).
-- **Merged:** nothing in-session. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1, and 2 with it. The archive unit finished above 130k (142k at its review dispatch), and the
-  inventory's digest took the session to 151k, past the soft line; nothing new was started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                      | 5-hour | Weekly | Fable weekly | Context |
-    | --------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)        | 31%    | 42%    | 30%          | 81k     |
-    | After the loading reads     | 32%    | 42%    | 30%          | 119k    |
-    | Archive review dispatched   | 34%    | 43%    | 30%          | 142k    |
-    | Inventory digested, handoff | 46%    | 44%    | 31%          | 151k    |
-    | Handoff reviewed, pushed    | 52%    | 45%    | 32%          | 173k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 26: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and the loading block had been read. The reviewer had its own detached worktree outside
-  the repo; the inventory agent wrote nothing in the repo and measured at a pinned commit.
-- **Clarifying question:** none.
-
-**Major novel patterns Session 27:**
-
-1. **An Opus measurement agent cost about 10 points of the 5-hour window** (32% at its dispatch to 46% at the
-   handoff, less ~4 for the one Fable reviewer that ran beside it), for ~286k tokens. Budget a long measurement
-   like that, and dispatch it at the start, as here, so it runs beside the unit.
-2. **A measurement overtook a planned item's premise before it was built.** C was ordered second on a saving that
-   the prompts had already taken; what C still offers is one contract in the briefs instead of in each prompt, the
-   file-write mechanics and the SUMMARY line. Whether C keeps its place is Alex's call.
-3. **The recorded start readings are not starts.** The inventory read the first turn's meter from the jsonl, 9.7k
-   to 17.8k below the late readings. Item A's paste-prompt fix (Session 24 pattern 1, in `git show 52b44ea:PROGRESS.md`) is the cure; until then,
-   the jsonl gives the true figure after the fact.
 
 ## Next session loading instructions
 
@@ -829,5 +755,5 @@ Rewritten in Session 31 for the Safari and Firefox research (Alex, Session 31). 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
