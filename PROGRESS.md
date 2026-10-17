@@ -3,7 +3,15 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 31)
+## Next workstreams (after Session 32)
+
+Updated 17 October 2026, end of Session 32: **the Safari and Firefox research is written and committed as
+`docs/research/03-safari-firefox-ports.md` (`be835b7`, on `docs/CC-006-session-32`), with the two engines' claim
+tables verbatim in `docs/research/03-sources/`; Safari does not need its own repo, Firefox needs a dual-key
+background, a `gecko.id`, a data-collection declaration and no `use_dynamic_url`, and both force on-click
+injection.** Its `spec-grill` R1 and `copilot-surrogate` were dispatched at the hard line and were still running at
+the handoff: their reports are in the next session's hands (loading step 5). Nothing merged in-session; Session 27
+archived as `f7f3077`. Nine decisions and a ticket key wait on Alex (research 03 §Decisions for Alex).
 
 Updated 16 October 2026, end of Session 31: **CC-004 row 11 is built, reviewed to nit-floor and merged as
 [#126](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/126) (`bd44e35`, a merge commit, Alex,
@@ -373,6 +381,75 @@ and `docs/**` each fire both).
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
+## Session 32 — 17 October 2026 (CC-006: Session 27 archived; Safari and Firefox research written, reviews in flight)
+
+**Research 03 answers Alex's two questions from the engines' documentation: Safari does not need its own repo
+(Apple's packager references the extension files in place), and Firefox needs four manifest changes plus AMO
+signing with a source submission; the one design change both engines force is on-click injection under
+`activeTab` + `scripting`.** Nothing merged. Committed on `docs/CC-006-session-32`: the Session 27 archive
+(`f7f3077`) and the research (`be835b7`); the handoff follows.
+
+**Setup:** #127 had merged as `6821ca5`, a merge commit, so `main`'s loading block was current. No PRs were
+open, the tree was clean, the remote branches were the three standing ones, and the only worktree was the main
+checkout. The band was 5 entries and 25,572 bytes. The pre-push suite was green on `6821ca5` (60 Vitest,
+`22 passed (18.0s)`). `get_session self` reported Fable 5.1 at `high`, permission mode auto.
+
+**Done:**
+
+- **Archive, `f7f3077`:** Session 27 became row 27; band 4 entries and 19,939 bytes. Its one cite (Session 28
+  pattern 1) points at `git show 6821ca5:PROGRESS.md`. Pushed straight after.
+- **Research, `be835b7`:** `docs/research/03-safari-firefox-ports.md` (258 lines) plus
+  `docs/research/03-sources/{safari,firefox}.md` (the agents' claim tables, verbatim, prettier-ignored). Two
+  `general-purpose` agents on Fable at `high`, read-only in the main checkout with no worktree (as Session 27's
+  inventory agent), one per engine: Safari ~245k tokens, 91 tool uses, ~15 minutes, 143 rows (129 VERIFIED, 11
+  UNVERIFIED, 3 SOURCES DISAGREE); Firefox ~197k tokens, 95 tool uses, ~12 minutes, 168 rows (151 / 13 / 4). The
+  coordinator read both tables in full, re-fetched two MDN pages the Firefox report rests on (quotes exact) and
+  fetched the Playwright and GitHub billing facts itself. Contents: the two answers; an eight-row mechanism table
+  per engine; the injection-model change; minimum versions; why `public/app/*.js` needs no build and
+  `messages.ts` stays killed; distribution, cost and testing; twelve experiments (F1 to F6, S1 to S6) to run before
+  any code; a phased proposal with Firefox first; nine lettered decisions for Alex; corrections found in
+  `docs/ARCHITECTURE.md` (Safari has had `action.openPopup` since 16; the converter is now the packager).
+- **Reviews, dispatched at 244k and still running at the handoff:** `spec-grill` R1 and `copilot-surrogate`, both
+  Fable at `high`, each in a detached worktree in the scratchpad (`wt-grill`, `wt-surrogate`, at `be835b7`),
+  writing to `scratchpad/grill-r1.md` and `scratchpad/surrogate-r1.md` with replies capped at 1,500
+  characters. Re-runnable: their input is `be835b7`. If they finish before this handoff pushes, their reports are
+  committed to `docs/research/03-sources/` and this line is corrected in the same commit.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 3, with 1 and 2. The two research digests took the session from 97k to 211k; the research commit
+  and the review dispatch reached 244k, so the handoff was written with the reviews in flight.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                                 | 5-hour | Weekly | Fable weekly | Context |
+    | -------------------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (late, step 1)                   | 2%     | 5%     | 7%           | 86k     |
+    | After the loading reads                | 2%     | 5%     | 7%           | 97k     |
+    | Both research reports digested         | 24%    | 8%     | 13%          | 211k    |
+    | Research committed, reviews dispatched | 27%    | 9%     | 14%          | 244k    |
+
+- **Plan usage:** the 5-hour window resets at 00:30Z on 18 October; the weekly windows at 15:00Z on 23 October.
+- **Warning signs:** one, the same as Sessions 22 to 31: step 1's `get_usage` came after the loading block and
+  `docs/SESSION-HANDOFF.md` had been read. The two reviewers had their own worktrees outside the repo; the two
+  research agents were read-only with none, like Session 27's inventory agent.
+- **Clarifying question:** none asked; Alex was not present. The ticket key the loading block said to ask for is
+  carried as research 03's decision (g).
+
+**Major novel patterns Session 32:**
+
+1. **A full-table research digest costs about 25k tokens per 60 KB report.** Two agents' claim tables (60 and
+   68 KB) took the coordinator from 97k to 211k with the repo reads. Reading them whole was right for a file whose
+   every claim had to be checked, but it fixes the shape: dispatch, digest, write, dispatch reviews, hand off, and
+   the fold is the next session's. Capped replies alone would not have let the coordinator write the proposal.
+2. **Apple's and MDN's primary sources are not in their HTML.** Apple's developer pages are a JavaScript app:
+   `developer.apple.com/documentation/<path>.md` returns the text. MDN's compat tables come from
+   `mdn/browser-compat-data` JSON on GitHub. WebKit's source on GitHub settles what Apple's prose omits, with the
+   caveat that Safari's host layer is closed.
+3. **Reviews can outlive the session that dispatched them if their input is committed.** Both reviewers read
+   `be835b7` and write to files; handing off with them running loses only wall-clock, and the next session either
+   reads the reports or re-dispatches the same briefs.
+
 ## Session 31 — 16 October 2026 (CC-004: row 11 merged as #126; Sessions 25 and 26 archived)
 
 **CC-004 row 11 is built, reviewed to nit-floor and merged as #126, and its bug is fixed: a malformed relayed
@@ -636,37 +713,43 @@ Opus 5.5 at `high`, permission mode auto.
 
 ## Next session loading instructions
 
-Rewritten in Session 31 for the Safari and Firefox research (Alex, Session 31). Steps 6 and 7 are carried.
+Rewritten in Session 32 for the fold of research 03's reviews. Steps 6 and 7 are carried.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** if this session's PR (`docs/CC-006-session-31`) is still open, read
+   `git fetch` and `gh pr list`:** if this session's PR (`docs/CC-006-session-32`) is still open, read
    `PROGRESS.md` from its branch, not `main`. Read only: this block (step 7 on demand), the newest entry and the
    first "Updated" paragraph. Take a second `get_usage` after the reads.
-2. **Archive Session 27** (`docs/SESSION-HANDOFF.md` §6): with Session 31's entry the band is 5 entries and
-   25,478 bytes at the handoff, over the 24,000-byte line. Re-measure; archive until it is under. The archive is the session
-   branch's first commit, pushed straight after.
+2. **Archive Session 28** (`docs/SESSION-HANDOFF.md` §6): with Session 32's entry the band is 5 entries and over
+   the 24,000-byte line again. Re-measure; archive until it is under. The archive is the session branch's first
+   commit, pushed straight after. If #(this session's PR) is still open, cut from its head with its branch as base
+   (§6 Stacking).
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect one open PR unless Alex has merged it: this session's (`docs/CC-006-session-31`). #126 merged in
-      Session 31 as `bd44e35`. Say whether it merged in the entry and rewrite every hedge it overtakes.
+    - Expect one open PR unless Alex has merged it: this session's (`docs/CC-006-session-32`: archive, research
+      03, handoff). Say whether it merged in the entry and rewrite every hedge it overtakes.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      the open PR's branch. `git worktree list`: only the main checkout.
+      the open PR's branch. `git worktree list`: the main checkout, plus two stale detached worktrees Session 32
+      left in its scratchpad (`wt-grill`, `wt-surrogate`) for reviewers still running at its handoff; `git worktree
+prune` once their folder is gone, or `git worktree remove --force <path>`.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 60 Vitest cases and 22
    Playwright tests.
-5. **Primary work: research a Safari port and a Firefox port** (Alex, Session 31). Research and a written
-   proposal, no code.
-    - **Questions Alex asked:** whether Safari needs its own repo (he thinks it may), and what Firefox needs.
-      Start from `docs/ARCHITECTURE.md` §Safari and other browsers, which says Firefox "is not a target and nothing
-      has been checked against it".
-    - **Also answer:** what each store or distribution path needs; which of `activeTab`, `captureVisibleTab`,
-      the service-worker relay, `execCommand('copy')` and the iframe panel hold on each engine; and whether
-      `public/app/*.js` then needs a build and a shared `messages.ts` (§Next workstreams item 4).
-    - **Shape:** one research file under `docs/research/` (03), with sources cited and every claim about an engine
-      checked against its documentation. Then `spec-grill` and `copilot-surrogate` on it, each in its own worktree
-      outside the repo. **Ask Alex for a ticket key**: none is assigned, and `docs/GIT.md` says keys are his.
-    - **Model:** Fable 5.1 at `high` (`docs/SESSION-HANDOFF.md` §7 names the Safari port as hard design
-      judgement); reviewers on Fable at `high`. Pass `model` on every dispatch.
+5. **Primary work: fold research 03's two R1 reviews, then put its decisions to Alex.**
+    - **Where the reviews are.** Session 32 dispatched `spec-grill` R1 and `copilot-surrogate` on
+      `docs/research/03-safari-firefox-ports.md` at `be835b7` and handed off with them running. If
+      `docs/research/03-sources/grill-r1.md` and `surrogate-r1.md` exist, read them and fold. If not, re-dispatch
+      both (Fable, `high`, each in its own worktree outside the repo, report to a file, reply capped) against the
+      PR branch's head; the briefs: a discovery round on the proposal's reasoning and plan, not the engines'
+      documentation; and a claim check of the main file against its `03-sources/` rows and the repo at HEAD.
+    - **Fold rules:** `docs/DEVELOPMENT.md` §Verification rounds. A code or config fold, or any BLOCKING or
+      MATERIAL, gets one confirm round with fresh verifiers; a LOW-only prose fold gets the coordinator's read.
+      Fold onto this session's PR branch if the PR is open (Decision 5 allows a stacked session PR; §6 Stacking),
+      else a new branch.
+    - **Then Alex:** research 03 §Decisions for Alex, (a) to (i), the ticket key first (decision (g); none is
+      assigned, `docs/GIT.md` says keys are his). The experiments F1 to F6 and S1 to S6 need his Safari version
+      (18.4 or later for "Add Temporary Extension") and a Firefox install; they are phase 0 and run on this Mac.
+    - **Model:** Fable 5.1 at `high` for the fold and the questions (`docs/SESSION-HANDOFF.md` §7, the Safari
+      port is hard design judgement); reviewers on Fable at `high`. Pass `model` on every dispatch.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
