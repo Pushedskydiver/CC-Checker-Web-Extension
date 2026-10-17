@@ -1,4 +1,4 @@
-_Recorded verbatim from the Session 32 `spec-grill` R1 run on `be835b7` (Fable 5.1, 17 October 2026): 2 BLOCKING, 9 MATERIAL, 11 LOW, 3 nits. Unfolded at the Session 32 handoff; the fold is the next session's (PROGRESS.md loading step 5)._
+_Recorded verbatim from the Session 32 `spec-grill` R1 run on `be835b7` (Fable 5.1, 17 October 2026): 2 BLOCKING, 9 MATERIAL, 11 LOW, 3 nits. Folded in Session 33; the fold and its confirm round are in `PROGRESS.md` §Session 33._
 
 # spec-grill R1 (discovery) — `docs/research/03-safari-firefox-ports.md`
 
