@@ -415,8 +415,15 @@ checkout. The band was 5 entries and 25,572 bytes. The pre-push suite was green 
   characters. Re-runnable: their input is `be835b7`. The surrogate finished after the handoff pushed: 0 BLOCKING,
   4 MATERIAL (the item 4 re-entry condition misquoted; `background.js` line cites wrong; "forum posts never
   VERIFIED" false for two Safari rows; the revoked-site error-popup behaviour stated as fact while F5 is
-  UNVERIFIED), 10 LOW, 2 nits, committed unfolded as `docs/research/03-sources/surrogate-r1.md`. The grill was
-  still running; its report, if it lands, is committed the same way.
+  UNVERIFIED), 10 LOW, 2 nits, committed unfolded as `docs/research/03-sources/surrogate-r1.md`. The grill
+  finished next: 2 BLOCKING (B1: an "idempotent `content.js`" re-run by `executeScript` re-declares its top-level
+  `const`s, a SyntaxError, and a DOM-keyed guard double-registers the listener after `closeChecker`; B2: under
+  decision (a) all 22 e2e tests lose their resident content script and the plan says nothing), 9 MATERIAL (among
+  them: `tab.url` may be absent in Safari's `onClicked` so `isRestrictedUrl` shows the error popup on every
+  first click; Safari's `chrome.*` Promise return is UNVERIFIED too; the experiments test the status quo, not the
+  recommended flow; phase 1 hides a Chrome release; a shared manifest drops `use_dynamic_url` from Chrome;
+  `localStorage` across Safari's per-launch origin untested; Xcode adds two more unlinked version copies), 11 LOW,
+  3 nits, committed unfolded as `03-sources/grill-r1.md`. Decision (a) is not safe to put to Alex as written.
 - **Merged:** nothing. **Uploaded:** no.
 
 **Handoff facts:**
