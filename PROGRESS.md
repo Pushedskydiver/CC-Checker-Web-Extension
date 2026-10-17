@@ -3,7 +3,15 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 32)
+## Next workstreams (after Session 33)
+
+Updated 17 October 2026, end of Session 33: **research 03 is reviewed to nit-floor on `docs/CC-006-session-33`
+(fold `6a738ac`, confirm fold `dd1cfdf`), and its recommendation changed: decision (a) is now "ping, then inject"
+(Chrome keeps its manifest content script; Firefox and Safari drop it in per-browser manifests; `background.js`
+injects with `scripting.executeScript` only when `initChecker`'s send rejects), phase 1 starts with a Chrome 2.2.0
+release, and eighteen experiments (F1 to F9, S1 to S9) and eleven decisions (a) to (k) wait on Alex, the ticket
+key (g) first.** Nothing merged; #128 (Session 32's PR) is still open and this session's PR, #129, stacks on it.
+Session 28 archived as `22391af`.
 
 Updated 17 October 2026, end of Session 32: **the Safari and Firefox research is written and committed as
 `docs/research/03-safari-firefox-ports.md` (`be835b7`, on `docs/CC-006-session-32`), with the two engines' claim
@@ -381,6 +389,84 @@ and `docs/**` each fire both).
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
+## Session 33 — 17 October 2026 (CC-006: Session 28 archived; research 03's reviews folded to nit-floor)
+
+**Research 03's two R1 reviews are folded, and the grill's BLOCKING findings changed the recommendation: on-click
+injection everywhere would re-declare `content.js`'s top-level bindings (a `SyntaxError` on the second run) and
+strand 21 of the 22 e2e tests, so decision (a) now recommends "ping, then inject" with Chrome's manifest script
+kept.** Nothing merged; #128 still open. Committed on `docs/CC-006-session-33`, cut from #128's head with its
+branch as base (§6 Stacking): the Session 28 archive (`22391af`), the fold (`6a738ac`), the confirm-round fold
+(`dd1cfdf`) and this handoff.
+
+**Setup:** #128 was open, so `PROGRESS.md` was read from its branch at `9297c26`, where both R1 reports were
+already committed unfolded. Tree clean; remote branches the three standing ones plus #128's; Session 32's two
+stale worktrees removed. Band 5 entries and 26,578 bytes. The pre-push suite ran in the background while the
+archive was committed and was green on `9297c26` (60 Vitest, `22 passed (11.6s)`); `npm run lint` ran again before
+the confirm-fold push, since only docs changed after the suite. Fable 5.1, permission mode auto; `get_session
+self` was not called, so the effort is the handoff's `high` by assumption.
+
+**Done:**
+
+- **Archive, `22391af`:** Session 28 became row 28; band 4 entries and 22,773 bytes, measured inside the commit
+  command. Its one content cite (Session 29's "Session 28 pattern 2") points at `git show 6821ca5:PROGRESS.md`.
+- **Fold, `6a738ac`:** every one of the grill's 25 and the surrogate's 16 findings taken. The coordinator checked
+  first: `content.js`, `background.js`, the fixtures and spec at HEAD; the `safari.md` and `firefox.md` rows cited;
+  Safari 27.0 on macOS 27.0 and Firefox 152.0.3 on this Mac; Chrome's permission list (no warning for
+  `scripting`), Mozilla's release calendar (ESR 128 last released 16 September 2025) and MDN's `incognito` page.
+  Headlines: shape 3 with its consequence list; phase 1 split into 1a (Chrome, two PRs, a 2.2.0 release) and 1b
+  (Firefox, manual definition of done); F7 to F9 and S7 to S9; decisions (j) and (k); (b) collapsed on the ESR
+  dates; (c) per-browser whatever F3 says; the mechanisms table gained `localStorage`; three
+  `docs/ARCHITECTURE.md` §Safari sentences rewritten in place ((i) taken as "now").
+- **Confirm round, `dd1cfdf`:** fresh `spec-grill` R2 and `copilot-surrogate`, Fable at `high`, each in its own
+  detached worktree in the scratchpad (~154k and ~257k tokens, ~8 and ~10 minutes). Neither had a Write tool, so
+  both reports came back as full replies (~10 KB each) and are committed verbatim as `03-sources/grill-r2.md`
+  and `surrogate-r2.md`. Grill: all 25 FOLDED; 1 new MATERIAL (the proposed Chrome inject-path test could not
+  reach the click handler, since the harness never fires `onClicked`; fixed by a `handleActionClick` seam), 2 LOW
+  (Safari's no-listener `sendMessage` is unverified, so S1 and F8 record the ping's outcome; the wrap's real case
+  is a click during load on Chrome, so F8 and the Chrome test inject twice explicitly), 5 nits. Surrogate: ~165
+  claims, 5 falsified, 0 BLOCKING or MATERIAL, 5 LOW (nine rows, not eight; a stale "says it is not available";
+  `surrogate-r1.md`'s preamble, and Session 32's entry restating it, say 10 LOW and 2 nits where the sixteen
+  findings grade 9 and 3; `use_dynamic_url` is Chromium-only, Edge mirrors Chrome, so the original word was
+  right; four of seven, not all, repeated in Open points), 5 nits. All folded with the coordinator's manual pass:
+  round two is the cap (`docs/DEVELOPMENT.md` §Verification rounds). Nit-floor reached by that rule, not by a
+  third round.
+- **Merged:** nothing. **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 2 crossed at 153k after the two report digests; the unit in hand (fold plus confirm round) was
+  finished, and trigger 3 fired at 252k as the handoff began.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                                   | 5-hour | Weekly | Fable weekly | Context |
+    | ---------------------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (step 1, before the loading reads) | 40%    | 10%    | 17%          | 81k     |
+    | After the loading reads                  | 40%    | 10%    | 17%          | 92k     |
+    | Both R1 reports digested                 | 43%    | 11%    | 18%          | 153k    |
+    | Fold committed, confirm round dispatched | 47%    | 11%    | 19%          | 193k    |
+    | Confirm round folded, handoff            | 63%    | 13%    | 23%          | 252k    |
+
+- **Plan usage:** the 5-hour window resets at 00:30Z on 18 October; the weekly windows at 15:00Z on 23 October.
+  The two confirm reviewers cost 16 points of the 5-hour window, twice Session 12's ~4 a reviewer.
+- **Warning signs:** none; step 1's `get_usage` preceded the loading reads for the first time since Session 21
+  (a `grep -n` to locate the block's heading came before it). Both reviewers had their own worktrees outside the
+  repo, removed after.
+- **Clarifying question:** none; Alex was not present. Every question is in loading step 5.
+
+**Major novel patterns Session 33:**
+
+1. **A confirm round earns its keep on a fold that adds design.** The grill's R2 found a hole (the Chrome
+   inject-path test could not reach the code it was meant to cover) in a claim that did not exist at R1, so no R1
+   could have found it. A fold that introduces a design, not just fixes, is where the verification round is least
+   optional.
+2. **The reviewers had no Write tool, and the file-report contract fell back to full replies.** Both agents
+   reported it absent and returned ~10 KB each into the coordinator's context, where item C's design is a ~1.5 KB
+   capped reply. Both have Bash: the next brief says "write the report with a Bash heredoc to <path> if Write is
+   absent", and the coordinator commits it from the file, not from the reply.
+3. **Mozilla's support site and the MDN ESR page do not fetch; the release calendar and MDN's manifest-key pages
+   do.** `support.mozilla.org` returns a JavaScript error page to `WebFetch`, the wiki calendar redirects to
+   whattrainisitnow.com (which answers), and MDN's `incognito` key page carries the private-window default.
+
 ## Session 32 — 17 October 2026 (CC-006: Session 27 archived; Safari and Firefox research written, reviews in flight)
 
 **Research 03 answers Alex's two questions from the engines' documentation: Safari does not need its own repo
@@ -614,7 +700,7 @@ permission mode auto.
 - **[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121)**,
   `docs/CC-006-archive-session-23`, `a62ec25`: Session 23 becomes row 23, one cite of its content (Session 28's
   "Session 23 pattern 2") points at `git show ddaab4e:PROGRESS.md`, and step 5(d) says where its readings are.
-  The band figure was measured inside the commit command (Session 28 pattern 2). `copilot-surrogate` (Fable,
+  The band figure was measured inside the commit command (Session 28 pattern 2, in `git show 6821ca5:PROGRESS.md`). `copilot-surrogate` (Fable,
   ~102k), in a detached worktree in the scratchpad: 53 claims, 0 falsified, nit-floor with 2 nits, both declined
   (#121's body says why). The band is 5 entries and 23,526 bytes before this entry. The reviewer followed item
   C's contract again.
@@ -667,99 +753,43 @@ permission mode auto.
 4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
    of their opening, and a commit pushed afterwards landed on a branch nobody would merge.
 
-## Session 28 — 7 October 2026 (CC-006: Session 22 archived as #119, Alex answers the inventory's questions)
-
-**Alex set Decision 6's threshold at 7 or more hunks or 33 or more changed lines, kept item C next but re-scoped
-to one contract in the briefs, and put the inventory's corrections to research 02 in C's PR.** The Session 22
-archive, #119, reached nit-floor and Alex merged it in-session as `bcd5bc1`, a merge commit.
-
-**Setup:** #117 (`55f9230`) and the Session 27 handoff #118 (`f5eb1d2`) had merged at 08:03Z on 7 October, as
-merge commits (Alex), so `main`'s loading block was current. No PRs were open, the tree was clean, the remote
-branches were the three standing ones, and the only worktree was the main checkout. The band was 6 entries and
-27,902 bytes. The pre-push suite was green (36 Vitest, 21 Playwright) on `f5eb1d2`. `get_session self` reported
-Opus 5.5 at `high`, permission mode auto.
-
-**Done:**
-
-- **[#119](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/119)**,
-  `docs/CC-006-archive-session-22`, `6ea88a6`: Session 22 becomes row 22, and four cites of its content point at
-  `git show f5eb1d2:PROGRESS.md`. `copilot-surrogate` (Fable, ~82k), in a detached worktree in the scratchpad:
-  39 claims, 1 falsified, nit-floor with 1 LOW and 1 nit. The LOW was the PR body's "fifth incident" (Session 23
-  pattern 2, in `git show ddaab4e:PROGRESS.md`, had counted the fifth); folded in the body, no file change. The nit was declined (#119's body says
-  why). The band is 5 entries and 23,963 bytes before this entry; the commit message's 23,960 predates a
-  three-byte fix, as the body says. The reviewer followed item C's contract again.
-- **Alex's answers** (loading step 5(b)): the three above, put to him while the reviewer ran; recorded in memory
-  `project-workflow-optimisation.md`, and in research 02 by C's PR.
-- **Merged:** #119 as `bcd5bc1` at 08:11Z (Alex). **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 1. The archive unit finished at 146k, above 130k; C was not started.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                       | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)         | 54%    | 45%    | 32%          | 77k     |
-    | After the loading reads      | 54%    | 45%    | 32%          | 112k    |
-    | Reviewer running, Alex asked | 57%    | 46%    | 32%          | 139k    |
-    | Archive folded, handoff      | 59%    | 46%    | 33%          | 146k    |
-    | Handoff reviewed, pushed     | 62%    | 46%    | 33%          | 168k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 27: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and part of the loading block had been read. The reviewer had its own detached
-  worktree outside the repo.
-- **Clarifying question:** none beyond the three step 5(b) planned.
-
-**Major novel patterns Session 28:**
-
-1. **The loading reads plus one archive unit reach trigger 1 on their own.** 77k to 112k for the reads, then
-   112k to 146k for the archive with one reviewer, as Session 27 went 119k to 142k (in `git show 6821ca5:PROGRESS.md`). While each archive is its own
-   unit, a session does the archive and one question round and hands off; item B (the archive inside the session
-   PR) and item A (smaller reads) are what change that.
-2. **Measure the band in the same command as the commit.** A three-byte wording fix after the measurement made
-   the commit message's figure stale, the sixth incident of Session 18 pattern 1 (in `git show eb6099a:PROGRESS.md`).
-   Running the `awk` inside the commit command, after the last edit, closes it.
-
 ## Next session loading instructions
 
-Rewritten in Session 32 for the fold of research 03's reviews. Steps 6 and 7 are carried.
+Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 are next. Steps 6 and 7 are carried.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** if this session's PR (`docs/CC-006-session-32`) is still open, read
-   `PROGRESS.md` from its branch, not `main`. Read only: this block (step 7 on demand), the newest entry and the
-   first "Updated" paragraph. Take a second `get_usage` after the reads.
-2. **Archive Session 28** (`docs/SESSION-HANDOFF.md` §6): with Session 32's entry the band is 5 entries and over
-   the 24,000-byte line again. Re-measure; archive until it is under. The archive is the session branch's first
-   commit, pushed straight after. If #(this session's PR) is still open, cut from its head with its branch as base
-   (§6 Stacking).
+   `git fetch` and `gh pr list`:** two PRs may be open, #128 (`docs/CC-006-session-32`) and this session's #129
+   (`docs/CC-006-session-33`, based on #128's branch). Read `PROGRESS.md` from the newest open one, else `main`.
+   Read only: this block (step 7 on demand), the newest entry and the first "Updated" paragraph. Take a second
+   `get_usage` after the reads.
+2. **Archive Session 29** (`docs/SESSION-HANDOFF.md` §6): with Session 33's entry the band is 5 entries and over
+   the 24,000-byte line. Re-measure; archive until it is under. The archive is the session branch's first commit,
+   pushed straight after. If this session's PR is still open, cut from its head with its branch as base (§6
+   Stacking); if only #128 is, from #128's head with its branch as base.
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect one open PR unless Alex has merged it: this session's (`docs/CC-006-session-32`: archive, research
-      03, handoff). Say whether it merged in the entry and rewrite every hedge it overtakes.
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      the open PR's branch. `git worktree list`: the main checkout, plus two stale detached worktrees Session 32
-      left in its scratchpad (`wt-grill`, `wt-surrogate`) for reviewers still running at its handoff; `git worktree
-prune` once their folder is gone, or `git worktree remove --force <path>`.
+    - Expect up to two open PRs unless Alex has merged them: #128 (archive, research 03, Session 32's handoff) and
+      #129 (archive, the two folds, this handoff). Say in the entry which merged and rewrite every hedge
+      a merge overtakes.
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus the
+      open PRs' branches. `git worktree list`: the main checkout only.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 60 Vitest cases and 22
    Playwright tests.
-5. **Primary work: fold research 03's two R1 reviews, then put its decisions to Alex.**
-    - **Where the reviews are.** Session 32 dispatched `spec-grill` R1 and `copilot-surrogate` on
-      `docs/research/03-safari-firefox-ports.md` at `be835b7` and handed off with them running. If
-      `docs/research/03-sources/grill-r1.md` and `surrogate-r1.md` exist, read them and fold. If not, re-dispatch
-      both (Fable, `high`, each in its own worktree outside the repo, report to a file, reply capped) against the
-      PR branch's head; the briefs: a discovery round on the proposal's reasoning and plan, not the engines'
-      documentation; and a claim check of the main file against its `03-sources/` rows and the repo at HEAD.
-    - **Fold rules:** `docs/DEVELOPMENT.md` §Verification rounds. A code or config fold, or any BLOCKING or
-      MATERIAL, gets one confirm round with fresh verifiers; a LOW-only prose fold gets the coordinator's read.
-      Fold onto this session's PR branch if the PR is open (Decision 5 allows a stacked session PR; §6 Stacking),
-      else a new branch.
-    - **Then Alex:** research 03 §Decisions for Alex, (a) to (i), the ticket key first (decision (g); none is
-      assigned, `docs/GIT.md` says keys are his). The experiments F1 to F6 and S1 to S6 need his Safari version
-      (18.4 or later for "Add Temporary Extension") and a Firefox install; they are phase 0 and run on this Mac.
-    - **Model:** Fable 5.1 at `high` for the fold and the questions (`docs/SESSION-HANDOFF.md` §7, the Safari
-      port is hard design judgement); reviewers on Fable at `high`. Pass `model` on every dispatch.
+5. **Primary work: put research 03's decisions to Alex, then phase 0.**
+    - **The decisions:** `docs/research/03-safari-firefox-ports.md` §Decisions for Alex, (a) to (k), each with
+      its recommendation; the ticket key (g) first, since none is assigned and `docs/GIT.md` says the keys are in
+      his tracker. (a) changed in Session 33 to shape 3, "ping, then inject"; say so when asking.
+    - **Phase 0, after or alongside his answers:** the eighteen experiments F1 to F9 and S1 to S9 (§What must be
+      run), all on this Mac. Update Firefox first (152.0.3 installed, 158.0 current on the calendar); Safari 27.0
+      has "Add Temporary Extension…". Output: `docs/research/03-sources/experiments.md`, each result with the
+      browser version, and the research file's open rows rewritten in place with a dated note. No code before
+      phase 0 is done; phase 1a (Chrome, two PRs) is the first code.
+    - **Known and left:** Session 32's entry restates `surrogate-r1.md`'s own miscount (10 LOW, 2 nits; the sixteen
+      findings grade 9 and 3). It is a dated record, not rewritten.
+    - **Model:** Fable 5.1 at `high` for the questions and phase 0 (`docs/SESSION-HANDOFF.md` §7, the Safari port is
+      hard design judgement); reviewers on Fable at `high`, with reports written by Bash heredoc if the agent has
+      no Write tool (Session 33 pattern 2). Pass `model` on every dispatch.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
@@ -848,5 +878,5 @@ prune` once their folder is gone, or `git worktree remove --force <path>`.
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.

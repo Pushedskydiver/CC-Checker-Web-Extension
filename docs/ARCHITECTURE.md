@@ -362,13 +362,16 @@ npx playwright install chromium     # once per machine, and again after a @playw
 Safari support (Safari Web Extensions) is the stated future goal. Nothing in the code has been adapted
 for it, and none of the following has been tried:
 
-- `chrome.action.openPopup` is not available. `showErrorPopup` already guards it with `typeof`, so the
-  failure mode is a popup bound for 500ms rather than an exception, but that path has not been
-  exercised there.
-- `web_accessible_resources[].use_dynamic_url` is Chromium-only; the iframe URL and the static-origin
-  subresource behaviour above must be re-verified.
-- Safari packages extensions through Xcode (`xcrun safari-web-extension-converter`); there is no
-  script for it.
+- `chrome.action.openPopup` exists from Safari 16 (`docs/research/03-safari-firefox-ports.md`, 17 October
+  2026; this bullet said "not available" until then). `showErrorPopup` guards it with `typeof` for older
+  builds, and unbinding with `setPopup({ popup: '' })` is undocumented there (only `null`, from Safari 18),
+  so the path has not been exercised.
+- `web_accessible_resources[].use_dynamic_url` is Chromium-only in effect (Chrome 130 and later, and Edge,
+  which mirrors it): Firefox does not support the key, and Safari's extension host changes on every launch
+  whatever the manifest says. The iframe URL and the
+  static-origin subresource behaviour above must be re-verified.
+- Safari packages extensions through Xcode (`xcrun safari-web-extension-packager`, the renamed
+  converter); there is no script for it.
 - `chrome.tabs.captureVisibleTab` support and `activeTab` semantics must be re-verified — the whole
   eyedropper rests on both.
 - Safari prefers the `browser.*` namespace. All three contexts call `chrome.*` directly (the two plain
