@@ -10,8 +10,8 @@ Updated 17 October 2026, end of Session 33: **research 03 is reviewed to nit-flo
 (Chrome keeps its manifest content script; Firefox and Safari drop it in per-browser manifests; `background.js`
 injects with `scripting.executeScript` only when `initChecker`'s send rejects), phase 1 starts with a Chrome 2.2.0
 release, and eighteen experiments (F1 to F9, S1 to S9) and eleven decisions (a) to (k) wait on Alex, the ticket
-key (g) first.** Nothing merged; #128 (Session 32's PR) is still open and this session's PR stacks on it. Session
-28 archived as `22391af`.
+key (g) first.** Nothing merged; #128 (Session 32's PR) is still open and this session's PR, #129, stacks on it.
+Session 28 archived as `22391af`.
 
 Updated 17 October 2026, end of Session 32: **the Safari and Firefox research is written and committed as
 `docs/research/03-safari-firefox-ports.md` (`be835b7`, on `docs/CC-006-session-32`), with the two engines' claim
@@ -758,7 +758,7 @@ permission mode auto.
 Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 are next. Steps 6 and 7 are carried.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** two PRs may be open, #128 (`docs/CC-006-session-32`) and this session's
+   `git fetch` and `gh pr list`:** two PRs may be open, #128 (`docs/CC-006-session-32`) and this session's #129
    (`docs/CC-006-session-33`, based on #128's branch). Read `PROGRESS.md` from the newest open one, else `main`.
    Read only: this block (step 7 on demand), the newest entry and the first "Updated" paragraph. Take a second
    `get_usage` after the reads.
@@ -769,7 +769,7 @@ Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
     - Expect up to two open PRs unless Alex has merged them: #128 (archive, research 03, Session 32's handoff) and
-      this session's (archive, the two folds, this handoff). Say in the entry which merged and rewrite every hedge
+      #129 (archive, the two folds, this handoff). Say in the entry which merged and rewrite every hedge
       a merge overtakes.
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus the
       open PRs' branches. `git worktree list`: the main checkout only.
