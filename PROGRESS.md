@@ -401,7 +401,8 @@ inside the cross-origin panel, and Chrome does not block it — observed live 12
 
 **Alex settled the ticket key, `CC-007` for both ports, and it is recorded in four files; phase 0 did not start,
 because Firefox could not be launched usable from this app, so the harness is committed for the next session to run.**
-Dependabot #130 and #131 merged under the delegation; this session's PR is open (its number is in the loading block).
+Dependabot #130 and #131 merged under the delegation; this session's PR is
+[#132](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/132).
 
 **Setup:** Alex had merged #128 and #129 at 20:54Z on 17 October (`0a8e473`, `22bed93`, merge commits), so `main`
 held the Session 33 handoff and both of its hedges were overtaken. The tree was clean, the remote branches were
@@ -768,8 +769,7 @@ value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, buil
 Rewritten in Session 34: phase 0's harness exists and has not run; the launch is the first problem.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** this session's PR (`docs/CC-007-session-34`, based on `main`; its number is in
-   the Session 34 entry's first paragraph once recorded) may still be open. Read `PROGRESS.md` from it if so,
+   `git fetch` and `gh pr list`:** this session's PR, #132 (`docs/CC-007-session-34`, based on `main`), may still be open. Read `PROGRESS.md` from it if so,
    else from `main`. Read only: this block (step 7 on demand), the newest entry and the first "Updated"
    paragraph. Take a second `get_usage` after the reads, and one every ten tool calls on a topic after that
    (Session 34 pattern 2).
