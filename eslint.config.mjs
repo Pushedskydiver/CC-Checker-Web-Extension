@@ -13,6 +13,7 @@ export default tseslint.config(
 			'node_modules/**',
 			'test-results/**',
 			'playwright-report/**',
+			'docs/research/**/*.{js,mjs}', // experiment harnesses kept as records
 		],
 	},
 	js.configs.recommended,

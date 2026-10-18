@@ -3,7 +3,15 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 33)
+## Next workstreams (after Session 34)
+
+Updated 18 October 2026, end of Session 34: **decision (g) is settled and recorded (`b816d37`): `CC-007`, one key for
+both ports, in research 03, `docs/GIT.md` and `docs/GLOSSARY.md`; phase 0 has a committed Firefox harness
+(`docs/research/03-sources/ff-harness/`) and an experiments file with every row "not run", because Firefox could
+not be launched usable from this app (`experiments.md` §Harness status).** #128 and #129 had merged at 20:54Z on
+17 October (`0a8e473`, `22bed93`, Alex); Dependabot #130 and #131 merged in-session under the delegation
+(`15fd545`, `dfe9f09`). Session 29 archived as `e1c8f5a`. Next: get Firefox driven, run F1 to F9, record Alex's
+answers to (a) to (f) and (h) to (k).
 
 Updated 17 October 2026, end of Session 33: **research 03 is reviewed to nit-floor on `docs/CC-006-session-33`
 (fold `6a738ac`, confirm fold `dd1cfdf`), and its recommendation changed: decision (a) is now "ping, then inject"
@@ -389,6 +397,93 @@ and `docs/**` each fire both).
 **Recorded as known behaviour, not fixed:** `copy-to-clipboard`'s last-resort path calls `window.prompt` from
 inside the cross-origin panel, and Chrome does not block it — observed live 12 September 2026. ~~Unavoidable while the library is used~~ — the library went in #54 (17 September 2026) and `copyText` keeps the prompt deliberately; Playwright auto-dismisses dialogs, which is why no test has ever seen it.
 
+## Session 34 — 18 October 2026 (CC-007: decision (g) recorded, Session 29 archived, phase 0 harness written but unrun)
+
+**Alex settled the ticket key, `CC-007` for both ports, and it is recorded in four files; phase 0 did not start,
+because Firefox could not be launched usable from this app, so the harness is committed for the next session to run.**
+Dependabot #130 and #131 merged under the delegation; this session's PR is
+[#132](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/132).
+
+**Setup:** Alex had merged #128 and #129 at 20:54Z on 17 October (`0a8e473`, `22bed93`, merge commits), so `main`
+held the Session 33 handoff and both of its hedges were overtaken. The tree was clean, the remote branches were
+the three standing ones plus two new Dependabot branches, and the only worktree was the main checkout. The band
+was 5 entries and 29,155 bytes. The pre-push suite was green (60 Vitest, 22 Playwright) on `22bed93`.
+`get_session self`: Fable 5.1 at `high`, permission mode auto.
+
+**Done:**
+
+- **Session 29 archived** as `e1c8f5a`, the branch's first commit, pushed at once: row 29 in
+  `docs/history/SESSIONS.md`, the band 4 entries and 23,927 bytes, Session 30's one cite of its content
+  ("Session 29 pattern 1") pointed at `git show 22bed93:PROGRESS.md`.
+- **Decision (g) recorded** as `b816d37`: research 03's header and its (g) row (struck, dated), this file's
+  "Updated" paragraph and loading step 5, `docs/GIT.md`'s Ticket keys bullet (`CC-001` to `CC-007`, with what `CC-006` and
+  `CC-007` are) and the `docs/GLOSSARY.md` row. The research file stays in `docs/research/`; from this PR on its
+  changes, and the session PRs, go under `CC-007`.
+- **Phase 0 harness** as `26c15d2`: `docs/research/03-sources/ff-harness/` (a Node Marionette client, three patched
+  builds, a probe background and page, the probe web page's server, the launch script and profile prefs, a README)
+  and `docs/research/03-sources/experiments.md` with every row "not run" and §Harness status saying why. ESLint
+  now ignores `docs/research/**/*.{js,mjs}` (`eslint.config.mjs`; Prettier already ignored `03-sources/`).
+  **No experiment ran.** Three launch routes (the session shell, the app's Terminal panel, Terminal.app via
+  `open -a Terminal`) and headless mode all left the scratch profile uninitialised and port 2828 closed;
+  `open -a Firefox --args` dropped the arguments and opened the default profile. Details and the untested
+  alternatives: `experiments.md` §Harness status.
+- **Dependabot merged under the delegation, first attempt, no classifier refusal:**
+  [#130](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/130) (eight dev dependencies) as
+  `15fd545` and [#131](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/131) (React 19.3.1) as
+  `dfe9f09`, both `Lint, build, e2e` green, #131 still `CLEAN` after #130 so no recreate was needed.
+- **The decisions (a) to (f) and (h) to (k)** were put to Alex in this session's closing message, each with research
+  03's recommendation and (a)'s Session 33 change named. His answers are the next session's to record.
+- **Review:** `copilot-surrogate` (Fable, `high`, ~193k tokens, a detached worktree beside the repo) on `985670c`,
+  report verbatim in `docs/research/03-sources/surrogate-s34.md`: ~96 claims, 4 falsified; 2 MATERIAL (the PR
+  number, already fixed by `813c2e0` before the report landed; `experiments.md` saying every Safari row needs the
+  packager's Xcode project, when research 03 says a built folder installs from the Develop menu since Safari
+  18.4, folded, with loading step 5's Safari bullet); 2 LOW (`docs/GIT.md`'s `CC-006` scope was unbounded, now
+  "Sessions 20 to 33"; a "§Ticket keys" cite named a bullet, not a heading; both folded); 3 nits declined (the
+  (g) strike sits in `docs/research/`, where research 02 already strikes and decision (u) is open;
+  `docs/GLOSSARY.md:132`'s converter name predates this PR; the harness manifests omit
+  `data_collection_permissions`, which a temporary install does not need). Its out-of-repo note, that memory dates
+  (g) to 17 October, is Alex's earlier chat; the repo records the written instruction of 18 October. The MATERIAL
+  fold gets its confirm round from a fresh verifier dispatched at the end of this session, past the soft line; it
+  writes `docs/research/03-sources/surrogate-s34-confirm.md` into the main checkout, untracked, and Session 35
+  commits and folds it (loading step 1).
+- **Merged:** #130 and #131 (Claude, delegated). **Uploaded:** no.
+
+**Handoff facts:**
+
+- **Trigger:** 2, the soft line, read at 196k; the reading before it was the 88k start, so the line was passed
+  somewhere inside the launch attempts, unseen.
+- **Readings (5-hour / weekly / Fable weekly / context):**
+
+    | Moment                                     | 5-hour | Weekly | Fable weekly | Context |
+    | ------------------------------------------ | ------ | ------ | ------------ | ------- |
+    | Start (step 1, before the reads)           | 2%     | 14%    | 24%          | 88k     |
+    | Soft-line check, after the launch attempts | 15%    | 16%    | 26%          | 196k    |
+    | Dependabot merged, before this entry       | 18%    | 16%    | 27%          | 210k    |
+    | Handoff, confirm verifier dispatched       | 30%    | 17%    | 29%          | 241k    |
+
+- **Plan usage:** the 5-hour window resets at 21:20Z on 18 October, and the weekly windows at 15:00Z on 23 October.
+- **Warning signs:** one, new: no `get_usage` between 88k and 196k. §2's "after digesting any large result" never
+  fired because each launch attempt's result was small; the sum was not. The reviewer had its own worktree
+  outside the repo.
+- **Clarifying question:** none; Alex's opening message answered (g) before it was asked.
+
+**Major novel patterns Session 34:**
+
+1. **Firefox cannot be driven from this app on this Mac, yet.** Launched by any shell this app owns, and by
+   Terminal.app opened from one, `firefox -marionette --remote-allow-system-access -no-remote -profile <dir>`
+   never initialised the profile (`user.js` stayed its only file), never listened, and either exited within
+   seconds or hung; the log said `sandbox_extension_issue_file_to_process failed for …/plugin-container.app`,
+   and with `MOZ_DISABLE_*_SANDBOX=1` a child died on signal 9 instead. Headless was the same. `open -a Firefox
+--args …` ran, but on the default profile with the arguments dropped. The profile directory's file count is
+   the cheapest "did it start" probe; `pgrep` is not, since the parent lingers. Next: Alex runs the launch script
+   from his own terminal and the session drives it over 2828, before anything else is written.
+2. **Checkpoint by effort, not by result size.** Writing the harness and five launch attempts took the session
+   from 88k to 196k with no reading, past the soft line. A topic that is all small tool results needs a
+   `get_usage` every ten or so calls, or after every failed attempt of the same kind.
+3. **A delegated Dependabot pair can merge back to back.** #131 stayed `MERGEABLE CLEAN` after #130 because the
+   groups touched disjoint lockfile entries; `gh pr view --json mergeable,mergeStateStatus` is `UNKNOWN` for a
+   few seconds after the first merge, so poll it before deciding to recreate.
+
 ## Session 33 — 17 October 2026 (CC-006: Session 28 archived; research 03's reviews folded to nit-floor)
 
 **Research 03's two R1 reviews are folded, and the grill's BLOCKING findings changed the recommendation: on-click
@@ -658,7 +753,7 @@ value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, buil
 **Handoff facts:**
 
 - **Trigger:** 1, at 141k after #123's confirm round finished; the plan was written into the handoff and grilled
-  beside it (Session 29 pattern 1), and the soft line passed at 176k with the fold done.
+  beside it (Session 29 pattern 1, in `git show 22bed93:PROGRESS.md`), and the soft line passed at 176k with the fold done.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment                  | 5-hour | Weekly | Fable weekly | Context |
@@ -683,113 +778,50 @@ value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, buil
    it built the extension and ran one throwaway test, which corrected the plan's mechanism (black and persisted,
    not NaN) and added the positive control the test needed. Ask a grill to run the cheap experiment.
 
-## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, product work next)
-
-**Alex moved the next session to product work, CC-004 row 11, and parked the workflow work.** The Session 23
-archive, #121, reached nit-floor with no finding above a nit, and Alex merged it and the first handoff, #122, at
-09:05Z; this entry's last edits ride in a follow-up PR.
-
-**Setup:** the Session 28 handoff #120 had merged as `ddaab4e` at 08:51Z on 7 October, a merge commit (Alex), so
-`main`'s loading block was current. No PRs were open, the tree was clean, the remote branches were the three
-standing ones, and the only worktree was the main checkout. The band was 6 entries and 27,731 bytes. The pre-push
-suite was green (36 Vitest, 21 Playwright) on `ddaab4e`. `get_session self` reported Opus 5.5 at `high`,
-permission mode auto.
-
-**Done:**
-
-- **[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121)**,
-  `docs/CC-006-archive-session-23`, `a62ec25`: Session 23 becomes row 23, one cite of its content (Session 28's
-  "Session 23 pattern 2") points at `git show ddaab4e:PROGRESS.md`, and step 5(d) says where its readings are.
-  The band figure was measured inside the commit command (Session 28 pattern 2, in `git show 6821ca5:PROGRESS.md`). `copilot-surrogate` (Fable,
-  ~102k), in a detached worktree in the scratchpad: 53 claims, 0 falsified, nit-floor with 2 nits, both declined
-  (#121's body says why). The band is 5 entries and 23,526 bytes before this entry. The reviewer followed item
-  C's contract again.
-- **Alex moved the work to product** after asking what the last sessions had actually done: CC-004 row 11 next,
-  and research 02's items, `CC-005` PR G, the handoff-lines review and the model benchmark parked with re-entry
-  on pain (loading step 6). Only Decision 5 stays live as work: the archive goes inside the handoff PR. The loading block
-  was rewritten for row 11; the workflow block it replaced, with C's brief as the coordinator had settled it, is
-  `git show 2539cfe:PROGRESS.md`. Two `copilot-surrogate` runs on #122 were stopped unread, one when Alex
-  redirected the session and one when #122 turned out to have merged.
-- **Merged:** #121 as `3855b83` and #122 as `52b44ea`, both at 09:05Z, merge commits (Alex). #122 merged with the
-  workflow block (`2539cfe`); the row 11 block, pushed to #122's branch after the merge, was moved to a follow-up
-  PR. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line: 159k when the archive's review was running, so C was not dispatched; trigger 1
-  with it when the archive unit finished at 167k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                     | 5-hour | Weekly | Fable weekly | Context |
-    | -------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)       | 63%    | 46%    | 33%          | 77k     |
-    | After the loading reads    | 63%    | 46%    | 33%          | 123k    |
-    | Archive review running     | 65%    | 47%    | 34%          | 159k    |
-    | Archive reviewed, handoff  | 69%    | 47%    | 34%          | 167k    |
-    | Block rewritten for row 11 | 75%    | 48%    | 35%          | 201k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 28: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and part of the loading block had been read. The reviewer had its own detached
-  worktree outside the repo.
-- **Clarifying question:** none the previous entry should have answered. Alex asked one of his own: what the
-  sessions since 29 September had been doing.
-
-**Major novel patterns Session 29:**
-
-1. **Scoping a delegated build is its own cost, and it belongs at the start, not after a unit.** Reading the
-   inventory's §C and §E and the briefs' report lines to settle C's brief ran beside the archive, and the two
-   took the session from 123k to 159k, past the soft line before the `implementer` could be dispatched.
-   Settling a brief in the handoff, as here, lets the next session dispatch at its first checkpoint, beside the
-   archive unit (Session 26 pattern 1, in `git show 4587bfe:PROGRESS.md`).
-2. **Read a section, not a file, when a brief needs one paragraph.** A `sed` range over `docs/DA-REVIEW.md` from
-   §Reporting channel to the next `## ` heading printed most of the file (~6k), because the sections are `###`.
-   Match the heading level, or `grep -n` first.
-3. **The handoff loop fed itself.** Each session's ~45k of loading reads plus a ~30k archive PR reached trigger 1,
-   and each handoff added the entry that forced the next archive: Sessions 22 to 29 did one archive and at most
-   one workflow step each, with 25 of 34 merges since 29 September (at `ddaab4e`) being handoffs or archives. The workflow work
-   meant to fix that was queued behind itself. Alex broke it by parking the work; the lesson is to count shipped
-   product changes in the entry, not only the PRs.
-4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
-   of their opening, and a commit pushed afterwards landed on a branch nobody would merge.
-
 ## Next session loading instructions
 
-Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 are next. Steps 6 and 7 are carried.
+Rewritten in Session 34: phase 0's harness exists and has not run; the launch is the first problem.
 
 1. **Call `get_usage` before reading anything else, this block included**, and record `context.tokensUsed`. **Then
-   `git fetch` and `gh pr list`:** two PRs may be open, #128 (`docs/CC-006-session-32`) and this session's #129
-   (`docs/CC-006-session-33`, based on #128's branch). Read `PROGRESS.md` from the newest open one, else `main`.
-   Read only: this block (step 7 on demand), the newest entry and the first "Updated" paragraph. Take a second
-   `get_usage` after the reads.
-2. **Archive Session 29** (`docs/SESSION-HANDOFF.md` §6): with Session 33's entry the band is 5 entries and over
+   `git fetch` and `gh pr list`:** this session's PR, #132 (`docs/CC-007-session-34`, based on `main`), may still be open. Read `PROGRESS.md` from it if so,
+   else from `main`. Read only: this block (step 7 on demand), the newest entry and the first "Updated"
+   paragraph. Take a second `get_usage` after the reads, and one every ten tool calls on a topic after that
+   (Session 34 pattern 2). **If `docs/research/03-sources/surrogate-s34-confirm.md` exists untracked, it is the confirm
+   round on Session 34's MATERIAL fold: commit it verbatim, fold anything it confirms, on #132's branch if still open.**
+2. **Archive Session 30** (`docs/SESSION-HANDOFF.md` §6): with Session 34's entry the band is 5 entries and over
    the 24,000-byte line. Re-measure; archive until it is under. The archive is the session branch's first commit,
    pushed straight after. If this session's PR is still open, cut from its head with its branch as base (§6
-   Stacking); if only #128 is, from #128's head with its branch as base.
+   Stacking).
 3. **Confirm the state, live.**
     - `git status --short` (expect clean), `git log --oneline -5 origin/main`, `gh pr list`.
-    - Expect up to two open PRs unless Alex has merged them: #128 (archive, research 03, Session 32's handoff) and
-      #129 (archive, the two folds, this handoff). Say in the entry which merged and rewrite every hedge
-      a merge overtakes.
-    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus the
-      open PRs' branches. `git worktree list`: the main checkout only.
+    - Expect this session's PR open unless Alex has merged it; say which in the entry and rewrite every hedge a
+      merge overtakes. Dependabot #130 and #131 merged in Session 34 (`15fd545`, `dfe9f09`).
+    - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
+      the open PR's branch. `git worktree list`: the main checkout, plus `../cc-surrogate` (detached at `5efa3db`) if Session 34's confirm verifier left it: `git worktree remove ../cc-surrogate` once its report is committed.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 60 Vitest cases and 22
    Playwright tests.
-5. **Primary work: put research 03's decisions to Alex, then phase 0.**
-    - **The decisions:** `docs/research/03-safari-firefox-ports.md` §Decisions for Alex, (a) to (k), each with
-      its recommendation; the ticket key (g) first, since none is assigned and `docs/GIT.md` says the keys are in
-      his tracker. (a) changed in Session 33 to shape 3, "ping, then inject"; say so when asking.
-    - **Phase 0, after or alongside his answers:** the eighteen experiments F1 to F9 and S1 to S9 (§What must be
-      run), all on this Mac. Update Firefox first (152.0.3 installed, 158.0 current on the calendar); Safari 27.0
-      has "Add Temporary Extension…". Output: `docs/research/03-sources/experiments.md`, each result with the
-      browser version, and the research file's open rows rewritten in place with a dated note. No code before
-      phase 0 is done; phase 1a (Chrome, two PRs) is the first code.
-    - **Known and left:** Session 32's entry restates `surrogate-r1.md`'s own miscount (10 LOW, 2 nits; the sixteen
-      findings grade 9 and 3). It is a dated record, not rewritten.
-    - **Model:** Fable 5.1 at `high` for the questions and phase 0 (`docs/SESSION-HANDOFF.md` §7, the Safari port is
-      hard design judgement); reviewers on Fable at `high`, with reports written by Bash heredoc if the agent has
-      no Write tool (Session 33 pattern 2). Pass `model` on every dispatch.
+5. **Primary work: phase 0, starting with the Firefox launch; then Alex's answers.**
+    - **The launch first, with a cap.** `docs/research/03-sources/experiments.md` §Harness status lists what
+      failed and the untested alternatives, cheapest first. Spend at most ~20k of context on them; then ask Alex
+      to run `ff-harness/launch-ff.sh` (copied outside the repo with its `profile/`; it resolves its own
+      directory) from his own terminal, and drive that instance over port 2828. Write nothing else until
+      `smoke`-level plumbing works (`marionette.mjs` `newSession`, a chrome-context `Services.appinfo.version`,
+      `Addon:Install` of `ext-manifest`).
+    - **Then the runner:** F1 to F9 against the three builds from `make-builds.mjs`, clicking the toolbar from the
+      chrome context (`ExtensionParent.apiManager.global.browserActionFor(policy.extension).triggerAction(window)`,
+      or `windowUtils.sendMouseEvent` on the widget after `CustomizableUI.addWidgetToArea`) so `activeTab` is
+      granted as a real click grants it. Each result into `experiments.md` with the Firefox version (152.0.3 is
+      installed; updating it needs Alex), and research 03's open rows rewritten in place with a dated note.
+    - **Safari:** S6's local half (`xcrun safari-web-extension-packager --no-open --no-prompt`, then `xcodebuild`
+      on Xcode 27.1) needs no Safari UI; S1 to S5 and S7 to S9 need the Develop menu ("Add Temporary
+      Extension…", Safari 18.4 and later), which is Alex's hands. Ask, with the exact steps, rather than drive Safari.
+    - **The decisions:** (a) to (f) and (h) to (k) were put to Alex on 18 October (Session 34's closing message),
+      each with its recommendation. Record his answers in research 03 §Decisions for Alex as (g) was recorded
+      (`b816d37`): settled text in italics, the old text struck, dated. No code before phase 0 is done; phase 1a
+      (Chrome, two PRs) is the first code.
+    - **Model:** Fable 5.1 at `high` for phase 0 (`docs/SESSION-HANDOFF.md` §7); reviewers on Fable at `high`,
+      with reports written by Bash heredoc if the agent has no Write tool. Pass `model` on every dispatch.
 6. **Parked, with re-entry on pain** (Alex, Session 29). Each re-enters only when it costs a session real work,
    named in that session's entry; until then no session spends context on them.
     - **Research 02 (`CC-006`) items A, C, D, E, G, H and I.** Re-entry: loading reads alone pass 130k (A, H), a
@@ -878,5 +910,5 @@ Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026; Session 29, 18 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.

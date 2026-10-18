@@ -10,13 +10,15 @@ What changed on the way over:
 - **No changesets, no semver tooling, no npm publish, no deploy.** Nothing here is published to npm
   and nothing happens on merge. The sources' Release Flow and Deploy Flow sections become
   [Releases](#releases): a zip file and a manual Chrome Web Store upload.
-- **Ticket keys.** moe says "no ticket numbers"; this repo has them. `CC-001` to `CC-005` are keys
+- **Ticket keys.** moe says "no ticket numbers"; this repo has them. `CC-001` to `CC-007` are keys
   in Alex's own tracker. The sibling web app, `Pushedskydiver/Colour-Contrast-Checker`, uses the same
   `CC-<n>` shape and the same commit format, but not the same numbering: the rgb-options work of
   4 July 2024 is `CC-002` here and `CC-004` there, and the sibling has no `CC-005` (`gh api`, 29 September
   2026). Here `CC-004` is the code-quality workstream opened on 12 September 2026 (`PROGRESS.md` §The
   approved plan), and `CC-005` the port of the PCR Formulation AI workflow, approved on 29 September 2026
-  (`docs/research/01-pcr-workflow-port.md`).
+  (`docs/research/01-pcr-workflow-port.md`); `CC-006` the workflow-optimisation research
+  (`docs/research/02-workflow-optimisation.md`) and the session handoffs and archives of Sessions 20 to 33; and `CC-007` the Safari and
+  Firefox ports, one key for both, assigned on 18 October 2026 (`docs/research/03-safari-firefox-ports.md`).
 - **Gitmoji position.** chief-clancy, moe and tamaclaude put the gitmoji first (`✨ feat(scope): …`);
   nas-stacks puts it after the colon (`feat: ✨ …`). Here it follows the ticket key:
   `feat: CC-002 - ✨ Add rgb colour options, tidy up code`.
