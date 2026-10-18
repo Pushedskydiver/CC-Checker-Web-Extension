@@ -658,7 +658,7 @@ value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, buil
 **Handoff facts:**
 
 - **Trigger:** 1, at 141k after #123's confirm round finished; the plan was written into the handoff and grilled
-  beside it (Session 29 pattern 1), and the soft line passed at 176k with the fold done.
+  beside it (Session 29 pattern 1, in `git show 22bed93:PROGRESS.md`), and the soft line passed at 176k with the fold done.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
     | Moment                  | 5-hour | Weekly | Fable weekly | Context |
@@ -682,76 +682,6 @@ value)` with `TColorKey`, docs. `spec-grill` R1 (Fable, ~99k, own worktree, buil
 2. **The grill reproduced the bug before anything was built.** Asked to verify slice 2's red claim by running it,
    it built the extension and ran one throwaway test, which corrected the plan's mechanism (black and persisted,
    not NaN) and added the positive control the test needed. Ask a grill to run the cheap experiment.
-
-## Session 29 — 7 October 2026 (CC-006: Session 23 archived as #121, product work next)
-
-**Alex moved the next session to product work, CC-004 row 11, and parked the workflow work.** The Session 23
-archive, #121, reached nit-floor with no finding above a nit, and Alex merged it and the first handoff, #122, at
-09:05Z; this entry's last edits ride in a follow-up PR.
-
-**Setup:** the Session 28 handoff #120 had merged as `ddaab4e` at 08:51Z on 7 October, a merge commit (Alex), so
-`main`'s loading block was current. No PRs were open, the tree was clean, the remote branches were the three
-standing ones, and the only worktree was the main checkout. The band was 6 entries and 27,731 bytes. The pre-push
-suite was green (36 Vitest, 21 Playwright) on `ddaab4e`. `get_session self` reported Opus 5.5 at `high`,
-permission mode auto.
-
-**Done:**
-
-- **[#121](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/121)**,
-  `docs/CC-006-archive-session-23`, `a62ec25`: Session 23 becomes row 23, one cite of its content (Session 28's
-  "Session 23 pattern 2") points at `git show ddaab4e:PROGRESS.md`, and step 5(d) says where its readings are.
-  The band figure was measured inside the commit command (Session 28 pattern 2, in `git show 6821ca5:PROGRESS.md`). `copilot-surrogate` (Fable,
-  ~102k), in a detached worktree in the scratchpad: 53 claims, 0 falsified, nit-floor with 2 nits, both declined
-  (#121's body says why). The band is 5 entries and 23,526 bytes before this entry. The reviewer followed item
-  C's contract again.
-- **Alex moved the work to product** after asking what the last sessions had actually done: CC-004 row 11 next,
-  and research 02's items, `CC-005` PR G, the handoff-lines review and the model benchmark parked with re-entry
-  on pain (loading step 6). Only Decision 5 stays live as work: the archive goes inside the handoff PR. The loading block
-  was rewritten for row 11; the workflow block it replaced, with C's brief as the coordinator had settled it, is
-  `git show 2539cfe:PROGRESS.md`. Two `copilot-surrogate` runs on #122 were stopped unread, one when Alex
-  redirected the session and one when #122 turned out to have merged.
-- **Merged:** #121 as `3855b83` and #122 as `52b44ea`, both at 09:05Z, merge commits (Alex). #122 merged with the
-  workflow block (`2539cfe`); the row 11 block, pushed to #122's branch after the merge, was moved to a follow-up
-  PR. **Uploaded:** no.
-
-**Handoff facts:**
-
-- **Trigger:** 2, the soft line: 159k when the archive's review was running, so C was not dispatched; trigger 1
-  with it when the archive unit finished at 167k.
-- **Readings (5-hour / weekly / Fable weekly / context):**
-
-    | Moment                     | 5-hour | Weekly | Fable weekly | Context |
-    | -------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (late, step 1)       | 63%    | 46%    | 33%          | 77k     |
-    | After the loading reads    | 63%    | 46%    | 33%          | 123k    |
-    | Archive review running     | 65%    | 47%    | 34%          | 159k    |
-    | Archive reviewed, handoff  | 69%    | 47%    | 34%          | 167k    |
-    | Block rewritten for row 11 | 75%    | 48%    | 35%          | 201k    |
-
-- **Plan usage:** the 5-hour window resets at 11:40Z on 7 October, and the weekly windows at 15:00Z on 9 October.
-- **Warning signs:** one, the same as Sessions 22 to 28: step 1's `get_usage` came after
-  `docs/SESSION-HANDOFF.md` and part of the loading block had been read. The reviewer had its own detached
-  worktree outside the repo.
-- **Clarifying question:** none the previous entry should have answered. Alex asked one of his own: what the
-  sessions since 29 September had been doing.
-
-**Major novel patterns Session 29:**
-
-1. **Scoping a delegated build is its own cost, and it belongs at the start, not after a unit.** Reading the
-   inventory's §C and §E and the briefs' report lines to settle C's brief ran beside the archive, and the two
-   took the session from 123k to 159k, past the soft line before the `implementer` could be dispatched.
-   Settling a brief in the handoff, as here, lets the next session dispatch at its first checkpoint, beside the
-   archive unit (Session 26 pattern 1, in `git show 4587bfe:PROGRESS.md`).
-2. **Read a section, not a file, when a brief needs one paragraph.** A `sed` range over `docs/DA-REVIEW.md` from
-   §Reporting channel to the next `## ` heading printed most of the file (~6k), because the sections are `###`.
-   Match the heading level, or `grep -n` first.
-3. **The handoff loop fed itself.** Each session's ~45k of loading reads plus a ~30k archive PR reached trigger 1,
-   and each handoff added the entry that forced the next archive: Sessions 22 to 29 did one archive and at most
-   one workflow step each, with 25 of 34 merges since 29 September (at `ddaab4e`) being handoffs or archives. The workflow work
-   meant to fix that was queued behind itself. Alex broke it by parking the work; the lesson is to count shipped
-   product changes in the entry, not only the PRs.
-4. **Run `gh pr view <n> --json state` before pushing to a PR's branch.** Alex merged #121 and #122 within minutes
-   of their opening, and a commit pushed afterwards landed on a branch nobody would merge.
 
 ## Next session loading instructions
 
@@ -878,5 +808,5 @@ Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 
 ## Session archive
 
 Archived sessions are in `docs/history/SESSIONS.md` (Session 1, archived 13 September 2026; Session 2,
-18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026). Full
+18 September 2026; Session 3, 22 September 2026; Session 4, 27 September 2026; Session 5, 28 September 2026; Sessions 6 to 12, 29 September 2026; Session 13, 2 October 2026; Sessions 14 and 15, 6 October 2026; Session 16, 6 October 2026; Session 17, 6 October 2026; Session 18, 6 October 2026; Session 19, 6 October 2026; Session 20, 7 October 2026; Session 21, 7 October 2026; Session 22, 7 October 2026; Session 23, 7 October 2026; Session 24, 7 October 2026; Sessions 25 and 26, 16 October 2026; Session 27, 17 October 2026; Session 28, 17 October 2026; Session 29, 18 October 2026). Full
 retrospective survives in `git log -p PROGRESS.md` at that session's compression commit.
