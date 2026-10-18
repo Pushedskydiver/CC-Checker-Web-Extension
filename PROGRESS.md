@@ -416,7 +416,7 @@ was 5 entries and 29,155 bytes. The pre-push suite was green (60 Vitest, 22 Play
   `docs/history/SESSIONS.md`, the band 4 entries and 23,927 bytes, Session 30's one cite of its content
   ("Session 29 pattern 1") pointed at `git show 22bed93:PROGRESS.md`.
 - **Decision (g) recorded** as `b816d37`: research 03's header and its (g) row (struck, dated), this file's
-  "Updated" paragraph and loading step 5, `docs/GIT.md` §Ticket keys (`CC-001` to `CC-007`, with what `CC-006` and
+  "Updated" paragraph and loading step 5, `docs/GIT.md`'s Ticket keys bullet (`CC-001` to `CC-007`, with what `CC-006` and
   `CC-007` are) and the `docs/GLOSSARY.md` row. The research file stays in `docs/research/`; from this PR on its
   changes, and the session PRs, go under `CC-007`.
 - **Phase 0 harness** as `26c15d2`: `docs/research/03-sources/ff-harness/` (a Node Marionette client, three patched
@@ -433,6 +433,19 @@ was 5 entries and 29,155 bytes. The pre-push suite was green (60 Vitest, 22 Play
   `dfe9f09`, both `Lint, build, e2e` green, #131 still `CLEAN` after #130 so no recreate was needed.
 - **The decisions (a) to (f) and (h) to (k)** were put to Alex in this session's closing message, each with research
   03's recommendation and (a)'s Session 33 change named. His answers are the next session's to record.
+- **Review:** `copilot-surrogate` (Fable, `high`, ~193k tokens, a detached worktree beside the repo) on `985670c`,
+  report verbatim in `docs/research/03-sources/surrogate-s34.md`: ~96 claims, 4 falsified; 2 MATERIAL (the PR
+  number, already fixed by `813c2e0` before the report landed; `experiments.md` saying every Safari row needs the
+  packager's Xcode project, when research 03 says a built folder installs from the Develop menu since Safari
+  18.4, folded, with loading step 5's Safari bullet); 2 LOW (`docs/GIT.md`'s `CC-006` scope was unbounded, now
+  "Sessions 20 to 33"; a "§Ticket keys" cite named a bullet, not a heading; both folded); 3 nits declined (the
+  (g) strike sits in `docs/research/`, where research 02 already strikes and decision (u) is open;
+  `docs/GLOSSARY.md:132`'s converter name predates this PR; the harness manifests omit
+  `data_collection_permissions`, which a temporary install does not need). Its out-of-repo note, that memory dates
+  (g) to 17 October, is Alex's earlier chat; the repo records the written instruction of 18 October. The MATERIAL
+  fold gets its confirm round from a fresh verifier dispatched at the end of this session, past the soft line; it
+  writes `docs/research/03-sources/surrogate-s34-confirm.md` into the main checkout, untracked, and Session 35
+  commits and folds it (loading step 1).
 - **Merged:** #130 and #131 (Claude, delegated). **Uploaded:** no.
 
 **Handoff facts:**
@@ -772,7 +785,8 @@ Rewritten in Session 34: phase 0's harness exists and has not run; the launch is
    `git fetch` and `gh pr list`:** this session's PR, #132 (`docs/CC-007-session-34`, based on `main`), may still be open. Read `PROGRESS.md` from it if so,
    else from `main`. Read only: this block (step 7 on demand), the newest entry and the first "Updated"
    paragraph. Take a second `get_usage` after the reads, and one every ten tool calls on a topic after that
-   (Session 34 pattern 2).
+   (Session 34 pattern 2). **If `docs/research/03-sources/surrogate-s34-confirm.md` exists untracked, it is the confirm
+   round on Session 34's MATERIAL fold: commit it verbatim, fold anything it confirms, on #132's branch if still open.**
 2. **Archive Session 30** (`docs/SESSION-HANDOFF.md` §6): with Session 34's entry the band is 5 entries and over
    the 24,000-byte line. Re-measure; archive until it is under. The archive is the session branch's first commit,
    pushed straight after. If this session's PR is still open, cut from its head with its branch as base (§6
@@ -799,8 +813,8 @@ Rewritten in Session 34: phase 0's harness exists and has not run; the launch is
       granted as a real click grants it. Each result into `experiments.md` with the Firefox version (152.0.3 is
       installed; updating it needs Alex), and research 03's open rows rewritten in place with a dated note.
     - **Safari:** S6's local half (`xcrun safari-web-extension-packager --no-open --no-prompt`, then `xcodebuild`
-      on Xcode 27.1) needs no Safari UI; S1 to S5 and S7 to S9 need the Develop menu and "Allow Unsigned
-      Extensions", which are Alex's hands. Ask, with the exact steps, rather than drive Safari.
+      on Xcode 27.1) needs no Safari UI; S1 to S5 and S7 to S9 need the Develop menu ("Add Temporary
+      Extension…", Safari 18.4 and later), which is Alex's hands. Ask, with the exact steps, rather than drive Safari.
     - **The decisions:** (a) to (f) and (h) to (k) were put to Alex on 18 October (Session 34's closing message),
       each with its recommendation. Record his answers in research 03 §Decisions for Alex as (g) was recorded
       (`b816d37`): settled text in italics, the old text struck, dated. No code before phase 0 is done; phase 1a

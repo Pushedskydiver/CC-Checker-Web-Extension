@@ -24,7 +24,8 @@ builds were made, but Firefox could not be driven from this session:
 Untested next steps, cheapest first: Alex launches `ff-harness/launch-ff.sh` (or the same command) from his
 own terminal and the session drives it over 2828; `web-ext run` from a scratch install; a WebDriver BiDi
 session via `--remote-debugging-port` with Puppeteer's Firefox support. Safari rows (S1 to S9) need the
-Develop menu, "Allow unsigned extensions" and the packager's Xcode project; none was attempted, and S6's
+Develop menu ("Add Temporary Extension…", Safari 18.4 and later); only S6, and S2's iPhone half, need the
+packager's Xcode project (research 03 §Does Safari need its own repo). None was attempted, and S6's
 local half (`xcrun safari-web-extension-packager --no-open --no-prompt`, then `xcodebuild`) is the one
 row that needs no Safari UI.
 

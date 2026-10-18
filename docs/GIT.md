@@ -17,7 +17,7 @@ What changed on the way over:
   2026). Here `CC-004` is the code-quality workstream opened on 12 September 2026 (`PROGRESS.md` §The
   approved plan), and `CC-005` the port of the PCR Formulation AI workflow, approved on 29 September 2026
   (`docs/research/01-pcr-workflow-port.md`); `CC-006` the workflow-optimisation research
-  (`docs/research/02-workflow-optimisation.md`) and the session handoffs and archives since; and `CC-007` the Safari and
+  (`docs/research/02-workflow-optimisation.md`) and the session handoffs and archives of Sessions 20 to 33; and `CC-007` the Safari and
   Firefox ports, one key for both, assigned on 18 October 2026 (`docs/research/03-safari-firefox-ports.md`).
 - **Gitmoji position.** chief-clancy, moe and tamaclaude put the gitmoji first (`✨ feat(scope): …`);
   nas-stacks puts it after the colon (`feat: ✨ …`). Here it follows the ticket key:
