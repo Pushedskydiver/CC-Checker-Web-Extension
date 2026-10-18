@@ -2,8 +2,8 @@
 
 _A record, not instructions. Once the PRs it leads to merge, the docs they change are the authority._
 
-Session 32, 17 October 2026. `main` at `6821ca5`. Ticket: **none assigned** — `docs/GIT.md` calls the existing ones "keys in Alex's own
-tracker"; this file rides in the session PR under `CC-006` until he names one (decision (g)). Status: **researched;
+Session 32, 17 October 2026. `main` at `6821ca5`. Ticket: **`CC-007`**, one key for both ports (Alex, 18 October 2026, decision (g));
+until Session 34 this file rode in the session PRs (#128, #129) under `CC-006`. Status: **researched;
 nothing built.** The two engine reports it rests on are verbatim in `03-sources/` (§Sources), as are its two R1 reviews
 (`grill-r1.md`, `surrogate-r1.md`, on `be835b7`), folded here in Session 33; review state is in `PROGRESS.md`
 §Session 33.
@@ -339,7 +339,9 @@ Chrome release.
   `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` passed to `xcodebuild` from `package.json` by the package step
   rather than kept in `project.pbxproj`, and a one-line check that every version copy agrees, so the pair that
   drifted once (`AGENTS.md` §Non-obvious constraints) does not become an unwatched quartet.
-- **(g) Ticket key(s).** One for both ports, or one each; also whether this research file moves under it.
+- **(g) Ticket key(s).** _Settled, 18 October 2026 (Alex): `CC-007`, one key for both ports; this file stays in
+  `docs/research/` and its changes go under `CC-007` from Session 34 on._ ~~One for both ports, or one each; also
+  whether this research file moves under it.~~
 - **(h) Order.** Firefox first (recommended, with phase 1a's Chrome release named), or Safari first because it was
   the stated goal.
 - **(i) Doc corrections now or with phase 1.** Now (recommended, and done for the three `docs/ARCHITECTURE.md`

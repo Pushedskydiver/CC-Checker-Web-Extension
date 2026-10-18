@@ -3,7 +3,12 @@
 Living state document — current state, what's next. Session-by-session detail archives out to
 `docs/history/SESSIONS.md` (mechanics: `docs/SESSION-HANDOFF.md`).
 
-## Next workstreams (after Session 33)
+## Next workstreams (after Session 34)
+
+Updated 18 October 2026, Session 34: **#128 and #129 merged at 20:54Z on 17 October as `0a8e473` and `22bed93`,
+merge commits (Alex), and decision (g) is settled: `CC-007`, one key for both ports, recorded in research 03,
+`docs/GIT.md` and `docs/GLOSSARY.md`; research 03 and this session's PR go under it.** Session 29 archived as
+`e1c8f5a`. Next: decisions (a) to (f) and (h) to (k), then phase 0.
 
 Updated 17 October 2026, end of Session 33: **research 03 is reviewed to nit-floor on `docs/CC-006-session-33`
 (fold `6a738ac`, confirm fold `dd1cfdf`), and its recommendation changed: decision (a) is now "ping, then inject"
@@ -708,8 +713,8 @@ Rewritten in Session 33: research 03 is at nit-floor; the decisions and phase 0 
    Playwright tests.
 5. **Primary work: put research 03's decisions to Alex, then phase 0.**
     - **The decisions:** `docs/research/03-safari-firefox-ports.md` §Decisions for Alex, (a) to (k), each with
-      its recommendation; the ticket key (g) first, since none is assigned and `docs/GIT.md` says the keys are in
-      his tracker. (a) changed in Session 33 to shape 3, "ping, then inject"; say so when asking.
+      its recommendation. (g) is settled: `CC-007`, one key for both ports (Alex, Session 34); `docs/GIT.md` records it.
+      (a) changed in Session 33 to shape 3, "ping, then inject"; say so when asking.
     - **Phase 0, after or alongside his answers:** the eighteen experiments F1 to F9 and S1 to S9 (§What must be
       run), all on this Mac. Update Firefox first (152.0.3 installed, 158.0 current on the calendar); Safari 27.0
       has "Add Temporary Extension…". Output: `docs/research/03-sources/experiments.md`, each result with the
