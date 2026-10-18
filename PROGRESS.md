@@ -459,6 +459,7 @@ was 5 entries and 29,155 bytes. The pre-push suite was green (60 Vitest, 22 Play
     | Start (step 1, before the reads)           | 2%     | 14%    | 24%          | 88k     |
     | Soft-line check, after the launch attempts | 15%    | 16%    | 26%          | 196k    |
     | Dependabot merged, before this entry       | 18%    | 16%    | 27%          | 210k    |
+    | Handoff, confirm verifier dispatched       | 30%    | 17%    | 29%          | 241k    |
 
 - **Plan usage:** the 5-hour window resets at 21:20Z on 18 October, and the weekly windows at 15:00Z on 23 October.
 - **Warning signs:** one, new: no `get_usage` between 88k and 196k. §2's "after digesting any large result" never
@@ -796,7 +797,7 @@ Rewritten in Session 34: phase 0's harness exists and has not run; the launch is
     - Expect this session's PR open unless Alex has merged it; say which in the entry and rewrite every hedge a
       merge overtakes. Dependabot #130 and #131 merged in Session 34 (`15fd545`, `dfe9f09`).
     - Remote branches: `main`, `feat/CC-003-apca-3` and `chore/CC-004-copy-to-clipboard-4` (do not delete), plus
-      the open PR's branch. `git worktree list`: the main checkout only.
+      the open PR's branch. `git worktree list`: the main checkout, plus `../cc-surrogate` (detached at `5efa3db`) if Session 34's confirm verifier left it: `git worktree remove ../cc-surrogate` once its report is committed.
 4. Run the pre-push suite before touching anything:
    `npm run lint && npm run test:unit && npm run build && npm run test:e2e`. Expect 60 Vitest cases and 22
    Playwright tests.
