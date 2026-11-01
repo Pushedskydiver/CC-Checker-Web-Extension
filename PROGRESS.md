@@ -461,8 +461,7 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
   skipped the archive commit) fixed; LOW 1, 2, 3, 5, 6, 7, 8 and 9 folded (entry count, the diff figure, the
   README's flag, the fifth launch route, "Alex updated it", 27.0.1, the UUID sentence, the suite's printed lines);
   LOW 4 (research 03's open rows still read as open, not rewritten in place) left to Session 36, step 5. A fresh
-  `copilot-surrogate` confirm round on the fold was dispatched to `surrogate-s35-confirm.md`; the `da-review`
-  report and that confirm round are Session 36's to commit and fold (loading step 1).
+  `copilot-surrogate` confirm round on the fold was dispatched to `surrogate-s35-confirm.md`; the `da-review` report arrived last (0 BLOCKING, 4 MATERIAL, 4 LOW, 5 nits, not nit-floor: F5, F6 and F8 read more than their evidence holds, each with a cheap re-run) and is committed verbatim, unfolded, at 225k; it and the confirm round are Session 36's (loading step 1). Until the re-runs, F5, F6 and F8 above are contested readings.
 - **Merged:** none by Claude; #134 and #135 by Alex. **Uploaded:** no.
 
 **Handoff facts:**
@@ -749,9 +748,7 @@ Rewritten in Session 35: the Firefox half of phase 0 is done; two review reports
    `git fetch` and `gh pr list`:** this session's PR, [#136](https://github.com/Pushedskydiver/CC-Checker-Web-Extension/pull/136) (`docs/CC-007-session-35`, based on `main`), may still be open.
    Read `PROGRESS.md` from it if so, else from `main`. Read only: this block (step 7 on demand), the newest entry
    and the first "Updated" paragraph. Take a second `get_usage` after the reads, and one every ten tool calls on a
-   topic after that (Session 34 pattern 2). **Two review reports may be waiting, untracked in the main checkout:
-   `docs/research/03-sources/da-review-s35.md` (the DA review) and `docs/research/03-sources/surrogate-s35-confirm.md`
-   (the confirm round on the surrogate fold, `surrogate-s35.md`, which is committed and folded).** Commit each verbatim, on #136's branch if still open, and fold what they
+   topic after that (Session 34 pattern 2). **The `da-review` report is committed verbatim and not folded: `docs/research/03-sources/da-review-s35.md`, 0 BLOCKING, 4 MATERIAL, 4 LOW, 5 nits. Its MATERIALs say three Firefox rows read more than their evidence holds, and each names a cheap re-run: F5 was read at the instant of the click, before Firefox's `activateScripts` could inject the manifest script on the ungranted site (re-ping about a second later); F6's "gesture survived the await" is moot from 149 (`extensions.openPopupWithoutUserGesture.enabled`; re-run with it `false` in `profile/user.js`, since the floor is 140); the error-popup path's "uncaught exception" is unattributed (log `sourceName` and `lineNumber`); F8's "wrap only if something else injects" contradicts research 03's Chrome double-run cases. Do those re-runs first, rewrite the rows and the Session 35 entry's summary of them, then fold the rest. One more report may be waiting, untracked: `docs/research/03-sources/surrogate-s35-confirm.md`, the confirm round on the surrogate fold (`surrogate-s35.md`, committed and folded in `81c69e8`).** Commit each verbatim, on #136's branch if still open, and fold what they
    disprove or add (`docs/DEVELOPMENT.md` §Verification rounds); a BLOCKING or MATERIAL fold gets one confirm round
    from a fresh verifier. A report still missing is a reviewer that died with the session: re-dispatch it against the
    same commits (`a8463b8..` the branch head), not from memory.
