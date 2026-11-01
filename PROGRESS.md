@@ -418,13 +418,13 @@ and green; the delegated `gh pr merge 134` answered "already merged", and Alex's
 arrived with it (`6c42f70`, `a8463b8`). The tree was clean apart from the untracked confirm report, the remote
 branches were the three standing ones, and `git worktree list` had the main checkout plus `../cc-surrogate` at
 `5efa3db`. The band was 5 entries and 31,237 bytes. After `npm install` for #135's seven bumps the pre-push suite
-was green (60 Vitest, 22 Playwright) on `a8463b8`. `get_session self`: Fable 5.1 at `high`, permission mode auto.
+was green on `a8463b8` (`Tests  60 passed (60)`, `22 passed (14.3s)`). `get_session self`: Fable 5.1 at `high`, permission mode auto.
 Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
 
 **Done:**
 
 - **Sessions 30 and 31 archived** as `66f2fa9`, the branch's first commit, pushed at once: rows 30 and 31 in
-  `docs/history/SESSIONS.md`; Session 30 alone left the band at 26,211 bytes, so both went, to 4 entries and
+  `docs/history/SESSIONS.md`; Session 30 alone left the band at 26,211 bytes, so both went, to 3 entries and
   20,331. The one cite of Session 31's content (decision (l)'s fourth incident, loading step 7) points at
   `git show 0fae782:PROGRESS.md`.
 - **The Session 34 confirm round** committed verbatim as `4e70daa` (4 of 4 R1 findings resolved, 2 LOW, 4 nits,
@@ -433,8 +433,8 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
   step 1 said "fold anything it confirms") is overtaken by this block's rewrite. Its nit 1 (the "S1 to S9" sentence
   including S6) is gone from `experiments.md`'s rewrite; nits 2 to 4 are records, left.
 - **Phase 0, Firefox, as `993f49f`.** The launch: `launch-ff.sh` through the Bash tool with
-  `dangerouslyDisableSandbox: true` had Marionette on 2828 within a second; Session 34's five routes all ran inside
-  the sandbox. Firefox 159 refused the first chrome-context script until `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` was
+  `dangerouslyDisableSandbox: true` had Marionette on 2828 within a second; four of Session 34's five routes ran inside
+  the sandbox, and the fifth, `open -a Firefox --args`, dropped its arguments. Firefox 159 refused the first chrome-context script until `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` was
   exported (the 152 flag no longer grants it). Then `smoke.mjs` (session, `Services.appinfo.version`,
   `Addon:Install`), `f1.mjs`, `run.mjs` (F2 to F8 and F9's write, one batched script) and `f9.mjs` (F9's read-back
   after a relaunch, plus retests of F4, F6 and F8). The rows, in short: F1 every callback-less call a `Promise`, the
@@ -450,11 +450,19 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
   so `lib.mjs`'s `install` parks the tab on `about:blank` first.
 - **Not done:** S6's local half, the Safari rows, the decisions. Alex's only message this session was the Dependabot
   one; (a) to (f) and (h) to (k) are re-asked in the closing message.
-- **Review:** the diff is over 200 lines without `package-lock.json` (`PROGRESS.md` alone is −141), so
+- **Review:** the diff is over 200 lines without `package-lock.json` (`PROGRESS.md` alone is +133/−172), so
   `copilot-surrogate` and `da-review` (both Fable, `high`, each in its own detached worktree outside the repo) were
   dispatched at the handoff, past the soft line, with reports going to `docs/research/03-sources/surrogate-s35.md`
-  and `docs/research/03-sources/da-review-s35.md` in the main checkout, untracked; Session 36 commits and folds
-  them (loading step 1).
+  and `docs/research/03-sources/da-review-s35.md` in the main checkout, untracked. The surrogate's report arrived
+  before the session ended (~115 claims, 12 falsified; 0 BLOCKING, 3 MATERIAL, 9 LOW, 5 nits) and is committed
+  verbatim with its fold: MATERIAL 1 (the dated note had landed between research 03's table header and delimiter,
+  so the table no longer rendered) moved above the header; MATERIAL 2 (`f1.mjs` was not in the repo, so F1 was the
+  one row no committed script could have produced) copied in; MATERIAL 3 (loading step 1's re-dispatch range
+  skipped the archive commit) fixed; LOW 1, 2, 3, 5, 6, 7, 8 and 9 folded (entry count, the diff figure, the
+  README's flag, the fifth launch route, "Alex updated it", 27.0.1, the UUID sentence, the suite's printed lines);
+  LOW 4 (research 03's open rows still read as open, not rewritten in place) left to Session 36, step 5. A fresh
+  `copilot-surrogate` confirm round on the fold was dispatched to `surrogate-s35-confirm.md`; the `da-review`
+  report and that confirm round are Session 36's to commit and fold (loading step 1).
 - **Merged:** none by Claude; #134 and #135 by Alex. **Uploaded:** no.
 
 **Handoff facts:**
@@ -478,7 +486,7 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
 **Major novel patterns Session 35:**
 
 1. **"Cannot launch" asks who the parent process is before anything else.** Session 34 spent 108k of context on
-   five launch routes, all children of the sandboxed shell, and the log said so
+   five launch routes, four of them children of the sandboxed shell, and the log said so
    (`sandbox_extension_issue_file_to_process`). One Bash-tool flag, `dangerouslyDisableSandbox: true`, was the
    whole fix; Terminal.app opened from that shell inherited the sandbox too.
 2. **Batch the experiments, print compact results.** F2 to F9 cost about 30k of context for eight rows in one
@@ -741,12 +749,12 @@ Rewritten in Session 35: the Firefox half of phase 0 is done; two review reports
    Read `PROGRESS.md` from it if so, else from `main`. Read only: this block (step 7 on demand), the newest entry
    and the first "Updated" paragraph. Take a second `get_usage` after the reads, and one every ten tool calls on a
    topic after that (Session 34 pattern 2). **Two review reports may be waiting, untracked in the main checkout:
-   `docs/research/03-sources/surrogate-s35.md` and `docs/research/03-sources/da-review-s35.md`, from the reviewers
-   this session dispatched at its handoff.** Commit each verbatim, on #136's branch if still open, and fold what they
+   `docs/research/03-sources/da-review-s35.md` (the DA review) and `docs/research/03-sources/surrogate-s35-confirm.md`
+   (the confirm round on the surrogate fold, `surrogate-s35.md`, which is committed and folded).** Commit each verbatim, on #136's branch if still open, and fold what they
    disprove or add (`docs/DEVELOPMENT.md` §Verification rounds); a BLOCKING or MATERIAL fold gets one confirm round
    from a fresh verifier. A report still missing is a reviewer that died with the session: re-dispatch it against the
-   same commits (`66f2fa9..` the branch head), not from memory.
-2. **Archive Session 32** (`docs/SESSION-HANDOFF.md` §6): with Session 35's entry the band is 5 entries and over
+   same commits (`a8463b8..` the branch head), not from memory.
+2. **Archive Session 32** (`docs/SESSION-HANDOFF.md` §6): with Session 35's entry the band is 4 entries and 27,454 bytes, over
    the 24,000-byte line. Re-measure; archive until it is under. The archive is the session branch's first commit,
    pushed straight after. If this session's PR is still open, cut from its head with its branch as base (§6
    Stacking).
@@ -770,6 +778,10 @@ Rewritten in Session 35: the Firefox half of phase 0 is done; two review reports
       steps and the readings to take for each, as one message, rather than drive Safari; `probe-page.js` and
       `probe-bg.js` are reusable there if the build is patched the Safari way (research 03 §What does Firefox need
       has the Firefox patch; Safari needs none of its keys).
+    - **Research 03's open rows** (its surrogate's LOW 4): §What must be run's prose, §Minimum versions and
+      §Decisions for Alex still read F1, F2, F5, F6 and F9 as open, say "152.0.3 … update Firefox first" and
+      "from about:debugging". Rewrite each in place with a dated note, as the file's own rule (its line above the
+      table) says; Session 35 put one note above the table instead, for context.
     - **F4's iframe half,** if cheap: a click synthesised in the embedded frame from the chrome context
       (`windowUtils.sendMouseEvent` at the frame's coordinates, or `EventUtils` inside the frame's window). One
       attempt, capped at ~5k of context; otherwise it stays "not established" and decision (a)'s copy question is

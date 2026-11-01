@@ -5,7 +5,8 @@ built-in Marionette port (2828) from Node, with no new binaries. Written in Sess
 first run in Session 35 (1 November 2026, Firefox 159.0) — results in `../experiments.md`.
 
 - `marionette.mjs` — a minimal Marionette client: `connect`, `newSession`, `chrome(script)` (runs in the
-  browser-chrome context, needs Firefox's `--remote-allow-system-access`), `exec`, `navigate`,
+  browser-chrome context, needs `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` in Firefox's environment on 159; 152 took the
+  `--remote-allow-system-access` flag), `exec`, `navigate`,
   `install(path)` (`Addon:Install`, temporary), `quit`.
 - `make-builds.mjs <build/> <outRoot>` — copies `build/` three times with a patched manifest: `ext-manifest`
   (status quo plus `gecko.id`, dual `background`, `storage`), `ext-inject` (no `content_scripts`,
@@ -25,7 +26,7 @@ first run in Session 35 (1 November 2026, Firefox 159.0) — results in `../expe
   showing the extension's pages), `probe(query)` (navigates to `probe.html?…` and returns `#out`),
   `clickToolbar` (`browserActionFor(policy.extension).triggerAction(window)` from the chrome context, which
   grants `activeTab` as a real click does), `newTab`/`switchTo`.
-- `smoke.mjs`, `run.mjs`, `f9.mjs` — the plumbing check; F2 to F8 plus F9's write, ending in `Marionette:Quit`;
+- `smoke.mjs`, `f1.mjs`, `run.mjs`, `f9.mjs` — the plumbing check; F1 and the manifest warnings; F2 to F8 plus F9's write, ending in `Marionette:Quit`;
   F9's read-back after a relaunch, plus the F4, F6 and F8 retests. `node server.mjs &` first.
 
 Run from a copy outside the repo (the scratchpad or `$TMPDIR`): `node make-builds.mjs <repo>/build .`,

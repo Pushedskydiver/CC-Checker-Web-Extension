@@ -2,8 +2,8 @@
 
 The output of research 03 §What must be run before any code: one row per experiment, each result with the
 browser version it was read on. **Status (Session 35, 1 November 2026): F1 to F9 ran on Firefox 159.0; no
-Safari row has run.** Safari 27.0, macOS 27.0, Xcode 27.1. Firefox was 152.0.3 when the harness was written
-(Session 34) and 159.0 when it first ran; Alex updated it between the sessions.
+Safari row has run.** Safari 27.0.1, macOS 27.0.1, Xcode 27.1. Firefox was 152.0.3 when the harness was written
+(Session 34) and 159.0 when it first ran; it was updated between the sessions.
 
 ## Harness status
 
@@ -44,7 +44,7 @@ own repo). None was attempted, and S6's local half (`xcrun safari-web-extension-
 | F6  | Firefox 159.0 | popup shows | 1 Nov 2026 | A click on `about:blank` (`tab.url` populated, restricted) opened `customizationui-widget-panel` showing `error.html` after the awaited `setPopup`, so the gesture survived the await on 159. "Below 149" cannot be read on this Mac. One console error followed the click, `uncaught exception: Object { message }`, source not attributed. |
 | F7  | Firefox 159.0 | device pixels; colours exact | 1 Nov 2026 | The capture was 2560 × 1682 for `innerWidth` 1280, `innerHeight` 841, `devicePixelRatio` 2; the red block sampled `[255, 0, 0]` at (50, 50) and the blue page `[0, 0, 255]` at (300, 300), both scaled by the ratio. The loupe maths holds. |
 | F8  | Firefox 159.0 | shape 3 works; a second injection throws | 1 Nov 2026 | With no `content_scripts` and `activeTab` + `scripting`: first ping rejected in 1 ms, `executeScript` resolved in 9 ms, second ping resolved in 6 ms, checker open. A second click found the script (first ping resolved, 1 ms, no inject). An explicit `executeScript` on the same document returns `error: "redeclaration of let scrollStopDelay"` and adds no iframe; after `closeChecker` the iframe is gone, a further injection errors the same way, and the next click reopens the checker. The ping-first flow never injects twice; an idempotent wrap is only needed if something else does. |
-| F9  | Firefox 159.0 | survives quit and relaunch | 1 Nov 2026 | `background`, `foreground` and `colors` written on the extension origin read back after `Marionette:Quit`, a relaunch and a reinstall: `extensions.webextensions.uuids` kept the id's UUID across the restart (temporary add-ons are removed at shutdown, the pref is not). An uninstall-then-reinstall within a session changed the UUID (`bf80a141…` → `13764d37…`), so the origin is stable per install, not per profile. |
+| F9  | Firefox 159.0 | survives quit and relaunch | 1 Nov 2026 | `background`, `foreground` and `colors` written on the extension origin read back after `Marionette:Quit`, a relaunch and a reinstall: `extensions.webextensions.uuids` kept the id's UUID across the restart (temporary add-ons are removed at shutdown, the pref is not). An uninstall-then-reinstall within a session changed the UUID (`bf80a141…` → `13764d37…`), so the origin survives a restart but not an uninstall: `Addon:Uninstall` clears the id's UUID, shutdown does not. |
 | S1  | Safari            | not run |         |       |
 | S2  | Safari            | not run |         |       |
 | S3  | Safari            | not run |         |       |
