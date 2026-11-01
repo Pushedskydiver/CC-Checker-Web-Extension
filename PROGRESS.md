@@ -435,7 +435,7 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
 - **Phase 0, Firefox, as `993f49f`.** The launch: `launch-ff.sh` through the Bash tool with
   `dangerouslyDisableSandbox: true` had Marionette on 2828 within a second; four of Session 34's five routes ran inside
   the sandbox, and the fifth, `open -a Firefox --args`, dropped its arguments. Firefox 159 refused the first chrome-context script until `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` was
-  exported (the 152 flag no longer grants it). Then `smoke.mjs` (session, `Services.appinfo.version`,
+  exported (the flag Session 34 wrote for 152 was never seen to work there, so whether it ever granted it is unchecked). Then `smoke.mjs` (session, `Services.appinfo.version`,
   `Addon:Install`), `f1.mjs`, `run.mjs` (F2 to F8 and F9's write, one batched script) and `f9.mjs` (F9's read-back
   after a relaunch, plus retests of F4, F6 and F8). The rows, in short: F1 every callback-less call a `Promise`, the
   background a document; F2 `sender.tab` set from the iframe; F3 `use_dynamic_url` a warning; F4 `execCommand` and
@@ -492,8 +492,7 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
 2. **Batch the experiments, print compact results.** F2 to F9 cost about 30k of context for eight rows in one
    script with one-line JSON per result; the same rows as single-result tool calls would have cost what Session
    34's attempts did. Read the ~1.5k output, not the harness.
-3. **A browser update between sessions changes the harness's contract.** 152 took a flag, 159 takes an environment
-   variable, and the handoff's "152.0.3 is installed" was stale before the session began. Read the version
+3. **A browser update between sessions changes the harness's contract.** the harness was written for a flag on 152, untested there, and 159 takes an environment variable, and the handoff's "152.0.3 is installed" was stale before the session began. Read the version
    (`firefox --version`) in the loading checks when a harness depends on it.
 
 ## Session 34 — 18 October 2026 (CC-007: decision (g) recorded, Session 29 archived, phase 0 harness written but unrun)
@@ -752,7 +751,7 @@ Rewritten in Session 35: the Firefox half of phase 0 is done; two review reports
    disprove or add (`docs/DEVELOPMENT.md` §Verification rounds); a BLOCKING or MATERIAL fold gets one confirm round
    from a fresh verifier. A report still missing is a reviewer that died with the session: re-dispatch it against the
    same commits (`a8463b8..` the branch head), not from memory.
-2. **Archive Session 32** (`docs/SESSION-HANDOFF.md` §6): with Session 35's entry the band is 4 entries and 27,454 bytes, over
+2. **Archive Session 32** (`docs/SESSION-HANDOFF.md` §6): with Session 35's entry the band is 4 entries and 28,515 bytes at `81c69e8` (more after the later commits), over
    the 24,000-byte line. Re-measure; archive until it is under. The archive is the session branch's first commit,
    pushed straight after. If this session's PR is still open, cut from its head with its branch as base (§6
    Stacking).
@@ -776,8 +775,7 @@ Rewritten in Session 35: the Firefox half of phase 0 is done; two review reports
       steps and the readings to take for each, as one message, rather than drive Safari; `probe-page.js` and
       `probe-bg.js` are reusable there if the build is patched the Safari way (research 03 §What does Firefox need
       has the Firefox patch; Safari needs none of its keys).
-    - **Research 03's open rows** (its surrogate's LOW 4): §What must be run's prose, §Minimum versions and
-      §Decisions for Alex still read F1, F2, F5, F6 and F9 as open, say "152.0.3 … update Firefox first" and
+    - **Research 03's open rows** (its surrogate's LOW 4): §What does Firefox need (its lines 72 and 82), §The mechanisms table (112 to 118), §The one design change (124), §Does `public/app/*.js` need a build (216, 220, 233), §What must be run (255 to 256) and §Decisions for Alex (332, 354) still read F1, F2, F5, F6 and F9 as open, say "152.0.3 … update Firefox first" and
       "from about:debugging". Rewrite each in place with a dated note, as the file's own rule (its line above the
       table) says; Session 35 put one note above the table instead, for context.
     - **F4's iframe half,** if cheap: a click synthesised in the embedded frame from the chrome context

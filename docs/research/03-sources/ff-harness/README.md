@@ -5,8 +5,7 @@ built-in Marionette port (2828) from Node, with no new binaries. Written in Sess
 first run in Session 35 (1 November 2026, Firefox 159.0) — results in `../experiments.md`.
 
 - `marionette.mjs` — a minimal Marionette client: `connect`, `newSession`, `chrome(script)` (runs in the
-  browser-chrome context, needs `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` in Firefox's environment on 159; 152 took the
-  `--remote-allow-system-access` flag), `exec`, `navigate`,
+  browser-chrome context, needs `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1` in Firefox's environment on 159; the `--remote-allow-system-access` flag the script also passes was written for 152 and never seen to work there), `exec`, `navigate`,
   `install(path)` (`Addon:Install`, temporary), `quit`.
 - `make-builds.mjs <build/> <outRoot>` — copies `build/` three times with a patched manifest: `ext-manifest`
   (status quo plus `gecko.id`, dual `background`, `storage`), `ext-inject` (no `content_scripts`,
