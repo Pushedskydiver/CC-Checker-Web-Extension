@@ -471,14 +471,15 @@ Firefox on this Mac is 159.0, not the 152.0.3 the handoff recorded.
   The unit in hand (recording the results) finished at 188k.
 - **Readings (5-hour / weekly / Fable weekly / context):**
 
-    | Moment                                   | 5-hour | Weekly | Fable weekly | Context |
-    | ---------------------------------------- | ------ | ------ | ------------ | ------- |
-    | Start (after the loading block was read) | 13%    | 3%     | 1%           | 84k     |
-    | Smoke and F1 done                        | 19%    | 4%     | 2%           | 142k    |
-    | F2 to F9 run                             | 24%    | 5%     | 2%           | 173k    |
-    | Results recorded, before this entry      | 26%    | 5%     | 3%           | 188k    |
+    | Moment                                    | 5-hour | Weekly | Fable weekly | Context |
+    | ----------------------------------------- | ------ | ------ | ------------ | ------- |
+    | Start (after the loading block was read)  | 13%    | 3%     | 1%           | 84k     |
+    | Smoke and F1 done                         | 19%    | 4%     | 2%           | 142k    |
+    | F2 to F9 run                              | 24%    | 5%     | 2%           | 173k    |
+    | Results recorded, before this entry       | 26%    | 5%     | 3%           | 188k    |
+    | Surrogate fold pushed, confirm dispatched | 48%    | 8%     | 7%           | 219k    |
 
-- **Plan usage:** the 5-hour window resets at 05:30Z on 1 November, and the weekly windows at 15:00Z on 6 November.
+- **Plan usage:** the three Fable reviewers cost 22 points of the 5-hour window (26% to 48%). The 5-hour window resets at 05:30Z on 1 November, and the weekly windows at 15:00Z on 6 November.
 - **Warning signs:** none new. Step 1's `get_usage` came after the loading block was read (the same slip as
   Sessions 22 to 31). Each reviewer had its own worktree outside the repo.
 - **Clarifying question:** none; Alex's mid-session message answered the Dependabot question before it was asked.
