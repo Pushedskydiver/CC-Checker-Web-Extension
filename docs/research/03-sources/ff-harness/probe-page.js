@@ -11,6 +11,9 @@ if (q.get('do') === 'sender') {
 	show({ set: true, origin: location.origin });
 } else if (q.get('do') === 'ls-get') {
 	show({ origin: location.origin, background: localStorage.getItem('background'), foreground: localStorage.getItem('foreground'), colors: localStorage.getItem('colors') });
+} else if (q.get('do') === 'msg') { // generic: ?do=msg&type=probe-xxx[&tabId=n] -> the background's reply
+	const msg = { type: q.get('type') }; if (q.has('tabId')) msg.tabId = Number(q.get('tabId'));
+	chrome.runtime.sendMessage(msg).then(show, (e) => show({ error: String(e) }));
 } else if (q.get('do') === 'decode') {
 	chrome.runtime.sendMessage({ type: 'probe-results' }).then((r) => {
 		const clicks = r.results.clicks || []; const last = clicks[clicks.length - 1];
@@ -27,6 +30,7 @@ document.getElementById('copy').addEventListener('click', () => {
 	const r = { isSecureContext: window.isSecureContext, origin: location.origin, inIframe: window.self !== window.top };
 	const range = document.createRange(); range.selectNodeContents(document.getElementById('sel')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
 	try { r.execCommand = document.execCommand('copy'); } catch (e) { r.execCommand = 'threw: ' + e.message; }
+	r.writeText = 'pending'; show(r); // shown at once, so a writeText that never settles still reports execCommand
 	const p = navigator.clipboard?.writeText?.('WRITETEXT-VALUE');
 	Promise.resolve(p).then(() => { r.writeText = 'resolved'; show(r); }, (e) => { r.writeText = 'rejected: ' + e.name + ': ' + e.message; show(r); });
 	if (!p) { r.writeText = 'no clipboard API'; show(r); }

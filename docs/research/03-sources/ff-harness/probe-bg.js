@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener((r, sender, sendResponse) => {
 	if (r.type === 'probe-revoke') { chrome.permissions.remove({ origins: ['<all_urls>'] }).then((ok) => sendResponse({ removed: ok }), (e) => sendResponse({ error: String(e?.message ?? e) })); return true; }
 	if (r.type === 'probe-perms') { chrome.permissions.getAll().then((p) => sendResponse(p)); return true; }
 	if (r.type === 'probe-inject') { // used by F8 step 2/3: explicit extra injections
-		chrome.scripting.executeScript({ target: { tabId: r.tabId }, files: ['app/content.js'] }).then((res) => sendResponse({ ok: true, res: JSON.stringify(res).slice(0, 300) }), (e) => sendResponse({ ok: false, error: String(e?.message ?? e) })); return true;
+		chrome.scripting.executeScript({ target: { tabId: r.tabId }, files: ['app/content.js'] }).then((res) => sendResponse({ ok: true, res: JSON.stringify(res.map((x) => ({ ...x, error: x.error ? String(x.error.message ?? x.error) : undefined }))).slice(0, 300) }), (e) => sendResponse({ ok: false, error: String(e?.message ?? e) })); return true;
 	}
 	if (r.type === 'probe-close') { chrome.tabs.sendMessage(r.tabId, { type: 'closeChecker' }).then(() => sendResponse('sent'), (e) => sendResponse('rejected: ' + e.message)); return true; }
 	return undefined;
