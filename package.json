@@ -11,7 +11,7 @@
     "url": "https://alexclapperton.co.uk"
   },
   "dependencies": {
-    "chroma-js": "^3.2.0",
+    "chroma-js": "^3.3.0",
     "clsx": "^2.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
